@@ -1,0 +1,77 @@
+TVertigo
+v7
+r0
+t321121152.515044
+cCheck dependencies
+cCompileC build/Vertigo.build/Debug/Vertigo.build/Objects-normal/x86_64/main.o /Volumes/kandie/Workspace/Projects/Vertigo/src/main.cpp normal x86_64 c++ com.apple.compilers.gcc.4_2
+cLd /Volumes/kandie/Workspace/Projects/Vertigo/build/Debug/Vertigo normal x86_64
+
+N/Developer/SDKs/MacOSX10.6.sdk
+c000000004BF4701900000000000000EE
+t1274310681
+s238
+
+N/Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/GLUT.framework/GLUT
+c000000004BF4700F000000000001A494
+t1274310671
+s107668
+
+N/Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/OpenGL.framework/OpenGL
+c000000004BF47010000000000000DB14
+t1274310672
+s56084
+
+N/Volumes/kandie/Workspace/Projects/Vertigo/build/Debug/Vertigo
+t1299428352
+s10584
+
+N/Volumes/kandie/Workspace/Projects/Vertigo/build/Vertigo.build/Debug/Vertigo.build/Objects-normal/x86_64/Vertigo.LinkFileList
+c000000004D73B3FF0000000000000070
+t1299428351
+s112
+
+N/Volumes/kandie/Workspace/Projects/Vertigo/build/Vertigo.build/Debug/Vertigo.build/Objects-normal/x86_64/main.o
+t1299428352
+s66992
+
+N/Volumes/kandie/Workspace/Projects/Vertigo/main.cpp
+c00000000000000000000000000000000
+t2
+s0
+
+N/Volumes/kandie/Workspace/Projects/Vertigo/src/main.cpp
+c000000004D73B3FE000000000000008F
+t1299428350
+s143
+i<iostream>
+
+CCheck dependencies
+r0
+lSLF07#2@18"Check dependencies321121151#321121151#0(0"0(0#1#0"8711036544#0"0#
+
+CCompileC build/Vertigo.build/Debug/Vertigo.build/Objects-normal/x86_64/main.o /Volumes/kandie/Workspace/Projects/Vertigo/main.cpp normal x86_64 c++ com.apple.compilers.gcc.4_2
+r0
+
+CCompileC build/Vertigo.build/Debug/Vertigo.build/Objects-normal/x86_64/main.o /Volumes/kandie/Workspace/Projects/Vertigo/src/main.cpp normal x86_64 c++ com.apple.compilers.gcc.4_2
+s321121151.617604
+e321121152.339228
+r1
+xCompileC
+xbuild/Vertigo.build/Debug/Vertigo.build/Objects-normal/x86_64/main.o
+x/Volumes/kandie/Workspace/Projects/Vertigo/src/main.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@63"Compile /Volumes/kandie/Workspace/Projects/Vertigo/src/main.cpp321121151#321121152#0(0"0(0#0#55"/Volumes/kandie/Workspace/Projects/Vertigo/src/main.cpp8718181600#1339"    cd /Volumes/kandie/Workspace/Projects/Vertigo    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x c++ -arch x86_64 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -mfix-and-continue -fvisibility-inlines-hidden -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Volumes/kandie/Workspace/Projects/Vertigo/build/Vertigo.build/Debug/Vertigo.build/Vertigo-generated-files.hmap -I/Volumes/kandie/Workspace/Projects/Vertigo/build/Vertigo.build/Debug/Vertigo.build/Vertigo-own-target-headers.hmap -I/Volumes/kandie/Workspace/Projects/Vertigo/build/Vertigo.build/Debug/Vertigo.build/Vertigo-all-target-headers.hmap -iquote /Volumes/kandie/Workspace/Projects/Vertigo/build/Vertigo.build/Debug/Vertigo.build/Vertigo-project-headers.hmap -F/Volumes/kandie/Workspace/Projects/Vertigo/build/Debug -I/Volumes/kandie/Workspace/Projects/Vertigo/build/Debug/include -I/Volumes/kandie/Workspace/Projects/Vertigo/build/Vertigo.build/Debug/Vertigo.build/DerivedSources/x86_64 -I/Volumes/kandie/Workspace/Projects/Vertigo/build/Vertigo.build/Debug/Vertigo.build/DerivedSources -c /Volumes/kandie/Workspace/Projects/Vertigo/src/main.cpp -o /Volumes/kandie/Workspace/Projects/Vertigo/build/Vertigo.build/Debug/Vertigo.build/Objects-normal/x86_64/main.o0#
+
+CLd /Volumes/kandie/Workspace/Projects/Vertigo/build/Debug/Vertigo normal x86_64
+s321121152.339319
+e321121152.514997
+r1
+xLd
+x/Volumes/kandie/Workspace/Projects/Vertigo/build/Debug/Vertigo
+xnormal
+xx86_64
+lSLF07#2@67"Link /Volumes/kandie/Workspace/Projects/Vertigo/build/Debug/Vertigo321121152#321121152#0(0"0(0#0#0"8757679200#552"    cd /Volumes/kandie/Workspace/Projects/Vertigo    setenv MACOSX_DEPLOYMENT_TARGET 10.6    /Developer/usr/bin/g++-4.2 -arch x86_64 -isysroot /Developer/SDKs/MacOSX10.6.sdk -L/Volumes/kandie/Workspace/Projects/Vertigo/build/Debug -F/Volumes/kandie/Workspace/Projects/Vertigo/build/Debug -filelist /Volumes/kandie/Workspace/Projects/Vertigo/build/Vertigo.build/Debug/Vertigo.build/Objects-normal/x86_64/Vertigo.LinkFileList -mmacosx-version-min=10.6 -framework OpenGL -framework GLUT -o /Volumes/kandie/Workspace/Projects/Vertigo/build/Debug/Vertigo0#
+
