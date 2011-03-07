@@ -15,264 +15,221 @@
 /* required include files */
 #include <stdlib.h>
 
-#include <GL/gl.h>
-#include <GL/glut.h>
+#include <OpenGL/gl.h>
+#include <GLUT/glut.h>
 #include <GL/gle.h>
 //#include "main.h"
+//
+// This code was created by Jeff Molofee '99 (ported to Linux/GLUT by Richard Campbell '99)
+//
+// If you've found this code useful, please let me know.
+//
+// Visit me at www.demonews.com/hosted/nehe 
+// (email Richard Campbell at ulmont@bellsouth.net)
+//
+#include <unistd.h>     // Header file for sleeping.
+#include "PhyxEngine.h"
 
+/* ascii code for the escape key */
+#define ESCAPE 27
+#define KEY_W 119
+#define KEY_S 115
+#define KEY_A 97
+#define KEY_D 100
 
-extern float lastx;
-extern float lasty;
+typedef enum {
+	FORWARD = 0,
+	BACKWARD,
+	LEFT,
+	RIGHT
+} DIRECTION;
 
-/* ------------------------------------------------------- */
+/* The number of our GLUT window */
+int window; 
+Pixy::PhyxEngine* mPhyxEngine;
 
-/* the arrays in which we will store the contour */
-#define NCONTOUR 100
-double contour_points [NCONTOUR][2];
-int cidx = 0;
-
-/* some utilities for filling that array */
-#define C_PNT(x,y) { 			\
-   contour_points[cidx][0] = x;		\
-   contour_points[cidx][1] = y; 	\
-   cidx ++;				\
-}
-
-/* the arrays in which we will store out polyline */
-#define NPTS 26
-double radii [NPTS];
-double points [NPTS][3];
-int idx = 0;
-
-/* some utilities for filling that array */
-#define PNT(x,y,z) { 			\
-   points[idx][0] = x; 			\
-   points[idx][1] = y; 			\
-   points[idx][2] = z;			\
-   idx ++;				\
-}
-
-#define RAD(r) {			\
-   radii[idx] = r;			\
-}
-void InitStuff (void) 
+/* A general OpenGL initialization function.  Sets all of the initial parameters. */
+void InitGL(int Width, int Height)	        // We call this right after our OpenGL window is created.
 {
-   /* initialize the join style here */
-   gleSetJoinStyle (TUBE_NORM_PATH_EDGE | TUBE_JN_ANGLE );
-
-   RAD (4.1);
-   PNT (-4.9, 12.0, 0.0);
-
-   RAD (0.3);
-   PNT (-4.8, 5.8, 0.0);
-
-   RAD (0.3);
-   PNT (-3.8, 5.8, 0.0);
-
-   RAD (0.6);
-   PNT (-3.5, 6.0, 0.0);
-
-   RAD (0.8);
-   PNT (-3.0, 7.0, 0.0);
-
-   RAD (0.9);
-   PNT (-2.4, 7.6, 0.0);
-
-   RAD (1.0);
-   PNT (-1.8, 7.6, 0.0);
-
-   RAD (1.1);
-   PNT (-1.2, 7.1, 0.0);
-
-   RAD (1.2);
-   PNT (-0.8, 5.1, 0.0);
-
-   RAD (1.7);
-   PNT (-0.3, -2.0, 0.0);
-
-   RAD (1.8);
-   PNT (-0.2, -7.0, 0.0);
-
-   RAD (2.0);
-   PNT (0.3, -7.8, 0.0);
-
-   RAD (2.1);
-   PNT (0.8, -8.2, 0.0);
-
-   RAD (2.25);
-   PNT (1.8, -8.6, 0.0);
-
-   RAD (2.4);
-   PNT (3.6, -8.6, 0.0);
-
-   RAD (2.5);
-   PNT (4.5, -8.2, 0.0);
-
-   RAD (2.6);
-   PNT (4.8, -7.5, 0.0);
-
-   RAD (2.7);
-   PNT (5.0, -6.0, 0.0);
-
-   RAD (3.2);
-   PNT (6.4, -2.0, 0.0);
-
-   RAD (4.1);
-   PNT (6.9, -1.0, 0.0);
-
-   RAD (4.1);
-   PNT (7.8, 0.5, 0.0);
-
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);		// This Will Clear The Background Color To Black
+	glClearDepth(1.0);				// Enables Clearing Of The Depth Buffer
+	glDepthFunc(GL_LESS);				// The Type Of Depth Test To Do
+	glEnable(GL_DEPTH_TEST);			// Enables Depth Testing
+	glShadeModel(GL_SMOOTH);			// Enables Smooth Color Shading
+	
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();				// Reset The Projection Matrix
+	
+	gluPerspective(45.0f,(GLfloat)Width/(GLfloat)Height,0.1f,100.0f);	// Calculate The Aspect Ratio Of The Window
+	glFrustum (-9.0, 9.0, -9.0, 9.0, 50.0, 150.0);
+	
+	glMatrixMode(GL_MODELVIEW);
+	
+	/* set up a light */
+	GLfloat lightOnePosition[] = {40.0, 40, 100.0, 0.0};
+	GLfloat lightOneColor[] = {0.99, 0.99, 0.99, 1.0}; 
+	
+	GLfloat lightTwoPosition[] = {-40.0, 40, 100.0, 0.0};
+	GLfloat lightTwoColor[] = {0.99, 0.99, 0.99, 1.0}; 
+	
+	/* initialize lighting */
+	glLightfv (GL_LIGHT0, GL_POSITION, lightOnePosition);
+	glLightfv (GL_LIGHT0, GL_DIFFUSE, lightOneColor);
+	glEnable (GL_LIGHT0);
+	glLightfv (GL_LIGHT1, GL_POSITION, lightTwoPosition);
+	glLightfv (GL_LIGHT1, GL_DIFFUSE, lightTwoColor);
+	glEnable (GL_LIGHT1);
+	glEnable (GL_LIGHTING);
+	glColorMaterial (GL_FRONT_AND_BACK, GL_DIFFUSE);
+	glEnable (GL_COLOR_MATERIAL);
 }
 
-/* draw the polycone shape */
-void DrawStuff (void) 
+/* The function called when our window is resized (which shouldn't happen, because we're fullscreen) */
+void ReSizeGLScene(int Width, int Height)
 {
-   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-   /* set up some matrices so that the object spins with the mouse */
-   glPushMatrix ();
-   glTranslatef (0.0, 0.0, -80.0);
-   glRotatef (lastx, 0.0, 1.0, 0.0);
-   glRotatef (lasty, 1.0, 0.0, 0.0);
-   glColor3f (0.5, 0.5, 0.2);
-
-   /* Phew. FINALLY, Draw the polycone  -- */
-   glePolyCone (idx, points, 0x0, radii);
-
-   glPopMatrix ();
-
-   glutSwapBuffers ();
+	if (Height==0)				// Prevent A Divide By Zero If The Window Is Too Small
+		Height=1;
+	
+	glViewport(0, 0, Width, Height);		// Reset The Current Viewport And Perspective Transformation
+	
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	
+	gluPerspective(45.0f,(GLfloat)Width/(GLfloat)Height,0.1f,100.0f);
+	glMatrixMode(GL_MODELVIEW);
 }
 
-/* --------------------------- end of file ------------------- */
-/* most recent mouse position */
+GLfloat lastx = -35.0;
+GLfloat lasty = 120.0;	
 
-#ifndef NULL
-#define NULL ((void *) 0x0)
-#endif /* NULL */
+float velocity = 0.0;
 
-/* Some <math.h> files do not define M_PI... */
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
+/* The main drawing function. */
+void DrawGLScene()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);		// Clear The Screen And The Depth Buffer
+	glLoadIdentity();				// Reset The View
+	
+	glColor3f (0.1, 0.1, 0.1);
+	
+	glTranslatef(0, 0, -80.0);
 
+	
+	/* set up some matrices so that the object spins with the mouse */
+	glPushMatrix ();
+	glTranslatef (0.0, 0.0, 0.0);
+	//glRotatef (lastx, 0.0, 1.0, 0.0);
+	//glRotatef (lasty, 1.0, 0.0, 0.0);
+	
+	glutSolidTorus(5, 15.0, 18, 36);
 
-float lastx=0;
-float lasty=0;
+	mPhyxEngine->update(0);	
+	
+	glPopMatrix ();
+	
+	// since this is double buffered, swap the buffers to display what just got drawn.
+	glutSwapBuffers();
+
+}
+
+void moveSphere(DIRECTION);
+
+/* The function called whenever a key is pressed. */
+void keyPressed(unsigned char key, int x, int y) 
+{
+    /* avoid thrashing this procedure */
+    usleep(100);
+	
+    /* If escape is pressed, kill everything. */
+    switch (key) {
+		case ESCAPE:
+			/* shut down our window */
+			glutDestroyWindow(window); 
+			
+			mPhyxEngine->cleanup();
+			mPhyxEngine = NULL;
+			/* exit the program...normal termination. */
+			exit(0);			
+			break;
+		case KEY_W:
+			moveSphere(FORWARD);
+			break;
+		case KEY_S:
+			moveSphere(BACKWARD);
+			break;
+		default:
+			break;
+	}
+}
 
 /* get notified of mouse motions */
-static void 
-MouseMotion (int x, int y)
+void mouseMotion (int x, int y)
 {
-   lastx = x;
-   lasty = y;
-   glutPostRedisplay ();
+	lastx = x;
+	lasty = y;
+	glutPostRedisplay ();
 }
 
-static void 
-JoinStyle (int msg) 
-{
-   int style;
-   /* get the current joint style */
-   style = gleGetJoinStyle ();
-
-   /* there are four different join styles, 
-    * and two different normal vector styles */
-   switch (msg) {
-      case 0:
-         style &= ~TUBE_JN_MASK;
-         style |= TUBE_JN_RAW;
-         break;
-      case 1:
-         style &= ~TUBE_JN_MASK;
-         style |= TUBE_JN_ANGLE;
-         break;
-      case 2:
-         style &= ~TUBE_JN_MASK;
-         style |= TUBE_JN_CUT;
-         break;
-      case 3:
-         style &= ~TUBE_JN_MASK;
-         style |= TUBE_JN_ROUND;
-         break;
-
-      case 20:
-         style &= ~TUBE_NORM_MASK;
-         style |= TUBE_NORM_FACET;
-         break;
-      case 21:
-         style &= ~TUBE_NORM_MASK;
-         style |= TUBE_NORM_EDGE;
-         break;
-
-      case 99:
-         exit (0);
-
-      default:
-         break;
-   }
-   gleSetJoinStyle (style);
-   glutPostRedisplay ();
+void moveSphere(DIRECTION inDir) {
+	switch(inDir) {
+		case FORWARD:
+			velocity += 1;
+			break;
+		case BACKWARD:
+			velocity -= 1;
+			break;
+	}
 }
 
-/* set up a light */
-GLfloat lightOnePosition[] = {40.0, 40, 100.0, 0.0};
-GLfloat lightOneColor[] = {0.99, 0.99, 0.99, 1.0}; 
-
-GLfloat lightTwoPosition[] = {-40.0, 40, 100.0, 0.0};
-GLfloat lightTwoColor[] = {0.99, 0.99, 0.99, 1.0}; 
-
-
-int
-main (int argc, char * argv[]) 
+int main(int argc, char **argv) 
 {
-   /* initialize glut */
-   glutInit (&argc, argv);
-   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-   glutCreateWindow ("Vertigo");
-   glutDisplayFunc (DrawStuff);
-   glutMotionFunc (MouseMotion);
-
-   /* create popup menu */
-   glutCreateMenu (JoinStyle);
-   glutAddMenuEntry ("Raw Join Style", 0);
-   glutAddMenuEntry ("Angle Join Style", 1);
-   glutAddMenuEntry ("Cut Join Style", 2);
-   glutAddMenuEntry ("Round Join Style", 3);
-   glutAddMenuEntry ("------------------", 9999);
-   glutAddMenuEntry ("Facet Normal Vectors", 20);
-   glutAddMenuEntry ("Edge Normal Vectors", 21);
-   glutAddMenuEntry ("------------------", 9999);
-   glutAddMenuEntry ("Exit", 99);
-   glutAttachMenu (GLUT_MIDDLE_BUTTON);
-
-   /* initialize GL */
-   glClearDepth (1.0);
-   glEnable (GL_DEPTH_TEST);
-   glClearColor (0.0, 0.0, 0.0, 0.0);
-   glShadeModel (GL_SMOOTH);
-
-   glMatrixMode (GL_PROJECTION);
-   /* roughly, measured in centimeters */
-   glFrustum (-9.0, 9.0, -9.0, 9.0, 50.0, 150.0);
-   glMatrixMode(GL_MODELVIEW);
-
-   /* initialize lighting */
-   glLightfv (GL_LIGHT0, GL_POSITION, lightOnePosition);
-   glLightfv (GL_LIGHT0, GL_DIFFUSE, lightOneColor);
-   glEnable (GL_LIGHT0);
-   glLightfv (GL_LIGHT1, GL_POSITION, lightTwoPosition);
-   glLightfv (GL_LIGHT1, GL_DIFFUSE, lightTwoColor);
-   glEnable (GL_LIGHT1);
-   glEnable (GL_LIGHTING);
-   glEnable (GL_NORMALIZE);
-   glColorMaterial (GL_FRONT_AND_BACK, GL_DIFFUSE);
-   glEnable (GL_COLOR_MATERIAL);
-
-   InitStuff ();
-
-   glutMainLoop ();
-   return 0;             /* ANSI C requires main to return int. */
+	mPhyxEngine = Pixy::PhyxEngine::getSingletonPtr();
+	
+	mPhyxEngine->setup();
+	
+	/* Initialize GLUT state - glut will take any command line arguments that pertain to it or 
+     X Windows - look at its documentation at http://reality.sgi.com/mjk/spec3/spec3.html */  
+	glutInit(&argc, argv);  
+	
+	/* Select type of Display mode:   
+     Double buffer 
+     RGBA color
+     Alpha components supported 
+     Depth buffer */  
+	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH);  
+	
+	/* get a 640 x 480 window */
+	glutInitWindowSize(640, 480);  
+	
+	/* the window starts at the upper left corner of the screen */
+	glutInitWindowPosition(0, 0);  
+	
+	/* Open a window */  
+	window = glutCreateWindow("Vertigo");  
+	
+	/* Register the function to do all our OpenGL drawing. */
+	glutDisplayFunc(&DrawGLScene);  
+	
+	/* Go fullscreen.  This is as soon as possible. */
+	//glutFullScreen();
+	
+	/* Even if there are no events, redraw our gl scene. */
+	glutIdleFunc(&DrawGLScene);
+	
+	/* Register the function called when our window is resized. */
+	glutReshapeFunc(&ReSizeGLScene);
+	
+	/* Register the function called when the keyboard is pressed. */
+	glutKeyboardFunc(&keyPressed);
+	glutMotionFunc (&mouseMotion);
+	
+	/* Initialize our window. */
+	InitGL(640, 480);
+	
+	
+	/* Start Event Processing Engine */  
+	glutMainLoop();  
+	
+	return 1;
 }
-/* ------------------ end of file -------------------- */
+

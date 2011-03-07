@@ -9,6 +9,17 @@
 /* Begin PBXBuildFile section */
 		37B282481323EB5B00BACB27 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B282471323EB5B00BACB27 /* OpenGL.framework */; };
 		37B2824C1323EB6800BACB27 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B2824B1323EB6800BACB27 /* GLUT.framework */; };
+		37B282821324135D00BACB27 /* libgle.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B282811324135D00BACB27 /* libgle.dylib */; };
+		37B282C41325176100BACB27 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37B282BA1325176100BACB27 /* Sphere.cpp */; };
+		37B282CC132519C800BACB27 /* PixyLogLayout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37B282CA132519C800BACB27 /* PixyLogLayout.cpp */; };
+		37B282EA13251E0B00BACB27 /* liblog4cpp.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B282E913251E0B00BACB27 /* liblog4cpp.dylib */; };
+		37B2830E1325219900BACB27 /* libOIS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B2830D1325219900BACB27 /* libOIS.a */; };
+		37B2834C132522D200BACB27 /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37B2834B132522D200BACB27 /* Entity.cpp */; };
+		37B2856713254B9100BACB27 /* PhyxEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37B2856613254B9100BACB27 /* PhyxEngine.cpp */; };
+		37B285AE1325521C00BACB27 /* BulletCollision.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B285AD1325521C00BACB27 /* BulletCollision.framework */; };
+		37B285B01325521C00BACB27 /* BulletDynamics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B285AF1325521C00BACB27 /* BulletDynamics.framework */; };
+		37B285B21325521C00BACB27 /* BulletSoftBody.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B285B11325521C00BACB27 /* BulletSoftBody.framework */; };
+		37B285B41325521C00BACB27 /* LinearMath.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B285B31325521C00BACB27 /* LinearMath.framework */; };
 		8DD76F650486A84900D96B5E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* main.cpp */; settings = {ATTRIBUTES = (); }; };
 		8DD76F6A0486A84900D96B5E /* Vertigo.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C6859E8B029090EE04C91782 /* Vertigo.1 */; };
 /* End PBXBuildFile section */
@@ -30,6 +41,39 @@
 		08FB7796FE84155DC02AAC07 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = "<group>"; };
 		37B282471323EB5B00BACB27 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		37B2824B1323EB6800BACB27 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		37B282811324135D00BACB27 /* libgle.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libgle.dylib; path = /usr/local/lib/libgle.dylib; sourceTree = "<absolute>"; };
+		37B282AF1325175300BACB27 /* Sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sphere.h; path = include/Sphere.h; sourceTree = "<group>"; };
+		37B282BA1325176100BACB27 /* Sphere.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Sphere.cpp; path = src/Sphere.cpp; sourceTree = "<group>"; };
+		37B282CA132519C800BACB27 /* PixyLogLayout.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PixyLogLayout.cpp; sourceTree = "<group>"; };
+		37B282CB132519C800BACB27 /* PixyLogLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PixyLogLayout.h; sourceTree = "<group>"; };
+		37B282E913251E0B00BACB27 /* liblog4cpp.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liblog4cpp.dylib; path = /opt/local/lib/liblog4cpp.dylib; sourceTree = "<absolute>"; };
+		37B2830D1325219900BACB27 /* libOIS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOIS.a; path = modules/libOIS.a; sourceTree = "<group>"; };
+		37B28310132521A500BACB27 /* OIS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIS.h; sourceTree = "<group>"; };
+		37B28311132521A500BACB27 /* OISConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OISConfig.h; sourceTree = "<group>"; };
+		37B28312132521A500BACB27 /* OISEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OISEffect.h; sourceTree = "<group>"; };
+		37B28313132521A500BACB27 /* OISEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OISEvents.h; sourceTree = "<group>"; };
+		37B28314132521A500BACB27 /* OISException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OISException.h; sourceTree = "<group>"; };
+		37B28315132521A500BACB27 /* OISFactoryCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OISFactoryCreator.h; sourceTree = "<group>"; };
+		37B28316132521A500BACB27 /* OISForceFeedback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OISForceFeedback.h; sourceTree = "<group>"; };
+		37B28317132521A500BACB27 /* OISInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OISInputManager.h; sourceTree = "<group>"; };
+		37B28318132521A500BACB27 /* OISInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OISInterface.h; sourceTree = "<group>"; };
+		37B28319132521A500BACB27 /* OISJoyStick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OISJoyStick.h; sourceTree = "<group>"; };
+		37B2831A132521A500BACB27 /* OISKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OISKeyboard.h; sourceTree = "<group>"; };
+		37B2831B132521A500BACB27 /* OISMouse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OISMouse.h; sourceTree = "<group>"; };
+		37B2831C132521A500BACB27 /* OISObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OISObject.h; sourceTree = "<group>"; };
+		37B2831D132521A500BACB27 /* OISPrereqs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OISPrereqs.h; sourceTree = "<group>"; };
+		37B28342132522B300BACB27 /* Pixy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Pixy.h; path = include/Pixy.h; sourceTree = "<group>"; };
+		37B28343132522B300BACB27 /* PixyLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PixyLog.h; path = include/PixyLog.h; sourceTree = "<group>"; };
+		37B28344132522B300BACB27 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utility.h; path = include/Utility.h; sourceTree = "<group>"; };
+		37B2834B132522D200BACB27 /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Entity.cpp; path = src/Entity.cpp; sourceTree = "<group>"; };
+		37B2856213254B5E00BACB27 /* Engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Engine.h; path = include/Engine.h; sourceTree = "<group>"; };
+		37B2856313254B5F00BACB27 /* PhyxEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhyxEngine.h; path = include/PhyxEngine.h; sourceTree = "<group>"; };
+		37B2856613254B9100BACB27 /* PhyxEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PhyxEngine.cpp; path = src/PhyxEngine.cpp; sourceTree = "<group>"; };
+		37B2859413254FB000BACB27 /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Entity.h; path = include/Entity.h; sourceTree = "<group>"; };
+		37B285AD1325521C00BACB27 /* BulletCollision.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BulletCollision.framework; path = Library/Frameworks/BulletCollision.framework; sourceTree = SDKROOT; };
+		37B285AF1325521C00BACB27 /* BulletDynamics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BulletDynamics.framework; path = Library/Frameworks/BulletDynamics.framework; sourceTree = SDKROOT; };
+		37B285B11325521C00BACB27 /* BulletSoftBody.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BulletSoftBody.framework; path = Library/Frameworks/BulletSoftBody.framework; sourceTree = SDKROOT; };
+		37B285B31325521C00BACB27 /* LinearMath.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LinearMath.framework; path = Library/Frameworks/LinearMath.framework; sourceTree = SDKROOT; };
 		8DD76F6C0486A84900D96B5E /* Vertigo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Vertigo; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6859E8B029090EE04C91782 /* Vertigo.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Vertigo.1; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -41,6 +85,13 @@
 			files = (
 				37B282481323EB5B00BACB27 /* OpenGL.framework in Frameworks */,
 				37B2824C1323EB6800BACB27 /* GLUT.framework in Frameworks */,
+				37B282821324135D00BACB27 /* libgle.dylib in Frameworks */,
+				37B282EA13251E0B00BACB27 /* liblog4cpp.dylib in Frameworks */,
+				37B2830E1325219900BACB27 /* libOIS.a in Frameworks */,
+				37B285AE1325521C00BACB27 /* BulletCollision.framework in Frameworks */,
+				37B285B01325521C00BACB27 /* BulletDynamics.framework in Frameworks */,
+				37B285B21325521C00BACB27 /* BulletSoftBody.framework in Frameworks */,
+				37B285B41325521C00BACB27 /* LinearMath.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -50,6 +101,8 @@
 		08FB7794FE84155DC02AAC07 /* Vertigo */ = {
 			isa = PBXGroup;
 			children = (
+				37B282C8132519B200BACB27 /* External Modules */,
+				37B2829D1325167400BACB27 /* Headers */,
 				37B282461323EB4500BACB27 /* External Frameworks */,
 				08FB7795FE84155DC02AAC07 /* Source */,
 				C6859E8C029090F304C91782 /* Documentation */,
@@ -61,7 +114,10 @@
 		08FB7795FE84155DC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				37B2834B132522D200BACB27 /* Entity.cpp */,
+				37B282BA1325176100BACB27 /* Sphere.cpp */,
 				08FB7796FE84155DC02AAC07 /* main.cpp */,
+				37B2856613254B9100BACB27 /* PhyxEngine.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -77,10 +133,72 @@
 		37B282461323EB4500BACB27 /* External Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				37B2830D1325219900BACB27 /* libOIS.a */,
+				37B282E913251E0B00BACB27 /* liblog4cpp.dylib */,
+				37B282811324135D00BACB27 /* libgle.dylib */,
 				37B282471323EB5B00BACB27 /* OpenGL.framework */,
 				37B2824B1323EB6800BACB27 /* GLUT.framework */,
+				37B285AD1325521C00BACB27 /* BulletCollision.framework */,
+				37B285AF1325521C00BACB27 /* BulletDynamics.framework */,
+				37B285B11325521C00BACB27 /* BulletSoftBody.framework */,
+				37B285B31325521C00BACB27 /* LinearMath.framework */,
 			);
 			name = "External Frameworks";
+			sourceTree = "<group>";
+		};
+		37B2829D1325167400BACB27 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				37B2859413254FB000BACB27 /* Entity.h */,
+				37B2856213254B5E00BACB27 /* Engine.h */,
+				37B2856313254B5F00BACB27 /* PhyxEngine.h */,
+				37B28342132522B300BACB27 /* Pixy.h */,
+				37B28343132522B300BACB27 /* PixyLog.h */,
+				37B28344132522B300BACB27 /* Utility.h */,
+				37B282AF1325175300BACB27 /* Sphere.h */,
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+		37B282C8132519B200BACB27 /* External Modules */ = {
+			isa = PBXGroup;
+			children = (
+				37B2830F132521A500BACB27 /* OIS */,
+				37B282C9132519C800BACB27 /* log4cpp */,
+			);
+			name = "External Modules";
+			sourceTree = "<group>";
+		};
+		37B282C9132519C800BACB27 /* log4cpp */ = {
+			isa = PBXGroup;
+			children = (
+				37B282CA132519C800BACB27 /* PixyLogLayout.cpp */,
+				37B282CB132519C800BACB27 /* PixyLogLayout.h */,
+			);
+			name = log4cpp;
+			path = modules/log4cpp;
+			sourceTree = "<group>";
+		};
+		37B2830F132521A500BACB27 /* OIS */ = {
+			isa = PBXGroup;
+			children = (
+				37B28310132521A500BACB27 /* OIS.h */,
+				37B28311132521A500BACB27 /* OISConfig.h */,
+				37B28312132521A500BACB27 /* OISEffect.h */,
+				37B28313132521A500BACB27 /* OISEvents.h */,
+				37B28314132521A500BACB27 /* OISException.h */,
+				37B28315132521A500BACB27 /* OISFactoryCreator.h */,
+				37B28316132521A500BACB27 /* OISForceFeedback.h */,
+				37B28317132521A500BACB27 /* OISInputManager.h */,
+				37B28318132521A500BACB27 /* OISInterface.h */,
+				37B28319132521A500BACB27 /* OISJoyStick.h */,
+				37B2831A132521A500BACB27 /* OISKeyboard.h */,
+				37B2831B132521A500BACB27 /* OISMouse.h */,
+				37B2831C132521A500BACB27 /* OISObject.h */,
+				37B2831D132521A500BACB27 /* OISPrereqs.h */,
+			);
+			name = OIS;
+			path = modules/OIS;
 			sourceTree = "<group>";
 		};
 		C6859E8C029090F304C91782 /* Documentation */ = {
@@ -135,6 +253,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DD76F650486A84900D96B5E /* main.cpp in Sources */,
+				37B282C41325176100BACB27 /* Sphere.cpp in Sources */,
+				37B282CC132519C800BACB27 /* PixyLogLayout.cpp in Sources */,
+				37B2834C132522D200BACB27 /* Entity.cpp in Sources */,
+				37B2856713254B9100BACB27 /* PhyxEngine.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -151,6 +273,11 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/local/lib,
+					"\"$(SRCROOT)/modules\"",
+				);
 				PRODUCT_NAME = Vertigo;
 			};
 			name = Debug;
@@ -162,6 +289,11 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_MODEL_TUNING = G5;
 				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/local/lib,
+					"\"$(SRCROOT)/modules\"",
+				);
 				PRODUCT_NAME = Vertigo;
 			};
 			name = Release;
@@ -169,11 +301,16 @@
 		1DEB923608733DC60010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include,
+					/opt/local/include,
+					/usr/local/include/bullet,
+				);
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
 				SDKROOT = macosx10.6;
