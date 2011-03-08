@@ -14,11 +14,22 @@
 #define H_GameManager_H
 
 #include "Pixy.h"
+
+// OGRE
+#include <Ogre.h>
+#include <OgreConfigFile.h>
+#include <OgreWindowEventUtilities.h>
+#include <OgreException.h>
+
+#if OGRE_PLATFORM == OGRE_PLATFORM_APPLE || OGRE_PLATFORM == OGRE_PLATFORM_IPHONE
+#include "OSX/macUtils.h"
+#endif
+
 #include "InputManager.h"
+
 #include "log4cpp/Category.hh"
 #include "log4cpp/FileAppender.hh"
 #include "log4cpp/SimpleLayout.hh"
-
 namespace Pixy
 {
 	class GameState;
@@ -27,7 +38,7 @@ namespace Pixy
 	 *  Runs and handles the flow between Pixy::GameState s, 
 	 *	and acts as an input listener and dispatcher. 
 	 */
-	class GameManager : public OIS::KeyListener, OIS::MouseListener {
+	class GameManager : public OIS::KeyListener, OIS::MouseListener ,  public Ogre::WindowEventListener {
 	public:
 		~GameManager( void );
 		
@@ -148,10 +159,14 @@ namespace Pixy
 		 */
 		void initLogger();
 		
+		Ogre::Root			*mRoot;
+		Ogre::RenderWindow	*mRenderWindow;
 		InputManager		*mInputMgr;
 		
 		GAME_STATE mCurrentState;
 		//GameState			*mIntro;
+		//GameState			*mLobby;
+		//GameState			*mCombat;
 		
 		//! do we want to shutdown?
 		bool fShutdown;

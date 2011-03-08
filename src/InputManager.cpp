@@ -33,7 +33,7 @@ namespace Pixy
 		}
 	}
 
-	void InputManager::initialise(  ) {
+	void InputManager::initialise( Ogre::RenderWindow *renderWindow ) {
 		if( !mInputSystem ) {
 		    // Setup basic variables
 		    OIS::ParamList paramList;

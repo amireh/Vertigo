@@ -7,61 +7,111 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3739F7D91326D0AE00FA5092 /* CEGUIBase.framework in Copy Frameworks (9) */ = {isa = PBXBuildFile; fileRef = 37C97B3C1325633D00F10762 /* CEGUIBase.framework */; };
+		3739F7DA1326D0B200FA5092 /* CEGUIOgreRenderer.framework in Copy Frameworks (9) */ = {isa = PBXBuildFile; fileRef = 37C97B3E1325633D00F10762 /* CEGUIOgreRenderer.framework */; };
+		3739F8CE1326D0C200FA5092 /* BulletCollision.framework in Copy Frameworks (9) */ = {isa = PBXBuildFile; fileRef = 37B285AD1325521C00BACB27 /* BulletCollision.framework */; };
+		3739F8CF1326D0C200FA5092 /* BulletDynamics.framework in Copy Frameworks (9) */ = {isa = PBXBuildFile; fileRef = 37B285AF1325521C00BACB27 /* BulletDynamics.framework */; };
+		3739F8D01326D0C200FA5092 /* BulletSoftBody.framework in Copy Frameworks (9) */ = {isa = PBXBuildFile; fileRef = 37B285B11325521C00BACB27 /* BulletSoftBody.framework */; };
+		3739F8D11326D0C200FA5092 /* LinearMath.framework in Copy Frameworks (9) */ = {isa = PBXBuildFile; fileRef = 37B285B31325521C00BACB27 /* LinearMath.framework */; };
+		3739F8E11326D15F00FA5092 /* libOgreTerrain.dylib in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 37C97A4513255ECE00F10762 /* libOgreTerrain.dylib */; };
+		3739F8E21326D15F00FA5092 /* Plugin_OctreeSceneManager.dylib in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 37C97A4713255ECE00F10762 /* Plugin_OctreeSceneManager.dylib */; };
+		3739F8E31326D15F00FA5092 /* Plugin_ParticleFX.dylib in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 37C97A4913255ECE00F10762 /* Plugin_ParticleFX.dylib */; };
+		3739F8E41326D15F00FA5092 /* RenderSystem_GL.dylib in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 37C97A4B13255ECE00F10762 /* RenderSystem_GL.dylib */; };
+		3739F9121326D30C00FA5092 /* Ogre.framework in Copy Frameworks (9) */ = {isa = PBXBuildFile; fileRef = 3739F9111326D30C00FA5092 /* Ogre.framework */; };
+		3739F9151326D32000FA5092 /* Ogre.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3739F9111326D30C00FA5092 /* Ogre.framework */; };
+		3739F91F1326D38900FA5092 /* libOIS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3739F91E1326D38900FA5092 /* libOIS.a */; };
+		3739F9201326D3A300FA5092 /* libOIS.a in Copy Frameworks (9) */ = {isa = PBXBuildFile; fileRef = 3739F91E1326D38900FA5092 /* libOIS.a */; };
+		3739F9471326D5D800FA5092 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3739F9461326D5D800FA5092 /* IOKit.framework */; };
+		3739F9521326D60B00FA5092 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3739F94D1326D60000FA5092 /* Carbon.framework */; };
+		3739FA631326D96C00FA5092 /* liblog4cpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3739FA621326D96C00FA5092 /* liblog4cpp.a */; };
 		37B282481323EB5B00BACB27 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B282471323EB5B00BACB27 /* OpenGL.framework */; };
 		37B2824C1323EB6800BACB27 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B2824B1323EB6800BACB27 /* GLUT.framework */; };
-		37B282821324135D00BACB27 /* libgle.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B282811324135D00BACB27 /* libgle.dylib */; };
 		37B282C41325176100BACB27 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37B282BA1325176100BACB27 /* Sphere.cpp */; };
 		37B282CC132519C800BACB27 /* PixyLogLayout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37B282CA132519C800BACB27 /* PixyLogLayout.cpp */; };
-		37B282EA13251E0B00BACB27 /* liblog4cpp.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B282E913251E0B00BACB27 /* liblog4cpp.dylib */; };
-		37B2830E1325219900BACB27 /* libOIS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B2830D1325219900BACB27 /* libOIS.a */; };
 		37B2834C132522D200BACB27 /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37B2834B132522D200BACB27 /* Entity.cpp */; };
 		37B2856713254B9100BACB27 /* PhyxEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37B2856613254B9100BACB27 /* PhyxEngine.cpp */; };
 		37B285AE1325521C00BACB27 /* BulletCollision.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B285AD1325521C00BACB27 /* BulletCollision.framework */; };
 		37B285B01325521C00BACB27 /* BulletDynamics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B285AF1325521C00BACB27 /* BulletDynamics.framework */; };
 		37B285B21325521C00BACB27 /* BulletSoftBody.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B285B11325521C00BACB27 /* BulletSoftBody.framework */; };
 		37B285B41325521C00BACB27 /* LinearMath.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B285B31325521C00BACB27 /* LinearMath.framework */; };
+		37BF05B51326DB93008DBF9F /* UIEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37BF05B41326DB93008DBF9F /* UIEngine.cpp */; };
+		37BF05CC1326DC72008DBF9F /* freetype2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37BF05CB1326DC72008DBF9F /* freetype2.framework */; };
+		37BF07311326DCD9008DBF9F /* freetype2.framework in Copy Frameworks (9) */ = {isa = PBXBuildFile; fileRef = 37BF05CB1326DC72008DBF9F /* freetype2.framework */; };
+		37BF07381326DD10008DBF9F /* FreeImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37BF07371326DD10008DBF9F /* FreeImage.framework */; };
+		37BF073A1326DD10008DBF9F /* PCRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37BF07391326DD10008DBF9F /* PCRE.framework */; };
+		37BF07431326DD17008DBF9F /* FreeImage.framework in Copy Frameworks (9) */ = {isa = PBXBuildFile; fileRef = 37BF07371326DD10008DBF9F /* FreeImage.framework */; };
+		37BF07441326DD17008DBF9F /* PCRE.framework in Copy Frameworks (9) */ = {isa = PBXBuildFile; fileRef = 37BF07391326DD10008DBF9F /* PCRE.framework */; };
+		37BF074B1326DD4D008DBF9F /* libOgrePaging.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37BF074A1326DD4D008DBF9F /* libOgrePaging.dylib */; };
+		37BF074C1326DD53008DBF9F /* libOgrePaging.dylib in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 37BF074A1326DD4D008DBF9F /* libOgrePaging.dylib */; };
+		37C978A613255E4300F10762 /* GfxEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C978A513255E4300F10762 /* GfxEngine.cpp */; };
+		37C97A4613255ECE00F10762 /* libOgreTerrain.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C97A4513255ECE00F10762 /* libOgreTerrain.dylib */; };
+		37C97A4813255ECE00F10762 /* Plugin_OctreeSceneManager.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C97A4713255ECE00F10762 /* Plugin_OctreeSceneManager.dylib */; };
+		37C97A4A13255ECE00F10762 /* Plugin_ParticleFX.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C97A4913255ECE00F10762 /* Plugin_ParticleFX.dylib */; };
+		37C97A4C13255ECE00F10762 /* RenderSystem_GL.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C97A4B13255ECE00F10762 /* RenderSystem_GL.dylib */; };
+		37C97A5E13255F6800F10762 /* GameManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C97A5A13255F6800F10762 /* GameManager.cpp */; };
+		37C97A5F13255F6800F10762 /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C97A5B13255F6800F10762 /* GameState.cpp */; };
+		37C97A6013255F6800F10762 /* InputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C97A5C13255F6800F10762 /* InputManager.cpp */; };
+		37C97A6113255F6800F10762 /* Intro.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C97A5D13255F6800F10762 /* Intro.cpp */; };
+		37C97B3D1325633D00F10762 /* CEGUIBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C97B3C1325633D00F10762 /* CEGUIBase.framework */; };
+		37C97B3F1325633D00F10762 /* CEGUIOgreRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C97B3E1325633D00F10762 /* CEGUIOgreRenderer.framework */; };
+		37C97B4B132563C100F10762 /* Event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C97B48132563C100F10762 /* Event.cpp */; };
+		37C97B4C132563C100F10762 /* EventListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C97B49132563C100F10762 /* EventListener.cpp */; };
+		37C97B4D132563C100F10762 /* EventManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C97B4A132563C100F10762 /* EventManager.cpp */; };
 		8DD76F650486A84900D96B5E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* main.cpp */; settings = {ATTRIBUTES = (); }; };
-		8DD76F6A0486A84900D96B5E /* Vertigo.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C6859E8B029090EE04C91782 /* Vertigo.1 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		8DD76F690486A84900D96B5E /* CopyFiles */ = {
+		3739F8DF1326D10600FA5092 /* Copy Frameworks (9) */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 8;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
 			files = (
-				8DD76F6A0486A84900D96B5E /* Vertigo.1 in CopyFiles */,
+				37BF07431326DD17008DBF9F /* FreeImage.framework in Copy Frameworks (9) */,
+				37BF07441326DD17008DBF9F /* PCRE.framework in Copy Frameworks (9) */,
+				37BF07311326DCD9008DBF9F /* freetype2.framework in Copy Frameworks (9) */,
+				3739F9201326D3A300FA5092 /* libOIS.a in Copy Frameworks (9) */,
+				3739F9121326D30C00FA5092 /* Ogre.framework in Copy Frameworks (9) */,
+				3739F8CE1326D0C200FA5092 /* BulletCollision.framework in Copy Frameworks (9) */,
+				3739F8CF1326D0C200FA5092 /* BulletDynamics.framework in Copy Frameworks (9) */,
+				3739F8D01326D0C200FA5092 /* BulletSoftBody.framework in Copy Frameworks (9) */,
+				3739F8D11326D0C200FA5092 /* LinearMath.framework in Copy Frameworks (9) */,
+				3739F7DA1326D0B200FA5092 /* CEGUIOgreRenderer.framework in Copy Frameworks (9) */,
+				3739F7D91326D0AE00FA5092 /* CEGUIBase.framework in Copy Frameworks (9) */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			name = "Copy Frameworks (9)";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3739F9011326D1AF00FA5092 /* Copy Plugins */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				37BF074C1326DD53008DBF9F /* libOgrePaging.dylib in Copy Plugins */,
+				3739F8E11326D15F00FA5092 /* libOgreTerrain.dylib in Copy Plugins */,
+				3739F8E21326D15F00FA5092 /* Plugin_OctreeSceneManager.dylib in Copy Plugins */,
+				3739F8E31326D15F00FA5092 /* Plugin_ParticleFX.dylib in Copy Plugins */,
+				3739F8E41326D15F00FA5092 /* RenderSystem_GL.dylib in Copy Plugins */,
+			);
+			name = "Copy Plugins";
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		08FB7796FE84155DC02AAC07 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = "<group>"; };
+		3739F9111326D30C00FA5092 /* Ogre.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Ogre.framework; path = "/Volumes/kandie/Workspace/Build/Ogre-1.7.2/lib/Debug/Ogre.framework"; sourceTree = "<absolute>"; };
+		3739F91E1326D38900FA5092 /* libOIS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOIS.a; path = /Volumes/kandie/Workspace/Libraries/gamedev/ois/lib/libOIS.a; sourceTree = "<absolute>"; };
+		3739F9461326D5D800FA5092 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		3739F94D1326D60000FA5092 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
+		3739FA621326D96C00FA5092 /* liblog4cpp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblog4cpp.a; path = /usr/local/lib/liblog4cpp.a; sourceTree = "<absolute>"; };
 		37B282471323EB5B00BACB27 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		37B2824B1323EB6800BACB27 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
-		37B282811324135D00BACB27 /* libgle.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libgle.dylib; path = /usr/local/lib/libgle.dylib; sourceTree = "<absolute>"; };
 		37B282AF1325175300BACB27 /* Sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sphere.h; path = include/Sphere.h; sourceTree = "<group>"; };
 		37B282BA1325176100BACB27 /* Sphere.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Sphere.cpp; path = src/Sphere.cpp; sourceTree = "<group>"; };
 		37B282CA132519C800BACB27 /* PixyLogLayout.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PixyLogLayout.cpp; sourceTree = "<group>"; };
 		37B282CB132519C800BACB27 /* PixyLogLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PixyLogLayout.h; sourceTree = "<group>"; };
-		37B282E913251E0B00BACB27 /* liblog4cpp.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liblog4cpp.dylib; path = /opt/local/lib/liblog4cpp.dylib; sourceTree = "<absolute>"; };
-		37B2830D1325219900BACB27 /* libOIS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOIS.a; path = modules/libOIS.a; sourceTree = "<group>"; };
-		37B28310132521A500BACB27 /* OIS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIS.h; sourceTree = "<group>"; };
-		37B28311132521A500BACB27 /* OISConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OISConfig.h; sourceTree = "<group>"; };
-		37B28312132521A500BACB27 /* OISEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OISEffect.h; sourceTree = "<group>"; };
-		37B28313132521A500BACB27 /* OISEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OISEvents.h; sourceTree = "<group>"; };
-		37B28314132521A500BACB27 /* OISException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OISException.h; sourceTree = "<group>"; };
-		37B28315132521A500BACB27 /* OISFactoryCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OISFactoryCreator.h; sourceTree = "<group>"; };
-		37B28316132521A500BACB27 /* OISForceFeedback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OISForceFeedback.h; sourceTree = "<group>"; };
-		37B28317132521A500BACB27 /* OISInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OISInputManager.h; sourceTree = "<group>"; };
-		37B28318132521A500BACB27 /* OISInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OISInterface.h; sourceTree = "<group>"; };
-		37B28319132521A500BACB27 /* OISJoyStick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OISJoyStick.h; sourceTree = "<group>"; };
-		37B2831A132521A500BACB27 /* OISKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OISKeyboard.h; sourceTree = "<group>"; };
-		37B2831B132521A500BACB27 /* OISMouse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OISMouse.h; sourceTree = "<group>"; };
-		37B2831C132521A500BACB27 /* OISObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OISObject.h; sourceTree = "<group>"; };
-		37B2831D132521A500BACB27 /* OISPrereqs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OISPrereqs.h; sourceTree = "<group>"; };
 		37B28342132522B300BACB27 /* Pixy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Pixy.h; path = include/Pixy.h; sourceTree = "<group>"; };
 		37B28343132522B300BACB27 /* PixyLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PixyLog.h; path = include/PixyLog.h; sourceTree = "<group>"; };
 		37B28344132522B300BACB27 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utility.h; path = include/Utility.h; sourceTree = "<group>"; };
@@ -74,6 +124,38 @@
 		37B285AF1325521C00BACB27 /* BulletDynamics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BulletDynamics.framework; path = Library/Frameworks/BulletDynamics.framework; sourceTree = SDKROOT; };
 		37B285B11325521C00BACB27 /* BulletSoftBody.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BulletSoftBody.framework; path = Library/Frameworks/BulletSoftBody.framework; sourceTree = SDKROOT; };
 		37B285B31325521C00BACB27 /* LinearMath.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LinearMath.framework; path = Library/Frameworks/LinearMath.framework; sourceTree = SDKROOT; };
+		37BF05B41326DB93008DBF9F /* UIEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UIEngine.cpp; path = src/UIEngine.cpp; sourceTree = "<group>"; };
+		37BF05B61326DB9B008DBF9F /* UIEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIEngine.h; path = include/UIEngine.h; sourceTree = "<group>"; };
+		37BF05CB1326DC72008DBF9F /* freetype2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = freetype2.framework; path = "/Volumes/kandie/Downloads/Development/Game/CEGUI/CEGUI-0.7.5/dependencies/freetype2.framework"; sourceTree = "<absolute>"; };
+		37BF07371326DD10008DBF9F /* FreeImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FreeImage.framework; path = "/Volumes/kandie/Downloads/Development/Game/CEGUI/CEGUI-0.7.5/dependencies/FreeImage.framework"; sourceTree = "<absolute>"; };
+		37BF07391326DD10008DBF9F /* PCRE.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PCRE.framework; path = "/Volumes/kandie/Downloads/Development/Game/CEGUI/CEGUI-0.7.5/dependencies/PCRE.framework"; sourceTree = "<absolute>"; };
+		37BF074A1326DD4D008DBF9F /* libOgrePaging.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libOgrePaging.dylib; path = "/Volumes/kandie/Workspace/Build/Ogre-1.7.2/lib/Debug/libOgrePaging.dylib"; sourceTree = "<absolute>"; };
+		37C978A413255E3B00F10762 /* GfxEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GfxEngine.h; path = include/GfxEngine.h; sourceTree = "<group>"; };
+		37C978A513255E4300F10762 /* GfxEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GfxEngine.cpp; path = src/GfxEngine.cpp; sourceTree = "<group>"; };
+		37C97A4513255ECE00F10762 /* libOgreTerrain.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libOgreTerrain.dylib; path = "/Volumes/kandie/Workspace/Build/Ogre-1.7.2/lib/Debug/libOgreTerrain.dylib"; sourceTree = "<absolute>"; };
+		37C97A4713255ECE00F10762 /* Plugin_OctreeSceneManager.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Plugin_OctreeSceneManager.dylib; path = "/Volumes/kandie/Workspace/Build/Ogre-1.7.2/lib/Debug/Plugin_OctreeSceneManager.dylib"; sourceTree = "<absolute>"; };
+		37C97A4913255ECE00F10762 /* Plugin_ParticleFX.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Plugin_ParticleFX.dylib; path = "/Volumes/kandie/Workspace/Build/Ogre-1.7.2/lib/Debug/Plugin_ParticleFX.dylib"; sourceTree = "<absolute>"; };
+		37C97A4B13255ECE00F10762 /* RenderSystem_GL.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = RenderSystem_GL.dylib; path = "/Volumes/kandie/Workspace/Build/Ogre-1.7.2/lib/Debug/RenderSystem_GL.dylib"; sourceTree = "<absolute>"; };
+		37C97A5513255F4E00F10762 /* GameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameManager.h; path = include/GameManager.h; sourceTree = "<group>"; };
+		37C97A5613255F4E00F10762 /* GameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameState.h; path = include/GameState.h; sourceTree = "<group>"; };
+		37C97A5713255F4E00F10762 /* InputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InputManager.h; path = include/InputManager.h; sourceTree = "<group>"; };
+		37C97A5813255F4E00F10762 /* Intro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Intro.h; path = include/Intro.h; sourceTree = "<group>"; };
+		37C97A5913255F4E00F10762 /* SdkCameraMan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SdkCameraMan.h; path = include/SdkCameraMan.h; sourceTree = "<group>"; };
+		37C97A5A13255F6800F10762 /* GameManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameManager.cpp; path = src/GameManager.cpp; sourceTree = "<group>"; };
+		37C97A5B13255F6800F10762 /* GameState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameState.cpp; path = src/GameState.cpp; sourceTree = "<group>"; };
+		37C97A5C13255F6800F10762 /* InputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InputManager.cpp; path = src/InputManager.cpp; sourceTree = "<group>"; };
+		37C97A5D13255F6800F10762 /* Intro.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Intro.cpp; path = src/Intro.cpp; sourceTree = "<group>"; };
+		37C97B3C1325633D00F10762 /* CEGUIBase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CEGUIBase.framework; path = "/Volumes/kandie/Workspace/Build/CEGUI-SDK-0.7.5-mac/Frameworks/Debug/CEGUIBase.framework"; sourceTree = "<absolute>"; };
+		37C97B3E1325633D00F10762 /* CEGUIOgreRenderer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CEGUIOgreRenderer.framework; path = "/Volumes/kandie/Workspace/Build/CEGUI-SDK-0.7.5-mac/Frameworks/Debug/CEGUIOgreRenderer.framework"; sourceTree = "<absolute>"; };
+		37C97B42132563B400F10762 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Event.h; path = include/Event.h; sourceTree = "<group>"; };
+		37C97B43132563B400F10762 /* EventHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventHandler.h; path = include/EventHandler.h; sourceTree = "<group>"; };
+		37C97B44132563B400F10762 /* EventListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventListener.h; path = include/EventListener.h; sourceTree = "<group>"; };
+		37C97B45132563B400F10762 /* EventManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventManager.h; path = include/EventManager.h; sourceTree = "<group>"; };
+		37C97B46132563B400F10762 /* Handler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Handler.h; path = include/Handler.h; sourceTree = "<group>"; };
+		37C97B47132563B400F10762 /* Listener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Listener.h; path = include/Listener.h; sourceTree = "<group>"; };
+		37C97B48132563C100F10762 /* Event.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Event.cpp; path = src/Event.cpp; sourceTree = "<group>"; };
+		37C97B49132563C100F10762 /* EventListener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EventListener.cpp; path = src/EventListener.cpp; sourceTree = "<group>"; };
+		37C97B4A132563C100F10762 /* EventManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EventManager.cpp; path = src/EventManager.cpp; sourceTree = "<group>"; };
 		8DD76F6C0486A84900D96B5E /* Vertigo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Vertigo; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6859E8B029090EE04C91782 /* Vertigo.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Vertigo.1; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -83,15 +165,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				37B282481323EB5B00BACB27 /* OpenGL.framework in Frameworks */,
-				37B2824C1323EB6800BACB27 /* GLUT.framework in Frameworks */,
-				37B282821324135D00BACB27 /* libgle.dylib in Frameworks */,
-				37B282EA13251E0B00BACB27 /* liblog4cpp.dylib in Frameworks */,
-				37B2830E1325219900BACB27 /* libOIS.a in Frameworks */,
+				3739F9471326D5D800FA5092 /* IOKit.framework in Frameworks */,
+				3739F9521326D60B00FA5092 /* Carbon.framework in Frameworks */,
 				37B285AE1325521C00BACB27 /* BulletCollision.framework in Frameworks */,
 				37B285B01325521C00BACB27 /* BulletDynamics.framework in Frameworks */,
 				37B285B21325521C00BACB27 /* BulletSoftBody.framework in Frameworks */,
 				37B285B41325521C00BACB27 /* LinearMath.framework in Frameworks */,
+				37C97B3F1325633D00F10762 /* CEGUIOgreRenderer.framework in Frameworks */,
+				37C97B3D1325633D00F10762 /* CEGUIBase.framework in Frameworks */,
+				37B282481323EB5B00BACB27 /* OpenGL.framework in Frameworks */,
+				37B2824C1323EB6800BACB27 /* GLUT.framework in Frameworks */,
+				37C97A4613255ECE00F10762 /* libOgreTerrain.dylib in Frameworks */,
+				37C97A4813255ECE00F10762 /* Plugin_OctreeSceneManager.dylib in Frameworks */,
+				37C97A4A13255ECE00F10762 /* Plugin_ParticleFX.dylib in Frameworks */,
+				37C97A4C13255ECE00F10762 /* RenderSystem_GL.dylib in Frameworks */,
+				3739F9151326D32000FA5092 /* Ogre.framework in Frameworks */,
+				3739F91F1326D38900FA5092 /* libOIS.a in Frameworks */,
+				3739FA631326D96C00FA5092 /* liblog4cpp.a in Frameworks */,
+				37BF05CC1326DC72008DBF9F /* freetype2.framework in Frameworks */,
+				37BF07381326DD10008DBF9F /* FreeImage.framework in Frameworks */,
+				37BF073A1326DD10008DBF9F /* PCRE.framework in Frameworks */,
+				37BF074B1326DD4D008DBF9F /* libOgrePaging.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,9 +197,10 @@
 			children = (
 				37B282C8132519B200BACB27 /* External Modules */,
 				37B2829D1325167400BACB27 /* Headers */,
-				37B282461323EB4500BACB27 /* External Frameworks */,
 				08FB7795FE84155DC02AAC07 /* Source */,
 				C6859E8C029090F304C91782 /* Documentation */,
+				37B282461323EB4500BACB27 /* External Frameworks */,
+				37C97A4413255EAA00F10762 /* Plugins */,
 				1AB674ADFE9D54B511CA2CBB /* Products */,
 			);
 			name = Vertigo;
@@ -114,6 +209,15 @@
 		08FB7795FE84155DC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				37BF05B41326DB93008DBF9F /* UIEngine.cpp */,
+				37C97B48132563C100F10762 /* Event.cpp */,
+				37C97B49132563C100F10762 /* EventListener.cpp */,
+				37C97B4A132563C100F10762 /* EventManager.cpp */,
+				37C97A5A13255F6800F10762 /* GameManager.cpp */,
+				37C97A5B13255F6800F10762 /* GameState.cpp */,
+				37C97A5C13255F6800F10762 /* InputManager.cpp */,
+				37C97A5D13255F6800F10762 /* Intro.cpp */,
+				37C978A513255E4300F10762 /* GfxEngine.cpp */,
 				37B2834B132522D200BACB27 /* Entity.cpp */,
 				37B282BA1325176100BACB27 /* Sphere.cpp */,
 				08FB7796FE84155DC02AAC07 /* main.cpp */,
@@ -133,15 +237,22 @@
 		37B282461323EB4500BACB27 /* External Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				37B2830D1325219900BACB27 /* libOIS.a */,
-				37B282E913251E0B00BACB27 /* liblog4cpp.dylib */,
-				37B282811324135D00BACB27 /* libgle.dylib */,
+				3739FA621326D96C00FA5092 /* liblog4cpp.a */,
+				3739F94D1326D60000FA5092 /* Carbon.framework */,
+				37BF05CB1326DC72008DBF9F /* freetype2.framework */,
+				3739F9111326D30C00FA5092 /* Ogre.framework */,
+				3739F91E1326D38900FA5092 /* libOIS.a */,
+				37C97B3C1325633D00F10762 /* CEGUIBase.framework */,
+				37C97B3E1325633D00F10762 /* CEGUIOgreRenderer.framework */,
 				37B282471323EB5B00BACB27 /* OpenGL.framework */,
 				37B2824B1323EB6800BACB27 /* GLUT.framework */,
 				37B285AD1325521C00BACB27 /* BulletCollision.framework */,
 				37B285AF1325521C00BACB27 /* BulletDynamics.framework */,
 				37B285B11325521C00BACB27 /* BulletSoftBody.framework */,
 				37B285B31325521C00BACB27 /* LinearMath.framework */,
+				3739F9461326D5D800FA5092 /* IOKit.framework */,
+				37BF07371326DD10008DBF9F /* FreeImage.framework */,
+				37BF07391326DD10008DBF9F /* PCRE.framework */,
 			);
 			name = "External Frameworks";
 			sourceTree = "<group>";
@@ -149,6 +260,19 @@
 		37B2829D1325167400BACB27 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				37BF05B61326DB9B008DBF9F /* UIEngine.h */,
+				37C97B42132563B400F10762 /* Event.h */,
+				37C97B43132563B400F10762 /* EventHandler.h */,
+				37C97B44132563B400F10762 /* EventListener.h */,
+				37C97B45132563B400F10762 /* EventManager.h */,
+				37C97B46132563B400F10762 /* Handler.h */,
+				37C97B47132563B400F10762 /* Listener.h */,
+				37C97A5513255F4E00F10762 /* GameManager.h */,
+				37C97A5613255F4E00F10762 /* GameState.h */,
+				37C97A5713255F4E00F10762 /* InputManager.h */,
+				37C97A5813255F4E00F10762 /* Intro.h */,
+				37C97A5913255F4E00F10762 /* SdkCameraMan.h */,
+				37C978A413255E3B00F10762 /* GfxEngine.h */,
 				37B2859413254FB000BACB27 /* Entity.h */,
 				37B2856213254B5E00BACB27 /* Engine.h */,
 				37B2856313254B5F00BACB27 /* PhyxEngine.h */,
@@ -163,7 +287,6 @@
 		37B282C8132519B200BACB27 /* External Modules */ = {
 			isa = PBXGroup;
 			children = (
-				37B2830F132521A500BACB27 /* OIS */,
 				37B282C9132519C800BACB27 /* log4cpp */,
 			);
 			name = "External Modules";
@@ -179,26 +302,16 @@
 			path = modules/log4cpp;
 			sourceTree = "<group>";
 		};
-		37B2830F132521A500BACB27 /* OIS */ = {
+		37C97A4413255EAA00F10762 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
-				37B28310132521A500BACB27 /* OIS.h */,
-				37B28311132521A500BACB27 /* OISConfig.h */,
-				37B28312132521A500BACB27 /* OISEffect.h */,
-				37B28313132521A500BACB27 /* OISEvents.h */,
-				37B28314132521A500BACB27 /* OISException.h */,
-				37B28315132521A500BACB27 /* OISFactoryCreator.h */,
-				37B28316132521A500BACB27 /* OISForceFeedback.h */,
-				37B28317132521A500BACB27 /* OISInputManager.h */,
-				37B28318132521A500BACB27 /* OISInterface.h */,
-				37B28319132521A500BACB27 /* OISJoyStick.h */,
-				37B2831A132521A500BACB27 /* OISKeyboard.h */,
-				37B2831B132521A500BACB27 /* OISMouse.h */,
-				37B2831C132521A500BACB27 /* OISObject.h */,
-				37B2831D132521A500BACB27 /* OISPrereqs.h */,
+				37C97A4513255ECE00F10762 /* libOgreTerrain.dylib */,
+				37C97A4713255ECE00F10762 /* Plugin_OctreeSceneManager.dylib */,
+				37C97A4913255ECE00F10762 /* Plugin_ParticleFX.dylib */,
+				37C97A4B13255ECE00F10762 /* RenderSystem_GL.dylib */,
+				37BF074A1326DD4D008DBF9F /* libOgrePaging.dylib */,
 			);
-			name = OIS;
-			path = modules/OIS;
+			name = Plugins;
 			sourceTree = "<group>";
 		};
 		C6859E8C029090F304C91782 /* Documentation */ = {
@@ -218,7 +331,8 @@
 			buildPhases = (
 				8DD76F640486A84900D96B5E /* Sources */,
 				8DD76F660486A84900D96B5E /* Frameworks */,
-				8DD76F690486A84900D96B5E /* CopyFiles */,
+				3739F8DF1326D10600FA5092 /* Copy Frameworks (9) */,
+				3739F9011326D1AF00FA5092 /* Copy Plugins */,
 			);
 			buildRules = (
 			);
@@ -257,6 +371,15 @@
 				37B282CC132519C800BACB27 /* PixyLogLayout.cpp in Sources */,
 				37B2834C132522D200BACB27 /* Entity.cpp in Sources */,
 				37B2856713254B9100BACB27 /* PhyxEngine.cpp in Sources */,
+				37C978A613255E4300F10762 /* GfxEngine.cpp in Sources */,
+				37C97A5E13255F6800F10762 /* GameManager.cpp in Sources */,
+				37C97A5F13255F6800F10762 /* GameState.cpp in Sources */,
+				37C97A6013255F6800F10762 /* InputManager.cpp in Sources */,
+				37C97A6113255F6800F10762 /* Intro.cpp in Sources */,
+				37C97B4B132563C100F10762 /* Event.cpp in Sources */,
+				37C97B4C132563C100F10762 /* EventListener.cpp in Sources */,
+				37C97B4D132563C100F10762 /* EventManager.cpp in Sources */,
+				37BF05B51326DB93008DBF9F /* UIEngine.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,15 +391,30 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../Build/Ogre-1.7.2/lib/Debug\"",
+					"\"$(SRCROOT)/../../Build/CEGUI-SDK-0.7.5-mac/Frameworks/Debug\"",
+					"\"$(SRCROOT)/../../../Downloads/Development/Game/CEGUI/CEGUI-0.7.5/dependencies\"",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include,
+					/opt/local/include,
+					/usr/local/include/bullet,
+					"\"$(SRCROOT)/../../Build/Ogre-1.7.2/lib/Debug/Ogre.framework/Headers\"",
+					"\"$(SRCROOT)/../../Libraries/gamedev/ois/includes\"",
+				);
 				INSTALL_PATH = /usr/local/bin;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/opt/local/lib,
 					"\"$(SRCROOT)/modules\"",
+					"\"$(SRCROOT)/../../Build/Ogre-1.7.2/lib/Debug\"",
+					"\"$(SRCROOT)/../../Libraries/gamedev/ois/lib\"",
 				);
 				PRODUCT_NAME = Vertigo;
 			};
@@ -287,12 +425,20 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../Build/Ogre-1.7.2/lib/Debug\"",
+					"\"$(SRCROOT)/../../Build/CEGUI-SDK-0.7.5-mac/Frameworks/Debug\"",
+					"\"$(SRCROOT)/../../../Downloads/Development/Game/CEGUI/CEGUI-0.7.5/dependencies\"",
+				);
 				GCC_MODEL_TUNING = G5;
 				INSTALL_PATH = /usr/local/bin;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/opt/local/lib,
 					"\"$(SRCROOT)/modules\"",
+					"\"$(SRCROOT)/../../Build/Ogre-1.7.2/lib/Debug\"",
+					"\"$(SRCROOT)/../../Libraries/gamedev/ois/lib\"",
 				);
 				PRODUCT_NAME = Vertigo;
 			};
@@ -301,7 +447,7 @@
 		1DEB923608733DC60010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -310,6 +456,8 @@
 					/usr/local/include,
 					/opt/local/include,
 					/usr/local/include/bullet,
+					"./**",
+					"\"$(SRCROOT)/../../Build/Ogre-1.7.2/lib/Debug/Ogre.framework/Headers\"",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;

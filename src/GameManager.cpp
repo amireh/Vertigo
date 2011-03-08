@@ -1,6 +1,7 @@
 #include "GameManager.h"
 #include "GameState.h"
 #include "Intro.h"
+//#include "Combat.h"
 #include "PixyLogLayout.h"
 using namespace Ogre;
 
@@ -71,7 +72,7 @@ namespace Pixy
 		
 		
 		// Change to first state
-		this->changeState( Combat::getSingletonPtr() );
+		this->changeState( Intro::getSingletonPtr() );
 		
 		// lTimeLastFrame remembers the last time that it was checked
 		// we use it to calculate the time since last frame
@@ -274,7 +275,7 @@ namespace Pixy
 		lCat->setPriority(log4cpp::Priority::DEBUG);
 
 		lCat->infoStream() << "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+";
-		lCat->infoStream() << "\n+                        Elementum v" << ELEMENTUM_VERSION << " - Client Log                          +";
+		lCat->infoStream() << "\n+                        Vertigo v" << VERTIGO_VERSION << " - Client Log                          +";
 		lCat->infoStream() << "\n+                      (http://www.elementum-game.com)                        +";
 		lCat->infoStream() << "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n";
 		

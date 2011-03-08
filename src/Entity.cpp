@@ -90,5 +90,17 @@ namespace Pixy
     {
         mLog->infoStream() << mName << " is dead!";
     }
+	
+	void Entity::attachSceneNode(Ogre::SceneNode* inNode) { mSceneNode = inNode; }
+    void Entity::attachSceneObject(Ogre::MovableObject* inObject) { mSceneObject = inObject; }
+    Ogre::SceneNode* Entity::getSceneNode() { return mSceneNode; }
+    Ogre::MovableObject* Entity::getSceneObject() { return mSceneObject; }
+	
+	void Entity::setMesh(std::string inMesh) {
+		mMesh = inMesh;
+	}
+	std::string Entity::getMesh() {
+		return mMesh;
+	}
 
 } // end of namespace

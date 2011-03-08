@@ -16,7 +16,15 @@
 #include "EventListener.h"
 
 #include "InputManager.h"
+#include <Ogre.h>
 
+// CEGUI
+#include <CEGUIBase/CEGUI.h>
+#include <CEGUIBase/CEGUISystem.h>
+#include <CEGUIBase/CEGUISchemeManager.h>
+
+#include "CEGUIBase/ScriptingModules/LuaScriptModule/CEGUILua.h"
+#include "CEGUIBase/RendererModules/Ogre/CEGUIOgreRenderer.h"
 
 namespace Pixy {
 	
@@ -28,7 +36,7 @@ namespace Pixy {
 	 *	At the moment, the UIEngine acts as a manager for UISheets, however,
 	 *	the sheets are ought to be handled from within the LUA subsystem.
 	 */
-	class UIEngine : public Engine {
+	class UIEngine : public Engine, public EventListener {
 		
 	public:
 		virtual ~UIEngine();
@@ -45,9 +53,14 @@ namespace Pixy {
 		CEGUI::MouseButton convertButton(OIS::MouseButtonID buttonID);
 		
 	protected:
-		const char* getDataPathPrefix() const;
+		const char*
+		getDataPathPrefix() const;
 		
 		bool loadResources();
+
+		CEGUI::OgreRenderer		*mOgreRenderer;
+		CEGUI::System			*mUISystem;
+		EventManager			*mEvtMgr;
 		
 	private:
 		static UIEngine* _myUIEngine;

@@ -22,7 +22,7 @@
 #include <OIS/OISMouse.h>
 #include <OIS/OISKeyboard.h>
 #include <OIS/OISInputManager.h>
-
+#include <Ogre.h>
 namespace Pixy
 {
     /*! \class InputManager
@@ -34,7 +34,7 @@ namespace Pixy
 			virtual ~InputManager( void );
 
 			//! Initializes OIS input system and sets Ogre window as the event capturing context.
-			void initialise();
+			void initialise( Ogre::RenderWindow *renderWindow );
 		
 			//! Grabs the input & dispatches events
 			void capture( void );

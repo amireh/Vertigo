@@ -17,6 +17,8 @@
 #include "Pixy.h"
 #endif
 
+#include <Ogre.h>
+
 namespace Pixy
 {
 	/*! \class Entity Entity.h "src/Entity.h"
@@ -83,11 +85,23 @@ namespace Pixy
 		//! Prints out information about this Entity to Log ofstream; used for debugging
 		virtual void printInfo();
 		
+		virtual void attachSceneNode(Ogre::SceneNode* inNode);
+		virtual Ogre::SceneNode* getSceneNode();
+		
+		virtual void attachSceneObject(Ogre::MovableObject* inObject);
+		virtual Ogre::MovableObject* getSceneObject();
+		
+		virtual void setMesh(std::string inMesh);
+		virtual std::string getMesh();
+		
 		protected:
 
 		int idObject;                       //! Unique entity id
 		std::string mName;					//! Entity's in-game name
 		int mHP;                            //! Entity's health stat
+		std::string mMesh;					//! Entity's in-game name		
+		Ogre::SceneNode         *mSceneNode;
+		Ogre::MovableObject     *mSceneObject;
 		
 		//! helper method for copy/assignment methods
 		//! copies all data from src and sets it into this entity

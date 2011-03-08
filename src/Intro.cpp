@@ -1,9 +1,5 @@
 #include "Intro.h"
 #include "EventManager.h"
-#include "NetworkManager.h"
-#include "Puppet.h"
-#include "Deck.h"
-#include "Spell.h"
 
 using namespace Ogre;
 namespace Pixy

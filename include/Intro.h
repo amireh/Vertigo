@@ -16,7 +16,6 @@
 #include "GameState.h"
 #include "UIEngine.h"
 #include "GfxEngine.h"
-#include "Player.h"
 #include <map>
 #include <list>
 
@@ -61,7 +60,6 @@ namespace Pixy
 		GfxEngine		*mGfxEngine;
 		UIEngine		*mUIEngine;
 		CEGUI::System	*mUISystem;
-		Player			*mPlayer;
 		
 		static Intro    *mIntro;
 		

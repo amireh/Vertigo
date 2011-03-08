@@ -13,6 +13,10 @@
 #ifndef H_Pixy_H
 #define H_Pixy_H
 
+#ifdef OGRE_USE_BOOST
+#undef OGRE_USE_BOOST
+#endif
+
 // misc
 #include <exception>
 
