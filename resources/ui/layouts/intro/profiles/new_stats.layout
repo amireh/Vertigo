@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+  <Window Type="DefaultWindow" Name="Elementum/Scenes/Intro/Profiles/New/Stats">
+    <Property Name="UnifiedSize" Value="{{1.0,0}, {1.0,0}}" />
+    <Property Name="UnifiedPosition" Value="{{0,0}, {0,0}}" />
+
+    <Window Type="TaharezLook/StaticText" Name="Elementum/Scenes/Intro/Profiles/New/Stats/Labels/PointsLeft">
+      <Property Name="Text" Value="Points Left: " />
+      <Property Name="UnifiedSize" Value="{{0, 120}, {0, 30}}" />
+      <Property Name="UnifiedPosition" Value="{{0.05,0},{0.1,0}}" />
+      <Property Name="FrameEnabled" Value="True" />
+      <Property Name="BackgroundEnabled" Value="False" />
+    </Window>
+
+    <!-- INTELLIGENCE -->
+    <Window Type="TaharezLook/StaticText" Name="Elementum/Scenes/Intro/Profiles/New/Stats/Labels/Intelligence">
+      <Property Name="Text" Value="Intelligence" />
+      <Property Name="UnifiedSize" Value="{{0, 150}, {0, 30}}" />
+      <Property Name="UnifiedPosition" Value="{{0.25,0},{0.1,0}}" />
+      <Property Name="FrameEnabled" Value="False" />
+      <Property Name="BackgroundEnabled" Value="False" />
+    </Window>
+    
+
+    <Window Type="Vanilla/Button" Name="Elementum/Scenes/Intro/Profiles/New/Stats/Buttons/DecreaseIntelligence">
+      <Property Name="Text" Value="-" />
+      <Property Name="UnifiedSize" Value="{{0, 20}, {0, 30}}" />
+      <Property Name="UnifiedPosition" Value="{{0.4,0},{0.1,0}}" />
+      <Event Name="Clicked" Function="Profiles.New.Stats.decIntelligence" />          
+    </Window>
+    
+    <Window Type="Vanilla/Editbox" Name="Elementum/Scenes/Intro/Profiles/New/Stats/TextFields/Intelligence">
+      <Property Name="Text" Value="10" />
+      <Property Name="Visible" Value="True" />
+      <Property Name="UnifiedSize" Value="{{0, 40}, {0, 30}}" />
+      <Property Name="UnifiedPosition" Value="{{0.4,20},{0.1,0}}" />
+      <Property Name="Disabled" Value="True" />
+    </Window>
+    
+    <Window Type="Vanilla/Button" Name="Elementum/Scenes/Intro/Profiles/New/Stats/Buttons/IncreaseIntelligence">
+      <Property Name="Text" Value="+" />
+      <Property Name="UnifiedSize" Value="{{0, 20}, {0, 30}}" />
+      <Property Name="UnifiedPosition" Value="{{0.4,60},{0.1,0}}" /> 
+      <Event Name="Clicked" Function="Profiles.New.Stats.incIntelligence" />         
+    </Window>    
+    
+    
+    
+    
+    <!-- VITALITY -->
+    <Window Type="TaharezLook/StaticText" Name="Elementum/Scenes/Intro/Profiles/New/Stats/Labels/Vitality">
+      <Property Name="Text" Value="Vitality" />
+      <Property Name="UnifiedSize" Value="{{0, 150}, {0, 30}}" />
+      <Property Name="UnifiedPosition" Value="{{0.25,0},{0.2,0}}" />
+      <Property Name="FrameEnabled" Value="False" />
+      <Property Name="BackgroundEnabled" Value="False" />
+    </Window>
+    
+    <Window Type="Vanilla/Button" Name="Elementum/Scenes/Intro/Profiles/New/Stats/Buttons/DecreaseVitality">
+      <Property Name="Text" Value="-" />
+      <Property Name="UnifiedSize" Value="{{0, 20}, {0, 30}}" />
+      <Property Name="UnifiedPosition" Value="{{0.4,0},{0.2,0}}" />   
+      <Event Name="Clicked" Function="Profiles.New.Stats.decVitality" />       
+    </Window>
+    
+    <Window Type="Vanilla/Editbox" Name="Elementum/Scenes/Intro/Profiles/New/Stats/TextFields/Vitality">
+      <Property Name="Text" Value="10" />
+      <Property Name="Visible" Value="True" />
+      <Property Name="UnifiedSize" Value="{{0, 40}, {0, 30}}" />
+      <Property Name="UnifiedPosition" Value="{{0.4,20},{0.2,0}}" />
+      <Property Name="Disabled" Value="True" />
+    </Window>
+    
+    <Window Type="Vanilla/Button" Name="Elementum/Scenes/Intro/Profiles/New/Stats/Buttons/IncreaseVitality">
+      <Property Name="Text" Value="+" />
+      <Property Name="UnifiedSize" Value="{{0, 20}, {0, 30}}" />
+      <Property Name="UnifiedPosition" Value="{{0.4,60},{0.2,0}}" />
+      <Event Name="Clicked" Function="Profiles.New.Stats.incVitality" />
+    </Window>
+    
+    
+    
+    
+
+
+    <Window Type="TaharezLook/StaticText" Name="Elementum/Scenes/Intro/Profiles/New/Stats/Labels/Alignment">
+      <Property Name="Text" Value="Alignment" />
+      <Property Name="UnifiedSize" Value="{{0, 150}, {0, 30}}" />
+      <Property Name="UnifiedPosition" Value="{{0.25,0},{0.3,0}}" />
+      <Property Name="FrameEnabled" Value="False" />
+      <Property Name="BackgroundEnabled" Value="False" />
+    </Window>
+    
+    <Window Type="TaharezLook/GroupBox" Name="Elementum/Scenes/Intro/Profiles/New/Stats/Alignment">
+      <Property Name="UnifiedSize" Value="{{0, 150}, {0, 150}}" />
+      <Property Name="UnifiedPosition" Value="{{0.4,0},{0.3,0}}" />
+
+      <!-- ALIGNMENT -->
+      <Window Type="TaharezLook/RadioButton" Name="Elementum/Scenes/Intro/Profiles/New/Stats/RadioButtons/Neutral">
+        <Property Name="Text" Value="Neutral" />
+        <Property Name="UnifiedSize" Value="{{0, 50}, {0, 20}}" />
+        <Property Name="UnifiedPosition" Value="{{0,0},{0,0}}" />            
+        <Property Name="Selected" Value="True" />
+      </Window>
+
+      <Window Type="TaharezLook/RadioButton" Name="Elementum/Scenes/Intro/Profiles/New/Stats/RadioButtons/Good">
+        <Property Name="Text" Value="Good" />
+        <Property Name="UnifiedSize" Value="{{0, 50}, {0, 20}}" />
+        <Property Name="UnifiedPosition" Value="{{0,0},{0,20}}" />
+      </Window>
+
+      <Window Type="TaharezLook/RadioButton" Name="Elementum/Scenes/Intro/Profiles/New/Stats/RadioButtons/Evil">
+        <Property Name="Text" Value="Evil" />
+        <Property Name="UnifiedSize" Value="{{0, 50}, {0, 20}}" />
+        <Property Name="UnifiedPosition" Value="{{0,0},{0,40}}" />            
+      </Window>
+
+    </Window>
+
+    <Window Type="Vanilla/Button" Name="Elementum/Scenes/Intro/Profiles/New/Stats/Buttons/Back">
+      <Property Name="Text" Value="Back" />
+      <Property Name="UnifiedSize" Value="{{0, 60}, {0, 30}}" />
+      <Property Name="UnifiedPosition" Value="{{0.4,0},{0.7,0}}" />     
+      <Event Name="Clicked" Function="Profiles.New.Stats.back" />       
+    </Window>
+    <Window Type="Vanilla/Button" Name="Elementum/Scenes/Intro/Profiles/New/Stats/Buttons/Next">
+      <Property Name="Text" Value="Next" />
+      <Property Name="UnifiedSize" Value="{{0, 90}, {0, 30}}" />
+      <Property Name="UnifiedPosition" Value="{{0.4,60},{0.7,0}}" />    
+      <Event Name="Clicked" Function="Profiles.New.Stats.next" />        
+    </Window>          
+  </Window>
+</GUILayout>

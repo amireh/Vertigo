@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Imageset Name="Spells-Fire" Imagefile="spells_Fire.png" >
+	<!-- Imp -->
+	<Image Name="Imp_Normal" XPos="0" YPos="0"  Width="64" Height="64" />
+	<Image Name="Imp_Hover"  XPos="0" YPos="62" Width="64" Height="64" />
+	<Image Name="Imp_Pushed" XPos="0" YPos="0" Width="64" Height="64" />
+	<Image Name="Imp_Disabled" XPos="0" YPos="255" Width="64" Height="64" />
+	<!-- Hound -->
+	<Image Name="Hound_Normal" XPos="64" YPos="0"  Width="64" Height="64" />
+	<Image Name="Hound_Hover"  XPos="64" YPos="62" Width="64" Height="64" />
+	<Image Name="Hound_Pushed" XPos="64" YPos="0" Width="64" Height="64" />
+	<Image Name="Hound_Disabled" XPos="64" YPos="255" Width="64" Height="64" />
+	<!-- Balrog -->
+	<Image Name="Balrog_Normal" XPos="128" YPos="0"  Width="64" Height="64" />
+	<Image Name="Balrog_Hover"  XPos="128" YPos="62" Width="64" Height="64" />
+	<Image Name="Balrog_Pushed" XPos="128" YPos="0" Width="64" Height="64" />
+	<Image Name="Balrog_Disabled" XPos="128" YPos="255" Width="64" Height="64" />
+	<!-- Fire Elemental -->
+	<Image Name="Fire-Elemental_Normal" XPos="188" YPos="0"  Width="64" Height="64" />
+	<Image Name="Fire-Elemental_Hover"  XPos="188" YPos="62" Width="64" Height="64" />
+	<Image Name="Fire-Elemental_Pushed" XPos="188" YPos="0" Width="64" Height="64" />
+	<Image Name="Fire-Elemental_Disabled" XPos="188" YPos="255" Width="64" Height="64" />
+
+	<!-- Fireball -->
+	<Image Name="Fireball_Normal" XPos="255" YPos="0"  Width="64" Height="64" />
+	<Image Name="Fireball_Hover"  XPos="255" YPos="62" Width="64" Height="64" />
+	<Image Name="Fireball_Pushed" XPos="255" YPos="0" Width="64" Height="64" />
+	<Image Name="Fireball_Disabled" XPos="255" YPos="255" Width="64" Height="64" />
+
+</Imageset>
+
+

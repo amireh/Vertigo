@@ -267,7 +267,7 @@ namespace Pixy
 		
 		lApp->setLayout(lHeaderLayout);
 		
-		std::string lCatName = "Elementum";
+		std::string lCatName = CLIENT_LOG_CATEGORY;
 		log4cpp::Category* lCat = &log4cpp::Category::getInstance(lCatName);
 		
         lCat->setAdditivity(false);
@@ -275,8 +275,7 @@ namespace Pixy
 		lCat->setPriority(log4cpp::Priority::DEBUG);
 
 		lCat->infoStream() << "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+";
-		lCat->infoStream() << "\n+                        Vertigo v" << VERTIGO_VERSION << " - Client Log                          +";
-		lCat->infoStream() << "\n+                      (http://www.elementum-game.com)                        +";
+		lCat->infoStream() << "\n+                                Vertigo v" << VERTIGO_VERSION << "                                +";
 		lCat->infoStream() << "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n";
 		
 		lApp->setLayout(lLayout);

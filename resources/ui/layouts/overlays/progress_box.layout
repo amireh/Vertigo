@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+    <Window Type="Vanilla/FrameWindow" Name="Elementum/Overlays/ProgressBox" >
+      <Property Name="UnifiedSize" Value="{{0, 300}, {0, 200}}" />
+      <Property Name="UnifiedPosition" Value="{{0, 0}, {0, 0}}" />
+      <Property Name="FrameEnabled" Value="False" />
+      <Property Name="SizingEnabled" Value="False" />
+      <Property Name="BackgroundEnabled" Value="False" />      
+      <Property Name="TitlebarEnabled" Value="True" />
+      <Property Name="DragMovingEnabled" Value="False" />
+      <Property Name="CloseButtonEnabled" Value="False" />
+      <Property Name="HorizontalAlignment" Value="Centre" />
+      <Property Name="Visible" Value="True" />
+      <Property Name="AlwaysOnTop" Value="True" />
+      <Property Name="Alpha" Value="0.7" />
+      
+      <Window Type="Vanilla/StaticText" Name="Elementum/Overlays/ProgressBox/Label" >
+          <Property Name="Font" Value="DejaVuSans-10" />
+          <Property Name="Text" Value="" />
+          <Property Name="UnifiedSize" Value="{{1, 0}, {0.8, 0}}" />
+      </Window>
+
+      <Window Type="Vanilla/Button" Name="Elementum/Overlays/ProgressBox/Ok" >
+          <Property Name="Font" Value="DejaVuSans-10" />
+          <Property Name="Text" Value="Ok" />
+          <Property Name="UnifiedSize" Value="{{0.5, 0}, {0.2, 0}}" />
+          <Property Name="UnifiedPosition" Value="{{0, 0}, {0.8, 0}}" />
+          <Property Name="HorizontalAlignment" Value="Centre" />
+      </Window>
+
+    </Window>
+</GUILayout>

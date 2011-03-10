@@ -7,94 +7,110 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3739F7D91326D0AE00FA5092 /* CEGUIBase.framework in Copy Frameworks (9) */ = {isa = PBXBuildFile; fileRef = 37C97B3C1325633D00F10762 /* CEGUIBase.framework */; };
-		3739F7DA1326D0B200FA5092 /* CEGUIOgreRenderer.framework in Copy Frameworks (9) */ = {isa = PBXBuildFile; fileRef = 37C97B3E1325633D00F10762 /* CEGUIOgreRenderer.framework */; };
-		3739F8CE1326D0C200FA5092 /* BulletCollision.framework in Copy Frameworks (9) */ = {isa = PBXBuildFile; fileRef = 37B285AD1325521C00BACB27 /* BulletCollision.framework */; };
-		3739F8CF1326D0C200FA5092 /* BulletDynamics.framework in Copy Frameworks (9) */ = {isa = PBXBuildFile; fileRef = 37B285AF1325521C00BACB27 /* BulletDynamics.framework */; };
-		3739F8D01326D0C200FA5092 /* BulletSoftBody.framework in Copy Frameworks (9) */ = {isa = PBXBuildFile; fileRef = 37B285B11325521C00BACB27 /* BulletSoftBody.framework */; };
-		3739F8D11326D0C200FA5092 /* LinearMath.framework in Copy Frameworks (9) */ = {isa = PBXBuildFile; fileRef = 37B285B31325521C00BACB27 /* LinearMath.framework */; };
-		3739F8E11326D15F00FA5092 /* libOgreTerrain.dylib in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 37C97A4513255ECE00F10762 /* libOgreTerrain.dylib */; };
-		3739F8E21326D15F00FA5092 /* Plugin_OctreeSceneManager.dylib in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 37C97A4713255ECE00F10762 /* Plugin_OctreeSceneManager.dylib */; };
-		3739F8E31326D15F00FA5092 /* Plugin_ParticleFX.dylib in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 37C97A4913255ECE00F10762 /* Plugin_ParticleFX.dylib */; };
-		3739F8E41326D15F00FA5092 /* RenderSystem_GL.dylib in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 37C97A4B13255ECE00F10762 /* RenderSystem_GL.dylib */; };
-		3739F9121326D30C00FA5092 /* Ogre.framework in Copy Frameworks (9) */ = {isa = PBXBuildFile; fileRef = 3739F9111326D30C00FA5092 /* Ogre.framework */; };
-		3739F9151326D32000FA5092 /* Ogre.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3739F9111326D30C00FA5092 /* Ogre.framework */; };
-		3739F91F1326D38900FA5092 /* libOIS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3739F91E1326D38900FA5092 /* libOIS.a */; };
-		3739F9201326D3A300FA5092 /* libOIS.a in Copy Frameworks (9) */ = {isa = PBXBuildFile; fileRef = 3739F91E1326D38900FA5092 /* libOIS.a */; };
-		3739F9471326D5D800FA5092 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3739F9461326D5D800FA5092 /* IOKit.framework */; };
-		3739F9521326D60B00FA5092 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3739F94D1326D60000FA5092 /* Carbon.framework */; };
-		3739FA631326D96C00FA5092 /* liblog4cpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3739FA621326D96C00FA5092 /* liblog4cpp.a */; };
-		37B282481323EB5B00BACB27 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B282471323EB5B00BACB27 /* OpenGL.framework */; };
-		37B2824C1323EB6800BACB27 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B2824B1323EB6800BACB27 /* GLUT.framework */; };
-		37B282C41325176100BACB27 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37B282BA1325176100BACB27 /* Sphere.cpp */; };
-		37B282CC132519C800BACB27 /* PixyLogLayout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37B282CA132519C800BACB27 /* PixyLogLayout.cpp */; };
-		37B2834C132522D200BACB27 /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37B2834B132522D200BACB27 /* Entity.cpp */; };
-		37B2856713254B9100BACB27 /* PhyxEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37B2856613254B9100BACB27 /* PhyxEngine.cpp */; };
-		37B285AE1325521C00BACB27 /* BulletCollision.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B285AD1325521C00BACB27 /* BulletCollision.framework */; };
-		37B285B01325521C00BACB27 /* BulletDynamics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B285AF1325521C00BACB27 /* BulletDynamics.framework */; };
-		37B285B21325521C00BACB27 /* BulletSoftBody.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B285B11325521C00BACB27 /* BulletSoftBody.framework */; };
-		37B285B41325521C00BACB27 /* LinearMath.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B285B31325521C00BACB27 /* LinearMath.framework */; };
-		37BF05B51326DB93008DBF9F /* UIEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37BF05B41326DB93008DBF9F /* UIEngine.cpp */; };
-		37BF05CC1326DC72008DBF9F /* freetype2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37BF05CB1326DC72008DBF9F /* freetype2.framework */; };
-		37BF07311326DCD9008DBF9F /* freetype2.framework in Copy Frameworks (9) */ = {isa = PBXBuildFile; fileRef = 37BF05CB1326DC72008DBF9F /* freetype2.framework */; };
-		37BF07381326DD10008DBF9F /* FreeImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37BF07371326DD10008DBF9F /* FreeImage.framework */; };
-		37BF073A1326DD10008DBF9F /* PCRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37BF07391326DD10008DBF9F /* PCRE.framework */; };
-		37BF07431326DD17008DBF9F /* FreeImage.framework in Copy Frameworks (9) */ = {isa = PBXBuildFile; fileRef = 37BF07371326DD10008DBF9F /* FreeImage.framework */; };
-		37BF07441326DD17008DBF9F /* PCRE.framework in Copy Frameworks (9) */ = {isa = PBXBuildFile; fileRef = 37BF07391326DD10008DBF9F /* PCRE.framework */; };
-		37BF074B1326DD4D008DBF9F /* libOgrePaging.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37BF074A1326DD4D008DBF9F /* libOgrePaging.dylib */; };
-		37BF074C1326DD53008DBF9F /* libOgrePaging.dylib in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 37BF074A1326DD4D008DBF9F /* libOgrePaging.dylib */; };
-		37C978A613255E4300F10762 /* GfxEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C978A513255E4300F10762 /* GfxEngine.cpp */; };
-		37C97A4613255ECE00F10762 /* libOgreTerrain.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C97A4513255ECE00F10762 /* libOgreTerrain.dylib */; };
-		37C97A4813255ECE00F10762 /* Plugin_OctreeSceneManager.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C97A4713255ECE00F10762 /* Plugin_OctreeSceneManager.dylib */; };
-		37C97A4A13255ECE00F10762 /* Plugin_ParticleFX.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C97A4913255ECE00F10762 /* Plugin_ParticleFX.dylib */; };
-		37C97A4C13255ECE00F10762 /* RenderSystem_GL.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C97A4B13255ECE00F10762 /* RenderSystem_GL.dylib */; };
-		37C97A5E13255F6800F10762 /* GameManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C97A5A13255F6800F10762 /* GameManager.cpp */; };
-		37C97A5F13255F6800F10762 /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C97A5B13255F6800F10762 /* GameState.cpp */; };
-		37C97A6013255F6800F10762 /* InputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C97A5C13255F6800F10762 /* InputManager.cpp */; };
-		37C97A6113255F6800F10762 /* Intro.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C97A5D13255F6800F10762 /* Intro.cpp */; };
-		37C97B3D1325633D00F10762 /* CEGUIBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C97B3C1325633D00F10762 /* CEGUIBase.framework */; };
-		37C97B3F1325633D00F10762 /* CEGUIOgreRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C97B3E1325633D00F10762 /* CEGUIOgreRenderer.framework */; };
-		37C97B4B132563C100F10762 /* Event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C97B48132563C100F10762 /* Event.cpp */; };
-		37C97B4C132563C100F10762 /* EventListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C97B49132563C100F10762 /* EventListener.cpp */; };
-		37C97B4D132563C100F10762 /* EventManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C97B4A132563C100F10762 /* EventManager.cpp */; };
-		8DD76F650486A84900D96B5E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* main.cpp */; settings = {ATTRIBUTES = (); }; };
+		37B5D0F013277E5200BFC358 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* main.cpp */; };
+		37B5D0F113277E5200BFC358 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37B282BA1325176100BACB27 /* Sphere.cpp */; };
+		37B5D0F213277E5200BFC358 /* PixyLogLayout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37B282CA132519C800BACB27 /* PixyLogLayout.cpp */; };
+		37B5D0F313277E5200BFC358 /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37B2834B132522D200BACB27 /* Entity.cpp */; };
+		37B5D0F413277E5200BFC358 /* PhyxEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37B2856613254B9100BACB27 /* PhyxEngine.cpp */; };
+		37B5D0F513277E5200BFC358 /* GfxEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C978A513255E4300F10762 /* GfxEngine.cpp */; };
+		37B5D0F613277E5200BFC358 /* GameManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C97A5A13255F6800F10762 /* GameManager.cpp */; };
+		37B5D0F713277E5200BFC358 /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C97A5B13255F6800F10762 /* GameState.cpp */; };
+		37B5D0F813277E5200BFC358 /* InputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C97A5C13255F6800F10762 /* InputManager.cpp */; };
+		37B5D0F913277E5200BFC358 /* Intro.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C97A5D13255F6800F10762 /* Intro.cpp */; };
+		37B5D0FA13277E5200BFC358 /* Event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C97B48132563C100F10762 /* Event.cpp */; };
+		37B5D0FB13277E5200BFC358 /* EventListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C97B49132563C100F10762 /* EventListener.cpp */; };
+		37B5D0FC13277E5200BFC358 /* EventManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C97B4A132563C100F10762 /* EventManager.cpp */; };
+		37B5D0FD13277E5200BFC358 /* UIEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37BF05B41326DB93008DBF9F /* UIEngine.cpp */; };
+		37B5D67D13277E5900BFC358 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3739F9461326D5D800FA5092 /* IOKit.framework */; };
+		37B5D67E13277E5900BFC358 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3739F94D1326D60000FA5092 /* Carbon.framework */; };
+		37B5D67F13277E5900BFC358 /* BulletCollision.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B285AD1325521C00BACB27 /* BulletCollision.framework */; };
+		37B5D68013277E5900BFC358 /* BulletDynamics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B285AF1325521C00BACB27 /* BulletDynamics.framework */; };
+		37B5D68113277E5900BFC358 /* BulletSoftBody.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B285B11325521C00BACB27 /* BulletSoftBody.framework */; };
+		37B5D68213277E5900BFC358 /* LinearMath.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B285B31325521C00BACB27 /* LinearMath.framework */; };
+		37B5D68313277E5900BFC358 /* CEGUIOgreRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C97B3E1325633D00F10762 /* CEGUIOgreRenderer.framework */; };
+		37B5D68413277E5900BFC358 /* CEGUIBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C97B3C1325633D00F10762 /* CEGUIBase.framework */; };
+		37B5D68513277E5900BFC358 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B282471323EB5B00BACB27 /* OpenGL.framework */; };
+		37B5D68613277E5900BFC358 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B2824B1323EB6800BACB27 /* GLUT.framework */; };
+		37B5D68713277E5900BFC358 /* libOgreTerrain.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C97A4513255ECE00F10762 /* libOgreTerrain.dylib */; };
+		37B5D68813277E5900BFC358 /* Plugin_OctreeSceneManager.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C97A4713255ECE00F10762 /* Plugin_OctreeSceneManager.dylib */; };
+		37B5D68913277E5900BFC358 /* Plugin_ParticleFX.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C97A4913255ECE00F10762 /* Plugin_ParticleFX.dylib */; };
+		37B5D68A13277E5900BFC358 /* RenderSystem_GL.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C97A4B13255ECE00F10762 /* RenderSystem_GL.dylib */; };
+		37B5D68B13277E5900BFC358 /* Ogre.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3739F9111326D30C00FA5092 /* Ogre.framework */; };
+		37B5D68C13277E5900BFC358 /* libOIS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3739F91E1326D38900FA5092 /* libOIS.a */; };
+		37B5D68D13277E5900BFC358 /* liblog4cpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3739FA621326D96C00FA5092 /* liblog4cpp.a */; };
+		37B5D68E13277E5900BFC358 /* freetype2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37BF05CB1326DC72008DBF9F /* freetype2.framework */; };
+		37B5D68F13277E5900BFC358 /* FreeImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37BF07371326DD10008DBF9F /* FreeImage.framework */; };
+		37B5D69013277E5900BFC358 /* PCRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37BF07391326DD10008DBF9F /* PCRE.framework */; };
+		37B5D69113277E5900BFC358 /* libOgrePaging.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37BF074A1326DD4D008DBF9F /* libOgrePaging.dylib */; };
+		37B5D69213277E6100BFC358 /* FreeImage.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 37BF07371326DD10008DBF9F /* FreeImage.framework */; };
+		37B5D69313277E6100BFC358 /* PCRE.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 37BF07391326DD10008DBF9F /* PCRE.framework */; };
+		37B5D69413277E6100BFC358 /* freetype2.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 37BF05CB1326DC72008DBF9F /* freetype2.framework */; };
+		37B5D69513277E6100BFC358 /* libOIS.a in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 3739F91E1326D38900FA5092 /* libOIS.a */; };
+		37B5D69613277E6100BFC358 /* Ogre.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 3739F9111326D30C00FA5092 /* Ogre.framework */; };
+		37B5D69713277E6100BFC358 /* BulletCollision.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 37B285AD1325521C00BACB27 /* BulletCollision.framework */; };
+		37B5D69813277E6100BFC358 /* BulletDynamics.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 37B285AF1325521C00BACB27 /* BulletDynamics.framework */; };
+		37B5D69913277E6100BFC358 /* BulletSoftBody.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 37B285B11325521C00BACB27 /* BulletSoftBody.framework */; };
+		37B5D69A13277E6100BFC358 /* LinearMath.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 37B285B31325521C00BACB27 /* LinearMath.framework */; };
+		37B5D69B13277E6100BFC358 /* CEGUIOgreRenderer.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 37C97B3E1325633D00F10762 /* CEGUIOgreRenderer.framework */; };
+		37B5D69C13277E6100BFC358 /* CEGUIBase.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 37C97B3C1325633D00F10762 /* CEGUIBase.framework */; };
+		37B5D69D13277E6600BFC358 /* CEGUIFalagardWRBase.bundle in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 37B5D0D313277DB800BFC358 /* CEGUIFalagardWRBase.bundle */; };
+		37B5D69E13277E6600BFC358 /* CEGUIExpatParser.bundle in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 37B5D08E13277CF100BFC358 /* CEGUIExpatParser.bundle */; };
+		37B5D69F13277E6600BFC358 /* CEGUIFreeImageImageCodec.bundle in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 37B5D09013277CF100BFC358 /* CEGUIFreeImageImageCodec.bundle */; };
+		37B5D6A013277E6600BFC358 /* libOgrePaging.dylib in Copy Components */ = {isa = PBXBuildFile; fileRef = 37BF074A1326DD4D008DBF9F /* libOgrePaging.dylib */; };
+		37B5D6A113277E6600BFC358 /* libOgreTerrain.dylib in Copy Components */ = {isa = PBXBuildFile; fileRef = 37C97A4513255ECE00F10762 /* libOgreTerrain.dylib */; };
+		37B5D6A213277E6600BFC358 /* Plugin_OctreeSceneManager.dylib in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 37C97A4713255ECE00F10762 /* Plugin_OctreeSceneManager.dylib */; };
+		37B5D6A313277E6600BFC358 /* Plugin_ParticleFX.dylib in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 37C97A4913255ECE00F10762 /* Plugin_ParticleFX.dylib */; };
+		37B5D6A413277E6600BFC358 /* RenderSystem_GL.dylib in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 37C97A4B13255ECE00F10762 /* RenderSystem_GL.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		3739F8DF1326D10600FA5092 /* Copy Frameworks (9) */ = {
+		37B5D6AE13277EA800BFC358 /* Copy Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				37BF07431326DD17008DBF9F /* FreeImage.framework in Copy Frameworks (9) */,
-				37BF07441326DD17008DBF9F /* PCRE.framework in Copy Frameworks (9) */,
-				37BF07311326DCD9008DBF9F /* freetype2.framework in Copy Frameworks (9) */,
-				3739F9201326D3A300FA5092 /* libOIS.a in Copy Frameworks (9) */,
-				3739F9121326D30C00FA5092 /* Ogre.framework in Copy Frameworks (9) */,
-				3739F8CE1326D0C200FA5092 /* BulletCollision.framework in Copy Frameworks (9) */,
-				3739F8CF1326D0C200FA5092 /* BulletDynamics.framework in Copy Frameworks (9) */,
-				3739F8D01326D0C200FA5092 /* BulletSoftBody.framework in Copy Frameworks (9) */,
-				3739F8D11326D0C200FA5092 /* LinearMath.framework in Copy Frameworks (9) */,
-				3739F7DA1326D0B200FA5092 /* CEGUIOgreRenderer.framework in Copy Frameworks (9) */,
-				3739F7D91326D0AE00FA5092 /* CEGUIBase.framework in Copy Frameworks (9) */,
+				37B5D69213277E6100BFC358 /* FreeImage.framework in Copy Frameworks */,
+				37B5D69313277E6100BFC358 /* PCRE.framework in Copy Frameworks */,
+				37B5D69413277E6100BFC358 /* freetype2.framework in Copy Frameworks */,
+				37B5D69513277E6100BFC358 /* libOIS.a in Copy Frameworks */,
+				37B5D69613277E6100BFC358 /* Ogre.framework in Copy Frameworks */,
+				37B5D69713277E6100BFC358 /* BulletCollision.framework in Copy Frameworks */,
+				37B5D69813277E6100BFC358 /* BulletDynamics.framework in Copy Frameworks */,
+				37B5D69913277E6100BFC358 /* BulletSoftBody.framework in Copy Frameworks */,
+				37B5D69A13277E6100BFC358 /* LinearMath.framework in Copy Frameworks */,
+				37B5D69B13277E6100BFC358 /* CEGUIOgreRenderer.framework in Copy Frameworks */,
+				37B5D69C13277E6100BFC358 /* CEGUIBase.framework in Copy Frameworks */,
 			);
-			name = "Copy Frameworks (9)";
+			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3739F9011326D1AF00FA5092 /* Copy Plugins */ = {
+		37B5D6AF13277EA800BFC358 /* Copy Plugins */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				37BF074C1326DD53008DBF9F /* libOgrePaging.dylib in Copy Plugins */,
-				3739F8E11326D15F00FA5092 /* libOgreTerrain.dylib in Copy Plugins */,
-				3739F8E21326D15F00FA5092 /* Plugin_OctreeSceneManager.dylib in Copy Plugins */,
-				3739F8E31326D15F00FA5092 /* Plugin_ParticleFX.dylib in Copy Plugins */,
-				3739F8E41326D15F00FA5092 /* RenderSystem_GL.dylib in Copy Plugins */,
+				37B5D69D13277E6600BFC358 /* CEGUIFalagardWRBase.bundle in Copy Plugins */,
+				37B5D69E13277E6600BFC358 /* CEGUIExpatParser.bundle in Copy Plugins */,
+				37B5D69F13277E6600BFC358 /* CEGUIFreeImageImageCodec.bundle in Copy Plugins */,
+				37B5D6A213277E6600BFC358 /* Plugin_OctreeSceneManager.dylib in Copy Plugins */,
+				37B5D6A313277E6600BFC358 /* Plugin_ParticleFX.dylib in Copy Plugins */,
+				37B5D6A413277E6600BFC358 /* RenderSystem_GL.dylib in Copy Plugins */,
 			);
 			name = "Copy Plugins";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		37B5D6DB1327811C00BFC358 /* Copy Components */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Components;
+			dstSubfolderSpec = 1;
+			files = (
+				37B5D6A013277E6600BFC358 /* libOgrePaging.dylib in Copy Components */,
+				37B5D6A113277E6600BFC358 /* libOgreTerrain.dylib in Copy Components */,
+			);
+			name = "Copy Components";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -124,6 +140,11 @@
 		37B285AF1325521C00BACB27 /* BulletDynamics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BulletDynamics.framework; path = Library/Frameworks/BulletDynamics.framework; sourceTree = SDKROOT; };
 		37B285B11325521C00BACB27 /* BulletSoftBody.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BulletSoftBody.framework; path = Library/Frameworks/BulletSoftBody.framework; sourceTree = SDKROOT; };
 		37B285B31325521C00BACB27 /* LinearMath.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LinearMath.framework; path = Library/Frameworks/LinearMath.framework; sourceTree = SDKROOT; };
+		37B5D08E13277CF100BFC358 /* CEGUIExpatParser.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = CEGUIExpatParser.bundle; path = "/Volumes/kandie/Workspace/Build/CEGUI-SDK-0.7.5-mac/PlugInBundles/Debug/CEGUIExpatParser.bundle"; sourceTree = "<absolute>"; };
+		37B5D09013277CF100BFC358 /* CEGUIFreeImageImageCodec.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = CEGUIFreeImageImageCodec.bundle; path = "/Volumes/kandie/Workspace/Build/CEGUI-SDK-0.7.5-mac/PlugInBundles/Debug/CEGUIFreeImageImageCodec.bundle"; sourceTree = "<absolute>"; };
+		37B5D0D313277DB800BFC358 /* CEGUIFalagardWRBase.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = CEGUIFalagardWRBase.bundle; path = "/Volumes/kandie/Workspace/Build/CEGUI-SDK-0.7.5-mac/PlugInBundles/Debug/CEGUIFalagardWRBase.bundle"; sourceTree = "<absolute>"; };
+		37B5D0EA13277E0600BFC358 /* Debug-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Debug-Info.plist"; sourceTree = "<group>"; };
+		37B5D6C013277FE900BFC358 /* Debug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Debug.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37BF05B41326DB93008DBF9F /* UIEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UIEngine.cpp; path = src/UIEngine.cpp; sourceTree = "<group>"; };
 		37BF05B61326DB9B008DBF9F /* UIEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIEngine.h; path = include/UIEngine.h; sourceTree = "<group>"; };
 		37BF05CB1326DC72008DBF9F /* freetype2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = freetype2.framework; path = "/Volumes/kandie/Downloads/Development/Game/CEGUI/CEGUI-0.7.5/dependencies/freetype2.framework"; sourceTree = "<absolute>"; };
@@ -156,36 +177,35 @@
 		37C97B48132563C100F10762 /* Event.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Event.cpp; path = src/Event.cpp; sourceTree = "<group>"; };
 		37C97B49132563C100F10762 /* EventListener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EventListener.cpp; path = src/EventListener.cpp; sourceTree = "<group>"; };
 		37C97B4A132563C100F10762 /* EventManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EventManager.cpp; path = src/EventManager.cpp; sourceTree = "<group>"; };
-		8DD76F6C0486A84900D96B5E /* Vertigo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Vertigo; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6859E8B029090EE04C91782 /* Vertigo.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Vertigo.1; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		8DD76F660486A84900D96B5E /* Frameworks */ = {
+		37B5D0E613277E0600BFC358 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3739F9471326D5D800FA5092 /* IOKit.framework in Frameworks */,
-				3739F9521326D60B00FA5092 /* Carbon.framework in Frameworks */,
-				37B285AE1325521C00BACB27 /* BulletCollision.framework in Frameworks */,
-				37B285B01325521C00BACB27 /* BulletDynamics.framework in Frameworks */,
-				37B285B21325521C00BACB27 /* BulletSoftBody.framework in Frameworks */,
-				37B285B41325521C00BACB27 /* LinearMath.framework in Frameworks */,
-				37C97B3F1325633D00F10762 /* CEGUIOgreRenderer.framework in Frameworks */,
-				37C97B3D1325633D00F10762 /* CEGUIBase.framework in Frameworks */,
-				37B282481323EB5B00BACB27 /* OpenGL.framework in Frameworks */,
-				37B2824C1323EB6800BACB27 /* GLUT.framework in Frameworks */,
-				37C97A4613255ECE00F10762 /* libOgreTerrain.dylib in Frameworks */,
-				37C97A4813255ECE00F10762 /* Plugin_OctreeSceneManager.dylib in Frameworks */,
-				37C97A4A13255ECE00F10762 /* Plugin_ParticleFX.dylib in Frameworks */,
-				37C97A4C13255ECE00F10762 /* RenderSystem_GL.dylib in Frameworks */,
-				3739F9151326D32000FA5092 /* Ogre.framework in Frameworks */,
-				3739F91F1326D38900FA5092 /* libOIS.a in Frameworks */,
-				3739FA631326D96C00FA5092 /* liblog4cpp.a in Frameworks */,
-				37BF05CC1326DC72008DBF9F /* freetype2.framework in Frameworks */,
-				37BF07381326DD10008DBF9F /* FreeImage.framework in Frameworks */,
-				37BF073A1326DD10008DBF9F /* PCRE.framework in Frameworks */,
-				37BF074B1326DD4D008DBF9F /* libOgrePaging.dylib in Frameworks */,
+				37B5D67D13277E5900BFC358 /* IOKit.framework in Frameworks */,
+				37B5D67E13277E5900BFC358 /* Carbon.framework in Frameworks */,
+				37B5D67F13277E5900BFC358 /* BulletCollision.framework in Frameworks */,
+				37B5D68013277E5900BFC358 /* BulletDynamics.framework in Frameworks */,
+				37B5D68113277E5900BFC358 /* BulletSoftBody.framework in Frameworks */,
+				37B5D68213277E5900BFC358 /* LinearMath.framework in Frameworks */,
+				37B5D68313277E5900BFC358 /* CEGUIOgreRenderer.framework in Frameworks */,
+				37B5D68413277E5900BFC358 /* CEGUIBase.framework in Frameworks */,
+				37B5D68513277E5900BFC358 /* OpenGL.framework in Frameworks */,
+				37B5D68613277E5900BFC358 /* GLUT.framework in Frameworks */,
+				37B5D68713277E5900BFC358 /* libOgreTerrain.dylib in Frameworks */,
+				37B5D68813277E5900BFC358 /* Plugin_OctreeSceneManager.dylib in Frameworks */,
+				37B5D68913277E5900BFC358 /* Plugin_ParticleFX.dylib in Frameworks */,
+				37B5D68A13277E5900BFC358 /* RenderSystem_GL.dylib in Frameworks */,
+				37B5D68B13277E5900BFC358 /* Ogre.framework in Frameworks */,
+				37B5D68C13277E5900BFC358 /* libOIS.a in Frameworks */,
+				37B5D68D13277E5900BFC358 /* liblog4cpp.a in Frameworks */,
+				37B5D68E13277E5900BFC358 /* freetype2.framework in Frameworks */,
+				37B5D68F13277E5900BFC358 /* FreeImage.framework in Frameworks */,
+				37B5D69013277E5900BFC358 /* PCRE.framework in Frameworks */,
+				37B5D69113277E5900BFC358 /* libOgrePaging.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,6 +222,7 @@
 				37B282461323EB4500BACB27 /* External Frameworks */,
 				37C97A4413255EAA00F10762 /* Plugins */,
 				1AB674ADFE9D54B511CA2CBB /* Products */,
+				37B5D0EA13277E0600BFC358 /* Debug-Info.plist */,
 			);
 			name = Vertigo;
 			sourceTree = "<group>";
@@ -229,7 +250,7 @@
 		1AB674ADFE9D54B511CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8DD76F6C0486A84900D96B5E /* Vertigo */,
+				37B5D6C013277FE900BFC358 /* Debug.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -260,26 +281,13 @@
 		37B2829D1325167400BACB27 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
-				37BF05B61326DB9B008DBF9F /* UIEngine.h */,
-				37C97B42132563B400F10762 /* Event.h */,
-				37C97B43132563B400F10762 /* EventHandler.h */,
-				37C97B44132563B400F10762 /* EventListener.h */,
-				37C97B45132563B400F10762 /* EventManager.h */,
-				37C97B46132563B400F10762 /* Handler.h */,
-				37C97B47132563B400F10762 /* Listener.h */,
-				37C97A5513255F4E00F10762 /* GameManager.h */,
-				37C97A5613255F4E00F10762 /* GameState.h */,
-				37C97A5713255F4E00F10762 /* InputManager.h */,
-				37C97A5813255F4E00F10762 /* Intro.h */,
-				37C97A5913255F4E00F10762 /* SdkCameraMan.h */,
-				37C978A413255E3B00F10762 /* GfxEngine.h */,
-				37B2859413254FB000BACB27 /* Entity.h */,
-				37B2856213254B5E00BACB27 /* Engine.h */,
-				37B2856313254B5F00BACB27 /* PhyxEngine.h */,
+				37B5D78C13278B1700BFC358 /* Managers */,
+				37B5D78B13278B0D00BFC358 /* GameStates */,
+				37B5D78A13278B0100BFC358 /* Entities */,
+				37B5D78913278AF700BFC358 /* Events */,
+				37B5D78813278AF200BFC358 /* Engines */,
 				37B28342132522B300BACB27 /* Pixy.h */,
 				37B28343132522B300BACB27 /* PixyLog.h */,
-				37B28344132522B300BACB27 /* Utility.h */,
-				37B282AF1325175300BACB27 /* Sphere.h */,
 			);
 			name = Headers;
 			sourceTree = "<group>";
@@ -287,6 +295,8 @@
 		37B282C8132519B200BACB27 /* External Modules */ = {
 			isa = PBXGroup;
 			children = (
+				37B28344132522B300BACB27 /* Utility.h */,
+				37C97A5913255F4E00F10762 /* SdkCameraMan.h */,
 				37B282C9132519C800BACB27 /* log4cpp */,
 			);
 			name = "External Modules";
@@ -302,7 +312,17 @@
 			path = modules/log4cpp;
 			sourceTree = "<group>";
 		};
-		37C97A4413255EAA00F10762 /* Plugins */ = {
+		37B5D0D113277D9600BFC358 /* CEGUI */ = {
+			isa = PBXGroup;
+			children = (
+				37B5D08E13277CF100BFC358 /* CEGUIExpatParser.bundle */,
+				37B5D09013277CF100BFC358 /* CEGUIFreeImageImageCodec.bundle */,
+				37B5D0D313277DB800BFC358 /* CEGUIFalagardWRBase.bundle */,
+			);
+			name = CEGUI;
+			sourceTree = "<group>";
+		};
+		37B5D0D213277D9B00BFC358 /* Ogre */ = {
 			isa = PBXGroup;
 			children = (
 				37C97A4513255ECE00F10762 /* libOgreTerrain.dylib */,
@@ -310,6 +330,66 @@
 				37C97A4913255ECE00F10762 /* Plugin_ParticleFX.dylib */,
 				37C97A4B13255ECE00F10762 /* RenderSystem_GL.dylib */,
 				37BF074A1326DD4D008DBF9F /* libOgrePaging.dylib */,
+			);
+			name = Ogre;
+			sourceTree = "<group>";
+		};
+		37B5D78813278AF200BFC358 /* Engines */ = {
+			isa = PBXGroup;
+			children = (
+				37BF05B61326DB9B008DBF9F /* UIEngine.h */,
+				37C978A413255E3B00F10762 /* GfxEngine.h */,
+				37B2856213254B5E00BACB27 /* Engine.h */,
+				37B2856313254B5F00BACB27 /* PhyxEngine.h */,
+			);
+			name = Engines;
+			sourceTree = "<group>";
+		};
+		37B5D78913278AF700BFC358 /* Events */ = {
+			isa = PBXGroup;
+			children = (
+				37C97B42132563B400F10762 /* Event.h */,
+				37C97B43132563B400F10762 /* EventHandler.h */,
+				37C97B44132563B400F10762 /* EventListener.h */,
+				37C97B45132563B400F10762 /* EventManager.h */,
+				37C97B46132563B400F10762 /* Handler.h */,
+				37C97B47132563B400F10762 /* Listener.h */,
+			);
+			name = Events;
+			sourceTree = "<group>";
+		};
+		37B5D78A13278B0100BFC358 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				37B2859413254FB000BACB27 /* Entity.h */,
+				37B282AF1325175300BACB27 /* Sphere.h */,
+			);
+			name = Entities;
+			sourceTree = "<group>";
+		};
+		37B5D78B13278B0D00BFC358 /* GameStates */ = {
+			isa = PBXGroup;
+			children = (
+				37C97A5613255F4E00F10762 /* GameState.h */,
+				37C97A5813255F4E00F10762 /* Intro.h */,
+			);
+			name = GameStates;
+			sourceTree = "<group>";
+		};
+		37B5D78C13278B1700BFC358 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				37C97A5713255F4E00F10762 /* InputManager.h */,
+				37C97A5513255F4E00F10762 /* GameManager.h */,
+			);
+			name = Managers;
+			sourceTree = "<group>";
+		};
+		37C97A4413255EAA00F10762 /* Plugins */ = {
+			isa = PBXGroup;
+			children = (
+				37B5D0D213277D9B00BFC358 /* Ogre */,
+				37B5D0D113277D9600BFC358 /* CEGUI */,
 			);
 			name = Plugins;
 			sourceTree = "<group>";
@@ -325,24 +405,25 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8DD76F620486A84900D96B5E /* Vertigo */ = {
+		37B5D0E713277E0600BFC358 /* Vertigo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1DEB923108733DC60010E9CD /* Build configuration list for PBXNativeTarget "Vertigo" */;
+			buildConfigurationList = 37B5D0ED13277E0700BFC358 /* Build configuration list for PBXNativeTarget "Vertigo" */;
 			buildPhases = (
-				8DD76F640486A84900D96B5E /* Sources */,
-				8DD76F660486A84900D96B5E /* Frameworks */,
-				3739F8DF1326D10600FA5092 /* Copy Frameworks (9) */,
-				3739F9011326D1AF00FA5092 /* Copy Plugins */,
+				37B5D0E413277E0600BFC358 /* Resources */,
+				37B5D0E513277E0600BFC358 /* Sources */,
+				37B5D0E613277E0600BFC358 /* Frameworks */,
+				37B5D6AE13277EA800BFC358 /* Copy Frameworks */,
+				37B5D6AF13277EA800BFC358 /* Copy Plugins */,
+				37B5D6DB1327811C00BFC358 /* Copy Components */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = Vertigo;
-			productInstallPath = "$(HOME)/bin";
-			productName = Vertigo;
-			productReference = 8DD76F6C0486A84900D96B5E /* Vertigo */;
-			productType = "com.apple.product-type.tool";
+			productName = Debug;
+			productReference = 37B5D6C013277FE900BFC358 /* Debug.app */;
+			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
@@ -356,94 +437,46 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8DD76F620486A84900D96B5E /* Vertigo */,
+				37B5D0E713277E0600BFC358 /* Vertigo */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		37B5D0E413277E0600BFC358 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
-		8DD76F640486A84900D96B5E /* Sources */ = {
+		37B5D0E513277E0600BFC358 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8DD76F650486A84900D96B5E /* main.cpp in Sources */,
-				37B282C41325176100BACB27 /* Sphere.cpp in Sources */,
-				37B282CC132519C800BACB27 /* PixyLogLayout.cpp in Sources */,
-				37B2834C132522D200BACB27 /* Entity.cpp in Sources */,
-				37B2856713254B9100BACB27 /* PhyxEngine.cpp in Sources */,
-				37C978A613255E4300F10762 /* GfxEngine.cpp in Sources */,
-				37C97A5E13255F6800F10762 /* GameManager.cpp in Sources */,
-				37C97A5F13255F6800F10762 /* GameState.cpp in Sources */,
-				37C97A6013255F6800F10762 /* InputManager.cpp in Sources */,
-				37C97A6113255F6800F10762 /* Intro.cpp in Sources */,
-				37C97B4B132563C100F10762 /* Event.cpp in Sources */,
-				37C97B4C132563C100F10762 /* EventListener.cpp in Sources */,
-				37C97B4D132563C100F10762 /* EventManager.cpp in Sources */,
-				37BF05B51326DB93008DBF9F /* UIEngine.cpp in Sources */,
+				37B5D0F013277E5200BFC358 /* main.cpp in Sources */,
+				37B5D0F113277E5200BFC358 /* Sphere.cpp in Sources */,
+				37B5D0F213277E5200BFC358 /* PixyLogLayout.cpp in Sources */,
+				37B5D0F313277E5200BFC358 /* Entity.cpp in Sources */,
+				37B5D0F413277E5200BFC358 /* PhyxEngine.cpp in Sources */,
+				37B5D0F513277E5200BFC358 /* GfxEngine.cpp in Sources */,
+				37B5D0F613277E5200BFC358 /* GameManager.cpp in Sources */,
+				37B5D0F713277E5200BFC358 /* GameState.cpp in Sources */,
+				37B5D0F813277E5200BFC358 /* InputManager.cpp in Sources */,
+				37B5D0F913277E5200BFC358 /* Intro.cpp in Sources */,
+				37B5D0FA13277E5200BFC358 /* Event.cpp in Sources */,
+				37B5D0FB13277E5200BFC358 /* EventListener.cpp in Sources */,
+				37B5D0FC13277E5200BFC358 /* EventManager.cpp in Sources */,
+				37B5D0FD13277E5200BFC358 /* UIEngine.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		1DEB923208733DC60010E9CD /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../Build/Ogre-1.7.2/lib/Debug\"",
-					"\"$(SRCROOT)/../../Build/CEGUI-SDK-0.7.5-mac/Frameworks/Debug\"",
-					"\"$(SRCROOT)/../../../Downloads/Development/Game/CEGUI/CEGUI-0.7.5/dependencies\"",
-				);
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				HEADER_SEARCH_PATHS = (
-					/usr/local/include,
-					/opt/local/include,
-					/usr/local/include/bullet,
-					"\"$(SRCROOT)/../../Build/Ogre-1.7.2/lib/Debug/Ogre.framework/Headers\"",
-					"\"$(SRCROOT)/../../Libraries/gamedev/ois/includes\"",
-				);
-				INSTALL_PATH = /usr/local/bin;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					/opt/local/lib,
-					"\"$(SRCROOT)/modules\"",
-					"\"$(SRCROOT)/../../Build/Ogre-1.7.2/lib/Debug\"",
-					"\"$(SRCROOT)/../../Libraries/gamedev/ois/lib\"",
-				);
-				PRODUCT_NAME = Vertigo;
-			};
-			name = Debug;
-		};
-		1DEB923308733DC60010E9CD /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../Build/Ogre-1.7.2/lib/Debug\"",
-					"\"$(SRCROOT)/../../Build/CEGUI-SDK-0.7.5-mac/Frameworks/Debug\"",
-					"\"$(SRCROOT)/../../../Downloads/Development/Game/CEGUI/CEGUI-0.7.5/dependencies\"",
-				);
-				GCC_MODEL_TUNING = G5;
-				INSTALL_PATH = /usr/local/bin;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					/opt/local/lib,
-					"\"$(SRCROOT)/modules\"",
-					"\"$(SRCROOT)/../../Build/Ogre-1.7.2/lib/Debug\"",
-					"\"$(SRCROOT)/../../Libraries/gamedev/ois/lib\"",
-				);
-				PRODUCT_NAME = Vertigo;
-			};
-			name = Release;
-		};
 		1DEB923608733DC60010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -477,23 +510,93 @@
 			};
 			name = Release;
 		};
+		37B5D0EB13277E0600BFC358 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../Build/CEGUI-SDK-0.7.5-mac/Frameworks/Debug\"",
+					"\"$(SRCROOT)/../../Build/Ogre-1.7.2/lib/Debug\"",
+					"\"$(SRCROOT)/../../../Downloads/Development/Game/CEGUI/CEGUI-0.7.5/dependencies\"",
+				);
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = "Debug-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../Build/Ogre-1.7.2/lib/Debug\"",
+					"\"$(SRCROOT)/../../Libraries/gamedev/ois/lib\"",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Debug;
+			};
+			name = Debug;
+		};
+		37B5D0EC13277E0600BFC358 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../Build/CEGUI-SDK-0.7.5-mac/Frameworks/Debug\"",
+					"\"$(SRCROOT)/../../Build/Ogre-1.7.2/lib/Debug\"",
+					"\"$(SRCROOT)/../../../Downloads/Development/Game/CEGUI/CEGUI-0.7.5/dependencies\"",
+				);
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "Debug-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../Build/Ogre-1.7.2/lib/Debug\"",
+					"\"$(SRCROOT)/../../Libraries/gamedev/ois/lib\"",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Debug;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1DEB923108733DC60010E9CD /* Build configuration list for PBXNativeTarget "Vertigo" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				1DEB923208733DC60010E9CD /* Debug */,
-				1DEB923308733DC60010E9CD /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		1DEB923508733DC60010E9CD /* Build configuration list for PBXProject "Vertigo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB923608733DC60010E9CD /* Debug */,
 				1DEB923708733DC60010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		37B5D0ED13277E0700BFC358 /* Build configuration list for PBXNativeTarget "Vertigo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				37B5D0EB13277E0600BFC358 /* Debug */,
+				37B5D0EC13277E0600BFC358 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

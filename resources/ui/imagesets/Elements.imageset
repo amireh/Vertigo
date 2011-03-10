@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Imageset Name="Buttons-Races" Imagefile="Elements.png" NativeHorzRes="800" NativeVertRes="600" AutoScaled="true">
+	<!-- Earth -->
+	<Image Name="Earth_Normal" XPos="0" YPos="190"  Width="77" Height="77" />
+	<Image Name="Earth_Hover"  XPos="0" YPos="0" Width="77" Height="77" />
+	<Image Name="Earth_Pushed" XPos="0" YPos="0" Width="77" Height="77" />
+	<Image Name="Earth_Disabled" XPos="0" YPos="0" Width="77" Height="77" />
+	<!-- Air -->
+	<Image Name="Air_Normal" XPos="80" YPos="190"  Width="80" Height="77" />
+	<Image Name="Air_Hover"  XPos="80" YPos="0" Width="80" Height="77" />
+	<Image Name="Air_Pushed" XPos="80" YPos="0" Width="80" Height="77" />
+	<Image Name="Air_Disabled" XPos="80" YPos="0" Width="80" Height="77" />
+	<!-- Fire -->
+	<Image Name="Fire_Normal" XPos="0" YPos="274"  Width="76" Height="77" />
+	<Image Name="Fire_Hover"  XPos="0" YPos="84" Width="76" Height="77" />
+	<Image Name="Fire_Pushed" XPos="0" YPos="84" Width="76" Height="77" />
+	<Image Name="Fire_Disabled" XPos="0" YPos="84" Width="76" Height="77" />
+	<!-- Water -->
+	<Image Name="Water_Normal" XPos="82" YPos="274"  Width="78" Height="77" />
+	<Image Name="Water_Hover"  XPos="82" YPos="84" Width="78" Height="77" />
+	<Image Name="Water_Pushed" XPos="82" YPos="84" Width="78" Height="77" />
+	<Image Name="Water_Disabled" XPos="82" YPos="84" Width="78" Height="77" />
+</Imageset>
+
+

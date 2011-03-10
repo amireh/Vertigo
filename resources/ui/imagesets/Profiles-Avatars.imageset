@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Imageset Name="Profiles-Avatars" Imagefile="Avatar.png" NativeHorzRes="800" NativeVertRes="600" AutoScaled="true">
+	<!-- Kandy -->
+	<Image Name="Kandy" XPos="0" YPos="0"  Width="171" Height="350" />
+
+</Imageset>
+
+

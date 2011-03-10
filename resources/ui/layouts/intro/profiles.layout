@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+    <Window Type="DefaultWindow" Name="Elementum/Scenes/Intro/Profiles" >
+        <Property Name="UnifiedAreaRect" Value="{{-4.56348e-08,0},{-4.86616e-08,0},{1,0},{1,0}}" />
+        
+        <Window Type="TaharezLook/ItemListbox" Name="Elementum/Scenes/Intro/Profiles/List" >
+            <Property Name="Font" Value="DejaVuSans-10" />
+            <Property Name="UnifiedSize" Value="{{0,180},{0, 200}" />
+            <Property Name="UnifiedPosition" Value="{{0.02, 0}, {0.05, 0}}" />
+            <Property Name="Disabled" Value="False" />
+            <Property Name="FrameEnabled" Value="True" />
+        </Window>
+        
+        <Window Type="Vanilla/Button" Name="Elementum/Scenes/Intro/Profiles/Buttons/CreateNewPuppet" >
+            <Property Name="Font" Value="DejaVuSans-10" />
+            <Property Name="Text" Value="Create a New Puppet" />
+            <Property Name="UnifiedSize" Value="{{0,250},{0, 30}" />
+            <Property Name="UnifiedPosition" Value="{{0, -10}, {0.05, 530}}" />
+            <Property Name="HorizontalAlignment" Value="Centre" />
+            <Event Name="Clicked" Function="Profiles.create" />
+        </Window>
+        
+        <Window Type="Vanilla/FrameWindow" Name="Elementum/Scenes/Intro/Profiles/Container" >
+            <Property Name="Font" Value="DejaVuSans-10" />
+            <Property Name="UnifiedSize" Value="{{0,320},{0, 520}" />
+            <Property Name="UnifiedPosition" Value="{{0.1, 150}, {0.05, 0}}" />
+            <Property Name="Disabled" Value="False" />
+<!--            <Property Name="ForceHorzScrollbar" Value="True" /> -->
+            <Property Name="FrameEnabled" Value="True" />
+            
+            <Window Type="Vanilla/StaticText" Name="Elementum/Scenes/Intro/Profiles/Container/Name" >
+                <Property Name="Text" Value="Name" />
+                <Property Name="UnifiedSize" Value="{{0,100},{0, 30}" />
+                <Property Name="UnifiedPosition" Value="{{0.01, 0}, {0, 0}}" />
+                <Property Name="FrameEnabled" Value="False" />
+                <Property Name="BackgroundEnabled" Value="False" />
+            </Window>
+
+            <Window Type="Vanilla/StaticText" Name="Elementum/Scenes/Intro/Profiles/Container/Stats" >
+                <Property Name="Text" Value="Stats ---" />
+                <Property Name="UnifiedSize" Value="{{0,200},{0, 80}" />
+                <Property Name="UnifiedPosition" Value="{{0.01, 0}, {0, 30}}" />
+                <Property Name="FrameEnabled" Value="False" />
+                <Property Name="VerticalAlignment" Value="Top" />
+                <Property Name="BackgroundEnabled" Value="False" />
+            </Window>
+            <Window Type="TaharezLook/StaticImage" Name="Elementum/Scenes/Intro/Profiles/Container/Avatar-Frame">
+              <Property Name="UnifiedSize" Value="{{0, 300}, {0, 365}}" />
+              <Property Name="UnifiedPosition" Value="{{0.01,0},{0,105}}" />
+              <Property Name="FrameEnabled" Value="True" />
+              <Property Name="BackgroundEnabled" Value="True" />
+              
+              <Window Type="TaharezLook/StaticImage" Name="Elementum/Scenes/Intro/Profiles/Container/Avatar" >
+                  <Property Name="Visible" Value="True" />
+                  <Property Name="UnifiedSize" Value="{{0, 171}, {0, 345}}" />
+                  <Property Name="UnifiedPosition" Value="{{0.01,5},{0,10}}" />
+                  <Property Name="FrameEnabled" Value="False" />
+                  <Property Name="HorizontalAlignment" Value="Centre" />                  
+              </Window>
+            </Window>
+        </Window>
+        
+        <Window Type="Vanilla/Button" Name="Elementum/Scenes/Intro/Profiles/Buttons/Next_Profile" >
+            <Property Name="Text" Value=">" />
+            <Property Name="UnifiedSize" Value="{{0,20},{0, 30}" />
+            <Property Name="UnifiedPosition" Value="{{0.1, 450}, {0.05, 530}}" />
+            <Event Name="Clicked" Function="Profiles.next" />
+        </Window>
+        <Window Type="Vanilla/Button" Name="Elementum/Scenes/Intro/Profiles/Buttons/Prev_Profile" >
+            <Property Name="Text" Value="<" />
+            <Property Name="UnifiedSize" Value="{{0,20},{0, 30}" />
+            <Property Name="UnifiedPosition" Value="{{0.1, 150}, {0.05, 530}}" />
+            <Event Name="Clicked" Function="Profiles.prev" />
+        </Window>
+        
+        <Window Type="Vanilla/Button" Name="Elementum/Scenes/Intro/Profiles/Buttons/Play" >
+            <Property Name="Text" Value="Play" />
+            <Property Name="UnifiedSize" Value="{{0,100},{0, 30}" />
+            <Property Name="UnifiedPosition" Value="{{0, -10}, {0.05, 530}}" />
+            <Property Name="HorizontalAlignment" Value="Right" />
+            <Event Name="Clicked" Function="Profiles.play" />
+        </Window>
+        <Window Type="Vanilla/Button" Name="Elementum/Scenes/Intro/Profiles/Buttons/BackToLogin" >
+            <Property Name="Text" Value="Back" />
+            <Property Name="UnifiedSize" Value="{{0,100},{0, 30}" />
+            <Property Name="UnifiedPosition" Value="{{0, 10}, {0.05, 530}}" />
+            <Property Name="HorizontalAlignment" Value="Left" />
+            <Event Name="Clicked" Function="Profiles.back" />
+        </Window>
+    </Window>
+</GUILayout>

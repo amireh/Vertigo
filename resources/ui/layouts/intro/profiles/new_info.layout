@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+  <Window Type="DefaultWindow" Name="Elementum/Scenes/Intro/Profiles/New/Info">
+    <Property Name="UnifiedSize" Value="{{1.0,0}, {1.0,0}}" />
+    <Property Name="UnifiedPosition" Value="{{0,0}, {0,0}}" />
+
+    <Window Type="TaharezLook/StaticText" Name="Elementum/Scenes/Intro/Profiles/New/Info/Labels/ChooseRace">
+      <Property Name="Text" Value="Choose Race" />
+      <Property Name="Visible" Value="True" />
+      <Property Name="UnifiedSize" Value="{{0, 100}, {0, 40}}" />
+      <Property Name="UnifiedPosition" Value="{{0.45,0},{0.2,0}}" />
+      <Property Name="FrameEnabled" Value="False" />
+    </Window>
+
+    <Window Type="TaharezLook/ImageButton" Name="Elementum/Scenes/Intro/Profiles/New/Info/Buttons/Earth" >
+        <Property Name="NormalImage" Value="set:Buttons-Races image:Earth_Normal" />
+        <Property Name="HoverImage" Value="set:Buttons-Races image:Earth_Hover" />
+        <Property Name="PushedImage" Value="set:Buttons-Races image:Earth_Pushed" />
+        <Property Name="DisabledImage" Value="set:Buttons-Races image:Earth_Disabled" />
+        <Property Name="Visible" Value="True" />
+        <Property Name="UnifiedSize" Value="{{0, 76}, {0, 77}}" />
+        <Property Name="UnifiedPosition" Value="{{0.3,0},{0.3,0}}" />
+        <Property Name="WantsMultiClickEvents" Value="True" />
+        <Event Name="Clicked" Function="Profiles.New.Info.setRace" />
+    </Window>
+
+    <Window Type="TaharezLook/ImageButton" Name="Elementum/Scenes/Intro/Profiles/New/Info/Buttons/Air" >
+        <Property Name="NormalImage" Value="set:Buttons-Races image:Air_Normal" />
+        <Property Name="HoverImage" Value="set:Buttons-Races image:Air_Hover" />
+        <Property Name="PushedImage" Value="set:Buttons-Races image:Air_Pushed" />
+        <Property Name="DisabledImage" Value="set:Buttons-Races image:Air_Disabled" />
+        <Property Name="Visible" Value="True" />
+        <Property Name="UnifiedSize" Value="{{0, 76}, {0, 77}}" />
+        <Property Name="UnifiedPosition" Value="{{0.4,0},{0.3,0}}" />
+        <Property Name="WantsMultiClickEvents" Value="True" />
+        <Event Name="Clicked" Function="Profiles.New.Info.setRace" />
+    </Window>
+
+    <Window Type="TaharezLook/ImageButton" Name="Elementum/Scenes/Intro/Profiles/New/Info/Buttons/Fire" >
+        <Property Name="NormalImage" Value="set:Buttons-Races image:Fire_Normal" />
+        <Property Name="HoverImage" Value="set:Buttons-Races image:Fire_Hover" />
+        <Property Name="PushedImage" Value="set:Buttons-Races image:Fire_Pushed" />
+        <Property Name="DisabledImage" Value="set:Buttons-Races image:Fire_Disabled" />
+        <Property Name="Visible" Value="True" />
+        <Property Name="UnifiedSize" Value="{{0, 76}, {0, 77}}" />
+        <Property Name="UnifiedPosition" Value="{{0.5,0},{0.3,0}}" />
+        <Property Name="WantsMultiClickEvents" Value="True" />
+        <Event Name="Clicked" Function="Profiles.New.Info.setRace" />
+    </Window>
+
+    <Window Type="TaharezLook/ImageButton" Name="Elementum/Scenes/Intro/Profiles/New/Info/Buttons/Water" >
+        <Property Name="NormalImage" Value="set:Buttons-Races image:Water_Normal" />
+        <Property Name="HoverImage" Value="set:Buttons-Races image:Water_Hover" />
+        <Property Name="PushedImage" Value="set:Buttons-Races image:Water_Pushed" />
+        <Property Name="DisabledImage" Value="set:Buttons-Races image:Water_Disabled" />
+        <Property Name="Visible" Value="True" />
+        <Property Name="UnifiedSize" Value="{{0, 76}, {0, 77}}" />
+        <Property Name="UnifiedPosition" Value="{{0.6,0},{0.3,0}}" />
+        <Property Name="WantsMultiClickEvents" Value="True" />
+        <Event Name="Clicked" Function="Profiles.New.Info.setRace" />
+    </Window>
+
+
+    <Window Type="TaharezLook/StaticText" Name="Elementum/Scenes/Intro/Profiles/New/Info/Labels/Name">
+      <Property Name="Text" Value="Name: " />
+      <Property Name="Visible" Value="True" />
+      <Property Name="UnifiedSize" Value="{{0, 50}, {0, 40}}" />
+      <Property Name="UnifiedPosition" Value="{{0.3,0},{0.5,0}}" />
+      <Property Name="FrameEnabled" Value="False" />
+      <Property Name="BackgroundEnabled" Value="False" />
+    </Window>
+    <Window Type="Vanilla/Editbox" Name="Elementum/Scenes/Intro/Profiles/New/Info/TextFields/Name">
+      <Property Name="Text" Value="" />
+      <Property Name="Visible" Value="True" />
+      <Property Name="UnifiedSize" Value="{{0, 150}, {0, 30}}" />
+      <Property Name="UnifiedPosition" Value="{{0.4,0},{0.5,5}}" />
+    </Window>    
+
+
+    <Window Type="TaharezLook/StaticText" Name="Elementum/Scenes/Intro/Profiles/New/Info/Labels/Race">
+      <Property Name="Text" Value="Race: " />
+      <Property Name="Visible" Value="True" />
+      <Property Name="UnifiedSize" Value="{{0, 50}, {0, 40}}" />
+      <Property Name="UnifiedPosition" Value="{{0.3,0},{0.6,0}}" />
+      <Property Name="FrameEnabled" Value="False" />
+      <Property Name="BackgroundEnabled" Value="False" />
+    </Window>
+    <Window Type="Vanilla/Editbox" Name="Elementum/Scenes/Intro/Profiles/New/Info/TextFields/Race">
+      <Property Name="Text" Value="" />
+      <Property Name="Visible" Value="True" />
+      <Property Name="UnifiedSize" Value="{{0, 150}, {0, 30}}" />
+      <Property Name="UnifiedPosition" Value="{{0.4,0},{0.6,5}}" />
+      <Property Name="Disabled" Value="True" />
+    </Window>
+
+
+    <Window Type="Vanilla/Button" Name="Elementum/Scenes/Intro/Profiles/New/Info/Buttons/Back">
+      <Property Name="Text" Value="Back" />
+      <Property Name="UnifiedSize" Value="{{0, 60}, {0, 30}}" />
+      <Property Name="UnifiedPosition" Value="{{0.4,0},{0.7,0}}" />
+      <Event Name="Clicked" Function="Profiles.New.Info.back" />
+    </Window>
+    <Window Type="Vanilla/Button" Name="Elementum/Scenes/Intro/Profiles/New/Info/Buttons/Next">
+      <Property Name="Text" Value="Next" />
+      <Property Name="UnifiedSize" Value="{{0, 90}, {0, 30}}" />
+      <Property Name="UnifiedPosition" Value="{{0.4,60},{0.7,0}}" />
+      <Event Name="Clicked" Function="Profiles.New.Info.next" />
+    </Window>          
+  </Window>
+</GUILayout>

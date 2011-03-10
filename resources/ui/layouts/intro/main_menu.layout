@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+    <!--><Window Type="DefaultWindow" Name="Elementum" >-->
+        
+        <Window Type="Vanilla/FrameWindow" Name="Elementum/Scenes/Intro/MainMenu" >
+            <Property Name="Font" Value="DejaVuSans-10" />
+            <Property Name="Text" Value="Elementum" />
+            <Property Name="FrameEnabled" Value="False" />
+            <Property Name="TitlebarFont" Value="DejaVuSans-10" />
+            <Property Name="SizingEnabled" Value="False" />
+            <Property Name="TitlebarEnabled" Value="True" />
+            <Property Name="UnifiedAreaRect" Value="{{0.0929688,0},{0.0682292,0},{0.852734,0},{0.86901,0}}" />
+            <Property Name="DragMovingEnabled" Value="False" />
+            <Property Name="CloseButtonEnabled" Value="False" />
+            <Property Name="EWSizingCursorImage" Value="set:TaharezLook image:MouseEsWeCursor" />
+            <Property Name="NSSizingCursorImage" Value="set:TaharezLook image:MouseNoSoCursor" />
+            <Property Name="NESWSizingCursorImage" Value="set:TaharezLook image:MouseNeSwCursor" />
+            <Property Name="NWSESizingCursorImage" Value="set:TaharezLook image:MouseNwSeCursor" />
+            
+            <Window Type="Vanilla/Button" Name="Elementum/Scenes/Intro/MainMenu/Buttons/Play" >
+                <Property Name="Font" Value="DejaVuSans-10" />
+                <Property Name="Text" Value="Play" />
+                <Property Name="UnifiedAreaRect" Value="{{0.397429,0},{0.4,0},{0.571593,0},{0.571951,0}}" />
+                <Property Name="WantsMultiClickEvents" Value="True" />
+                <Event Name="Clicked" Function="MainMenu.Play" />
+            </Window>
+            <Window Type="Vanilla/Button" Name="Elementum/Scenes/Intro/MainMenu/Buttons/Settings" >
+                <Property Name="Font" Value="DejaVuSans-10" />
+                <Property Name="Text" Value="Settings" />
+                <Property Name="UnifiedAreaRect" Value="{{0.416452,0},{0.319512,0},{0.555912,0},{0.385773,0}}" />
+                <Property Name="WantsMultiClickEvents" Value="True" />
+            </Window>
+            <Window Type="Vanilla/Button" Name="Elementum/Scenes/Intro/MainMenu/Buttons/Quit" >
+                <Property Name="Font" Value="DejaVuSans-10" />
+                <Property Name="Text" Value="Quit" />
+                <Property Name="UnifiedAreaRect" Value="{{0.414653,0},{0.58374,0},{0.555399,0},{0.648374,0}}" />
+                <Property Name="WantsMultiClickEvents" Value="True" />
+                <Event Name="Clicked" Function="MainMenu.Quit" />
+            </Window>
+            <!--
+            <Window Type="Vanilla/StaticText" Name="Elementum/Scenes/Intro/MainMenu/Labels/Elementum" >
+                <Property Name="Font" Value="DejaVuSans-10" />
+                <Property Name="Text" Value="Elementum" />
+                <Property Name="HorzExtent" Value="102" />
+                <Property Name="VertExtent" Value="19.8618" />
+                <Property Name="FrameEnabled" Value="False" />
+                <Property Name="HorzFormatting" Value="HorzCentred" />
+                <Property Name="UnifiedAreaRect" Value="{{-0.0149099,0},{0.0382113,0},{0.629691,0},{0.273577,0}}" />
+                <Property Name="BackgroundEnabled" Value="False" />
+                <Property Name="HorizontalAlignment" Value="Centre" />
+            </Window>
+            -->
+        </Window>
+    <!--></Window>-->
+</GUILayout>

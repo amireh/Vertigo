@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+      <Window Type="Vanilla/FrameWindow" Name="Elementum/Scenes/Intro/Login" >
+      <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
+      
+          <!-- AUTHENTICATE CONTAINER -->
+          <Window Type="DefaultWindow" Name="Elementum/Scenes/Intro/Login/Authenticate" >
+          <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
+          
+            <Window Type="TaharezLook/StaticText" Name="Elementum/Scenes/Intro/Login/Labels/Username">
+              <Property Name="Text" Value="Username: " />
+              <Property Name="Visible" Value="True" />
+              <Property Name="UnifiedSize" Value="{{0, 120}, {0, 40}}" />
+              <Property Name="UnifiedPosition" Value="{{0.3,0},{0.5,0}}" />
+              <Property Name="FrameEnabled" Value="False" />
+              <Property Name="BackgroundEnabled" Value="False" />
+            </Window>
+            <Window Type="Vanilla/Editbox" Name="Elementum/Scenes/Intro/Login/TextFields/Username">
+              <Property Name="Text" Value="asd" />
+              <Property Name="Visible" Value="True" />
+              <Property Name="UnifiedSize" Value="{{0, 150}, {0, 30}}" />
+              <Property Name="UnifiedPosition" Value="{{0.4,0},{0.5,5}}" />
+            </Window>
+
+            <Window Type="TaharezLook/StaticText" Name="Elementum/Scenes/Intro/Login/Labels/Password">
+              <Property Name="Text" Value="Password: " />
+              <Property Name="Visible" Value="True" />
+              <Property Name="UnifiedSize" Value="{{0, 120}, {0, 40}}" />
+              <Property Name="UnifiedPosition" Value="{{0.3,0},{0.5,40}}" />
+              <Property Name="FrameEnabled" Value="False" />
+              <Property Name="BackgroundEnabled" Value="False" />
+            </Window>
+            <Window Type="Vanilla/Editbox" Name="Elementum/Scenes/Intro/Login/TextFields/Password">
+              <Property Name="Text" Value="asd" />
+              <Property Name="Visible" Value="True" />
+              <Property Name="MaskText" Value="True" />
+              <Property Name="UnifiedSize" Value="{{0, 150}, {0, 30}}" />
+              <Property Name="UnifiedPosition" Value="{{0.4,0},{0.5,45}}" />
+            </Window>
+            
+            <Window Type="Vanilla/Button" Name="Elementum/Scenes/Intro/Login/Buttons/Back">
+              <Property Name="Text" Value="Back" />
+              <Property Name="UnifiedSize" Value="{{0, 120}, {0, 30}}" />
+              <Property Name="UnifiedPosition" Value="{{0.35,0},{0.7,0}}" />   
+              <Event Name="Clicked" Function="Login.back" />            
+            </Window>
+            <Window Type="Vanilla/Button" Name="Elementum/Scenes/Intro/Login/Buttons/Login">
+              <Property Name="Text" Value="Login" />
+              <Property Name="UnifiedSize" Value="{{0, 120}, {0, 30}}" />
+              <Property Name="UnifiedPosition" Value="{{0.35,120},{0.7,0}}" />
+              <Event Name="Clicked" Function="Login.authenticate" />
+            </Window>
+            <Window Type="Vanilla/Button" Name="Elementum/Scenes/Intro/Login/Buttons/Register">
+              <Property Name="Text" Value="Create a New Account" />
+              <Property Name="UnifiedSize" Value="{{0, 180}, {0, 30}}" />
+              <Property Name="UnifiedPosition" Value="{{0.4,0},{0.4,0}}" />   
+              <Event Name="Clicked" Function="Login.register" />            
+            </Window>
+          </Window> <!-- END OF AUTHENTICATE CONTAINER -->
+
+        </Window>
+
+        
+</GUILayout>

@@ -28,13 +28,13 @@
 /* -------------
  * LOG CONTEXTS
  * ------------- */
-#define CLIENT_LOG_CATEGORY "Elementum"
+#define CLIENT_LOG_CATEGORY "Vertigo"
 
 /* -------------
  * PATHS
  * ------------- */
-#define PROJECT_ROOT "/Users/kandie/Workspace/Projects/Vertigo"
-#define PROJECT_LOG_DIR "/Users/kandie/Workspace/Projects/Vertigo/log"
+#define PROJECT_ROOT "/Volumes/kandie/Workspace/Projects/Vertigo"
+#define PROJECT_LOG_DIR "/Volumes/kandie/Workspace/Projects/Vertigo/log"
 #define PROJECT_RESOURCES "/resources"
 #define PROJECT_SCRIPTS "/resources/scripts"
 

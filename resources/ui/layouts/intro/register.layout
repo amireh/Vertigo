@@ -1,0 +1,60 @@
+<GUILayout >
+      <Window Type="Vanilla/FrameWindow" Name="Elementum/Scenes/Intro/Login/Register" >
+      <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
+  
+        <Window Type="TaharezLook/StaticText" Name="Elementum/Scenes/Intro/Register/Labels/Foo">
+          <Property Name="Text" Value="Choose username and password" />
+          <Property Name="Visible" Value="True" />
+          <Property Name="UnifiedSize" Value="{{0, 250}, {0, 40}}" />
+          <Property Name="UnifiedPosition" Value="{{0.35,0},{0.4,0}}" />
+          <Property Name="FrameEnabled" Value="False" />
+          <Property Name="BackgroundEnabled" Value="False" />
+        </Window>
+  
+        <!-- USERNAME -->
+        <Window Type="TaharezLook/StaticText" Name="Elementum/Scenes/Intro/Register/Labels/Username">
+          <Property Name="Text" Value="Username: " />
+          <Property Name="Visible" Value="True" />
+          <Property Name="UnifiedSize" Value="{{0, 120}, {0, 40}}" />
+          <Property Name="UnifiedPosition" Value="{{0.3,0},{0.5,0}}" />
+          <Property Name="FrameEnabled" Value="False" />
+          <Property Name="BackgroundEnabled" Value="False" />
+        </Window>
+        <Window Type="Vanilla/Editbox" Name="Elementum/Scenes/Intro/Register/TextFields/Username">
+          <Property Name="Text" Value="" />
+          <Property Name="Visible" Value="True" />
+          <Property Name="UnifiedSize" Value="{{0, 150}, {0, 30}}" />
+          <Property Name="UnifiedPosition" Value="{{0.4,0},{0.5,5}}" />
+        </Window>
+  
+        <!-- PASSWORD -->
+        <Window Type="TaharezLook/StaticText" Name="Elementum/Scenes/Intro/Register/Labels/Password">
+          <Property Name="Text" Value="Password: " />
+          <Property Name="Visible" Value="True" />
+          <Property Name="UnifiedSize" Value="{{0, 120}, {0, 40}}" />
+          <Property Name="UnifiedPosition" Value="{{0.3,0},{0.5,40}}" />
+          <Property Name="FrameEnabled" Value="False" />
+          <Property Name="BackgroundEnabled" Value="False" />
+        </Window>
+        <Window Type="Vanilla/Editbox" Name="Elementum/Scenes/Intro/Register/TextFields/Password">
+          <Property Name="Text" Value="" />
+          <Property Name="Visible" Value="True" />
+          <Property Name="MaskText" Value="True" />
+          <Property Name="UnifiedSize" Value="{{0, 150}, {0, 30}}" />
+          <Property Name="UnifiedPosition" Value="{{0.4,0},{0.5,45}}" />
+        </Window>
+  
+        <Window Type="Vanilla/Button" Name="Elementum/Scenes/Intro/Register/Buttons/Back">
+          <Property Name="Text" Value="Back" />
+          <Property Name="UnifiedSize" Value="{{0, 120}, {0, 30}}" />
+          <Property Name="UnifiedPosition" Value="{{0.35,0},{0.7,0}}" />
+          <Event Name="Clicked" Function="Register.back" />           
+        </Window>
+        <Window Type="Vanilla/Button" Name="Elementum/Scenes/Intro/Register/Buttons/Register">
+          <Property Name="Text" Value="Register" />
+          <Property Name="UnifiedSize" Value="{{0, 120}, {0, 30}}" />
+          <Property Name="UnifiedPosition" Value="{{0.35,120},{0.7,0}}" />   
+          <Event Name="Clicked" Function="Register.submit" />         
+        </Window>
+      </Window> <!-- END OF REGISTER CONTAINER -->
+</GUILayout>    

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+  <Window Type="DefaultWindow" Name="Elementum/Scenes/Intro/Profiles/New/Spells">
+    <Property Name="UnifiedSize" Value="{{1.0,0}, {1.0,0}}" />
+    <Property Name="UnifiedPosition" Value="{{0,0}, {0,0}}" />
+
+    <Window Type="TaharezLook/StaticText" Name="Elementum/Scenes/Intro/Profiles/New/Spells/Labels/ChooseSpells">
+      <Property Name="Text" Value="Choose Spells" />
+      <Property Name="Visible" Value="True" />
+      <Property Name="UnifiedSize" Value="{{0, 100}, {0, 40}}" />
+      <Property Name="UnifiedPosition" Value="{{0.45,0},{0.2,0}}" />
+      <Property Name="FrameEnabled" Value="False" />
+    </Window>
+
+
+    <Window Type="Vanilla/Button" Name="Elementum/Scenes/Intro/Profiles/New/Spells/Buttons/Back">
+      <Property Name="Text" Value="Back" />
+      <Property Name="UnifiedSize" Value="{{0, 60}, {0, 30}}" />
+      <Property Name="UnifiedPosition" Value="{{0.4,0},{0.7,0}}" />            
+    </Window>
+    <Window Type="Vanilla/Button" Name="Elementum/Scenes/Intro/Profiles/New/Spells/Buttons/Next">
+      <Property Name="Text" Value="Next" />
+      <Property Name="UnifiedSize" Value="{{0, 90}, {0, 30}}" />
+      <Property Name="UnifiedPosition" Value="{{0.4,60},{0.7,0}}" />            
+    </Window>          
+  </Window>
+</GUILayout>
