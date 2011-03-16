@@ -15,6 +15,7 @@
 #include <map>
 #include <string>
 #include <iostream>
+#include <stdint.h>
 
 using std::ostream;
 using std::map;

@@ -19,12 +19,12 @@
 #include <Ogre.h>
 
 // CEGUI
-#include <CEGUIBase/CEGUI.h>
-#include <CEGUIBase/CEGUISystem.h>
-#include <CEGUIBase/CEGUISchemeManager.h>
+#include <CEGUI/CEGUI.h>
+#include <CEGUI/CEGUISystem.h>
+#include <CEGUI/CEGUISchemeManager.h>
 
-#include "CEGUIBase/ScriptingModules/LuaScriptModule/CEGUILua.h"
-#include "CEGUIBase/RendererModules/Ogre/CEGUIOgreRenderer.h"
+//#include "CEGUI/ScriptingModules/LuaScriptModule/CEGUILua.h"
+#include "CEGUI/RendererModules/Ogre/CEGUIOgreRenderer.h"
 
 namespace Pixy {
 	

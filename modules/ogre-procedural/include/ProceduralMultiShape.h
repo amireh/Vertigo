@@ -65,7 +65,7 @@ class _ProceduralExport MultiShape
 		}
 	}	
 	//-----------------------------------------------------------------------
-	Ogre::MeshPtr MultiShape::realizeMesh(const std::string& name);
+	Ogre::MeshPtr realizeMesh(const std::string& name);
 	
 };
 }

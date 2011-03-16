@@ -63,7 +63,7 @@ namespace Pixy {
 				return CEGUI::LeftButton;
 		}
 	}
-	
+	/*
 	const char* UIEngine::getDataPathPrefix() const
 	{
 		static char dataPathPrefix[PATH_MAX];
@@ -94,7 +94,7 @@ namespace Pixy {
 		
 		return dataPathPrefix;
 	}
-	
+	*/
 	bool UIEngine::setup() {
 		if (fSetup)
 			return true;

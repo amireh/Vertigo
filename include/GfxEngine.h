@@ -15,7 +15,7 @@
 #include "Entity.h"
 #include <Ogre.h>
 //#include <OgreOctreeSceneManager.h>
-#include "CEGUIBase/RendererModules/Ogre/CEGUIOgreRenderer.h"
+#include "CEGUI/RendererModules/Ogre/CEGUIOgreRenderer.h"
 //#include "SdkCameraMan.h"
 #include "InputManager.h"
 #include "Sphere.h"

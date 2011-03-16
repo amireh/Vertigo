@@ -19,6 +19,7 @@
 
 // misc
 #include <exception>
+#include <stdint.h>
 
 // VERTIGO
 #include "PixyLog.h"
@@ -33,8 +34,8 @@
 /* -------------
  * PATHS
  * ------------- */
-#define PROJECT_ROOT "/Volumes/kandie/Workspace/Projects/Vertigo"
-#define PROJECT_LOG_DIR "/Volumes/kandie/Workspace/Projects/Vertigo/log"
+#define PROJECT_ROOT "/home/kandie/Workspace/Projects/Vertigo"
+#define PROJECT_LOG_DIR "/home/kandie/Workspace/Projects/Vertigo/log"
 #define PROJECT_RESOURCES "/resources"
 #define PROJECT_SCRIPTS "/resources/scripts"
 

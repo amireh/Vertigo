@@ -9,9 +9,9 @@
 
 
 #include "PhyxEngine.h"
-#include <OpenGL/gl.h>
-#include <GLUT/glut.h>
-#include <GL/gle.h>
+//#include <OpenGL/gl.h>
+//#include <GLUT/glut.h>
+//#include <GL/gle.h>
 
 namespace Pixy {
 	PhyxEngine* PhyxEngine::_myPhyxEngine = NULL;

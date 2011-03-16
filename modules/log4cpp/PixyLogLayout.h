@@ -12,6 +12,8 @@
 
 #include <log4cpp/Portability.hh>
 #include <log4cpp/Layout.hh>
+#include <memory>
+
 using namespace log4cpp;
 namespace Pixy {
 	

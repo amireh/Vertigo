@@ -116,7 +116,7 @@ namespace Pixy
 		}
 		
 		// Initialise and create a default rendering window
-		mRenderWindow = mRoot->initialise( true, "Elementum" );
+		mRenderWindow = mRoot->initialise( true, "Vertigo" );
 		
 		// Initialise resources
 		ResourceGroupManager::getSingleton().initialiseAllResourceGroups();

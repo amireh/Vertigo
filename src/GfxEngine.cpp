@@ -9,8 +9,8 @@
 
 #include "GfxEngine.h"
 #include "GameManager.h"
-#include "OGRE/OgreTerrain.h"
-#include "OGRE/OgreTerrainGroup.h"
+#include "OGRE/Terrain/OgreTerrain.h"
+#include "OGRE/Terrain/OgreTerrainGroup.h"
 #include "Intro.h"
 #include "Procedural.h"
 
@@ -196,7 +196,7 @@ namespace Pixy {
 		std::string mEntityName = "";
 		int tube_length = 100;
 		float tube_radius = 40.0f;
-		int nr_tubes = 2;
+		int nr_tubes = 25;
 		for (int i =0; i < nr_tubes; ++i) {
 			mEntityName = "myTube_";
 			mEntityName += i;
@@ -219,7 +219,7 @@ namespace Pixy {
 			mNode->setPosition(Vector3(0, 10, i * tube_length));
 			mNode->roll(Ogre::Degree(90));
 			mNode->pitch(Ogre::Degree(90 ));
-			mNode->showBoundingBox(true);			
+			//mNode->showBoundingBox(true);			
 			
 		}
 		
@@ -241,7 +241,7 @@ namespace Pixy {
 		mNode->setPosition(Vector3(0, 10, nr_tubes * tube_length - 25));
 		mNode->roll(Ogre::Degree(90));
 		mNode->pitch(Ogre::Degree(115));
-		mNode->showBoundingBox(true);
+		//mNode->showBoundingBox(true);
 		
 		
 		//mCamera->lookAt(mSceneMgr->getEntity("myTube_0")->getParentSceneNode()->getPosition());
@@ -288,7 +288,7 @@ namespace Pixy {
         mNode = inParent->createChildSceneNode(inName, inPosition);
         mNode->setScale(inScale);
         mNode->lookAt(inDirection, Ogre::Node::TS_WORLD);
-    	mNode->showBoundingBox(true);
+    	//mNode->showBoundingBox(true);
 		
         //mNode = NULL;
         return mNode;

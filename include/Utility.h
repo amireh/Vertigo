@@ -10,6 +10,7 @@
 #define H_Utility_H
 #include <exception>
 #include <stdexcept>
+#include <typeinfo>
 #include "Pixy.h"
 namespace Pixy {
 	
