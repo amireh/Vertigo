@@ -29,6 +29,12 @@ using Ogre::String;
 
 namespace Pixy {
 	
+	typedef enum {
+		DIR_FORWARD,
+		DIR_LEFT,
+		DIR_RIGHT
+	} DIRECTION;
+	
 	/*! \class GfxEngine
 	 *	\brief
 	 *	Handles all graphics related features of the game, acts as the immediate
@@ -96,6 +102,9 @@ namespace Pixy {
 		//! Sets up OGRE Lights, attaches 2 spotlights, each for a Puppet respectively
 		void setupLights();
 		
+		void moveSphere(DIRECTION inDirection);
+		void stopMovingSphere(DIRECTION inDirection);
+		
 		/*!
 		 * \brief Sets up OGRE SceneNodes in which all of our GameObjects
 		 * (Pixy::Entity, Unit, and Puppet) will be rendered.
@@ -149,10 +158,13 @@ namespace Pixy {
 		//SdkCameraMan		 *mCameraMan;
 		//DotSceneLoader		 *mSceneLoader;
 		
+		Ogre::Entity* sphereEntity;
+		Ogre::SceneNode* sphereNode;
+		
 		//! used for setting Puppetes' starting positions in Scene
 		Vector3 mPuppetPos[2];
 		//! used for setting Objects' direction in Scene
-		Vector3 mDirection[2];
+		Vector3 mDirection;
 		
 		// the following are concerned with SceneNode movement process
 		//! used by moveUnit() and nextLocation() for tracking the Node's destination
@@ -185,6 +197,7 @@ namespace Pixy {
 		 */
 		SceneNode* createNode(String& inName, Vector3& inPosition, Vector3& inScale, Vector3& inDirection, SceneNode* inParent=NULL);
 	
+		void createSphere(const std::string& strName, const float r, const int nRings = 16, const int nSegments = 16);
 	private:
 		static GfxEngine* _myGfxEngine;
 		GfxEngine();

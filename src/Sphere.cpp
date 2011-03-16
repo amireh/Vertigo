@@ -24,7 +24,9 @@ namespace Pixy
 	void Sphere::live() {};
 	void Sphere::die() {};
 	
-	void Sphere::render() {};
+	void Sphere::render() {
+		
+	};
 	void Sphere::update() { };
 	
 	void Sphere::copyFrom(const Sphere& src) {

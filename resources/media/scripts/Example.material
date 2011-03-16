@@ -79,3 +79,17 @@ material Examples/DarkMaterial
 		}
 	}
 }
+
+material Examples/RustySteel
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture RustySteel.jpg
+			}
+		}
+	}
+}

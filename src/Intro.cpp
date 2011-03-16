@@ -52,6 +52,17 @@ namespace Pixy
 		mUISystem->injectKeyDown(e.key);
 		mUISystem->injectChar(e.text);
 		
+		switch (e.key) {
+			case OIS::KC_W:
+				mGfxEngine->moveSphere(DIR_FORWARD);
+				break;
+			case OIS::KC_A:
+				mGfxEngine->moveSphere(DIR_LEFT);
+				break;
+			case OIS::KC_D:
+				mGfxEngine->moveSphere(DIR_RIGHT);
+				break;
+		}
 	}
 	
 	void Intro::keyReleased( const OIS::KeyEvent &e ) {
@@ -65,6 +76,16 @@ namespace Pixy
 			case OIS::KC_SPACE:
 				//fireLoginEvt();
 				break;
+			case OIS::KC_W:
+				mGfxEngine->stopMovingSphere(DIR_FORWARD);
+				break;
+			case OIS::KC_A:
+				mGfxEngine->stopMovingSphere(DIR_LEFT);
+				break;
+			case OIS::KC_D:
+				mGfxEngine->stopMovingSphere(DIR_RIGHT);
+				break;				
+
 		}
 		
 	}

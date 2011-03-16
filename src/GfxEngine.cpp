@@ -32,6 +32,8 @@ namespace Pixy {
 		//mCameraMan = 0;
 		mFallVelocity = 0;
 		//mSceneLoader = 0;
+		mMoveSpeed = 0.1;
+		mDirection = Ogre::Vector3::ZERO;
 		
 	}
 	
@@ -69,8 +71,7 @@ namespace Pixy {
 
 		mRenderWindow = mRoot->getAutoCreatedWindow();
 		
-		mRenderWindow->reposition(1420 - mRenderWindow->getWidth(),
-								  50);
+		//mRenderWindow->reposition(1920 - mRenderWindow->getWidth(), 50);
 		//mViewport     = mRenderWindow->addViewport( mCamera );
 
 		//mRenderWindow->getViewport(<#unsigned short index#>)
@@ -83,12 +84,22 @@ namespace Pixy {
 		
 		setupSceneManager();
         setupViewports();
-        setupCamera();
+        
+		 setupCamera();
         
 		 setupTerrain();
 		 setupLights();
 		
         setupNodes();
+		
+		createSphere("mySphereMesh", 10, 64, 64);
+		sphereEntity = mSceneMgr->createEntity("mySphereEntity", "mySphereMesh");
+		sphereNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+		sphereEntity->setMaterialName("Examples/RustySteel");
+		sphereNode->attachObject(sphereEntity);
+		sphereNode->setPosition(Ogre::Vector3(0,10,0));
+		
+		mCamera->setAutoTracking (true, sphereNode);
 		
 		fSetup = true;
 		return fSetup;
@@ -123,6 +134,8 @@ namespace Pixy {
 	void GfxEngine::update(unsigned long lTimeElapsed) {
 		processEvents();
 		
+		sphereNode->translate(mDirection * lTimeElapsed, Ogre::Node::TS_LOCAL);
+		mCamera->move(mDirection * lTimeElapsed);
 		//mCameraMan->update(lTimeElapsed);
 		
 		using namespace Ogre;
@@ -155,7 +168,7 @@ namespace Pixy {
 		mLog->debugStream() << "setting up viewports";
         mViewport->setBackgroundColour(Ogre::ColourValue(255,255,255));
         // Alter the camera aspect ratio to match the viewport	
-        mCamera->setAspectRatio(Ogre::Real(mViewport->getActualWidth()) / Ogre::Real(mViewport->getActualHeight()));
+        //mCamera->setAspectRatio(Ogre::Real(mViewport->getActualWidth()) / Ogre::Real(mViewport->getActualHeight()));
 		
     };
 	
@@ -171,8 +184,8 @@ namespace Pixy {
         lCamPos.z += 1000;
 		 */
 		lCamPos.x = 0;
-		lCamPos.y = 20;
-		lCamPos.z = -250;
+		lCamPos.y = 50;
+		lCamPos.z = 100;
         mCamera->setPosition(lCamPos);
 		
         mCamera->lookAt(Ogre::Vector3(0, 0, 0));
@@ -332,5 +345,126 @@ namespace Pixy {
 		//	mCameraMan->injectMouseUp(e, id);
 	}
 	
+	
+	void GfxEngine::stopMovingSphere(DIRECTION inDirection) {
+		switch (inDirection) {
+			case DIR_FORWARD:
+				mDirection.z = 0;
+				break;
+			case DIR_LEFT:
+				mDirection.x = 0;
+				break;
+			case DIR_RIGHT:
+				mDirection.x = 0;
+				break;
+				
+		}		
+	}
+	
+	void GfxEngine::moveSphere(DIRECTION inDirection) {
+		switch (inDirection) {
+			case DIR_FORWARD:
+				mDirection.z = -mMoveSpeed;
+				break;
+			case DIR_LEFT:
+				mDirection.x = -mMoveSpeed;
+				break;
+			case DIR_RIGHT:
+				mDirection.x = mMoveSpeed;
+				break;
+				
+		}
+		
+	}
+	
+	
+	void GfxEngine::createSphere(const std::string& strName, const float r, const int nRings, const int nSegments)
+	{
+		using namespace Ogre;
+		
+		MeshPtr pSphere = MeshManager::getSingleton().createManual(strName, ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+		SubMesh *pSphereVertex = pSphere->createSubMesh();
+		
+		pSphere->sharedVertexData = new VertexData();
+		VertexData* vertexData = pSphere->sharedVertexData;
+		
+		// define the vertex format
+		VertexDeclaration* vertexDecl = vertexData->vertexDeclaration;
+		size_t currOffset = 0;
+		// positions
+		vertexDecl->addElement(0, currOffset, VET_FLOAT3, VES_POSITION);
+		currOffset += VertexElement::getTypeSize(VET_FLOAT3);
+		// normals
+		vertexDecl->addElement(0, currOffset, VET_FLOAT3, VES_NORMAL);
+		currOffset += VertexElement::getTypeSize(VET_FLOAT3);
+		// two dimensional texture coordinates
+		vertexDecl->addElement(0, currOffset, VET_FLOAT2, VES_TEXTURE_COORDINATES, 0);
+		currOffset += VertexElement::getTypeSize(VET_FLOAT2);
+		
+		// allocate the vertex buffer
+		vertexData->vertexCount = (nRings + 1) * (nSegments+1);
+		HardwareVertexBufferSharedPtr vBuf = HardwareBufferManager::getSingleton().createVertexBuffer(vertexDecl->getVertexSize(0), vertexData->vertexCount, HardwareBuffer::HBU_STATIC_WRITE_ONLY, false);
+		VertexBufferBinding* binding = vertexData->vertexBufferBinding;
+		binding->setBinding(0, vBuf);
+		float* pVertex = static_cast<float*>(vBuf->lock(HardwareBuffer::HBL_DISCARD));
+		
+		// allocate index buffer
+		pSphereVertex->indexData->indexCount = 6 * nRings * (nSegments + 1);
+		pSphereVertex->indexData->indexBuffer = HardwareBufferManager::getSingleton().createIndexBuffer(HardwareIndexBuffer::IT_16BIT, pSphereVertex->indexData->indexCount, HardwareBuffer::HBU_STATIC_WRITE_ONLY, false);
+		HardwareIndexBufferSharedPtr iBuf = pSphereVertex->indexData->indexBuffer;
+		unsigned short* pIndices = static_cast<unsigned short*>(iBuf->lock(HardwareBuffer::HBL_DISCARD));
+		
+		float fDeltaRingAngle = (Math::PI / nRings);
+		float fDeltaSegAngle = (2 * Math::PI / nSegments);
+		unsigned short wVerticeIndex = 0 ;
+		
+		// Generate the group of rings for the sphere
+		for( int ring = 0; ring <= nRings; ring++ ) {
+			float r0 = r * sinf (ring * fDeltaRingAngle);
+			float y0 = r * cosf (ring * fDeltaRingAngle);
+			
+			// Generate the group of segments for the current ring
+			for(int seg = 0; seg <= nSegments; seg++) {
+				float x0 = r0 * sinf(seg * fDeltaSegAngle);
+				float z0 = r0 * cosf(seg * fDeltaSegAngle);
+				
+				// Add one vertex to the strip which makes up the sphere
+				*pVertex++ = x0;
+				*pVertex++ = y0;
+				*pVertex++ = z0;
+				
+				Vector3 vNormal = Vector3(x0, y0, z0).normalisedCopy();
+				*pVertex++ = vNormal.x;
+				*pVertex++ = vNormal.y;
+				*pVertex++ = vNormal.z;
+				
+				*pVertex++ = (float) seg / (float) nSegments;
+				*pVertex++ = (float) ring / (float) nRings;
+				
+				if (ring != nRings) {
+					// each vertex (except the last) has six indices pointing to it
+					*pIndices++ = wVerticeIndex + nSegments + 1;
+					*pIndices++ = wVerticeIndex;               
+					*pIndices++ = wVerticeIndex + nSegments;
+					*pIndices++ = wVerticeIndex + nSegments + 1;
+					*pIndices++ = wVerticeIndex + 1;
+					*pIndices++ = wVerticeIndex;
+					wVerticeIndex ++;
+				}
+			}; // end for seg
+		} // end for ring
+		
+		// Unlock
+		vBuf->unlock();
+		iBuf->unlock();
+		// Generate face list
+		pSphereVertex->useSharedVertices = true;
+		
+		// the original code was missing this line:
+		pSphere->_setBounds( AxisAlignedBox( Vector3(-r, -r, -r), Vector3(r, r, r) ), false );
+		pSphere->_setBoundingSphereRadius(r);
+		// this line makes clear the mesh is loaded (avoids memory leaks)
+		pSphere->load();
+	}
 
 }
