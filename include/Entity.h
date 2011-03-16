@@ -1,3 +1,4 @@
+
 /* -----------------------------------------------
  *  Filename: Entity.h
  *  Date Created: ??/2009
@@ -26,7 +27,15 @@ using Ogre::Real;
 namespace Pixy
 {
 	
+  typedef enum {
+    FIRE,
+    ICE
+  } SHIELD;
 
+  typedef enum {
+    PLAYER,
+    OBSTACLE
+  } ENTITY_TYPE;
 	
 	/*! \class Entity Entity.h "src/Entity.h"
 	 *
@@ -89,6 +98,8 @@ namespace Pixy
 		 */
 		int getHP() const;
 		
+		bool dead();
+		
 				
 		//! Prints out information about this Entity to Log ofstream; used for debugging
 		virtual void printInfo();
@@ -109,11 +120,16 @@ namespace Pixy
 		virtual MotionState* getMotionState();
 		virtual btCollisionShape* getCollisionShape();
 		
+		ENTITY_TYPE type();
+		
 	protected:
 
+    static long idCounter;
 		int idObject;                       //! Unique entity id
 		std::string mName;					//! Entity's in-game name
 		int mHP;                            //! Entity's health stat
+		bool fDead;
+		ENTITY_TYPE mType;
 		std::string mMesh;					//! Entity's in-game name		
 		Ogre::SceneNode         *mSceneNode;
 		Ogre::MovableObject     *mSceneObject;
@@ -123,6 +139,7 @@ namespace Pixy
 		
 		Real mMoveSpeed;
 		Vector3 mDirection;
+		Vector3 mPosition;
 		
 		//! helper method for copy/assignment methods
 		//! copies all data from src and sets it into this entity

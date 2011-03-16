@@ -13,7 +13,12 @@
 #include "Engine.h"
 #include "EventListener.h"
 #include "Entity.h"
+#include <OGRE/Sample.h>
+#include <OGRE/SdkTrays.h>
 #include <Ogre.h>
+#include <OgreOverlay.h>
+#include <OgreOverlayElement.h>
+#include <OgreOverlayManager.h>
 //#include <OgreOctreeSceneManager.h>
 #include "CEGUI/RendererModules/Ogre/CEGUIOgreRenderer.h"
 //#include "SdkCameraMan.h"
@@ -125,6 +130,7 @@ namespace Pixy {
 		
 		Ogre::Entity* sphereEntity;
 		Ogre::SceneNode* sphereNode;
+		OgreBites::SdkTrayManager*	        mTrayMgr;
 		
 		//! used for setting Objects' direction in Scene
 		Vector3 mDirection;
@@ -153,6 +159,7 @@ namespace Pixy {
 							  const Vector3& inDirection, 
 							  SceneNode* inParent=NULL);
 	
+	  Ogre::FrameEvent evt;
 		
 	private:
 		static GfxEngine* _myGfxEngine;

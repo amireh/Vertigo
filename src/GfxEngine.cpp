@@ -94,8 +94,14 @@ namespace Pixy {
 		
         setupNodes();
 		
+    createSphere("ObstacleMesh", 2, 16, 16);
 		
-		
+		mTrayMgr = new OgreBites::SdkTrayManager("AOFTrayMgr", mRenderWindow, InputManager::getSingletonPtr()->getMouse(), 0);
+		mTrayMgr->hideCursor();
+    mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
+
+    mRenderWindow->setActive(true);
+                
 		fSetup = true;
 		return fSetup;
 	}
@@ -195,8 +201,8 @@ namespace Pixy {
 		Ogre::SceneNode* mNode;
 		std::string mEntityName = "";
 		int tube_length = 100;
-		float tube_radius = 40.0f;
-		int nr_tubes = 25;
+		float tube_radius = 80.0f;
+		int nr_tubes = 45;
 		for (int i =0; i < nr_tubes; ++i) {
 			mEntityName = "myTube_";
 			mEntityName += i;
@@ -207,8 +213,8 @@ namespace Pixy {
 			.setOuterRadius(tube_radius)
 			.setInnerRadius(tube_radius - 2.0f)
 			.setHeight(tube_length)
-			.setNumSegBase(32)
-			.setNumSegHeight(4)
+			.setNumSegBase(24)
+			.setNumSegHeight(1)
 			.realizeMesh(mEntityName);
 			
 
@@ -222,7 +228,7 @@ namespace Pixy {
 			//mNode->showBoundingBox(true);			
 			
 		}
-		
+		/*
 		// create a fork
 		Procedural::Root::getInstance()->sceneManager = mSceneMgr;
 		Procedural::TubeGenerator()
@@ -242,7 +248,7 @@ namespace Pixy {
 		mNode->roll(Ogre::Degree(90));
 		mNode->pitch(Ogre::Degree(115));
 		//mNode->showBoundingBox(true);
-		
+		*/
 		
 		//mCamera->lookAt(mSceneMgr->getEntity("myTube_0")->getParentSceneNode()->getPosition());
     };
@@ -298,12 +304,23 @@ namespace Pixy {
 	GfxEngine::renderEntity(Pixy::Entity* inEntity, Ogre::SceneNode* inNode)
     {
 		mLog->debugStream() << "rendering entity " << inEntity->getName();
-        Ogre::Entity* mEntity;
+    Ogre::Entity* mEntity;
 		
-        String entityName = "";
+    String entityName = "Entity";
 		entityName += inEntity->getName();
 		entityName += stringify(inEntity->getObjectId());
 		
+		/*
+		if (inEntity->type() == OBSTACLE) {
+		  String meshName = "MeshObstacle";
+		  meshName += stringify(inEntity->getObjectId());
+		
+		  // create obstacles mesh
+		  createSphere(meshName, 2, 16, 16);
+		  inEntity->setMesh(meshName);
+		}
+		*/
+		mLog->debugStream() << "Creating an Entity with name " << entityName;
 		mEntity = mSceneMgr->createEntity(entityName, inEntity->getMesh());
 		mEntity->setUserAny(Ogre::Any(inEntity));
 		inNode->attachObject(mEntity);
@@ -318,8 +335,11 @@ namespace Pixy {
 	
     bool GfxEngine::attachToScene(Pixy::Entity* inEntity)
     {
-		
-		return renderEntity(inEntity, createNode(inEntity->getName(), 
+		Ogre::String nodeName = "Node";
+		nodeName += inEntity->getName();
+		nodeName += stringify(inEntity->getObjectId());
+		mLog->debugStream() << "Creating a SceneNode with name " << nodeName;
+		return renderEntity(inEntity, createNode(nodeName, 
 												 Vector3::ZERO, 
 												 Vector3(1.0,1.0,1.0), 
 												 Vector3::ZERO,
@@ -485,13 +505,15 @@ namespace Pixy {
 	void GfxEngine::update(unsigned long lTimeElapsed) {
 		processEvents();
 		
-		//
-		
 		mCamera->setPosition(mSphere->getSceneNode()->getPosition().x,
 							 mSphere->getSceneNode()->getPosition().y+20,
 							 mSphere->getSceneNode()->getPosition().z-80);
 		//mCameraMan->update(lTimeElapsed);
 		
+		evt.timeSinceLastEvent = lTimeElapsed;
+		evt.timeSinceLastFrame = lTimeElapsed;
+		
+		mTrayMgr->frameRenderingQueued(evt);
 		using namespace Ogre;
 		
 	}

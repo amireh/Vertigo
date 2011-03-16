@@ -20,7 +20,9 @@
 #include <map>
 #include <list>
 #include "Sphere.h"
+#include "Obstacle.h"
 
+using std::list;
 namespace Pixy
 {
     /*! \class Intro
@@ -64,9 +66,15 @@ namespace Pixy
 		UIEngine		*mUIEngine;
 		PhyxEngine		*mPhyxEngine;
 		CEGUI::System	*mUISystem;
-		Sphere			*mSphere;
+		Sphere			  *mSphere;
+		list<Obstacle*> mObstacles;
+		list<Obstacle*> mObstaclePool;
+		list<Obstacle*> mDeadObstacles;
+		long nrObstacles;
 		static Intro    *mIntro;
-		
+		Ogre::Timer mTimer;
+		void spawnObstacle();
+		void releaseObstacle(Obstacle* inObs);
 	};
 } // end of namespace
 #endif

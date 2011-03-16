@@ -5,6 +5,8 @@
 namespace Pixy
 {
 
+  long Entity::idCounter = 0;
+  
 	Entity::~Entity()
 	{
 		if (mLog) {
@@ -17,7 +19,7 @@ namespace Pixy
     {
 		mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "Entity");
 		
-		idObject = -1;
+		idObject = ++idCounter;
 		mName = "Unnamed";
 		mHP = 1;
 		mMoveSpeed = 0;
@@ -115,5 +117,6 @@ namespace Pixy
 	MotionState* Entity::getMotionState() { return mPhyxMS; };
 	btCollisionShape* Entity::getCollisionShape() { return mPhyxShape; };
 	
-	
+	bool Entity::dead() { return fDead; };
+	ENTITY_TYPE Entity::type() { return mType; };
 } // end of namespace

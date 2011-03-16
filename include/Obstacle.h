@@ -1,5 +1,5 @@
 /* -----------------------------------------------
- *  Filename: Sphere.h
+ *  Filename: Obstacle.h
  *  Date Created: ??/2009
  *
  *  Original Author:
@@ -10,8 +10,8 @@
  *      By:     Ahmad Amireh
  * ----------------------------------------------- */
 
-#ifndef H_Sphere_H
-#define H_Sphere_H
+#ifndef H_Obstacle_H
+#define H_Obstacle_H
 
 #ifndef H_Entity_H
 #include "Entity.h"
@@ -27,39 +27,35 @@ using std::pair;
 using std::make_pair;
 namespace Pixy
 {
-
-    /*! \class Sphere Sphere.h "src/Sphere.h"
-     *  \brief Represents Combat Sphere GameObject
+  
+  class Sphere;
+    /*! \class Obstacle Obstacle.h "src/Obstacle.h"
+     *  \brief 
      */
-	class Sphere : public Entity
+	class Obstacle : public Entity
 	{
 	public:
 		
-		Sphere();
-		Sphere(const Sphere& src);
-		Sphere& operator=(const Sphere& rhs);
+		Obstacle();
+		Obstacle(const Obstacle& src);
+		Obstacle& operator=(const Obstacle& rhs);
 		
-		virtual ~Sphere();
+		virtual ~Obstacle();
 		
 		virtual void live();
 		virtual void die();
 		
 		virtual void render();
 		virtual void update(unsigned long lTimeElapsed);
-		
-		void keyPressed( const OIS::KeyEvent &e );
-		void keyReleased( const OIS::KeyEvent &e );
-		
-		SHIELD currentShield();
-		void flipShields();
+				
+		SHIELD shield();
 		
 	protected:		
 		
 		//! helper method for copy ctor and assignment operator
-		virtual void copyFrom(const Sphere& src);
-		
-		SHIELD mCurrentShield;
-		map<SHIELD, int> mShields;  
+		virtual void copyFrom(const Obstacle& src);
+    SHIELD mShield;
+    Sphere *mSphere;
 	};
 } // end of namespace
 #endif

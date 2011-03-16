@@ -94,7 +94,7 @@ material Examples/RustySteel
 	}
 }
 
-material Examples/Crackles
+material Sphere/Ice
 {
 	technique
 	{
@@ -102,12 +102,12 @@ material Examples/Crackles
 		{
 			texture_unit
 			{
-				texture crackles_640.jpg
+				texture grunge_1024.jpg
 			}
 		}
 	}
 }
-material Examples/Grunge
+material Sphere/Fire
 {
 	technique
 	{

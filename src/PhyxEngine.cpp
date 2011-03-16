@@ -46,25 +46,66 @@ namespace Pixy {
 		
 		mBroadphase = new btDbvtBroadphase();
 		
-        mCollisionConfig = new btDefaultCollisionConfiguration();
-        mDispatcher = new btCollisionDispatcher(mCollisionConfig);
-		
-        mSolver = new btSequentialImpulseConstraintSolver;
-		
-        mWorld = new btDiscreteDynamicsWorld(mDispatcher,mBroadphase,mSolver,mCollisionConfig);
-		
-        mWorld->setGravity(btVector3(0,-1,0));
-		
-		mGroundShape = new btStaticPlaneShape(btVector3(0,1,0),0);
-        mGroundMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)));
-        btRigidBody::btRigidBodyConstructionInfo
-			mGroundRBCI(0,mGroundMS,mGroundShape,btVector3(0,0,0));
-        mGroundBody = new btRigidBody(mGroundRBCI);
-        mWorld->addRigidBody(mGroundBody);
-		
+    mCollisionConfig = new btDefaultCollisionConfiguration();
+    mDispatcher = new btCollisionDispatcher(mCollisionConfig);
 
-       // mWorld->addRigidBody(mSphereRB);
-		
+    mSolver = new btSequentialImpulseConstraintSolver;
+
+    mWorld = new btDiscreteDynamicsWorld(mDispatcher,mBroadphase,mSolver,mCollisionConfig);
+
+    mWorld->setGravity(btVector3(0,-1,0));
+
+    mFloorShape = new btStaticPlaneShape(btVector3(0,1,0),0);
+    mFloorMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,-30,0)));
+    btRigidBody::btRigidBodyConstructionInfo
+      mFloorRBCI(0,mFloorMS,mFloorShape,btVector3(0,0,0));
+    mFloorRBCI.m_friction = 5.0f;
+    
+    mFloorBody = new btRigidBody(mFloorRBCI);
+    mWorld->addRigidBody(mFloorBody);
+    
+
+
+    mCeilingShape = new btStaticPlaneShape(btVector3(0,-1,0),0);
+    mCeilingMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,30,0)));
+    btRigidBody::btRigidBodyConstructionInfo
+      mCeilingRBCI(0,mCeilingMS,mCeilingShape,btVector3(0,0,0));
+    mCeilingBody = new btRigidBody(mCeilingRBCI);
+    mWorld->addRigidBody(mCeilingBody);    
+
+
+    
+    
+    // create our triangular walls now
+    btTriangleMesh *mTriMesh = new btTriangleMesh();
+
+    for (int i=-10; i<10000; ++i) {
+      btVector3 v0(0,0,i);
+      btVector3 v1(80,110,i);
+      btVector3 v2(160,0,i);
+
+      mTriMesh->addTriangle(v0,v1,v2);
+    }
+
+    mLWallShape = new btBvhTriangleMeshShape(mTriMesh,true);
+
+    mLWallMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(40,-30,0)));
+    btRigidBody::btRigidBodyConstructionInfo
+      mLWallRBCI(0,mLWallMS,mLWallShape,btVector3(0,0,0));
+
+    mLWallBody = new btRigidBody(mLWallRBCI);
+    mWorld->addRigidBody(mLWallBody);
+    
+    // right wall
+    mRWallShape = new btBvhTriangleMeshShape(mTriMesh,true);
+
+    mRWallMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(-200,-30,0)));
+    btRigidBody::btRigidBodyConstructionInfo
+      mRWallRBCI(0,mRWallMS,mRWallShape,btVector3(0,0,0));
+
+    mRWallBody = new btRigidBody(mRWallRBCI);
+    mWorld->addRigidBody(mRWallBody);
+        
 		fSetup = true;
 		return fSetup;
 	}
@@ -88,13 +129,25 @@ namespace Pixy {
 	}
 	bool PhyxEngine::cleanup() {
 		
-        mWorld->removeRigidBody(mGroundBody);
-        delete mGroundBody->getMotionState();
-        delete mGroundBody;
-		
-		
-        delete mGroundShape;
-		
+        mWorld->removeRigidBody(mFloorBody);
+        mWorld->removeRigidBody(mCeilingBody);
+        mWorld->removeRigidBody(mLWallBody);
+        mWorld->removeRigidBody(mRWallBody);
+        
+        delete mFloorBody->getMotionState();
+        delete mCeilingBody->getMotionState();
+        delete mLWallBody->getMotionState();
+        delete mRWallBody->getMotionState();
+        
+        delete mFloorBody;
+        delete mCeilingBody;
+		    delete mLWallBody;
+		    delete mRWallBody;
+		    
+        delete mFloorShape;
+        delete mCeilingShape;
+		    delete mLWallShape;
+		    delete mRWallShape;
 		
         delete mWorld;
         delete mSolver;

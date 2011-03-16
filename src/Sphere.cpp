@@ -14,33 +14,14 @@ namespace Pixy
         mLog->infoStream() << "created";
 		
 		mName = "Sphere";
+		mType = PLAYER;
 		mMesh = "SphereMesh";
-		mMoveSpeed = 0.2;
-		
-		GfxEngine::getSingletonPtr()->createSphere(mMesh, 10, 64, 64);
-		GfxEngine::getSingletonPtr()->attachToScene(this);
-		/*
-		mSceneObject = mSceneMgr->createEntity("mySphereEntity", mMesh);
-		mSceneNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-		mSceneNode->attachObject(mSceneObject);
-		*/
-		static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Examples/Grunge");
-		mSceneNode->setPosition(Ogre::Vector3(0,0,0));
-		
-        mPhyxShape = new btSphereShape(1);
-		mPhyxMS = new MotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,3,0)), mSceneNode);
-        btScalar mass = 1;
-        btVector3 fallInertia(0,0,-1);
-		
-        mPhyxShape->calculateLocalInertia(mass,fallInertia);
-        
-		btRigidBody::btRigidBodyConstructionInfo
-			mPhyxBodyCI(mass,mPhyxMS,mPhyxShape,fallInertia);
-        
-		mPhyxBody = new btRigidBody(mPhyxBodyCI);
+		mMoveSpeed = 500;
+		mCurrentShield = FIRE;
+		mShields[FIRE] = 100;
+		mShields[ICE] = 100;
 		
 
-		PhyxEngine::getSingletonPtr()->attachToWorld(this);
     };
 
 	Sphere::~Sphere()
@@ -59,11 +40,38 @@ namespace Pixy
 		}
 	};
 	
-	void Sphere::live() {};
+	void Sphere::live() {
+
+		GfxEngine::getSingletonPtr()->createSphere(mMesh, 10, 64, 64);
+		GfxEngine::getSingletonPtr()->attachToScene(this);
+		
+		render();
+		mSceneNode->pitch(Ogre::Degree(90));
+		//mSceneNode->setPosition(Ogre::Vector3(0,0,0));
+		
+    mPhyxShape = new btSphereShape(10);
+		mPhyxMS = new MotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,10,0)), mSceneNode);
+        btScalar mass = 1000;
+        btVector3 fallInertia(0,1000,-1);
+		
+        mPhyxShape->calculateLocalInertia(mass,fallInertia);
+        
+		btRigidBody::btRigidBodyConstructionInfo
+			mPhyxBodyCI(mass,mPhyxMS,mPhyxShape,fallInertia);
+        
+		mPhyxBody = new btRigidBody(mPhyxBodyCI);
+
+		PhyxEngine::getSingletonPtr()->attachToWorld(this);
+			
+	};
 	void Sphere::die() {};
 	
 	void Sphere::render() {
-		
+		if (mCurrentShield == FIRE) {
+		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Sphere/Fire");
+		} else {
+		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Sphere/Ice");
+		}
 	};
 	
 	void Sphere::copyFrom(const Sphere& src) {
@@ -80,17 +88,27 @@ namespace Pixy
 			case OIS::KC_A:
 				mPhyxBody->clearForces();
 				mDirection.x = mMoveSpeed * 2;
-				mDirection.z = mMoveSpeed;
+				//mDirection.z = mMoveSpeed;
 				break;
 			case OIS::KC_D:
 				mPhyxBody->clearForces();
 				mDirection.x = -mMoveSpeed * 2;
-				mDirection.z = mMoveSpeed;
+				//mDirection.z = mMoveSpeed;
 				break;
 			case OIS::KC_S:
 				mPhyxBody->clearForces();
 				break;
-				
+			case OIS::KC_Q:
+				mPhyxBody->clearForces();
+				mDirection.y = mMoveSpeed;
+				break;
+			case OIS::KC_E:
+				mPhyxBody->clearForces();
+				mDirection.y = -mMoveSpeed;
+				break;				
+			case OIS::KC_SPACE:
+			  flipShields();
+			  break;
 		}
 		
 	}
@@ -122,6 +140,11 @@ namespace Pixy
 		//mPhyxBody->getMotionState()->getWorldTransform(trans);
 		//mSceneNode->translate(mDirection * lTimeElapsed, Ogre::Node::TS_LOCAL);
 		//mSceneNode->setPosition(Vector3(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ()));
+	};
+	
+	void Sphere::flipShields() {
+	  mCurrentShield = (mCurrentShield == FIRE) ? ICE : FIRE;
+	  render();
 	};
 	
 } // end of namespace

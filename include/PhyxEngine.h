@@ -54,9 +54,9 @@ namespace Pixy
 		btSequentialImpulseConstraintSolver* mSolver;
 		btDiscreteDynamicsWorld *mWorld;
 		
-		btCollisionShape *mGroundShape;
-		btDefaultMotionState *mGroundMS;
-		btRigidBody *mGroundBody;
+		btCollisionShape *mFloorShape, *mCeilingShape, *mLWallShape, *mRWallShape;
+		btDefaultMotionState *mFloorMS, *mCeilingMS, *mLWallMS, *mRWallMS;
+		btRigidBody *mFloorBody, *mCeilingBody, *mLWallBody, *mRWallBody;
 		
 	private:
 		static PhyxEngine* _myPhyxEngine;
