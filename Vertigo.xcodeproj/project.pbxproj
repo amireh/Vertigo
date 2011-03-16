@@ -7,19 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3759A0421330D13300D26FB8 /* ProceduralBoxGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3759A0351330D13300D26FB8 /* ProceduralBoxGenerator.cpp */; };
-		3759A0431330D13300D26FB8 /* ProceduralCapsuleGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3759A0361330D13300D26FB8 /* ProceduralCapsuleGenerator.cpp */; };
-		3759A0441330D13300D26FB8 /* ProceduralConeGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3759A0371330D13300D26FB8 /* ProceduralConeGenerator.cpp */; };
-		3759A0451330D13300D26FB8 /* ProceduralCylinderGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3759A0381330D13300D26FB8 /* ProceduralCylinderGenerator.cpp */; };
-		3759A0461330D13300D26FB8 /* ProceduralIcoSphereGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3759A0391330D13300D26FB8 /* ProceduralIcoSphereGenerator.cpp */; };
-		3759A0471330D13300D26FB8 /* ProceduralMeshGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3759A03A1330D13300D26FB8 /* ProceduralMeshGenerator.cpp */; };
-		3759A0481330D13300D26FB8 /* ProceduralPlaneGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3759A03B1330D13300D26FB8 /* ProceduralPlaneGenerator.cpp */; };
-		3759A0491330D13300D26FB8 /* ProceduralRoot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3759A03C1330D13300D26FB8 /* ProceduralRoot.cpp */; };
-		3759A04A1330D13300D26FB8 /* ProceduralRoundedBoxGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3759A03D1330D13300D26FB8 /* ProceduralRoundedBoxGenerator.cpp */; };
-		3759A04B1330D13300D26FB8 /* ProceduralSphereGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3759A03E1330D13300D26FB8 /* ProceduralSphereGenerator.cpp */; };
-		3759A04C1330D13300D26FB8 /* ProceduralTorusGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3759A03F1330D13300D26FB8 /* ProceduralTorusGenerator.cpp */; };
-		3759A04D1330D13300D26FB8 /* ProceduralTorusKnotGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3759A0401330D13300D26FB8 /* ProceduralTorusKnotGenerator.cpp */; };
-		3759A04E1330D13300D26FB8 /* ProceduralTubeGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3759A0411330D13300D26FB8 /* ProceduralTubeGenerator.cpp */; };
+		3783DF6C13310F77009D23B6 /* ProceduralBoxGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF5913310F77009D23B6 /* ProceduralBoxGenerator.cpp */; };
+		3783DF6D13310F77009D23B6 /* ProceduralCapsuleGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF5A13310F77009D23B6 /* ProceduralCapsuleGenerator.cpp */; };
+		3783DF6E13310F77009D23B6 /* ProceduralConeGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF5B13310F77009D23B6 /* ProceduralConeGenerator.cpp */; };
+		3783DF6F13310F77009D23B6 /* ProceduralCylinderGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF5C13310F77009D23B6 /* ProceduralCylinderGenerator.cpp */; };
+		3783DF7013310F77009D23B6 /* ProceduralExtruder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF5D13310F77009D23B6 /* ProceduralExtruder.cpp */; };
+		3783DF7113310F77009D23B6 /* ProceduralGeometryHelpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF5E13310F77009D23B6 /* ProceduralGeometryHelpers.cpp */; };
+		3783DF7213310F77009D23B6 /* ProceduralIcoSphereGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF5F13310F77009D23B6 /* ProceduralIcoSphereGenerator.cpp */; };
+		3783DF7313310F77009D23B6 /* ProceduralLathe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF6013310F77009D23B6 /* ProceduralLathe.cpp */; };
+		3783DF7413310F77009D23B6 /* ProceduralMultiShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF6113310F77009D23B6 /* ProceduralMultiShape.cpp */; };
+		3783DF7513310F77009D23B6 /* ProceduralPlaneGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF6213310F77009D23B6 /* ProceduralPlaneGenerator.cpp */; };
+		3783DF7613310F77009D23B6 /* ProceduralPrecompiledHeaders.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF6313310F77009D23B6 /* ProceduralPrecompiledHeaders.cpp */; };
+		3783DF7713310F77009D23B6 /* ProceduralRoot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF6413310F77009D23B6 /* ProceduralRoot.cpp */; };
+		3783DF7813310F77009D23B6 /* ProceduralRoundedBoxGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF6513310F77009D23B6 /* ProceduralRoundedBoxGenerator.cpp */; };
+		3783DF7913310F77009D23B6 /* ProceduralShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF6613310F77009D23B6 /* ProceduralShape.cpp */; };
+		3783DF7A13310F77009D23B6 /* ProceduralSphereGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF6713310F77009D23B6 /* ProceduralSphereGenerator.cpp */; };
+		3783DF7B13310F77009D23B6 /* ProceduralTorusGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF6813310F77009D23B6 /* ProceduralTorusGenerator.cpp */; };
+		3783DF7C13310F77009D23B6 /* ProceduralTorusKnotGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF6913310F77009D23B6 /* ProceduralTorusKnotGenerator.cpp */; };
+		3783DF7D13310F77009D23B6 /* ProceduralTriangulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF6A13310F77009D23B6 /* ProceduralTriangulator.cpp */; };
+		3783DF7E13310F77009D23B6 /* ProceduralTubeGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF6B13310F77009D23B6 /* ProceduralTubeGenerator.cpp */; };
 		37B5D0F013277E5200BFC358 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* main.cpp */; };
 		37B5D0F113277E5200BFC358 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37B282BA1325176100BACB27 /* Sphere.cpp */; };
 		37B5D0F213277E5200BFC358 /* PixyLogLayout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37B282CA132519C800BACB27 /* PixyLogLayout.cpp */; };
@@ -136,35 +142,50 @@
 		3739F94D1326D60000FA5092 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		3739FA621326D96C00FA5092 /* liblog4cpp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblog4cpp.a; path = /usr/local/lib/liblog4cpp.a; sourceTree = "<absolute>"; };
 		37599FA61330C8E800D26FB8 /* MotionState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MotionState.h; path = include/MotionState.h; sourceTree = "<group>"; };
-		3759A0241330D13300D26FB8 /* Procedural.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Procedural.h; sourceTree = "<group>"; };
-		3759A0251330D13300D26FB8 /* ProceduralBoxGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralBoxGenerator.h; sourceTree = "<group>"; };
-		3759A0261330D13300D26FB8 /* ProceduralCapsuleGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralCapsuleGenerator.h; sourceTree = "<group>"; };
-		3759A0271330D13300D26FB8 /* ProceduralConeGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralConeGenerator.h; sourceTree = "<group>"; };
-		3759A0281330D13300D26FB8 /* ProceduralCylinderGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralCylinderGenerator.h; sourceTree = "<group>"; };
-		3759A0291330D13300D26FB8 /* ProceduralIcoSphereGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralIcoSphereGenerator.h; sourceTree = "<group>"; };
-		3759A02A1330D13300D26FB8 /* ProceduralMeshGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralMeshGenerator.h; sourceTree = "<group>"; };
-		3759A02B1330D13300D26FB8 /* ProceduralPlaneGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralPlaneGenerator.h; sourceTree = "<group>"; };
-		3759A02C1330D13300D26FB8 /* ProceduralPlatform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralPlatform.h; sourceTree = "<group>"; };
-		3759A02D1330D13300D26FB8 /* ProceduralRoot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralRoot.h; sourceTree = "<group>"; };
-		3759A02E1330D13300D26FB8 /* ProceduralRoundedBoxGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralRoundedBoxGenerator.h; sourceTree = "<group>"; };
-		3759A02F1330D13300D26FB8 /* ProceduralSphereGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralSphereGenerator.h; sourceTree = "<group>"; };
-		3759A0301330D13300D26FB8 /* ProceduralTorusGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralTorusGenerator.h; sourceTree = "<group>"; };
-		3759A0311330D13300D26FB8 /* ProceduralTorusKnotGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralTorusKnotGenerator.h; sourceTree = "<group>"; };
-		3759A0321330D13300D26FB8 /* ProceduralTubeGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralTubeGenerator.h; sourceTree = "<group>"; };
-		3759A0331330D13300D26FB8 /* ProceduralUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralUtils.h; sourceTree = "<group>"; };
-		3759A0351330D13300D26FB8 /* ProceduralBoxGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralBoxGenerator.cpp; sourceTree = "<group>"; };
-		3759A0361330D13300D26FB8 /* ProceduralCapsuleGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralCapsuleGenerator.cpp; sourceTree = "<group>"; };
-		3759A0371330D13300D26FB8 /* ProceduralConeGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralConeGenerator.cpp; sourceTree = "<group>"; };
-		3759A0381330D13300D26FB8 /* ProceduralCylinderGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralCylinderGenerator.cpp; sourceTree = "<group>"; };
-		3759A0391330D13300D26FB8 /* ProceduralIcoSphereGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralIcoSphereGenerator.cpp; sourceTree = "<group>"; };
-		3759A03A1330D13300D26FB8 /* ProceduralMeshGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralMeshGenerator.cpp; sourceTree = "<group>"; };
-		3759A03B1330D13300D26FB8 /* ProceduralPlaneGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralPlaneGenerator.cpp; sourceTree = "<group>"; };
-		3759A03C1330D13300D26FB8 /* ProceduralRoot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralRoot.cpp; sourceTree = "<group>"; };
-		3759A03D1330D13300D26FB8 /* ProceduralRoundedBoxGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralRoundedBoxGenerator.cpp; sourceTree = "<group>"; };
-		3759A03E1330D13300D26FB8 /* ProceduralSphereGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralSphereGenerator.cpp; sourceTree = "<group>"; };
-		3759A03F1330D13300D26FB8 /* ProceduralTorusGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralTorusGenerator.cpp; sourceTree = "<group>"; };
-		3759A0401330D13300D26FB8 /* ProceduralTorusKnotGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralTorusKnotGenerator.cpp; sourceTree = "<group>"; };
-		3759A0411330D13300D26FB8 /* ProceduralTubeGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralTubeGenerator.cpp; sourceTree = "<group>"; };
+		3783DF3F13310F77009D23B6 /* Procedural.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Procedural.h; sourceTree = "<group>"; };
+		3783DF4013310F77009D23B6 /* ProceduralBoxGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralBoxGenerator.h; sourceTree = "<group>"; };
+		3783DF4113310F77009D23B6 /* ProceduralCapsuleGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralCapsuleGenerator.h; sourceTree = "<group>"; };
+		3783DF4213310F77009D23B6 /* ProceduralConeGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralConeGenerator.h; sourceTree = "<group>"; };
+		3783DF4313310F77009D23B6 /* ProceduralCylinderGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralCylinderGenerator.h; sourceTree = "<group>"; };
+		3783DF4413310F77009D23B6 /* ProceduralExtruder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralExtruder.h; sourceTree = "<group>"; };
+		3783DF4513310F77009D23B6 /* ProceduralGeometryHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralGeometryHelpers.h; sourceTree = "<group>"; };
+		3783DF4613310F77009D23B6 /* ProceduralIcoSphereGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralIcoSphereGenerator.h; sourceTree = "<group>"; };
+		3783DF4713310F77009D23B6 /* ProceduralLathe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralLathe.h; sourceTree = "<group>"; };
+		3783DF4813310F77009D23B6 /* ProceduralMeshGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralMeshGenerator.h; sourceTree = "<group>"; };
+		3783DF4913310F77009D23B6 /* ProceduralMultiShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralMultiShape.h; sourceTree = "<group>"; };
+		3783DF4A13310F77009D23B6 /* ProceduralPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralPath.h; sourceTree = "<group>"; };
+		3783DF4B13310F77009D23B6 /* ProceduralPlaneGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralPlaneGenerator.h; sourceTree = "<group>"; };
+		3783DF4C13310F77009D23B6 /* ProceduralPlatform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralPlatform.h; sourceTree = "<group>"; };
+		3783DF4D13310F77009D23B6 /* ProceduralRoot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralRoot.h; sourceTree = "<group>"; };
+		3783DF4E13310F77009D23B6 /* ProceduralRoundedBoxGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralRoundedBoxGenerator.h; sourceTree = "<group>"; };
+		3783DF4F13310F77009D23B6 /* ProceduralShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralShape.h; sourceTree = "<group>"; };
+		3783DF5013310F77009D23B6 /* ProceduralSphereGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralSphereGenerator.h; sourceTree = "<group>"; };
+		3783DF5113310F77009D23B6 /* ProceduralStableHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralStableHeaders.h; sourceTree = "<group>"; };
+		3783DF5213310F77009D23B6 /* ProceduralTorusGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralTorusGenerator.h; sourceTree = "<group>"; };
+		3783DF5313310F77009D23B6 /* ProceduralTorusKnotGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralTorusKnotGenerator.h; sourceTree = "<group>"; };
+		3783DF5413310F77009D23B6 /* ProceduralTriangleBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralTriangleBuffer.h; sourceTree = "<group>"; };
+		3783DF5513310F77009D23B6 /* ProceduralTriangulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralTriangulator.h; sourceTree = "<group>"; };
+		3783DF5613310F77009D23B6 /* ProceduralTubeGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralTubeGenerator.h; sourceTree = "<group>"; };
+		3783DF5713310F77009D23B6 /* ProceduralUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralUtils.h; sourceTree = "<group>"; };
+		3783DF5913310F77009D23B6 /* ProceduralBoxGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralBoxGenerator.cpp; sourceTree = "<group>"; };
+		3783DF5A13310F77009D23B6 /* ProceduralCapsuleGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralCapsuleGenerator.cpp; sourceTree = "<group>"; };
+		3783DF5B13310F77009D23B6 /* ProceduralConeGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralConeGenerator.cpp; sourceTree = "<group>"; };
+		3783DF5C13310F77009D23B6 /* ProceduralCylinderGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralCylinderGenerator.cpp; sourceTree = "<group>"; };
+		3783DF5D13310F77009D23B6 /* ProceduralExtruder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralExtruder.cpp; sourceTree = "<group>"; };
+		3783DF5E13310F77009D23B6 /* ProceduralGeometryHelpers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralGeometryHelpers.cpp; sourceTree = "<group>"; };
+		3783DF5F13310F77009D23B6 /* ProceduralIcoSphereGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralIcoSphereGenerator.cpp; sourceTree = "<group>"; };
+		3783DF6013310F77009D23B6 /* ProceduralLathe.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralLathe.cpp; sourceTree = "<group>"; };
+		3783DF6113310F77009D23B6 /* ProceduralMultiShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralMultiShape.cpp; sourceTree = "<group>"; };
+		3783DF6213310F77009D23B6 /* ProceduralPlaneGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralPlaneGenerator.cpp; sourceTree = "<group>"; };
+		3783DF6313310F77009D23B6 /* ProceduralPrecompiledHeaders.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralPrecompiledHeaders.cpp; sourceTree = "<group>"; };
+		3783DF6413310F77009D23B6 /* ProceduralRoot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralRoot.cpp; sourceTree = "<group>"; };
+		3783DF6513310F77009D23B6 /* ProceduralRoundedBoxGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralRoundedBoxGenerator.cpp; sourceTree = "<group>"; };
+		3783DF6613310F77009D23B6 /* ProceduralShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralShape.cpp; sourceTree = "<group>"; };
+		3783DF6713310F77009D23B6 /* ProceduralSphereGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralSphereGenerator.cpp; sourceTree = "<group>"; };
+		3783DF6813310F77009D23B6 /* ProceduralTorusGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralTorusGenerator.cpp; sourceTree = "<group>"; };
+		3783DF6913310F77009D23B6 /* ProceduralTorusKnotGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralTorusKnotGenerator.cpp; sourceTree = "<group>"; };
+		3783DF6A13310F77009D23B6 /* ProceduralTriangulator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralTriangulator.cpp; sourceTree = "<group>"; };
+		3783DF6B13310F77009D23B6 /* ProceduralTubeGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralTubeGenerator.cpp; sourceTree = "<group>"; };
 		37B282471323EB5B00BACB27 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		37B2824B1323EB6800BACB27 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		37B282AF1325175300BACB27 /* Sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sphere.h; path = include/Sphere.h; sourceTree = "<group>"; };
@@ -301,55 +322,70 @@
 		3759A0211330D12400D26FB8 /* Ogre Procedural */ = {
 			isa = PBXGroup;
 			children = (
-				3759A0231330D13300D26FB8 /* include */,
-				3759A0341330D13300D26FB8 /* src */,
+				3783DF3E13310F77009D23B6 /* include */,
+				3783DF5813310F77009D23B6 /* src */,
 			);
 			name = "Ogre Procedural";
 			sourceTree = "<group>";
 		};
-		3759A0231330D13300D26FB8 /* include */ = {
+		3783DF3E13310F77009D23B6 /* include */ = {
 			isa = PBXGroup;
 			children = (
-				3759A0241330D13300D26FB8 /* Procedural.h */,
-				3759A0251330D13300D26FB8 /* ProceduralBoxGenerator.h */,
-				3759A0261330D13300D26FB8 /* ProceduralCapsuleGenerator.h */,
-				3759A0271330D13300D26FB8 /* ProceduralConeGenerator.h */,
-				3759A0281330D13300D26FB8 /* ProceduralCylinderGenerator.h */,
-				3759A0291330D13300D26FB8 /* ProceduralIcoSphereGenerator.h */,
-				3759A02A1330D13300D26FB8 /* ProceduralMeshGenerator.h */,
-				3759A02B1330D13300D26FB8 /* ProceduralPlaneGenerator.h */,
-				3759A02C1330D13300D26FB8 /* ProceduralPlatform.h */,
-				3759A02D1330D13300D26FB8 /* ProceduralRoot.h */,
-				3759A02E1330D13300D26FB8 /* ProceduralRoundedBoxGenerator.h */,
-				3759A02F1330D13300D26FB8 /* ProceduralSphereGenerator.h */,
-				3759A0301330D13300D26FB8 /* ProceduralTorusGenerator.h */,
-				3759A0311330D13300D26FB8 /* ProceduralTorusKnotGenerator.h */,
-				3759A0321330D13300D26FB8 /* ProceduralTubeGenerator.h */,
-				3759A0331330D13300D26FB8 /* ProceduralUtils.h */,
+				3783DF3F13310F77009D23B6 /* Procedural.h */,
+				3783DF4013310F77009D23B6 /* ProceduralBoxGenerator.h */,
+				3783DF4113310F77009D23B6 /* ProceduralCapsuleGenerator.h */,
+				3783DF4213310F77009D23B6 /* ProceduralConeGenerator.h */,
+				3783DF4313310F77009D23B6 /* ProceduralCylinderGenerator.h */,
+				3783DF4413310F77009D23B6 /* ProceduralExtruder.h */,
+				3783DF4513310F77009D23B6 /* ProceduralGeometryHelpers.h */,
+				3783DF4613310F77009D23B6 /* ProceduralIcoSphereGenerator.h */,
+				3783DF4713310F77009D23B6 /* ProceduralLathe.h */,
+				3783DF4813310F77009D23B6 /* ProceduralMeshGenerator.h */,
+				3783DF4913310F77009D23B6 /* ProceduralMultiShape.h */,
+				3783DF4A13310F77009D23B6 /* ProceduralPath.h */,
+				3783DF4B13310F77009D23B6 /* ProceduralPlaneGenerator.h */,
+				3783DF4C13310F77009D23B6 /* ProceduralPlatform.h */,
+				3783DF4D13310F77009D23B6 /* ProceduralRoot.h */,
+				3783DF4E13310F77009D23B6 /* ProceduralRoundedBoxGenerator.h */,
+				3783DF4F13310F77009D23B6 /* ProceduralShape.h */,
+				3783DF5013310F77009D23B6 /* ProceduralSphereGenerator.h */,
+				3783DF5113310F77009D23B6 /* ProceduralStableHeaders.h */,
+				3783DF5213310F77009D23B6 /* ProceduralTorusGenerator.h */,
+				3783DF5313310F77009D23B6 /* ProceduralTorusKnotGenerator.h */,
+				3783DF5413310F77009D23B6 /* ProceduralTriangleBuffer.h */,
+				3783DF5513310F77009D23B6 /* ProceduralTriangulator.h */,
+				3783DF5613310F77009D23B6 /* ProceduralTubeGenerator.h */,
+				3783DF5713310F77009D23B6 /* ProceduralUtils.h */,
 			);
 			name = include;
-			path = modules/procedural/include;
+			path = "modules/ogre-procedural/include";
 			sourceTree = "<group>";
 		};
-		3759A0341330D13300D26FB8 /* src */ = {
+		3783DF5813310F77009D23B6 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				3759A0351330D13300D26FB8 /* ProceduralBoxGenerator.cpp */,
-				3759A0361330D13300D26FB8 /* ProceduralCapsuleGenerator.cpp */,
-				3759A0371330D13300D26FB8 /* ProceduralConeGenerator.cpp */,
-				3759A0381330D13300D26FB8 /* ProceduralCylinderGenerator.cpp */,
-				3759A0391330D13300D26FB8 /* ProceduralIcoSphereGenerator.cpp */,
-				3759A03A1330D13300D26FB8 /* ProceduralMeshGenerator.cpp */,
-				3759A03B1330D13300D26FB8 /* ProceduralPlaneGenerator.cpp */,
-				3759A03C1330D13300D26FB8 /* ProceduralRoot.cpp */,
-				3759A03D1330D13300D26FB8 /* ProceduralRoundedBoxGenerator.cpp */,
-				3759A03E1330D13300D26FB8 /* ProceduralSphereGenerator.cpp */,
-				3759A03F1330D13300D26FB8 /* ProceduralTorusGenerator.cpp */,
-				3759A0401330D13300D26FB8 /* ProceduralTorusKnotGenerator.cpp */,
-				3759A0411330D13300D26FB8 /* ProceduralTubeGenerator.cpp */,
+				3783DF5913310F77009D23B6 /* ProceduralBoxGenerator.cpp */,
+				3783DF5A13310F77009D23B6 /* ProceduralCapsuleGenerator.cpp */,
+				3783DF5B13310F77009D23B6 /* ProceduralConeGenerator.cpp */,
+				3783DF5C13310F77009D23B6 /* ProceduralCylinderGenerator.cpp */,
+				3783DF5D13310F77009D23B6 /* ProceduralExtruder.cpp */,
+				3783DF5E13310F77009D23B6 /* ProceduralGeometryHelpers.cpp */,
+				3783DF5F13310F77009D23B6 /* ProceduralIcoSphereGenerator.cpp */,
+				3783DF6013310F77009D23B6 /* ProceduralLathe.cpp */,
+				3783DF6113310F77009D23B6 /* ProceduralMultiShape.cpp */,
+				3783DF6213310F77009D23B6 /* ProceduralPlaneGenerator.cpp */,
+				3783DF6313310F77009D23B6 /* ProceduralPrecompiledHeaders.cpp */,
+				3783DF6413310F77009D23B6 /* ProceduralRoot.cpp */,
+				3783DF6513310F77009D23B6 /* ProceduralRoundedBoxGenerator.cpp */,
+				3783DF6613310F77009D23B6 /* ProceduralShape.cpp */,
+				3783DF6713310F77009D23B6 /* ProceduralSphereGenerator.cpp */,
+				3783DF6813310F77009D23B6 /* ProceduralTorusGenerator.cpp */,
+				3783DF6913310F77009D23B6 /* ProceduralTorusKnotGenerator.cpp */,
+				3783DF6A13310F77009D23B6 /* ProceduralTriangulator.cpp */,
+				3783DF6B13310F77009D23B6 /* ProceduralTubeGenerator.cpp */,
 			);
 			name = src;
-			path = modules/procedural/src;
+			path = "modules/ogre-procedural/src";
 			sourceTree = "<group>";
 		};
 		37B282461323EB4500BACB27 /* External Frameworks */ = {
@@ -570,19 +606,25 @@
 				37B5D0FB13277E5200BFC358 /* EventListener.cpp in Sources */,
 				37B5D0FC13277E5200BFC358 /* EventManager.cpp in Sources */,
 				37B5D0FD13277E5200BFC358 /* UIEngine.cpp in Sources */,
-				3759A0421330D13300D26FB8 /* ProceduralBoxGenerator.cpp in Sources */,
-				3759A0431330D13300D26FB8 /* ProceduralCapsuleGenerator.cpp in Sources */,
-				3759A0441330D13300D26FB8 /* ProceduralConeGenerator.cpp in Sources */,
-				3759A0451330D13300D26FB8 /* ProceduralCylinderGenerator.cpp in Sources */,
-				3759A0461330D13300D26FB8 /* ProceduralIcoSphereGenerator.cpp in Sources */,
-				3759A0471330D13300D26FB8 /* ProceduralMeshGenerator.cpp in Sources */,
-				3759A0481330D13300D26FB8 /* ProceduralPlaneGenerator.cpp in Sources */,
-				3759A0491330D13300D26FB8 /* ProceduralRoot.cpp in Sources */,
-				3759A04A1330D13300D26FB8 /* ProceduralRoundedBoxGenerator.cpp in Sources */,
-				3759A04B1330D13300D26FB8 /* ProceduralSphereGenerator.cpp in Sources */,
-				3759A04C1330D13300D26FB8 /* ProceduralTorusGenerator.cpp in Sources */,
-				3759A04D1330D13300D26FB8 /* ProceduralTorusKnotGenerator.cpp in Sources */,
-				3759A04E1330D13300D26FB8 /* ProceduralTubeGenerator.cpp in Sources */,
+				3783DF6C13310F77009D23B6 /* ProceduralBoxGenerator.cpp in Sources */,
+				3783DF6D13310F77009D23B6 /* ProceduralCapsuleGenerator.cpp in Sources */,
+				3783DF6E13310F77009D23B6 /* ProceduralConeGenerator.cpp in Sources */,
+				3783DF6F13310F77009D23B6 /* ProceduralCylinderGenerator.cpp in Sources */,
+				3783DF7013310F77009D23B6 /* ProceduralExtruder.cpp in Sources */,
+				3783DF7113310F77009D23B6 /* ProceduralGeometryHelpers.cpp in Sources */,
+				3783DF7213310F77009D23B6 /* ProceduralIcoSphereGenerator.cpp in Sources */,
+				3783DF7313310F77009D23B6 /* ProceduralLathe.cpp in Sources */,
+				3783DF7413310F77009D23B6 /* ProceduralMultiShape.cpp in Sources */,
+				3783DF7513310F77009D23B6 /* ProceduralPlaneGenerator.cpp in Sources */,
+				3783DF7613310F77009D23B6 /* ProceduralPrecompiledHeaders.cpp in Sources */,
+				3783DF7713310F77009D23B6 /* ProceduralRoot.cpp in Sources */,
+				3783DF7813310F77009D23B6 /* ProceduralRoundedBoxGenerator.cpp in Sources */,
+				3783DF7913310F77009D23B6 /* ProceduralShape.cpp in Sources */,
+				3783DF7A13310F77009D23B6 /* ProceduralSphereGenerator.cpp in Sources */,
+				3783DF7B13310F77009D23B6 /* ProceduralTorusGenerator.cpp in Sources */,
+				3783DF7C13310F77009D23B6 /* ProceduralTorusKnotGenerator.cpp in Sources */,
+				3783DF7D13310F77009D23B6 /* ProceduralTriangulator.cpp in Sources */,
+				3783DF7E13310F77009D23B6 /* ProceduralTubeGenerator.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

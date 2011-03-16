@@ -10,8 +10,8 @@ material Examples/CloudySky
 
 			texture_unit
 			{
-				texture clouds.jpg
-				scroll_anim 0.15 0
+				texture Skies0220_7_L.jpg
+				scroll_anim 0.01 0
 			}
 		}
 	}
@@ -89,6 +89,67 @@ material Examples/RustySteel
 			texture_unit
 			{
 				texture RustySteel.jpg
+			}
+		}
+	}
+}
+
+material Examples/Crackles
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture crackles_640.jpg
+			}
+		}
+	}
+}
+material Examples/Grunge
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture fire-background-6.jpg
+			}
+		}
+	}
+}
+
+material Terrain/Tube
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.4 0.4 0.4
+			diffuse 1.0 1.0 1.0
+			texture_unit
+			{
+				texture InkFull0013_2_S.jpg
+			}
+		}
+	}
+}
+
+material Examples/BeachStones
+{
+	technique
+	{
+		pass
+		{
+			ambient  0.5 0.5 0.5
+			diffuse  1.0 1.0 1.0		
+			specular 0.2 0.2 0.2 1.0 30.0
+
+			texture_unit
+			{
+				texture red_brick.jpg
 			}
 		}
 	}

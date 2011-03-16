@@ -24,13 +24,13 @@ namespace Pixy
 		mSceneNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
 		mSceneNode->attachObject(mSceneObject);
 		*/
-		static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Examples/RustySteel");
-		mSceneNode->setPosition(Ogre::Vector3(0,10,0));
+		static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Examples/Grunge");
+		mSceneNode->setPosition(Ogre::Vector3(0,0,0));
 		
         mPhyxShape = new btSphereShape(1);
-		mPhyxMS = new MotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,120,0)), mSceneNode);
+		mPhyxMS = new MotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,3,0)), mSceneNode);
         btScalar mass = 1;
-        btVector3 fallInertia(0,0,0);
+        btVector3 fallInertia(0,0,-1);
 		
         mPhyxShape->calculateLocalInertia(mass,fallInertia);
         
@@ -75,15 +75,20 @@ namespace Pixy
 		
 		switch (e.key) {
 			case OIS::KC_W:
-				mDirection.z = +mMoveSpeed;
+				mDirection.z = mMoveSpeed;
 				break;
 			case OIS::KC_A:
-				//mPhyxBody->clearForces();
+				mPhyxBody->clearForces();
 				mDirection.x = mMoveSpeed * 2;
+				mDirection.z = mMoveSpeed;
 				break;
 			case OIS::KC_D:
-				//mPhyxBody->clearForces();
+				mPhyxBody->clearForces();
 				mDirection.x = -mMoveSpeed * 2;
+				mDirection.z = mMoveSpeed;
+				break;
+			case OIS::KC_S:
+				mPhyxBody->clearForces();
 				break;
 				
 		}
@@ -98,9 +103,10 @@ namespace Pixy
 				break;
 			case OIS::KC_A:
 				mDirection.x = 0;
+				mDirection.x = (mDirection.x > 0) ? 0 : mDirection.x;
 				break;
 			case OIS::KC_D:
-				mDirection.x = 0;
+				mDirection.x = (mDirection.x < 0) ? 0 : mDirection.x;
 				break;
 				
 		}

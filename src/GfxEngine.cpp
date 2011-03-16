@@ -12,6 +12,7 @@
 #include "OGRE/OgreTerrain.h"
 #include "OGRE/OgreTerrainGroup.h"
 #include "Intro.h"
+#include "Procedural.h"
 
 namespace Pixy {
 	
@@ -171,9 +172,7 @@ namespace Pixy {
         lCamPos.y += 800;
         lCamPos.z += 1000;
 		 */
-		lCamPos.x = 0;
-		lCamPos.y = 50;
-		lCamPos.z = 100;
+
         mCamera->setPosition(lCamPos);
 		
         mCamera->lookAt(Ogre::Vector3(0, 0, 0));
@@ -189,41 +188,63 @@ namespace Pixy {
 		 */
         // skyz0rs
         mLog->noticeStream() << "Setting up sky";
-		mSceneMgr->setSkyDome(true, "Examples/CloudySky", 65, 8);
+		mSceneMgr->setSkyDome(true, "Examples/CloudySky", 2, 0.5);
 		//mSceneMgr->setSkyBox(true, "Sky/EarlyMorning", 2000, true);				
-		 
+		 		
+		Ogre::Entity* mEntity;
+		Ogre::SceneNode* mNode;
+		std::string mEntityName = "";
+		int tube_length = 100;
+		float tube_radius = 40.0f;
+		int nr_tubes = 2;
+		for (int i =0; i < nr_tubes; ++i) {
+			mEntityName = "myTube_";
+			mEntityName += i;
+
+			
+			Procedural::Root::getInstance()->sceneManager = mSceneMgr;
+			Procedural::TubeGenerator()
+			.setOuterRadius(tube_radius)
+			.setInnerRadius(tube_radius - 2.0f)
+			.setHeight(tube_length)
+			.setNumSegBase(32)
+			.setNumSegHeight(4)
+			.realizeMesh(mEntityName);
+			
+
+			mEntity = mSceneMgr->createEntity(mEntityName);
+			mNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+			mEntity->setMaterialName("Terrain/Tube");
+			mNode->attachObject(mEntity);
+			mNode->setPosition(Vector3(0, 10, i * tube_length));
+			mNode->roll(Ogre::Degree(90));
+			mNode->pitch(Ogre::Degree(90 ));
+			mNode->showBoundingBox(true);			
+			
+		}
+		
+		// create a fork
+		Procedural::Root::getInstance()->sceneManager = mSceneMgr;
+		Procedural::TubeGenerator()
+		.setOuterRadius(tube_radius+1.0f)
+		.setInnerRadius(tube_radius)
+		.setHeight(tube_length * 2)
+		.setNumSegBase(64)
+		.setNumSegHeight(8)
+		.realizeMesh("fork1");
 		
 		
-		Ogre::Plane mPlane;
-        Ogre::SceneNode* mNode;
-        Ogre::Entity* pPlaneEnt;
-		Ogre::MeshManager* meshManager = &Ogre::MeshManager::getSingleton();
-        // create floor plane
-        mPlane.normal = Vector3::UNIT_Y;
-		mPlane.d = 0;
-		meshManager->createPlane("meshFloor",
-								 Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, 
-								 mPlane,
-								 1000,
-								 10000,
-								 10,
-								 10,
-								 true,
-								 1,
-								 50,
-								 50,
-								 Vector3::UNIT_Z);
-		pPlaneEnt = mSceneMgr->createEntity("Plane_Floor", "meshFloor");
-		pPlaneEnt->setMaterialName("Examples/GrassFloor");
-		pPlaneEnt->setCastShadows(false);
-		mNode = mSceneMgr->createSceneNode("Node_Floor");
-		mSceneMgr->getRootSceneNode()->addChild(mNode);
-		mNode->setPosition(Vector3(0,-16,0));
-		mNode->attachObject(pPlaneEnt);
+		mEntity = mSceneMgr->createEntity("fork1");
+		mNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+		mEntity->setMaterialName("Terrain/Tube");
+		mNode->attachObject(mEntity);
+		mNode->setPosition(Vector3(0, 10, nr_tubes * tube_length - 25));
+		mNode->roll(Ogre::Degree(90));
+		mNode->pitch(Ogre::Degree(115));
 		mNode->showBoundingBox(true);
-		 
-		 
 		
+		
+		//mCamera->lookAt(mSceneMgr->getEntity("myTube_0")->getParentSceneNode()->getPosition());
     };
 	
     void GfxEngine::setupLights()
@@ -343,6 +364,34 @@ namespace Pixy {
 	}
 	
 	
+	void GfxEngine::keyPressed( const OIS::KeyEvent &e )
+	{
+		switch (e.key) {
+			case OIS::KC_UP:
+				mCamera->move(Vector3(0, 0, 1));
+				break;
+			case OIS::KC_DOWN:
+				mCamera->move(Vector3(0, 0, -1));
+				break;
+			case OIS::KC_LEFT:
+				mCamera->move(Vector3(-1, 0, 0));
+				break;
+			case OIS::KC_RIGHT:
+				mCamera->move(Vector3(1, 0, 0));
+				break;
+			case OIS::KC_T:
+				mCamera->move(Vector3(0, 1, 0));
+				break;
+			case OIS::KC_G:
+				mCamera->move(Vector3(0, -1, 0));
+				break;				
+		}
+	}
+	
+	void GfxEngine::keyReleased( const OIS::KeyEvent &e ) {
+			
+	}
+	
 	
 	void GfxEngine::createSphere(const std::string& strName, const float r, const int nRings, const int nSegments)
 	{
@@ -437,9 +486,10 @@ namespace Pixy {
 		processEvents();
 		
 		//
+		
 		mCamera->setPosition(mSphere->getSceneNode()->getPosition().x,
-							 mSphere->getSceneNode()->getPosition().y+100,
-							 mSphere->getSceneNode()->getPosition().z-150);
+							 mSphere->getSceneNode()->getPosition().y+20,
+							 mSphere->getSceneNode()->getPosition().z-80);
 		//mCameraMan->update(lTimeElapsed);
 		
 		using namespace Ogre;

@@ -106,6 +106,9 @@ namespace Pixy {
 		void mousePressed( const OIS::MouseEvent &e, OIS::MouseButtonID id );
 		void mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id );
 		
+		void keyPressed( const OIS::KeyEvent &e );
+		void keyReleased( const OIS::KeyEvent &e );
+		
 		void createSphere(const std::string& strName, const float r, const int nRings = 16, const int nSegments = 16);
 		
 	protected:

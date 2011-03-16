@@ -55,20 +55,15 @@ namespace Pixy {
 		
         mWorld->setGravity(btVector3(0,-1,0));
 		
-		mGroundShape = new btStaticPlaneShape(btVector3(0,1,0),1);
-		
-		
-        mGroundMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,-1,0)));
-		
+		mGroundShape = new btStaticPlaneShape(btVector3(0,1,0),0);
+        mGroundMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)));
         btRigidBody::btRigidBodyConstructionInfo
 			mGroundRBCI(0,mGroundMS,mGroundShape,btVector3(0,0,0));
-		
         mGroundBody = new btRigidBody(mGroundRBCI);
         mWorld->addRigidBody(mGroundBody);
 		
 
        // mWorld->addRigidBody(mSphereRB);
-		
 		
 		fSetup = true;
 		return fSetup;

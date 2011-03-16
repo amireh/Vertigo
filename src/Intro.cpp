@@ -53,6 +53,7 @@ namespace Pixy
 	
 		mUISystem->injectKeyDown(e.key);
 		mUISystem->injectChar(e.text);
+		mGfxEngine->keyPressed(e);
 		mSphere->keyPressed(e);
 		
 		switch (e.key) {
@@ -62,6 +63,7 @@ namespace Pixy
 	void Intro::keyReleased( const OIS::KeyEvent &e ) {
 		
 		mUISystem->injectKeyUp(e.key);
+		mGfxEngine->keyReleased(e);
 		mSphere->keyReleased(e);
 		switch (e.key) {
 			case OIS::KC_ESCAPE:
