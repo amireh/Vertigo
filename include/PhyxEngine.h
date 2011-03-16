@@ -13,6 +13,7 @@
 
 #include "Pixy.h"
 #include "Engine.h"
+#include "Entity.h"
 #include <btBulletDynamicsCommon.h>
 
 namespace Pixy
@@ -33,6 +34,7 @@ namespace Pixy
 		
 		
 		virtual bool setup();
+		virtual bool deferredSetup();
 		virtual void update(unsigned long lTimeElapsed);
 		virtual bool cleanup();
 
@@ -42,6 +44,9 @@ namespace Pixy
 		void mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id );
 		*/
 		
+		void attachToWorld(Pixy::Entity* inEntity);
+		void detachFromWorld(Pixy::Entity* inEntity);
+		
 	protected:
 		btBroadphaseInterface* mBroadphase;
 		btDefaultCollisionConfiguration* mCollisionConfig;
@@ -49,9 +54,9 @@ namespace Pixy
 		btSequentialImpulseConstraintSolver* mSolver;
 		btDiscreteDynamicsWorld *mWorld;
 		
-		btCollisionShape *mGroundShape, *mSphereShape;
-		btDefaultMotionState *mGroundMS, *mSphereMS;
-		btRigidBody *mGroundRB, *mSphereRB;
+		btCollisionShape *mGroundShape;
+		btDefaultMotionState *mGroundMS;
+		btRigidBody *mGroundBody;
 		
 	private:
 		static PhyxEngine* _myPhyxEngine;

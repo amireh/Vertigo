@@ -24,6 +24,7 @@ namespace Pixy
             inline virtual ~Engine() { mLog = NULL; fSetup = false; };
 			
             virtual bool setup()=0;
+			virtual bool deferredSetup()=0;
             virtual void update(unsigned long lTimeElapsed)=0;
             virtual bool cleanup()=0;
 			

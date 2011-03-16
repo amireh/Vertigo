@@ -141,6 +141,12 @@ namespace Pixy {
 		return true;
 	}
 	
+	bool UIEngine::deferredSetup() {
+		
+		return true;
+	}
+	
+	
 	
 	bool UIEngine::loadResources() { 
 		

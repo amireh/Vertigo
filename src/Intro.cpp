@@ -19,10 +19,17 @@ namespace Pixy
 				
 		mUIEngine = UIEngine::getSingletonPtr();
 		mUIEngine->setup();
+		
+		mPhyxEngine = PhyxEngine::getSingletonPtr();
+		mPhyxEngine->setup();
 			
 		// grab CEGUI handle
 		mUISystem = &CEGUI::System::getSingleton();
  
+		mSphere = new Sphere();
+		
+		mGfxEngine->deferredSetup();
+		
 		mLog->infoStream() << "Initialized successfully.";
 		
 	}
@@ -30,6 +37,8 @@ namespace Pixy
 	
 	void Intro::exit( void ) {
 				
+		delete mSphere;
+		delete mPhyxEngine;
 		delete mUIEngine;
 		delete mGfxEngine;
 		
@@ -39,52 +48,28 @@ namespace Pixy
 		 
 	}
 	
-	void Intro::update( unsigned long lTimeElapsed ) {
-		
-		mGfxEngine->update(lTimeElapsed);
-		mUIEngine->update(lTimeElapsed);
-		
-	}
-	
 	void Intro::keyPressed( const OIS::KeyEvent &e )
 	{
 	
 		mUISystem->injectKeyDown(e.key);
 		mUISystem->injectChar(e.text);
+		mSphere->keyPressed(e);
 		
 		switch (e.key) {
-			case OIS::KC_W:
-				mGfxEngine->moveSphere(DIR_FORWARD);
-				break;
-			case OIS::KC_A:
-				mGfxEngine->moveSphere(DIR_LEFT);
-				break;
-			case OIS::KC_D:
-				mGfxEngine->moveSphere(DIR_RIGHT);
-				break;
 		}
 	}
 	
 	void Intro::keyReleased( const OIS::KeyEvent &e ) {
 		
 		mUISystem->injectKeyUp(e.key);
-		
+		mSphere->keyReleased(e);
 		switch (e.key) {
 			case OIS::KC_ESCAPE:
 				this->requestShutdown();
 				break;
 			case OIS::KC_SPACE:
 				//fireLoginEvt();
-				break;
-			case OIS::KC_W:
-				mGfxEngine->stopMovingSphere(DIR_FORWARD);
-				break;
-			case OIS::KC_A:
-				mGfxEngine->stopMovingSphere(DIR_LEFT);
-				break;
-			case OIS::KC_D:
-				mGfxEngine->stopMovingSphere(DIR_RIGHT);
-				break;				
+				break;			
 
 		}
 		
@@ -120,5 +105,15 @@ namespace Pixy
 	Intro& Intro::getSingleton( void ) {
 		return *getSingletonPtr();
 	}
+	
+	Sphere* Intro::getSphere() { return mSphere; };
 
+	void Intro::update( unsigned long lTimeElapsed ) {
+		
+		mGfxEngine->update(lTimeElapsed);
+		mUIEngine->update(lTimeElapsed);
+		mPhyxEngine->update(lTimeElapsed);
+		mSphere->update(lTimeElapsed);
+		
+	}
 } // end of namespace

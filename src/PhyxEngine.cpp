@@ -57,28 +57,17 @@ namespace Pixy {
 		
 		mGroundShape = new btStaticPlaneShape(btVector3(0,1,0),1);
 		
-        mSphereShape = new btSphereShape(1);
 		
         mGroundMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,-1,0)));
 		
         btRigidBody::btRigidBodyConstructionInfo
 			mGroundRBCI(0,mGroundMS,mGroundShape,btVector3(0,0,0));
 		
-        mGroundRB = new btRigidBody(mGroundRBCI);
-        mWorld->addRigidBody(mGroundRB);
+        mGroundBody = new btRigidBody(mGroundRBCI);
+        mWorld->addRigidBody(mGroundBody);
 		
-		btDefaultMotionState* mSphereMS = 
-			new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,80,0)));
-        btScalar mass = 1;
-        btVector3 fallInertia(0,0,0);
-		
-        mSphereShape->calculateLocalInertia(mass,fallInertia);
-        
-		btRigidBody::btRigidBodyConstructionInfo
-			mSphereRBCI(mass,mSphereMS,mSphereShape,fallInertia);
-        
-		mSphereRB = new btRigidBody(mSphereRBCI);
-        mWorld->addRigidBody(mSphereRB);
+
+       // mWorld->addRigidBody(mSphereRB);
 		
 		
 		fSetup = true;
@@ -87,30 +76,27 @@ namespace Pixy {
 	
 	
 	void PhyxEngine::update(unsigned long lTimeElapsed) {
-		mWorld->stepSimulation(1/120.f,10);
-		
-		btTransform trans;
-		mSphereRB->getMotionState()->getWorldTransform(trans);
-		
-		glPushMatrix ();
-		// get sphere body position
-		glTranslatef (trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
-		glColor3f (1.0, 0.0, 0.0);
-		glutSolidSphere(5.0, 18, 12);
-		
+		mWorld->stepSimulation(lTimeElapsed);
 		
 	}
 	
+	bool PhyxEngine::deferredSetup() {
+		
+		return true;
+	}
+	
+	void PhyxEngine::attachToWorld(Entity* inEntity) {
+		mWorld->addRigidBody(inEntity->getRigidBody());
+	}
+	void PhyxEngine::detachFromWorld(Entity* inEntity) {
+		mWorld->removeRigidBody(inEntity->getRigidBody());
+	}
 	bool PhyxEngine::cleanup() {
-		mWorld->removeRigidBody(mSphereRB);
-        delete mSphereRB->getMotionState();
-        delete mSphereRB;
 		
-        mWorld->removeRigidBody(mGroundRB);
-        delete mGroundRB->getMotionState();
-        delete mGroundRB;
+        mWorld->removeRigidBody(mGroundBody);
+        delete mGroundBody->getMotionState();
+        delete mGroundBody;
 		
-		delete mSphereShape;
 		
         delete mGroundShape;
 		

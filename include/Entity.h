@@ -18,9 +18,16 @@
 #endif
 
 #include <Ogre.h>
+#include <btBulletDynamicsCommon.h>
+#include "MotionState.h"
 
+using Ogre::Vector3;
+using Ogre::Real;
 namespace Pixy
 {
+	
+
+	
 	/*! \class Entity Entity.h "src/Entity.h"
 	 *
 	 * \brief Defines base attributes and actions for GameObjects.
@@ -69,11 +76,12 @@ namespace Pixy
 		int getObjectId() const;
 		
 		
+		virtual void update(unsigned long lTimeElapsed)=0;
 		
 		/*!
 		 * @return Entity's in-game name.
 		 */
-		std::string getName() const;
+		std::string& getName();
 		
 		
 		/*!
@@ -94,7 +102,14 @@ namespace Pixy
 		virtual void setMesh(std::string inMesh);
 		virtual std::string getMesh();
 		
-		protected:
+		Vector3& getDirection();
+		Real getMoveSpeed();
+		
+		virtual btRigidBody* getRigidBody();
+		virtual MotionState* getMotionState();
+		virtual btCollisionShape* getCollisionShape();
+		
+	protected:
 
 		int idObject;                       //! Unique entity id
 		std::string mName;					//! Entity's in-game name
@@ -102,6 +117,12 @@ namespace Pixy
 		std::string mMesh;					//! Entity's in-game name		
 		Ogre::SceneNode         *mSceneNode;
 		Ogre::MovableObject     *mSceneObject;
+		btCollisionShape		*mPhyxShape;
+		MotionState				*mPhyxMS;
+		btRigidBody				*mPhyxBody;
+		
+		Real mMoveSpeed;
+		Vector3 mDirection;
 		
 		//! helper method for copy/assignment methods
 		//! copies all data from src and sets it into this entity

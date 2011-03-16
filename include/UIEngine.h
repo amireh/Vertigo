@@ -43,6 +43,7 @@ namespace Pixy {
 		static UIEngine* getSingletonPtr();
 		
 		virtual bool setup();
+		virtual bool deferredSetup();
 		virtual void update(unsigned long lTimeElapsed);
 		virtual bool cleanup();
 		

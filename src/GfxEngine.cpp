@@ -11,6 +11,7 @@
 #include "GameManager.h"
 #include "OGRE/OgreTerrain.h"
 #include "OGRE/OgreTerrainGroup.h"
+#include "Intro.h"
 
 namespace Pixy {
 	
@@ -28,12 +29,12 @@ namespace Pixy {
 		mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "GfxEngine");
 		mLog->infoStream() << "firing up";
 		fSetup = false;
-		mPlayers.clear();
+		//mPlayers.clear();
 		//mCameraMan = 0;
-		mFallVelocity = 0;
+		//mFallVelocity = 0;
 		//mSceneLoader = 0;
-		mMoveSpeed = 0.1;
-		mDirection = Ogre::Vector3::ZERO;
+		//mMoveSpeed = 0.1;
+		//mDirection = Ogre::Vector3::ZERO;
 		
 	}
 	
@@ -92,20 +93,18 @@ namespace Pixy {
 		
         setupNodes();
 		
-		createSphere("mySphereMesh", 10, 64, 64);
-		sphereEntity = mSceneMgr->createEntity("mySphereEntity", "mySphereMesh");
-		sphereNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-		sphereEntity->setMaterialName("Examples/RustySteel");
-		sphereNode->attachObject(sphereEntity);
-		sphereNode->setPosition(Ogre::Vector3(0,10,0));
 		
-		mCamera->setAutoTracking (true, sphereNode);
 		
 		fSetup = true;
 		return fSetup;
 	}
 	
-
+	bool GfxEngine::deferredSetup() {
+		mSphere = Intro::getSingleton().getSphere();
+		mCamera->setAutoTracking (true, mSphere->getSceneNode());
+		
+		return true;
+	}
 	
 
 	void GfxEngine::setCamera(const Ogre::String& inCameraName) {
@@ -129,17 +128,6 @@ namespace Pixy {
 	
 	Ogre::Viewport* GfxEngine::getViewport() {
 		return mViewport;
-	}
-	
-	void GfxEngine::update(unsigned long lTimeElapsed) {
-		processEvents();
-		
-		sphereNode->translate(mDirection * lTimeElapsed, Ogre::Node::TS_LOCAL);
-		mCamera->move(mDirection * lTimeElapsed);
-		//mCameraMan->update(lTimeElapsed);
-		
-		using namespace Ogre;
-		
 	}
 	
 	bool GfxEngine::cleanup() {		
@@ -209,21 +197,30 @@ namespace Pixy {
 		Ogre::Plane mPlane;
         Ogre::SceneNode* mNode;
         Ogre::Entity* pPlaneEnt;
-		
+		Ogre::MeshManager* meshManager = &Ogre::MeshManager::getSingleton();
         // create floor plane
         mPlane.normal = Vector3::UNIT_Y;
-		 mPlane.d = 0;
-		 Ogre::MeshManager::getSingleton().createPlane("meshFloor",
-		 Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, mPlane,
-		 1000,1000,10,10,true,1,50,50,Vector3::UNIT_Z);
-		 pPlaneEnt = mSceneMgr->createEntity("Plane_Floor", "meshFloor");
-		 pPlaneEnt->setMaterialName("Examples/GrassFloor");
-		 pPlaneEnt->setCastShadows(false);
-		 mNode = mSceneMgr->createSceneNode("Node_Floor");
-		 mSceneMgr->getRootSceneNode()->addChild(mNode);
-		 mNode->setPosition(Vector3(0,0,0));
-		 mNode->attachObject(pPlaneEnt);
-		
+		mPlane.d = 0;
+		meshManager->createPlane("meshFloor",
+								 Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, 
+								 mPlane,
+								 1000,
+								 10000,
+								 10,
+								 10,
+								 true,
+								 1,
+								 50,
+								 50,
+								 Vector3::UNIT_Z);
+		pPlaneEnt = mSceneMgr->createEntity("Plane_Floor", "meshFloor");
+		pPlaneEnt->setMaterialName("Examples/GrassFloor");
+		pPlaneEnt->setCastShadows(false);
+		mNode = mSceneMgr->createSceneNode("Node_Floor");
+		mSceneMgr->getRootSceneNode()->addChild(mNode);
+		mNode->setPosition(Vector3(0,-16,0));
+		mNode->attachObject(pPlaneEnt);
+		mNode->showBoundingBox(true);
 		 
 		 
 		
@@ -257,10 +254,10 @@ namespace Pixy {
 
 	
     Ogre::SceneNode* 
-	GfxEngine::createNode(String& inName, 
-						  Vector3& inPosition, 
-						  Vector3& inScale, 
-						  Vector3& inDirection, 
+	GfxEngine::createNode(std::string& inName, 
+						  const Vector3& inPosition, 
+						  const Vector3& inScale, 
+						  const Vector3& inDirection, 
 						  Ogre::SceneNode* inParent)
     {
         Ogre::SceneNode* mNode;
@@ -286,7 +283,6 @@ namespace Pixy {
 		entityName += inEntity->getName();
 		entityName += stringify(inEntity->getObjectId());
 		
-		std::string _meshPath = "";
 		mEntity = mSceneMgr->createEntity(entityName, inEntity->getMesh());
 		mEntity->setUserAny(Ogre::Any(inEntity));
 		inNode->attachObject(mEntity);
@@ -301,8 +297,12 @@ namespace Pixy {
 	
     bool GfxEngine::attachToScene(Pixy::Entity* inEntity)
     {
-		renderEntity(inEntity, NULL);
-		return true;
+		
+		return renderEntity(inEntity, createNode(inEntity->getName(), 
+												 Vector3::ZERO, 
+												 Vector3(1.0,1.0,1.0), 
+												 Vector3::ZERO,
+												 NULL)) && true;
     };
 	
 	
@@ -322,10 +322,7 @@ namespace Pixy {
 		mSceneMgr->destroyEntity((Ogre::Entity*)inEntity->getSceneObject());
 		
     }
-	
-    void GfxEngine::setupWaypoints()
-    {
-    };
+
 	
 	void GfxEngine::mouseMoved( const OIS::MouseEvent &e )
 	{
@@ -345,37 +342,6 @@ namespace Pixy {
 		//	mCameraMan->injectMouseUp(e, id);
 	}
 	
-	
-	void GfxEngine::stopMovingSphere(DIRECTION inDirection) {
-		switch (inDirection) {
-			case DIR_FORWARD:
-				mDirection.z = 0;
-				break;
-			case DIR_LEFT:
-				mDirection.x = 0;
-				break;
-			case DIR_RIGHT:
-				mDirection.x = 0;
-				break;
-				
-		}		
-	}
-	
-	void GfxEngine::moveSphere(DIRECTION inDirection) {
-		switch (inDirection) {
-			case DIR_FORWARD:
-				mDirection.z = -mMoveSpeed;
-				break;
-			case DIR_LEFT:
-				mDirection.x = -mMoveSpeed;
-				break;
-			case DIR_RIGHT:
-				mDirection.x = mMoveSpeed;
-				break;
-				
-		}
-		
-	}
 	
 	
 	void GfxEngine::createSphere(const std::string& strName, const float r, const int nRings, const int nSegments)
@@ -467,4 +433,16 @@ namespace Pixy {
 		pSphere->load();
 	}
 
+	void GfxEngine::update(unsigned long lTimeElapsed) {
+		processEvents();
+		
+		//
+		mCamera->setPosition(mSphere->getSceneNode()->getPosition().x,
+							 mSphere->getSceneNode()->getPosition().y+100,
+							 mSphere->getSceneNode()->getPosition().z-150);
+		//mCameraMan->update(lTimeElapsed);
+		
+		using namespace Ogre;
+		
+	}
 }

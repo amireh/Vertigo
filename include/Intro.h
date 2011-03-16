@@ -16,8 +16,10 @@
 #include "GameState.h"
 #include "UIEngine.h"
 #include "GfxEngine.h"
+#include "PhyxEngine.h"
 #include <map>
 #include <list>
+#include "Sphere.h"
 
 namespace Pixy
 {
@@ -49,6 +51,7 @@ namespace Pixy
 		
 		virtual GAME_STATE getId() const;
 
+		Sphere* getSphere();
 
 	protected:
 		void fireLoginEvt();
@@ -59,8 +62,9 @@ namespace Pixy
 		
 		GfxEngine		*mGfxEngine;
 		UIEngine		*mUIEngine;
+		PhyxEngine		*mPhyxEngine;
 		CEGUI::System	*mUISystem;
-		
+		Sphere			*mSphere;
 		static Intro    *mIntro;
 		
 	};

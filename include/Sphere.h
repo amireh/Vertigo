@@ -18,6 +18,7 @@
 #endif
 
 #include <list>
+#include "InputManager.h"
 
 using std::list;
 namespace Pixy
@@ -39,12 +40,16 @@ namespace Pixy
 		virtual void die();
 		
 		virtual void render();
-		virtual void update();
+		virtual void update(unsigned long lTimeElapsed);
+		
+		void keyPressed( const OIS::KeyEvent &e );
+		void keyReleased( const OIS::KeyEvent &e );
 		
 	protected:		
 		
 		//! helper method for copy ctor and assignment operator
 		virtual void copyFrom(const Sphere& src);
+		
 	};
 } // end of namespace
 #endif

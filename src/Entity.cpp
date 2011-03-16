@@ -20,6 +20,8 @@ namespace Pixy
 		idObject = -1;
 		mName = "Unnamed";
 		mHP = 1;
+		mMoveSpeed = 0;
+		mDirection = Vector3::ZERO;
 		
 	};
 
@@ -43,7 +45,7 @@ namespace Pixy
 
 
 	int Entity::getObjectId() const { return idObject; };
-	std::string Entity::getName() const { return mName; };
+	std::string& Entity::getName() { return mName; };
 	int Entity::getHP() const { return mHP; };
 
     Entity::Entity(const Entity& src)
@@ -102,5 +104,16 @@ namespace Pixy
 	std::string Entity::getMesh() {
 		return mMesh;
 	}
-
+	
+	Vector3& Entity::getDirection() {
+		return mDirection;
+	}
+	Real Entity::getMoveSpeed() {
+		return mMoveSpeed;
+	}
+	btRigidBody* Entity::getRigidBody() { return mPhyxBody; };
+	MotionState* Entity::getMotionState() { return mPhyxMS; };
+	btCollisionShape* Entity::getCollisionShape() { return mPhyxShape; };
+	
+	
 } // end of namespace
