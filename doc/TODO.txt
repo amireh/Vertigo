@@ -1,0 +1,3 @@
+* sphere: flip shields (DONE)
+* obstacles: collision
+* obstacles: stationary and suicidal

@@ -167,9 +167,14 @@ namespace Pixy
 	  render();
 	};
 	
-	void Sphere::collide(Entity* target) {
+	void Sphere::collide(Obstacle* target) {
 	  if (target->dead())
 	    return;
+	  
+	  // hit our shields
+	  mShields[mCurrentShield] += (mCurrentShield != target->shield()) ? -5 : 5;
+	  
+	  GfxEngine::getSingletonPtr()->applyMotionBlur(0.5f);
 	  
 	  mLog->debugStream() << "Sphere has collided with " << target->getName() << target->getObjectId();
 	  target->collide(this);

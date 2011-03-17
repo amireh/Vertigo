@@ -76,7 +76,7 @@ namespace Pixy
 	  int qualifier = rand();
 	  return Vector3(
 	    qualifier % 30, 
-	    -20, 
+	    0, 
 	    mSphere->getSceneNode()->getPosition().z + qualifier % 250 + 1000);	   
 	}
 	void Obstacle::live() {
@@ -142,6 +142,6 @@ namespace Pixy
 	  die();
 	}
 
-
+  SHIELD Obstacle::shield() { return mShield; }
 	
 } // end of namespace

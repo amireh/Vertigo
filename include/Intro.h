@@ -13,14 +13,15 @@
 #ifndef H_Intro_H
 #define H_Intro_H
 
+#include <list>
 #include "GameState.h"
 #include "UIEngine.h"
 #include "GfxEngine.h"
 #include "PhyxEngine.h"
 #include <map>
-#include <list>
 #include "Sphere.h"
 #include "Obstacle.h"
+
 
 using std::list;
 namespace Pixy
@@ -67,9 +68,9 @@ namespace Pixy
 		PhyxEngine		*mPhyxEngine;
 		CEGUI::System	*mUISystem;
 		Sphere			  *mSphere;
-		list<Obstacle*> mObstacles;
-		list<Obstacle*> mObstaclePool;
-		list<Obstacle*> mDeadObstacles;
+		std::list<Obstacle*> mObstacles;
+		std::list<Obstacle*> mObstaclePool;
+		std::list<Obstacle*> mDeadObstacles;
 		long nrObstacles;
 		static Intro    *mIntro;
 		Ogre::Timer mTimer;

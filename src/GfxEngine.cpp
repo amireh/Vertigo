@@ -14,6 +14,7 @@
 #include "Intro.h"
 #include "Procedural.h"
 
+
 namespace Pixy {
 	
 	GfxEngine* GfxEngine::_myGfxEngine = NULL;
@@ -113,7 +114,6 @@ namespace Pixy {
 		
 		setupParticles();
 		//mSphere->getSceneNode()->attachObject(mSceneMgr->getLight("Light2"));
-		
 		return true;
 	}
 	
@@ -164,13 +164,25 @@ namespace Pixy {
 	
     void GfxEngine::setupViewports()
     {
-		mLog->debugStream() << "setting up viewports";
-        mViewport->setBackgroundColour(Ogre::ColourValue(255,255,255));
-        // Alter the camera aspect ratio to match the viewport	
-        //mCamera->setAspectRatio(Ogre::Real(mViewport->getActualWidth()) / Ogre::Real(mViewport->getActualHeight()));
+		  mLog->debugStream() << "setting up viewports";
+      mViewport->setBackgroundColour(Ogre::ColourValue(255,255,255));
+      
+      Ogre::CompositorManager::getSingleton().addCompositor(mViewport, "Radial Blur");
+      
+      // Alter the camera aspect ratio to match the viewport	
+      mCamera->setAspectRatio(Ogre::Real(mViewport->getActualWidth()) / Ogre::Real(mViewport->getActualHeight()));
 		
     };
 	
+	  void GfxEngine::applyMotionBlur(float duration) {
+	    mEffect = "Radial Blur";
+	    mEffectTimer.reset();
+	    mEffectDuration = duration;
+	    mEffectEnabled = true;
+	    Ogre::CompositorManager::getSingleton().setCompositorEnabled(mViewport, mEffect, mEffectEnabled);
+	  };
+	  
+	  
     void GfxEngine::setupCamera()
     {
 		mLog->debugStream() << "setting up cameras";
@@ -512,6 +524,12 @@ namespace Pixy {
 	void GfxEngine::update(unsigned long lTimeElapsed) {
 		//processEvents();
 		
+		if (mEffectEnabled && mEffectTimer.getMilliseconds() > mEffectDuration * 1000) {
+		  mEffectTimer.reset();
+		  mEffectEnabled = false;
+		  Ogre::CompositorManager::getSingleton().setCompositorEnabled(mViewport, mEffect, mEffectEnabled);
+		}
+		
 		mCamera->setPosition(mSphere->getSceneNode()->getPosition().x,
 							 mSphere->getSceneNode()->getPosition().y+20,
 							 mSphere->getSceneNode()->getPosition().z-80);
@@ -534,5 +552,6 @@ namespace Pixy {
     // create aureola around ogre head perpendicular to the ground
     ps = mSceneMgr->createParticleSystem("Nimbus", "Examples/GreenyNimbus");
 		mSphere->getSceneNode()->attachObject(ps);
+
 	}
 }

@@ -27,7 +27,6 @@
 #include "Sphere.h"
 //#include "DotSceneLoader.h"
 
-
 using Ogre::Vector3;
 using Ogre::Real;
 using Ogre::SceneNode;
@@ -51,7 +50,8 @@ namespace Pixy {
 		
 		virtual bool setup();
 		virtual bool deferredSetup();
-		virtual void update(unsigned long lTimeElapsed);
+		virtual void update(unsigned long lTimeElapsed
+		);
 		virtual bool cleanup();
 		
 		void setCamera(const Ogre::String& inCameraName);
@@ -118,6 +118,8 @@ namespace Pixy {
 		
 		void createSphere(const std::string& strName, const float r, const int nRings = 16, const int nSegments = 16);
 		
+		void applyMotionBlur(float duration);
+
 	protected:
 		Ogre::Root           *mRoot;
 		Ogre::Camera         *mCamera, *mCamera2, *mCamera3, *mCamera4;
@@ -163,6 +165,11 @@ namespace Pixy {
 							  SceneNode* inParent=NULL);
 	
 	  Ogre::FrameEvent evt;
+		
+		Ogre::String mEffect;
+		Ogre::Timer mEffectTimer;
+		float mEffectDuration;
+		bool mEffectEnabled;
 		
 	private:
 		static GfxEngine* _myGfxEngine;

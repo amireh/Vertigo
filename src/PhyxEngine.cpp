@@ -131,47 +131,36 @@ namespace Pixy {
       if(pm->getNumContacts() > 0) {
          btRigidBody* co1 = static_cast<btRigidBody*>(pm->getBody0());
          btRigidBody* co2 = static_cast<btRigidBody*>(pm->getBody1());
+         // find out if it's a Sphere and an Obstacle that r colliding...
+         // i'm currently doing this by testing the shapes
          if ((co1->getCollisionShape() == mSphere->getCollisionShape() &&
              co2->getCollisionShape() == mObstacleShape) ||
              (co2->getCollisionShape() == mSphere->getCollisionShape() &&
              co1->getCollisionShape() == mObstacleShape)
-            ) {
-             MotionState *ms1 = static_cast<MotionState*>(co1->getMotionState());
-             
-            Entity* obj1, *obj2 = NULL;
-            if (co1->getCollisionShape() == mSphere->getCollisionShape()) {
-              //obj1 = static_cast<Sphere*>(Ogre::any_cast<Entity*>(ms1->getNode()->getUserAny()));
-              //obj2 = static_cast<Obstacle*>(Ogre::any_cast<Entity*>(ms2->getNode()->getUserAny()));
-              MotionState *ms = static_cast<MotionState*>(co2->getMotionState());
-              mSphere->collide(static_cast<Obstacle*>(Ogre::any_cast<Entity*>(ms->getNode()->getUserAny())));
-            } else {
-              //obj1 = static_cast<Obstacle*>(Ogre::any_cast<Entity*>(ms1->getNode()->getUserAny()));
-              //obj2 = static_cast<Sphere*>(Ogre::any_cast<Entity*>(ms2->getNode()->getUserAny()));
-              MotionState *ms = static_cast<MotionState*>(co1->getMotionState());
-              mSphere->collide(static_cast<Obstacle*>(Ogre::any_cast<Entity*>(ms->getNode()->getUserAny())));
-            }
-            /*
-           if (obj1 && obj2) {
-            mLog->debugStream() << obj1->getName() << " " << co1->getCollisionFlags() << " collided with " << typeid(obj2).name() << " " << co2->getCollisionFlags();
-            obj1->collide(obj2);
-            obj2->collide(obj1);
-           } else {
-            mLog->warnStream() << "invalid collision";
-           }*/
-         }
-         //btVector3 pos = test2->getWorldTransform().getOrigin();
-         //m_pOgreHeadNode->setPosition(pos.x(),pos.y(), pos.z());
+            )
+         {
+          // now here's the funny part:
+          // we grab a handle to the Entity's MotionState using the RigidBody
+          // to get a handle of the Ogre::SceneNode which has our Entity casted
+          // as void* ... friggin clean ah?
+          if (co1->getCollisionShape() == mSphere->getCollisionShape()) {
+            MotionState *ms = static_cast<MotionState*>(co2->getMotionState());
+            mSphere->collide(static_cast<Obstacle*>(Ogre::any_cast<Entity*>(ms->getNode()->getUserAny())));
+          } else {
+            MotionState *ms = static_cast<MotionState*>(co1->getMotionState());
+            mSphere->collide(static_cast<Obstacle*>(Ogre::any_cast<Entity*>(ms->getNode()->getUserAny())));
+          }
+
       }
       mWorld->getDispatcher()->clearManifold(pm);
-   }
+    }
+	}
 	}
 	
 	btCollisionShape* PhyxEngine::obstaclesShape() { return mObstacleShape; };
 	 
 	bool PhyxEngine::deferredSetup() {
-		
 		mSphere = Intro::getSingleton().getSphere();
-		//mFloor->setUserPointer(Intro::getSingleton().getSphere());
 		return true;
 	}
 	
@@ -185,32 +174,32 @@ namespace Pixy {
 	}
 	bool PhyxEngine::cleanup() {
 		
-        mWorld->removeRigidBody(mFloorBody);
-        mWorld->removeRigidBody(mCeilingBody);
-        mWorld->removeRigidBody(mLWallBody);
-        mWorld->removeRigidBody(mRWallBody);
-        
-        delete mFloorBody->getMotionState();
-        delete mCeilingBody->getMotionState();
-        delete mLWallBody->getMotionState();
-        delete mRWallBody->getMotionState();
-        
-        delete mFloorBody;
-        delete mCeilingBody;
-		    delete mLWallBody;
-		    delete mRWallBody;
-		    
-        delete mObstacleShape;
-        delete mFloorShape;
-        delete mCeilingShape;
-		    delete mLWallShape;
-		    delete mRWallShape;
-		
-        delete mWorld;
-        delete mSolver;
-        delete mDispatcher;
-        delete mCollisionConfig;
-        delete mBroadphase;
+    mWorld->removeRigidBody(mFloorBody);
+    mWorld->removeRigidBody(mCeilingBody);
+    mWorld->removeRigidBody(mLWallBody);
+    mWorld->removeRigidBody(mRWallBody);
+    
+    delete mFloorBody->getMotionState();
+    delete mCeilingBody->getMotionState();
+    delete mLWallBody->getMotionState();
+    delete mRWallBody->getMotionState();
+    
+    delete mFloorBody;
+    delete mCeilingBody;
+    delete mLWallBody;
+    delete mRWallBody;
+    
+    delete mObstacleShape;
+    delete mFloorShape;
+    delete mCeilingShape;
+    delete mLWallShape;
+    delete mRWallShape;
+
+    delete mWorld;
+    delete mSolver;
+    delete mDispatcher;
+    delete mCollisionConfig;
+    delete mBroadphase;
 		return true;
 	}
 	/*

@@ -54,7 +54,7 @@ namespace Pixy
 		SHIELD currentShield();
 		void flipShields();
 		
-		virtual void collide(Entity* inObj);
+		virtual void collide(Obstacle* inObj);
 		
 	protected:		
 		
