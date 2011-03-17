@@ -19,6 +19,7 @@
 #include <OgreOverlay.h>
 #include <OgreOverlayElement.h>
 #include <OgreOverlayManager.h>
+#include <OgreParticle.h>
 //#include <OgreOctreeSceneManager.h>
 #include "CEGUI/RendererModules/Ogre/CEGUIOgreRenderer.h"
 //#include "SdkCameraMan.h"
@@ -104,6 +105,7 @@ namespace Pixy {
 		void setupLights();
 		
 		void setupNodes();
+		void setupParticles();
 		
 		bool setupCombat(std::string inPlayer1, std::string inPlayer2);
 		
@@ -130,6 +132,7 @@ namespace Pixy {
 		
 		Ogre::Entity* sphereEntity;
 		Ogre::SceneNode* sphereNode;
+		Ogre::Light *mSpotLight;
 		OgreBites::SdkTrayManager*	        mTrayMgr;
 		
 		//! used for setting Objects' direction in Scene

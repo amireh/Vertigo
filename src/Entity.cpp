@@ -6,6 +6,8 @@ namespace Pixy
 {
 
   long Entity::idCounter = 0;
+  int Entity::sphereCollidesWith = COL_OBSTACLES | COL_WALLS;
+  int Entity::obstacleCollidesWith = COL_SPHERE | COL_WALLS;
   
 	Entity::~Entity()
 	{
@@ -113,10 +115,15 @@ namespace Pixy
 	Real Entity::getMoveSpeed() {
 		return mMoveSpeed;
 	}
+	//btCollisionObject* Entity::getObject() { return mObject; };
 	btRigidBody* Entity::getRigidBody() { return mPhyxBody; };
 	MotionState* Entity::getMotionState() { return mPhyxMS; };
 	btCollisionShape* Entity::getCollisionShape() { return mPhyxShape; };
 	
 	bool Entity::dead() { return fDead; };
 	ENTITY_TYPE Entity::type() { return mType; };
+	
+	void Entity::collide(Entity* target) {
+	  mLog->warnStream() << "parent collide() called, children MUST override";
+	}
 } // end of namespace

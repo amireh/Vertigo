@@ -19,13 +19,15 @@
 namespace Pixy
 {
 	
+	class Sphere;
+	
 	/*! \class PhyxEngine
 	 *	\brief
 	 *	Binds physics functionality in game Entity objects, handles collision 
 	 *	events, manages all Physics-related resources, and acts as a wrapper
 	 *	over nVidia's PhyX system.
 	 */
-    class PhyxEngine : public Engine
+  class PhyxEngine : public Engine
 	{
 	public:
 		
@@ -44,8 +46,12 @@ namespace Pixy
 		void mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id );
 		*/
 		
+		btDiscreteDynamicsWorld* world();
+		
 		void attachToWorld(Pixy::Entity* inEntity);
 		void detachFromWorld(Pixy::Entity* inEntity);
+		
+		btCollisionShape* obstaclesShape();
 		
 	protected:
 		btBroadphaseInterface* mBroadphase;
@@ -53,11 +59,14 @@ namespace Pixy
 		btCollisionDispatcher* mDispatcher;
 		btSequentialImpulseConstraintSolver* mSolver;
 		btDiscreteDynamicsWorld *mWorld;
+		btCollisionWorld* mCWorld;
 		
-		btCollisionShape *mFloorShape, *mCeilingShape, *mLWallShape, *mRWallShape;
+		btCollisionObject *mFloor, *mCeiling, *mLWall, *mRWall;
+		btCollisionShape *mFloorShape, *mCeilingShape, *mLWallShape, *mRWallShape, *mObstacleShape;
 		btDefaultMotionState *mFloorMS, *mCeilingMS, *mLWallMS, *mRWallMS;
 		btRigidBody *mFloorBody, *mCeilingBody, *mLWallBody, *mRWallBody;
 		
+		Sphere* mSphere;
 	private:
 		static PhyxEngine* _myPhyxEngine;
 		PhyxEngine();

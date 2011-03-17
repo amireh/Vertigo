@@ -1,5 +1,7 @@
 #include "Intro.h"
 #include "EventManager.h"
+#include <cstdlib>
+#include <ctime> 
 
 using namespace Ogre;
 namespace Pixy
@@ -10,6 +12,8 @@ namespace Pixy
 	GAME_STATE Intro::getId() const { return STATE_INTRO; }
 	
 	void Intro::enter( void ) {
+		
+		srand((unsigned)time(0));
 		
 		mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "Intro");
 		
@@ -40,11 +44,12 @@ namespace Pixy
 
 		  Obstacle* mObs = new Obstacle();
 	    //mObs->setName(name);
-	    mObs->setObjectId(nrObstacles);
+	    //mObs->setObjectId(nrObstacles);
 	    mObstaclePool.push_back(mObs);
 		}
 		
 		mGfxEngine->deferredSetup();
+		mPhyxEngine->deferredSetup();
 		
 		mLog->infoStream() << "Initialized successfully.";
 		
@@ -169,7 +174,7 @@ namespace Pixy
 	}
 	
   void Intro::spawnObstacle() {
-    mLog->debugStream() << "obstacle is pulled from the pool";
+    //mLog->debugStream() << "obstacle is pulled from the pool";
     
     Obstacle* mObs = NULL;// = mObstaclePool.front();
     
@@ -192,7 +197,7 @@ namespace Pixy
   }
   
   void Intro::releaseObstacle(Obstacle* inObs) {
-    mLog->debugStream() << "obstacle is released into the pool";
+    //mLog->debugStream() << "obstacle is released into the pool";
     mObstacles.remove(inObs);
     inObs->die();
     //mObstaclePool.push_back(inObs);

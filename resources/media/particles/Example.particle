@@ -1,51 +1,6 @@
 // Example particle systems
 
-// Exudes greeny particles which float upwards
-particle_system Examples/GreenyNimbus
-{
-    material        Examples/FlarePointSprite
-	point_rendering	true
-	// point rendering means size is controlled by material
-	// provide fallback sizes for hardware that doesn't support point sprite
-    particle_width  30
-    particle_height 30
-    cull_each       false
-	cull_each       false
-    quota           10000
-    billboard_type  point
-    
-    // Area emitter
-    emitter Box
-    {
-        angle           30
-        emission_rate   30
-        time_to_live    5
-        direction       0 1 0
-        velocity    	0
-        colour_range_start  1 1 0
-        colour_range_end    0.3 1 0.3
-        width           60
-        height          60
-        depth           60
-    }
 
-    // Make em float upwards
-    affector LinearForce
-    {
-        force_vector      0 100 0
-        force_application add
-    }
-
-    // Fader
-    affector ColourFader
-    {
-        red -0.25
-        green -0.25
-        blue -0.25
-    }
-
-
-}
 
 // A sparkly purple fountain
 particle_system Examples/PurpleFountain
@@ -393,3 +348,65 @@ particle_system Examples/Snow
 }
 
 
+//particle_system TRPlayer/Torch
+particle_system Examples/GreenyNimbus
+{
+  material      TRPlayer/Fire
+  particle_width     30
+  particle_height    30
+  cull_each          false
+  quota              25
+  billboard_type     point
+
+  // Area emitter
+  emitter Point
+  {
+    angle                     15
+    emission_rate             12
+    time_to_live_min          0.5
+    time_to_live_max          1
+    direction                 0 1 -1
+    velocity_min              50
+    velocity_max              100
+    //colour_range_start 0.8 0.1 0.1
+    //colour_range_end  1 0.2 0.2
+  }
+
+  affector Scaler
+  {
+    rate    -50
+  }
+
+}
+/*
+particle_system Examples/GreenyNimbus
+{
+    material        Examples/FlarePointSprite
+    particle_width	2
+    particle_height 2
+    cull_each       false
+    quota           5000
+    billboard_type  point
+    
+    // Area emitter
+    emitter Box
+    {
+        angle           30
+        emission_rate   90
+        time_to_live    1
+        direction       0 0 1
+        velocity    	  0
+        width           20
+        height          20
+        depth           20
+        colour   1 0 0
+    }
+    // Make em float upwards
+    affector LinearForce
+    {
+        force_vector      0 0 -5
+        force_application add
+    }
+
+
+}*/

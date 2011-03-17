@@ -4,6 +4,7 @@
 #include "GfxEngine.h"
 #include "Intro.h"
 #include "PhyxEngine.h"
+#include "Obstacle.h"
 
 namespace Pixy
 {
@@ -14,7 +15,7 @@ namespace Pixy
         mLog->infoStream() << "created";
 		
 		mName = "Sphere";
-		mType = PLAYER;
+		mType = SPHERE;
 		mMesh = "SphereMesh";
 		mMoveSpeed = 500;
 		mCurrentShield = FIRE;
@@ -49,19 +50,39 @@ namespace Pixy
 		mSceneNode->pitch(Ogre::Degree(90));
 		//mSceneNode->setPosition(Ogre::Vector3(0,0,0));
 		
-    mPhyxShape = new btSphereShape(10);
-		mPhyxMS = new MotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,10,0)), mSceneNode);
-        btScalar mass = 1000;
-        btVector3 fallInertia(0,1000,-1);
+		btTransform trans = btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0));
 		
-        mPhyxShape->calculateLocalInertia(mass,fallInertia);
+    mPhyxShape = new btSphereShape(10);
+		mPhyxMS = new MotionState(trans, mSceneNode);
+        btScalar mass = 1000;
+        btVector3 fallInertia(0,0,0);
+		
+    mPhyxShape->calculateLocalInertia(mass,fallInertia);
         
 		btRigidBody::btRigidBodyConstructionInfo
 			mPhyxBodyCI(mass,mPhyxMS,mPhyxShape,fallInertia);
         
 		mPhyxBody = new btRigidBody(mPhyxBodyCI);
-
-		PhyxEngine::getSingletonPtr()->attachToWorld(this);
+    //mPhyxBody->setFlags(sphereCollidesWith);
+    
+    /*mObject = new btCollisionObject();
+    mObject->setCollisionShape(mPhyxShape);
+    mObject->setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);    
+    mObject->setUserPointer(this);
+    */
+    setCollisionShape(mPhyxShape);
+    setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);    
+    
+    //Entity* me = static_cast<Entity*>(mObject->getUserPointer());
+    //mLog->debugStream() << "collision object's ptr : " << me->getName();
+    
+    btDiscreteDynamicsWorld* mWorld = PhyxEngine::getSingletonPtr()->world();
+    mWorld->addRigidBody(mPhyxBody, COL_SPHERE, sphereCollidesWith);
+		mWorld->addCollisionObject(this);
+		//setWorldTransform(trans);
+		setUserPointer(this);
+		//mPhyxShape->setUserPointer(this);
+		//PhyxEngine::getSingletonPtr()->attachToWorld(this);
 			
 	};
 	void Sphere::die() {};
@@ -146,4 +167,7 @@ namespace Pixy
 	  render();
 	};
 	
+	void Sphere::collide(Entity* target) {
+	  mLog->debugStream() << "Sphere has collided with " << target->getName() << target->getObjectId();
+	}
 } // end of namespace

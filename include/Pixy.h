@@ -52,5 +52,7 @@ namespace Pixy
 		STATE_LOBBY,
 		STATE_COMBAT
 	};
+	
+
 } // end of namespace Pixy
 #endif

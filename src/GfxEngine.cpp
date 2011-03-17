@@ -94,13 +94,14 @@ namespace Pixy {
 		
         setupNodes();
 		
-    createSphere("ObstacleMesh", 8, 16, 16);
+    createSphere("ObstacleMesh", 12, 16, 16);
+
 		
 		mTrayMgr = new OgreBites::SdkTrayManager("AOFTrayMgr", mRenderWindow, InputManager::getSingletonPtr()->getMouse(), 0);
 		mTrayMgr->hideCursor();
     mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
 
-    mRenderWindow->setActive(true);
+    //mRenderWindow->setActive(true);
                 
 		fSetup = true;
 		return fSetup;
@@ -109,6 +110,9 @@ namespace Pixy {
 	bool GfxEngine::deferredSetup() {
 		mSphere = Intro::getSingleton().getSphere();
 		mCamera->setAutoTracking (true, mSphere->getSceneNode());
+		
+		setupParticles();
+		//mSphere->getSceneNode()->attachObject(mSceneMgr->getLight("Light2"));
 		
 		return true;
 	}
@@ -200,7 +204,7 @@ namespace Pixy {
 		Ogre::Entity* mEntity;
 		Ogre::SceneNode* mNode;
 		std::string mEntityName = "";
-		int tube_length = 100;
+		int tube_length = 500;
 		float tube_radius = 80.0f;
 		int nr_tubes = 45;
 		for (int i =0; i < nr_tubes; ++i) {
@@ -255,27 +259,30 @@ namespace Pixy {
 	
     void GfxEngine::setupLights()
     {
-		mLog->debugStream() << "setting up lights";
-        Ogre::Light *light;
-        /* now let's setup our light so we can see the shizzle */
-        light = mSceneMgr->createLight("Light1");
-        light->setType(Ogre::Light::LT_POINT);
-        light->setPosition(Vector3(0, 150, 250));
-        light->setDirection(Vector3(0,0,0));
-        light->setDiffuseColour(1.0, 1.0, 1.0);
-        light->setSpecularColour(1.0, 1.0, 1.0);
-		
-        /*light = mSceneMgr->createLight("Light2");
-		 light->setType(Ogre::Light::LT_POINT);
-		 light->setPosition(Vector3(500, 500, 1000));
-		 light->setDirection(Vector3(0,0,1200));
-		 light->setDiffuseColour(1.0, 1.0, 1.0);
-		 light->setSpecularColour(1.0, 1.0, 1.0);*/
+		  mLog->debugStream() << "setting up lights";
+      mSceneMgr->setAmbientLight(Ogre::ColourValue(0.1, 0.1, 0.1));
+      Ogre::Light *light;
+      /* now let's setup our light so we can see the shizzle */
+      mSpotLight = mSceneMgr->createLight("PlayerLight");
+      mSpotLight->setType(Ogre::Light::LT_DIRECTIONAL);
+      //mSpotLight->setPosition(Vector3(0, 150, 250));
+      mSpotLight->setDirection(Vector3(0,-0.2,0));
+      mSpotLight->setDiffuseColour(0.8, 0.8, 0.8);
+      mSpotLight->setSpecularColour(1.0, 1.0, 1.0);
+		  
+     /*light = mSceneMgr->createLight("Light2");
+		 light->setType(Ogre::Light::LT_DIRECTIONAL);
+		 light->setPosition(Vector3(0, 0, 1000));
+		 light->setDirection(Vector3(0,1,1));
+		 light->setDiffuseColour(0, 0, 0);
+		 light->setSpecularColour(0, 0, 0);*/
+		 
+		 mSceneMgr->setFog(Ogre::FOG_LINEAR, Ogre::ColourValue(0.9, 0.9, 0.9), 0.0, 500, 1500);
     };
 	
     void GfxEngine::setupNodes()
     {
-		mLog->debugStream() << "setting up nodes";
+		  //mLog->debugStream() << "setting up nodes";
 		
     };
 
@@ -303,7 +310,7 @@ namespace Pixy {
     Ogre::SceneNode* 
 	GfxEngine::renderEntity(Pixy::Entity* inEntity, Ogre::SceneNode* inNode)
     {
-		mLog->debugStream() << "rendering entity " << inEntity->getName();
+		//mLog->debugStream() << "rendering entity " << inEntity->getName();
     Ogre::Entity* mEntity;
 		
     String entityName = "Entity";
@@ -322,14 +329,14 @@ namespace Pixy {
 		*/
 		mLog->debugStream() << "Creating an Entity with name " << entityName;
 		mEntity = mSceneMgr->createEntity(entityName, inEntity->getMesh());
-		mEntity->setUserAny(Ogre::Any(inEntity));
+		inNode->setUserAny(Ogre::Any(inEntity));
 		inNode->attachObject(mEntity);
+		
 		
 		inEntity->attachSceneNode(inNode);
 		inEntity->attachSceneObject(mEntity);
 		
-		return inNode;
-
+		return inNode;// create aureola around ogre head perpendicular to the ground
     };
 	
 	
@@ -338,7 +345,7 @@ namespace Pixy {
 		Ogre::String nodeName = "Node";
 		nodeName += inEntity->getName();
 		nodeName += stringify(inEntity->getObjectId());
-		mLog->debugStream() << "Creating a SceneNode with name " << nodeName;
+		//mLog->debugStream() << "Creating a SceneNode with name " << nodeName;
 		return renderEntity(inEntity, createNode(nodeName, 
 												 Vector3::ZERO, 
 												 Vector3(1.0,1.0,1.0), 
@@ -356,7 +363,7 @@ namespace Pixy {
 		mTmpNode = inEntity->getSceneNode();
 		
 		
-		mLog->debugStream() << "I'm detaching Entity '" << inEntity->getName() << "' from SceneNode : " + mTmpNode->getName();
+		//mLog->debugStream() << "I'm detaching Entity '" << inEntity->getName() << "' from SceneNode : " + mTmpNode->getName();
 		mTmpNode->showBoundingBox(false);
 		mTmpNode->detachObject(inEntity->getSceneObject());
 		
@@ -503,18 +510,29 @@ namespace Pixy {
 	}
 
 	void GfxEngine::update(unsigned long lTimeElapsed) {
-		processEvents();
+		//processEvents();
 		
 		mCamera->setPosition(mSphere->getSceneNode()->getPosition().x,
 							 mSphere->getSceneNode()->getPosition().y+20,
 							 mSphere->getSceneNode()->getPosition().z-80);
 		//mCameraMan->update(lTimeElapsed);
-		
+							
+							 
 		evt.timeSinceLastEvent = lTimeElapsed;
 		evt.timeSinceLastFrame = lTimeElapsed;
 		
 		mTrayMgr->frameRenderingQueued(evt);
 		using namespace Ogre;
 		
+	}
+	
+	void GfxEngine::setupParticles() {
+	  using namespace Ogre;
+		ParticleSystem::setDefaultNonVisibleUpdateTimeout(5);  // set nonvisible timeout
+
+		ParticleSystem* ps;
+    // create aureola around ogre head perpendicular to the ground
+    ps = mSceneMgr->createParticleSystem("Nimbus", "Examples/GreenyNimbus");
+		mSphere->getSceneNode()->attachObject(ps);
 	}
 }

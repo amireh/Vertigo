@@ -25,6 +25,7 @@ using std::list;
 using std::map;
 using std::pair;
 using std::make_pair;
+using Ogre::Vector3;
 namespace Pixy
 {
   
@@ -50,12 +51,16 @@ namespace Pixy
 				
 		SHIELD shield();
 		
+		virtual void collide(Entity* inObj);
+		
 	protected:		
 		
 		//! helper method for copy ctor and assignment operator
 		virtual void copyFrom(const Obstacle& src);
     SHIELD mShield;
     Sphere *mSphere;
+    
+    Vector3 randomPosition();
 	};
 } // end of namespace
 #endif

@@ -154,3 +154,66 @@ material Examples/BeachStones
 		}
 	}
 }
+
+material TRPlayer/Fire
+{
+   technique
+   {
+      pass
+      {
+         lighting off
+         scene_blend add
+         depth_write off
+
+         texture_unit
+         {
+            texture flare.tga
+            tex_address_mode clamp
+         }
+      }
+   }
+}
+
+material Examples/Aureola
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend alpha_blend
+			depth_write off			
+			diffuse vertexcolour
+			cull_hardware none
+
+			texture_unit
+			{
+				texture aureola.png PF_BYTE_LA
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+
+material Examples/FlarePointSprite
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend add
+			depth_write off
+			diffuse vertexcolour
+
+			point_sprites on
+			point_size 4
+			point_size_attenuation on
+
+			texture_unit
+			{
+				texture flare.png
+			}
+		}
+	}
+}

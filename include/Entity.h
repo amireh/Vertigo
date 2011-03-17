@@ -22,18 +22,28 @@
 #include <btBulletDynamicsCommon.h>
 #include "MotionState.h"
 
+#define BIT(x) (1<<(x))
+
 using Ogre::Vector3;
 using Ogre::Real;
 namespace Pixy
 {
 	
+ 
+  enum collisiontypes {
+    COL_NOTHING = 0, // collide with nothing (for our terrain)
+    COL_SPHERE = BIT(0), // collide with the sphere
+    COL_OBSTACLES = BIT(1), // collide with obstacles
+    COL_WALLS = BIT(2) // collide with walls
+  };
+  
   typedef enum {
     FIRE,
     ICE
   } SHIELD;
 
   typedef enum {
-    PLAYER,
+    SPHERE,
     OBSTACLE
   } ENTITY_TYPE;
 	
@@ -45,7 +55,7 @@ namespace Pixy
 	 * refer to their respective Factories, do NOT use this
 	 * directly.
 	 */
-	class Entity
+	class Entity : public btCollisionObject
 	{
 		
 	public:
@@ -116,11 +126,14 @@ namespace Pixy
 		Vector3& getDirection();
 		Real getMoveSpeed();
 		
+		//virtual btCollisionObject* getObject();
 		virtual btRigidBody* getRigidBody();
 		virtual MotionState* getMotionState();
 		virtual btCollisionShape* getCollisionShape();
 		
 		ENTITY_TYPE type();
+		
+		virtual void collide(Entity* obj);
 		
 	protected:
 
@@ -134,6 +147,7 @@ namespace Pixy
 		Ogre::SceneNode         *mSceneNode;
 		Ogre::MovableObject     *mSceneObject;
 		btCollisionShape		*mPhyxShape;
+		//btCollisionObject   *mObject;
 		MotionState				*mPhyxMS;
 		btRigidBody				*mPhyxBody;
 		
@@ -144,6 +158,9 @@ namespace Pixy
 		//! helper method for copy/assignment methods
 		//! copies all data from src and sets it into this entity
 		virtual void copyFrom(const Entity& src);
+
+    static int sphereCollidesWith;
+    static int obstacleCollidesWith;
 		
 		log4cpp::Category* mLog;
 	}; // end of Entity class

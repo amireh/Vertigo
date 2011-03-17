@@ -7,6 +7,9 @@
  *
  */
 
+#ifndef H_MotionState_H
+#define H_MotionState_H
+
 #include <Ogre.h>
 #include <btBulletDynamicsCommon.h>
 
@@ -21,6 +24,8 @@ namespace Pixy {
 		
 		virtual ~MotionState() {
 		}
+		
+		Ogre::SceneNode* getNode() { return mVisibleobj; };
 		
 		void setNode(Ogre::SceneNode *node) {
 			mVisibleobj = node;
@@ -43,3 +48,5 @@ namespace Pixy {
 		btTransform mPos1;
 	};
 }
+
+#endif

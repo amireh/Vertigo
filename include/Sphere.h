@@ -28,6 +28,7 @@ using std::make_pair;
 namespace Pixy
 {
 
+  class Obstacle;
     /*! \class Sphere Sphere.h "src/Sphere.h"
      *  \brief Represents Combat Sphere GameObject
      */
@@ -52,6 +53,8 @@ namespace Pixy
 		
 		SHIELD currentShield();
 		void flipShields();
+		
+		virtual void collide(Entity* inObj);
 		
 	protected:		
 		
