@@ -94,7 +94,7 @@ namespace Pixy {
 		
         setupNodes();
 		
-    createSphere("ObstacleMesh", 2, 16, 16);
+    createSphere("ObstacleMesh", 8, 16, 16);
 		
 		mTrayMgr = new OgreBites::SdkTrayManager("AOFTrayMgr", mRenderWindow, InputManager::getSingletonPtr()->getMouse(), 0);
 		mTrayMgr->hideCursor();

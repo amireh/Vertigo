@@ -86,24 +86,24 @@ namespace Pixy
 				mDirection.z = mMoveSpeed;
 				break;
 			case OIS::KC_A:
-				mPhyxBody->clearForces();
-				mDirection.x = mMoveSpeed * 2;
+				//mPhyxBody->clearForces();
+				mDirection.x = mMoveSpeed * 4;
 				//mDirection.z = mMoveSpeed;
 				break;
 			case OIS::KC_D:
-				mPhyxBody->clearForces();
-				mDirection.x = -mMoveSpeed * 2;
+				//mPhyxBody->clearForces();
+				mDirection.x = -mMoveSpeed * 4;
 				//mDirection.z = mMoveSpeed;
 				break;
 			case OIS::KC_S:
 				mPhyxBody->clearForces();
 				break;
 			case OIS::KC_Q:
-				mPhyxBody->clearForces();
+				//mPhyxBody->clearForces();
 				mDirection.y = mMoveSpeed;
 				break;
 			case OIS::KC_E:
-				mPhyxBody->clearForces();
+				//mPhyxBody->clearForces();
 				mDirection.y = -mMoveSpeed;
 				break;				
 			case OIS::KC_SPACE:
@@ -120,7 +120,6 @@ namespace Pixy
 				mDirection.z = 0;
 				break;
 			case OIS::KC_A:
-				mDirection.x = 0;
 				mDirection.x = (mDirection.x > 0) ? 0 : mDirection.x;
 				break;
 			case OIS::KC_D:

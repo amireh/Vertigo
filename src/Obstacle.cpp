@@ -19,14 +19,14 @@ namespace Pixy
 	  mShield = ICE;
 	  
 	  mSphere = Intro::getSingleton().getSphere();
-	  mPosition = Vector3(0, 5, mSphere->getSceneNode()->getPosition().z + 300); 
+	  mPosition = Vector3(0, 0, mSphere->getSceneNode()->getPosition().z + 300); 
 	  
 	  GfxEngine::getSingletonPtr()->attachToScene(this);
 	  render();
 	  mSceneNode->setPosition(mPosition);
 	  mSceneNode->pitch(Ogre::Degree(90));
 	  	  
-    mPhyxShape = new btSphereShape(2);
+    mPhyxShape = new btSphereShape(8);
 	  mPhyxMS = new MotionState(btTransform(btQuaternion(0,0,0,1),
 	      btVector3(mPosition.x,mPosition.y,mPosition.z)),
 	      mSceneNode);
@@ -40,6 +40,7 @@ namespace Pixy
         
 	  mPhyxBody = new btRigidBody(mPhyxBodyCI);
 
+    mSceneNode->setVisible(false);
   };
 
 	Obstacle::~Obstacle()
@@ -59,16 +60,21 @@ namespace Pixy
 	};
 	
 	void Obstacle::live() {
-
-
+	  mSceneNode->setVisible(true);
+	  mPosition = Vector3(0, 0, mSphere->getSceneNode()->getPosition().z + 500); 
+    mPhyxBody->proceedToTransform(btTransform(btQuaternion(0,0,0,1),
+	      btVector3(mPosition.x,mPosition.y,mPosition.z)));
 	  PhyxEngine::getSingletonPtr()->attachToWorld(this);
 	  mDirection = Vector3(0,0,-1);
 	  fDead = false;
+	  
 	};
 	void Obstacle::die() {
+	  mSceneNode->setVisible(false);
 	  mDirection = Vector3(0,0,0);
 	  PhyxEngine::getSingletonPtr()->detachFromWorld(this);
 	  fDead = true;
+	  
 	};
 	
 	void Obstacle::render() {
