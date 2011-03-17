@@ -16,7 +16,7 @@ namespace Pixy
 	  mName = "Obstacle";
 	  mType = OBSTACLE;
 	  mMesh = "ObstacleMesh";
-	  mMoveSpeed = 12;
+	  mMoveSpeed = 8;
 	  int qualifier = rand();
 	  mShield = (qualifier % 2 == 0) ? ICE : FIRE;
 	  
@@ -128,61 +128,18 @@ namespace Pixy
     if (fDead)
       return;
       
-    if (mSphere->getSceneNode()->getPosition().z > mSceneNode->getPosition().z) {
+    if (mSphere->getSceneNode()->getPosition().z > mSceneNode->getPosition().z + 100) {
       fDead = true;
       return;
     }
 		mPhyxBody->activate(true);
 		mPhyxBody->applyCentralForce(btVector3(mDirection.x * mMoveSpeed, mDirection.y * mMoveSpeed, mDirection.z * mMoveSpeed));
-		/*
-		if (mObject->checkCollideWith(mSphere->getObject()) ) {
-		  mLog->infoStream() << mName << idObject << " (" << mPosition.x << "," << mPosition.y << "," << mPosition.z << ") colliding with sphere";
-		  die();
-		} */
-		/*
-		btDiscreteDynamicsWorld *collisionWorld = PhyxEngine::getSingletonPtr()->world();
-		btCollisionAlgorithm* algo = collisionWorld->getDispatcher()->findAlgorithm(this,mSphere);
-	  btManifoldResult contactPointResult(this,mSphere);
-	  algo->processCollision(this,mSphere,collisionWorld->getDispatchInfo(),&contactPointResult);
-	
-	  btManifoldArray manifoldArray;
-	  algo->getAllContactManifolds(manifoldArray);
 
-	  int numManifolds = manifoldArray.size();
-	  for (int i=0;i<numManifolds;i++)
-	  {
-		  btPersistentManifold* contactManifold = manifoldArray[i];
-		  btCollisionObject* obA = static_cast<btCollisionObject*>(contactManifold->getBody0());
-	  	btCollisionObject* obB = static_cast<btCollisionObject*>(contactManifold->getBody1());
-	
-		  //glDisable(GL_DEPTH_TEST);
-		  int numContacts = contactManifold->getNumContacts();
-		  //bool swap = obA == &objects[0];
-
-		  for (int j=0;j<numContacts;j++)
-		  {
-			  btManifoldPoint& pt = contactManifold->getContactPoint(j);
-			  if ((obA == mSphere && obB == this) || (obA == this && obB == mSphere))
-			    mLog->debugStream() << "supposedly, obstacle " << idObject << " is colliding with sphere";
-		
-			  glBegin(GL_LINES);
-			  glColor3f(0, 0, 0);
-
-			  btVector3 ptA = swap ?pt.getPositionWorldOnA():pt.getPositionWorldOnB();
-			  btVector3 ptB = swap ? pt.getPositionWorldOnB():pt.getPositionWorldOnA();
-
-			  glVertex3d(ptA.x(),ptA.y(),ptA.z());
-			  glVertex3d(ptB.x(),ptB.y(),ptB.z());
-			  glEnd();
-		  }
-
-		  //you can un-comment out this line, and then all points are removed
-		  //contactManifold->clearManifold();	
-	  }*/
 	};
 	
 	void Obstacle::collide(Entity* target) {
 	  mLog->debugStream() << "Obstacle" << idObject << " has collided with " << target->getName() << target->getObjectId();
+	  die();
 	}
 
 

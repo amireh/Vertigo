@@ -131,28 +131,33 @@ namespace Pixy {
       if(pm->getNumContacts() > 0) {
          btRigidBody* co1 = static_cast<btRigidBody*>(pm->getBody0());
          btRigidBody* co2 = static_cast<btRigidBody*>(pm->getBody1());
-         MotionState *ms1 = static_cast<MotionState*>(co1->getMotionState());
-         MotionState *ms2 = static_cast<MotionState*>(co2->getMotionState());
          if ((co1->getCollisionShape() == mSphere->getCollisionShape() &&
              co2->getCollisionShape() == mObstacleShape) ||
              (co2->getCollisionShape() == mSphere->getCollisionShape() &&
              co1->getCollisionShape() == mObstacleShape)
             ) {
+             MotionState *ms1 = static_cast<MotionState*>(co1->getMotionState());
+             
             Entity* obj1, *obj2 = NULL;
             if (co1->getCollisionShape() == mSphere->getCollisionShape()) {
-              obj1 = static_cast<Sphere*>(Ogre::any_cast<Entity*>(ms1->getNode()->getUserAny()));
-              obj2 = static_cast<Obstacle*>(Ogre::any_cast<Entity*>(ms2->getNode()->getUserAny()));
+              //obj1 = static_cast<Sphere*>(Ogre::any_cast<Entity*>(ms1->getNode()->getUserAny()));
+              //obj2 = static_cast<Obstacle*>(Ogre::any_cast<Entity*>(ms2->getNode()->getUserAny()));
+              MotionState *ms = static_cast<MotionState*>(co2->getMotionState());
+              mSphere->collide(static_cast<Obstacle*>(Ogre::any_cast<Entity*>(ms->getNode()->getUserAny())));
             } else {
-              obj1 = static_cast<Obstacle*>(Ogre::any_cast<Entity*>(ms1->getNode()->getUserAny()));
-              obj2 = static_cast<Sphere*>(Ogre::any_cast<Entity*>(ms2->getNode()->getUserAny()));
+              //obj1 = static_cast<Obstacle*>(Ogre::any_cast<Entity*>(ms1->getNode()->getUserAny()));
+              //obj2 = static_cast<Sphere*>(Ogre::any_cast<Entity*>(ms2->getNode()->getUserAny()));
+              MotionState *ms = static_cast<MotionState*>(co1->getMotionState());
+              mSphere->collide(static_cast<Obstacle*>(Ogre::any_cast<Entity*>(ms->getNode()->getUserAny())));
             }
+            /*
            if (obj1 && obj2) {
             mLog->debugStream() << obj1->getName() << " " << co1->getCollisionFlags() << " collided with " << typeid(obj2).name() << " " << co2->getCollisionFlags();
             obj1->collide(obj2);
             obj2->collide(obj1);
            } else {
             mLog->warnStream() << "invalid collision";
-           }
+           }*/
          }
          //btVector3 pos = test2->getWorldTransform().getOrigin();
          //m_pOgreHeadNode->setPosition(pos.x(),pos.y(), pos.z());

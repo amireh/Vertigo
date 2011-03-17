@@ -168,6 +168,10 @@ namespace Pixy
 	};
 	
 	void Sphere::collide(Entity* target) {
+	  if (target->dead())
+	    return;
+	  
 	  mLog->debugStream() << "Sphere has collided with " << target->getName() << target->getObjectId();
+	  target->collide(this);
 	}
 } // end of namespace
