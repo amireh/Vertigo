@@ -17,7 +17,7 @@ namespace Pixy
 		mName = "Sphere";
 		mType = SPHERE;
 		mMesh = "SphereMesh";
-		mMoveSpeed = 6;
+		mMoveSpeed = 4;
 		mCurrentShield = FIRE;
 		mShields[FIRE] = 100;
 		mShields[ICE] = 100;
@@ -88,7 +88,10 @@ namespace Pixy
 		setUserPointer(this);
 		//mPhyxShape->setUserPointer(this);
 		//PhyxEngine::getSingletonPtr()->attachToWorld(this);
-			
+	
+		Vector3 mPosition = mSceneNode->getPosition();
+		mPhyxBody->proceedToTransform(btTransform(btQuaternion(0,0,0,1),
+												  btVector3(mPosition.x,mPosition.y,mPosition.z)));
 	};
 	void Sphere::die() {};
 	
@@ -121,12 +124,12 @@ namespace Pixy
 				break;
 			case OIS::KC_A:
 				//mPhyxBody->clearForces();
-				mDirection.x = mMoveSpeed * 3;
+				mDirection.x = mMoveSpeed * 4;
 				//mDirection.z = mMoveSpeed;
 				break;
 			case OIS::KC_D:
 				//mPhyxBody->clearForces();
-				mDirection.x = -mMoveSpeed * 3;
+				mDirection.x = -mMoveSpeed * 4;
 				//mDirection.z = mMoveSpeed;
 				break;
 			case OIS::KC_S:
