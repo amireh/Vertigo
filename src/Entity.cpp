@@ -26,7 +26,6 @@ namespace Pixy
 		mHP = 1;
 		mMoveSpeed = 0;
 		mDirection = Vector3::ZERO;
-		
 	};
 
 	void Entity::setObjectId(int inIdEntity)

@@ -17,7 +17,7 @@ namespace Pixy
 		mName = "Sphere";
 		mType = SPHERE;
 		mMesh = "SphereMesh";
-		mMoveSpeed = 1600;
+		mMoveSpeed = 6;
 		mCurrentShield = FIRE;
 		mShields[FIRE] = 100;
 		mShields[ICE] = 100;
@@ -49,7 +49,10 @@ namespace Pixy
 
 		
 		GfxEngine::getSingletonPtr()->attachToScene(this);
-		
+    mFireTrail = GfxEngine::getSingletonPtr()->getSM()->createParticleSystem("SphereBlaze", "Vertigo/Effects/Blaze");
+    mIceSteam = GfxEngine::getSingletonPtr()->getSM()->createParticleSystem("SphereSteam", "Vertigo/Effects/Steam");
+    mFireTrail->setNonVisibleUpdateTimeout(0.5f);
+    mIceSteam->setNonVisibleUpdateTimeout(0.5f);
 		render();
 		//mSceneNode->setScale(0.1f, 0.1f, 0.1f);
 		//mSceneNode->pitch(Ogre::Degree(90));
@@ -59,7 +62,7 @@ namespace Pixy
 		
     mPhyxShape = new btSphereShape(10);
 		mPhyxMS = new MotionState(trans, mSceneNode);
-        btScalar mass = 1000;
+        btScalar mass = 100;
         btVector3 fallInertia(0,0,0);
 		
     mPhyxShape->calculateLocalInertia(mass,fallInertia);
@@ -92,8 +95,16 @@ namespace Pixy
 	void Sphere::render() {
 		if (mCurrentShield == FIRE) {
 		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Sphere/Fire");
+		  if (mIceSteam->isAttached())
+		    mSceneNode->detachObject(mIceSteam);
+		    
+		  mSceneNode->attachObject(mFireTrail);
 		} else {
 		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Sphere/Ice");
+		  if (mFireTrail->isAttached())
+		    mSceneNode->detachObject(mFireTrail);
+
+		  mSceneNode->attachObject(mIceSteam);
 		}
 	};
 	
@@ -110,12 +121,12 @@ namespace Pixy
 				break;
 			case OIS::KC_A:
 				//mPhyxBody->clearForces();
-				mDirection.x = mMoveSpeed * 4;
+				mDirection.x = mMoveSpeed * 3;
 				//mDirection.z = mMoveSpeed;
 				break;
 			case OIS::KC_D:
 				//mPhyxBody->clearForces();
-				mDirection.x = -mMoveSpeed * 4;
+				mDirection.x = -mMoveSpeed * 3;
 				//mDirection.z = mMoveSpeed;
 				break;
 			case OIS::KC_S:
@@ -158,7 +169,7 @@ namespace Pixy
 
 	void Sphere::update(unsigned long lTimeElapsed) {
 		mPhyxBody->activate(true);
-		mPhyxBody->applyCentralForce(btVector3(mDirection.x, mDirection.y, mDirection.z));
+		mPhyxBody->applyCentralForce(btVector3(mDirection.x *lTimeElapsed, mDirection.y *lTimeElapsed, mDirection.z *lTimeElapsed));
 		
 		//btTransform trans;
 		//mPhyxBody->getMotionState()->getWorldTransform(trans);

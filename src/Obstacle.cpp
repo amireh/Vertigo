@@ -13,10 +13,10 @@ namespace Pixy
 	  mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "Obstacle");
         mLog->infoStream() << "created";
 
-	  mName = "Obstacle";
+    mName = "Obstacle";
 	  mType = OBSTACLE;
 	  mMesh = "ObstacleMesh";
-	  mMoveSpeed = 8;
+	  mMoveSpeed = 1;
 	  int qualifier = rand();
 	  mShield = (qualifier % 2 == 0) ? ICE : FIRE;
 	  
@@ -24,6 +24,15 @@ namespace Pixy
 	  mPosition = randomPosition();
 	  
 	  GfxEngine::getSingletonPtr()->attachToScene(this);
+	  // create a fire trail particle system
+	  /*std::ostringstream psName;
+		psName << mName << idObject << "Blaze";
+    mFireTrail = GfxEngine::getSingletonPtr()->getSM()->createParticleSystem(psName.str(), "Vertigo/Effects/Blaze");
+    mFireTrail->setNonVisibleUpdateTimeout(0.5f);
+    psName.clear();
+    psName << mName << idObject << "Steam";
+    mIceSteam = GfxEngine::getSingletonPtr()->getSM()->createParticleSystem(psName.str(), "Vertigo/Effects/Steam");
+    mIceSteam->setNonVisibleUpdateTimeout(0.5f);*/
 	  render();
 	  //mSceneNode->setPosition(mPosition);
 	  //mSceneNode->pitch(Ogre::Degree(90));
@@ -80,6 +89,9 @@ namespace Pixy
 	    mSphere->getSceneNode()->getPosition().z + qualifier % 250 + 1000);	   
 	}
 	void Obstacle::live() {
+	  if (!fDead)
+	    return;
+	  
 	  int qualifier = rand();
 	  mShield = (qualifier % 2 == 0) ? ICE : FIRE;
     render();
@@ -101,12 +113,27 @@ namespace Pixy
 	  mDirection = Vector3(0,0,-1);
 	  fDead = false;
 	  
-	  mLog->debugStream() << mName << " is alive";
+	  mLog->debugStream() << mName << idObject << " is alive";
 	};
 	void Obstacle::die() {
+	  if (fDead)
+	    return;
+	  
+	  mLog->debugStream() << mName << idObject << " is dead";
+	  
 	  mSceneNode->setVisible(false);
+	  if (mShield == FIRE) {
+	    //mSceneNode->detachObject(mFireTrail);
+	  } else {
+	    //mSceneNode->detachObject(mIceSteam);
+	  }
 	  mDirection = Vector3(0,0,0);
-	  PhyxEngine::getSingletonPtr()->detachFromWorld(this);
+	  
+	  btDiscreteDynamicsWorld* mWorld = PhyxEngine::getSingletonPtr()->world();
+	  mPhyxBody->activate(false);
+		mWorld->removeCollisionObject(this);
+		mWorld->removeRigidBody(mPhyxBody);
+	  //PhyxEngine::getSingletonPtr()->detachFromWorld(this);
 	  fDead = true;
 	  
 	};
@@ -114,8 +141,10 @@ namespace Pixy
 	void Obstacle::render() {
 		if (mShield == FIRE) {
 		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Sphere/Fire");
+  		//mSceneNode->attachObject(mFireTrail);
 		} else {
 		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Sphere/Ice");
+		  //mSceneNode->attachObject(mIceSteam);
 		}
 	};
 	
@@ -129,11 +158,16 @@ namespace Pixy
       return;
       
     if (mSphere->getSceneNode()->getPosition().z > mSceneNode->getPosition().z + 100) {
-      fDead = true;
+      die();
       return;
     }
 		mPhyxBody->activate(true);
-		mPhyxBody->applyCentralForce(btVector3(mDirection.x * mMoveSpeed, mDirection.y * mMoveSpeed, mDirection.z * mMoveSpeed));
+		mPhyxBody->applyCentralForce(btVector3(
+		  mDirection.x * mMoveSpeed * lTimeElapsed, 
+		  mDirection.y * mMoveSpeed * lTimeElapsed, 
+		  mDirection.z * mMoveSpeed * lTimeElapsed
+		  )
+		);
 
 	};
 	

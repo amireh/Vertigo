@@ -174,6 +174,7 @@ namespace Pixy {
 		bool mEffectStarted;
 		bool shakingScreen, reachedThreshold;
 		Ogre::Quaternion mCameraOrientation;
+
 	private:
 		static GfxEngine* _myGfxEngine;
 		GfxEngine();

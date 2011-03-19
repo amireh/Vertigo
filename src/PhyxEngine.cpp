@@ -67,7 +67,7 @@ namespace Pixy {
     mFloorMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,-30,0)));
     btRigidBody::btRigidBodyConstructionInfo
       mFloorRBCI(0,mFloorMS,mFloorShape,btVector3(0,0,0));
-    mFloorRBCI.m_friction = 5.0f;
+    mFloorRBCI.m_friction = 1.0f;
     
     mFloorBody = new btRigidBody(mFloorRBCI);
     mWorld->addRigidBody(mFloorBody, COL_WALLS, wallsCollideWith);
@@ -90,15 +90,15 @@ namespace Pixy {
 
     for (int i=-10; i<22500; ++i) {
       btVector3 v0(0,0,i);
-      btVector3 v1(80,110,i);
-      btVector3 v2(160,0,i);
+      btVector3 v1(160,110,i);
+      btVector3 v2(320,0,i);
 
       mTriMesh->addTriangle(v0,v1,v2);
     }
 
     mLWallShape = new btBvhTriangleMeshShape(mTriMesh,true);
 
-    mLWallMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(40,-30,0)));
+    mLWallMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(-350,-30,0)));
     btRigidBody::btRigidBodyConstructionInfo
       mLWallRBCI(0,mLWallMS,mLWallShape,btVector3(0,0,0));
 
@@ -108,7 +108,7 @@ namespace Pixy {
     // right wall
     mRWallShape = new btBvhTriangleMeshShape(mTriMesh,true);
 
-    mRWallMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(-200,-30,0)));
+    mRWallMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(30,-30,0)));
     btRigidBody::btRigidBodyConstructionInfo
       mRWallRBCI(0,mRWallMS,mRWallShape,btVector3(0,0,0));
 
@@ -134,6 +134,9 @@ namespace Pixy {
          btRigidBody* co2 = static_cast<btRigidBody*>(pm->getBody1());
          // find out if it's a Sphere and an Obstacle that r colliding...
          // i'm currently doing this by testing the shapes
+         if (!co1 || !co2)
+           continue;
+         
          if ((co1->getCollisionShape() == mSphere->getCollisionShape() &&
              co2->getCollisionShape() == mObstacleShape) ||
              (co2->getCollisionShape() == mSphere->getCollisionShape() &&
@@ -145,11 +148,13 @@ namespace Pixy {
           // to get a handle of the Ogre::SceneNode which has our Entity casted
           // as void* ... friggin clean ah?
           if (co1->getCollisionShape() == mSphere->getCollisionShape()) {
-            MotionState *ms = static_cast<MotionState*>(co2->getMotionState());
-            mSphere->collide(static_cast<Obstacle*>(Ogre::any_cast<Entity*>(ms->getNode()->getUserAny())));
+            MotionState *ms = dynamic_cast<MotionState*>(co2->getMotionState());
+            if (ms)
+              mSphere->collide(static_cast<Obstacle*>(Ogre::any_cast<Entity*>(ms->getNode()->getUserAny())));
           } else {
-            MotionState *ms = static_cast<MotionState*>(co1->getMotionState());
-            mSphere->collide(static_cast<Obstacle*>(Ogre::any_cast<Entity*>(ms->getNode()->getUserAny())));
+            MotionState *ms = dynamic_cast<MotionState*>(co1->getMotionState());
+            if (ms)
+              mSphere->collide(static_cast<Obstacle*>(Ogre::any_cast<Entity*>(ms->getNode()->getUserAny())));
           }
         } 
         } catch (...) {

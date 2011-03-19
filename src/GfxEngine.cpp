@@ -143,6 +143,7 @@ namespace Pixy {
 	}
 	
 	bool GfxEngine::cleanup() {		
+	  
 		return true;
 	}
 	
@@ -608,12 +609,12 @@ namespace Pixy {
   
 	void GfxEngine::setupParticles() {
 	  using namespace Ogre;
-		ParticleSystem::setDefaultNonVisibleUpdateTimeout(5);  // set nonvisible timeout
+		ParticleSystem::setDefaultNonVisibleUpdateTimeout(1);  // set nonvisible timeout
 
-		ParticleSystem* ps;
+		/*ParticleSystem* ps;
     // create aureola around ogre head perpendicular to the ground
     ps = mSceneMgr->createParticleSystem("Nimbus", "Examples/GreenyNimbus");
-		mSphere->getSceneNode()->attachObject(ps);
+		mSphere->getSceneNode()->attachObject(ps);*/
 
 	}
 }

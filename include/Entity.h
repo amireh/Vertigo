@@ -29,7 +29,6 @@ using Ogre::Real;
 namespace Pixy
 {
 	
- 
   enum collisiontypes {
     COL_NOTHING = 0, // collide with nothing (for our terrain)
     COL_SPHERE = BIT(0), // collide with the sphere
@@ -146,6 +145,8 @@ namespace Pixy
 		std::string mMesh;					//! Entity's in-game name		
 		Ogre::SceneNode         *mSceneNode;
 		Ogre::MovableObject     *mSceneObject;
+    Ogre::ParticleSystem* mFireTrail;
+    Ogre::ParticleSystem* mIceSteam;
 		btCollisionShape		*mPhyxShape;
 		//btCollisionObject   *mObject;
 		MotionState				*mPhyxMS;

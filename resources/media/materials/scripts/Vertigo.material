@@ -154,4 +154,68 @@ material Examples/FlarePointSprite
 	}
 }
 
+material Examples/BasicDroplet
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend add
+			depth_write off
+			diffuse vertexcolour
+
+			point_sprites on
+			point_size 4
+			point_size_attenuation on
+
+			texture_unit
+			{
+				texture basic_droplet.png
+			}
+		}
+	}
+}
+
+material Examples/Droplet
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend add
+			depth_write off
+			diffuse vertexcolour
+
+			point_sprites on
+			point_size 4
+			point_size_attenuation on
+
+			texture_unit
+			{
+				texture droplet.png
+			}
+		}
+	}
+}
+material Examples/Smoke
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend alpha_blend
+			depth_write off
+			diffuse vertexcolour
+
+			texture_unit
+			{
+				texture smoke.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
 
