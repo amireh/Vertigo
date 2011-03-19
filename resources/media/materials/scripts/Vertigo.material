@@ -109,7 +109,24 @@ material TRPlayer/Fire
       }
    }
 }
+material TRPlayer/Snow
+{
+   technique
+   {
+      pass
+      {
+         lighting off
+         scene_blend add
+         depth_write off
 
+         texture_unit
+         {
+            texture snow.tga
+            tex_address_mode clamp
+         }
+      }
+   }
+}
 material Examples/Aureola
 {
 	technique
