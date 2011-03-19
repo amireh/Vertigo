@@ -1,3 +1,15 @@
+-- Features --
 * sphere: flip shields (DONE)
-* obstacles: collision
+* sphere: track shield state (DONE)
+* obstacles: collision (DONE)
 * obstacles: stationary and suicidal
+* obstacles: track player
+* terrain: multi tunnels
+* create UI...
+
+-- Enhancements --
+* reimplement collision to use Ogre's Ray queries instead of Bullet
+* effects: motion blur (DONE)
+* effects: screen shake on bad collision
+* normalize FPS across Gfx and Phyx
+* install shaders for the spheres

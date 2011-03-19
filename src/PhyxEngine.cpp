@@ -79,7 +79,7 @@ namespace Pixy {
     */
     
     mCeilingShape = new btStaticPlaneShape(btVector3(0,-1,0),0);
-    mCeilingMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,30,0)));
+    mCeilingMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,15,0)));
     btRigidBody::btRigidBodyConstructionInfo
       mCeilingRBCI(0,mCeilingMS,mCeilingShape,btVector3(0,0,0));
     mCeilingBody = new btRigidBody(mCeilingRBCI);
@@ -121,14 +121,15 @@ namespace Pixy {
 	
 	
 	void PhyxEngine::update(unsigned long lTimeElapsed) {
-		mWorld->stepSimulation(lTimeElapsed, 4, 1.0f / 120.0f);
-		
+		mWorld->stepSimulation(lTimeElapsed, 2 * lTimeElapsed, 1.0f / 160.0f);
+		/*
     mWorld->performDiscreteCollisionDetection();
    btCollisionObjectArray arrayBullet = mWorld->getCollisionObjectArray();
    int numManifolds = mWorld->getDispatcher()->getNumManifolds();
    for(int i=0; i<numManifolds; i++) {
       btPersistentManifold* pm = mWorld->getDispatcher()->getManifoldByIndexInternal(i);
       if(pm->getNumContacts() > 0) {
+        try {
          btRigidBody* co1 = static_cast<btRigidBody*>(pm->getBody0());
          btRigidBody* co2 = static_cast<btRigidBody*>(pm->getBody1());
          // find out if it's a Sphere and an Obstacle that r colliding...
@@ -150,11 +151,13 @@ namespace Pixy {
             MotionState *ms = static_cast<MotionState*>(co1->getMotionState());
             mSphere->collide(static_cast<Obstacle*>(Ogre::any_cast<Entity*>(ms->getNode()->getUserAny())));
           }
-
-      }
+        } 
+        } catch (...) {
+          // do nothing
+        }
       mWorld->getDispatcher()->clearManifold(pm);
     }
-	}
+	}*/
 	}
 	
 	btCollisionShape* PhyxEngine::obstaclesShape() { return mObstacleShape; };

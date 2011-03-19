@@ -119,7 +119,8 @@ namespace Pixy {
 		void createSphere(const std::string& strName, const float r, const int nRings = 16, const int nSegments = 16);
 		
 		void applyMotionBlur(float duration);
-
+    void applyScreenShake(unsigned long lTimeElapsed);
+    
 	protected:
 		Ogre::Root           *mRoot;
 		Ogre::Camera         *mCamera, *mCamera2, *mCamera3, *mCamera4;
@@ -170,7 +171,9 @@ namespace Pixy {
 		Ogre::Timer mEffectTimer;
 		float mEffectDuration;
 		bool mEffectEnabled;
-		
+		bool mEffectStarted;
+		bool shakingScreen, reachedThreshold;
+		Ogre::Quaternion mCameraOrientation;
 	private:
 		static GfxEngine* _myGfxEngine;
 		GfxEngine();

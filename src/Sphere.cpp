@@ -17,7 +17,7 @@ namespace Pixy
 		mName = "Sphere";
 		mType = SPHERE;
 		mMesh = "SphereMesh";
-		mMoveSpeed = 500;
+		mMoveSpeed = 1600;
 		mCurrentShield = FIRE;
 		mShields[FIRE] = 100;
 		mShields[ICE] = 100;
@@ -43,11 +43,16 @@ namespace Pixy
 	
 	void Sphere::live() {
 
+    using namespace Ogre;
 		GfxEngine::getSingletonPtr()->createSphere(mMesh, 10, 64, 64);
+		
+
+		
 		GfxEngine::getSingletonPtr()->attachToScene(this);
 		
 		render();
-		mSceneNode->pitch(Ogre::Degree(90));
+		//mSceneNode->setScale(0.1f, 0.1f, 0.1f);
+		//mSceneNode->pitch(Ogre::Degree(90));
 		//mSceneNode->setPosition(Ogre::Vector3(0,0,0));
 		
 		btTransform trans = btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0));
@@ -63,13 +68,10 @@ namespace Pixy
 			mPhyxBodyCI(mass,mPhyxMS,mPhyxShape,fallInertia);
         
 		mPhyxBody = new btRigidBody(mPhyxBodyCI);
+
     //mPhyxBody->setFlags(sphereCollidesWith);
     
-    /*mObject = new btCollisionObject();
-    mObject->setCollisionShape(mPhyxShape);
-    mObject->setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);    
-    mObject->setUserPointer(this);
-    */
+
     setCollisionShape(mPhyxShape);
     setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);    
     
@@ -146,7 +148,9 @@ namespace Pixy
 			case OIS::KC_D:
 				mDirection.x = (mDirection.x < 0) ? 0 : mDirection.x;
 				break;
-				
+			case OIS::KC_G:
+			  GfxEngine::getSingletonPtr()->applyMotionBlur(0.5f);
+			  break;
 		}
 		
 	}
@@ -168,13 +172,20 @@ namespace Pixy
 	};
 	
 	void Sphere::collide(Obstacle* target) {
+	  if (!target)
+	    return;
+	  
 	  if (target->dead())
 	    return;
 	  
 	  // hit our shields
-	  mShields[mCurrentShield] += (mCurrentShield != target->shield()) ? -5 : 5;
-	  
-	  GfxEngine::getSingletonPtr()->applyMotionBlur(0.5f);
+	  if (mCurrentShield != target->shield()) {
+	    mShields[mCurrentShield] -= 5;
+	  } else {
+	    mShields[mCurrentShield] += 5;
+	    GfxEngine::getSingletonPtr()->applyScreenShake(0);
+	  }
+	  //GfxEngine::getSingletonPtr()->applyMotionBlur(0.5f);
 	  
 	  mLog->debugStream() << "Sphere has collided with " << target->getName() << target->getObjectId();
 	  target->collide(this);

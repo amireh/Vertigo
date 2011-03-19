@@ -25,8 +25,8 @@ namespace Pixy
 	  
 	  GfxEngine::getSingletonPtr()->attachToScene(this);
 	  render();
-	  mSceneNode->setPosition(mPosition);
-	  mSceneNode->pitch(Ogre::Degree(90));
+	  //mSceneNode->setPosition(mPosition);
+	  //mSceneNode->pitch(Ogre::Degree(90));
 	 
 	  btTransform trans = btTransform(btQuaternion(0,0,0,1),
 	      btVector3(mPosition.x,mPosition.y,mPosition.z));
@@ -139,7 +139,7 @@ namespace Pixy
 	
 	void Obstacle::collide(Entity* target) {
 	  mLog->debugStream() << "Obstacle" << idObject << " has collided with " << target->getName() << target->getObjectId();
-	  die();
+	  //die();
 	}
 
   SHIELD Obstacle::shield() { return mShield; }

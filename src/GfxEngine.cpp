@@ -110,7 +110,8 @@ namespace Pixy {
 	
 	bool GfxEngine::deferredSetup() {
 		mSphere = Intro::getSingleton().getSphere();
-		mCamera->setAutoTracking (true, mSphere->getSceneNode());
+		//mCamera->setAutoTracking (true, mSphere->getSceneNode());
+		//mCamera->lookAt(mSphere->getSceneNode()->getPosition());
 		
 		setupParticles();
 		//mSphere->getSceneNode()->attachObject(mSceneMgr->getLight("Light2"));
@@ -182,6 +183,8 @@ namespace Pixy {
 	    Ogre::CompositorManager::getSingleton().setCompositorEnabled(mViewport, mEffect, mEffectEnabled);
 	  };
 	  
+
+	  
 	  
     void GfxEngine::setupCamera()
     {
@@ -236,7 +239,7 @@ namespace Pixy {
 
 			mEntity = mSceneMgr->createEntity(mEntityName);
 			mNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-			mEntity->setMaterialName("Terrain/Tube");
+			mEntity->setMaterialName("BumpMapping/Terrain");
 			mNode->attachObject(mEntity);
 			mNode->setPosition(Vector3(0, 10, i * tube_length));
 			mNode->roll(Ogre::Degree(90));
@@ -272,24 +275,28 @@ namespace Pixy {
     void GfxEngine::setupLights()
     {
 		  mLog->debugStream() << "setting up lights";
-      mSceneMgr->setAmbientLight(Ogre::ColourValue(0.1, 0.1, 0.1));
+      mSceneMgr->setAmbientLight(Ogre::ColourValue(0.1f, 0.1f, 0.1f));
       Ogre::Light *light;
+
+     light = mSceneMgr->createLight("Light2");
+		 light->setType(Ogre::Light::LT_DIRECTIONAL);
+		 //light->setPosition(Vector3(0, 0, 1000));
+		 light->setDirection(Vector3(0,0,-1));
+		 light->setDiffuseColour(1.0f, 1.0f, 1.0f);
+		 light->setSpecularColour(1.0f, 1.0f, 1.0f);
+		 
       /* now let's setup our light so we can see the shizzle */
       mSpotLight = mSceneMgr->createLight("PlayerLight");
-      mSpotLight->setType(Ogre::Light::LT_DIRECTIONAL);
-      //mSpotLight->setPosition(Vector3(0, 150, 250));
-      mSpotLight->setDirection(Vector3(0,-0.2,0));
-      mSpotLight->setDiffuseColour(0.8, 0.8, 0.8);
-      mSpotLight->setSpecularColour(1.0, 1.0, 1.0);
+      mSpotLight->setType(Ogre::Light::LT_POINT);
+      mSpotLight->setPosition(Vector3(0, 0, -100));
+      mSpotLight->setDirection(Vector3(0,0.5f,1));
+      mSpotLight->setDiffuseColour(0.6f, 0.6f, 0.6f);
+      mSpotLight->setSpecularColour(0.8f, 0.8f, 0.8f);
 		  
-     /*light = mSceneMgr->createLight("Light2");
-		 light->setType(Ogre::Light::LT_DIRECTIONAL);
-		 light->setPosition(Vector3(0, 0, 1000));
-		 light->setDirection(Vector3(0,1,1));
-		 light->setDiffuseColour(0, 0, 0);
-		 light->setSpecularColour(0, 0, 0);*/
 		 
-		 mSceneMgr->setFog(Ogre::FOG_LINEAR, Ogre::ColourValue(0.9, 0.9, 0.9), 0.0, 500, 1500);
+		 Ogre::ColourValue fadeColour(0.0f, 0.0f, 0.0f);
+     mViewport->setBackgroundColour(fadeColour);
+		 mSceneMgr->setFog(Ogre::FOG_LINEAR, fadeColour, 0.0, 800, 1500);
     };
 	
     void GfxEngine::setupNodes()
@@ -518,11 +525,29 @@ namespace Pixy {
 		pSphere->_setBounds( AxisAlignedBox( Vector3(-r, -r, -r), Vector3(r, r, r) ), false );
 		pSphere->_setBoundingSphereRadius(r);
 		// this line makes clear the mesh is loaded (avoids memory leaks)
-		pSphere->load();
+		//pSphere->load();
+		
+		using namespace Ogre;
+    MeshPtr pMesh = MeshManager::getSingleton().load(strName,
+      ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+      HardwareBuffer::HBU_DYNAMIC_WRITE_ONLY);
+     // so we can still read it
+ 
+     // build tangent vectors, all our meshes use only one texture coordset 
+     // Note: we can build into VES_TANGENT now (SM2+)
+ 
+     unsigned short src, dest;
+     if (!pMesh->suggestTangentVectorBuildParams(VES_TANGENT, src, dest))
+     {
+        pMesh->buildTangentVectors(VES_TANGENT, src, dest);
+     }
 	}
 
 	void GfxEngine::update(unsigned long lTimeElapsed) {
 		//processEvents();
+
+	  if (shakingScreen)
+	    applyScreenShake(lTimeElapsed);
 		
 		if (mEffectEnabled && mEffectTimer.getMilliseconds() > mEffectDuration * 1000) {
 		  mEffectTimer.reset();
@@ -531,10 +556,11 @@ namespace Pixy {
 		}
 		
 		mCamera->setPosition(mSphere->getSceneNode()->getPosition().x,
-							 mSphere->getSceneNode()->getPosition().y+20,
+							 5,
 							 mSphere->getSceneNode()->getPosition().z-80);
-		//mCameraMan->update(lTimeElapsed);
-							
+	  mCamera->lookAt(mSphere->getSceneNode()->getPosition().x,
+	  0,
+	  mSphere->getSceneNode()->getPosition().z);
 							 
 		evt.timeSinceLastEvent = lTimeElapsed;
 		evt.timeSinceLastFrame = lTimeElapsed;
@@ -544,6 +570,42 @@ namespace Pixy {
 		
 	}
 	
+  void GfxEngine::applyScreenShake(unsigned long lTimeElapsed) {
+    if (!mEffectStarted) {
+      //mEffectEnabled = true;
+      mEffectStarted = true;
+      shakingScreen = true;
+      mSpotLight->setDiffuseColour(0, 0, 0);
+      mSpotLight->setSpecularColour(0, 0, 0);
+      //mEffectDuration = 0.5f;
+      mEffectTimer.reset();
+      reachedThreshold = false;
+    }
+
+    float dimScale = 0.002f; 
+    
+    if (!reachedThreshold && mSpotLight->getDiffuseColour().r < 0.5f) {
+    } else {
+      reachedThreshold = true;
+      dimScale *= -1;
+    }
+     
+    float color = mSpotLight->getDiffuseColour().r+ dimScale * lTimeElapsed;
+    mSpotLight->setDiffuseColour(color, 0, 0);
+    mSpotLight->setSpecularColour(color, 0, 0);
+
+    //if (shakingScreen && mEffectTimer.getMilliseconds() > mEffectDuration * 1000) {
+    if (shakingScreen && reachedThreshold && mSpotLight->getSpecularColour().r <= 0) {
+      mSpotLight->setDiffuseColour(0.8, 0.8, 0.8);
+      mSpotLight->setSpecularColour(1.0, 1.0, 1.0);
+      mEffectTimer.reset();
+      //mEffectEnabled = false;
+      shakingScreen = false;
+      mEffectDuration = 0;
+      mEffectStarted = false;
+    }
+  };
+  
 	void GfxEngine::setupParticles() {
 	  using namespace Ogre;
 		ParticleSystem::setDefaultNonVisibleUpdateTimeout(5);  // set nonvisible timeout
