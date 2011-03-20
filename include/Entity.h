@@ -54,7 +54,7 @@ namespace Pixy
 	 * refer to their respective Factories, do NOT use this
 	 * directly.
 	 */
-	class Entity : public btCollisionObject
+	class Entity/* : public btCollisionObject*/
 	{
 		
 	public:

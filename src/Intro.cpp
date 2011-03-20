@@ -31,7 +31,7 @@ namespace Pixy
 		mUISystem = &CEGUI::System::getSingleton();
  
 		mSphere = new Sphere();
-		mSphere->setObjectId(0);
+		//mSphere->setObjectId(0);
 		mSphere->live();
 		
 		nrObstacles = 0;
@@ -199,7 +199,7 @@ namespace Pixy
   void Intro::releaseObstacle(Obstacle* inObs) {
     //mLog->debugStream() << "obstacle is released into the pool";
     mObstacles.remove(inObs);
-    inObs->die();
+    //inObs->die();
     //mObstaclePool.push_back(inObs);
   }
 } // end of namespace

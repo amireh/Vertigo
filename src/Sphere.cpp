@@ -11,17 +11,23 @@ namespace Pixy
 	
     Sphere::Sphere()
     {
-		mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "Sphere");
-        mLog->infoStream() << "created";
 		
-		mName = "Sphere";
-		mType = SPHERE;
-		mMesh = "SphereMesh";
-		mMoveSpeed = 4;
-		mCurrentShield = FIRE;
-		mShields[FIRE] = 100;
-		mShields[ICE] = 100;
+		  //if (!mLog)
+		    mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "Sphere");
+		  
+		  mLog->infoStream() << "creating";
+		  
+		  mName = "Sphere";
+		  mType = SPHERE;
+		  mMesh = "SphereMesh";
+		  mMoveSpeed = 4;
+		  mCurrentShield = FIRE;
+		  mShields[FIRE] = 100;
+		  mShields[ICE] = 100;
 		
+
+		  
+      mLog->infoStream() << "created";
 
     };
 
@@ -53,7 +59,10 @@ namespace Pixy
     mIceSteam = GfxEngine::getSingletonPtr()->getSM()->createParticleSystem("SphereSteam", "Vertigo/Effects/Steam");
     mFireTrail->setNonVisibleUpdateTimeout(0.5f);
     mIceSteam->setNonVisibleUpdateTimeout(0.5f);
+		mLog->debugStream() << "sphere rendered";
 		render();
+		
+		
 		//mSceneNode->setScale(0.1f, 0.1f, 0.1f);
 		//mSceneNode->pitch(Ogre::Degree(90));
 		//mSceneNode->setPosition(Ogre::Vector3(0,0,0));
@@ -74,24 +83,23 @@ namespace Pixy
 
     //mPhyxBody->setFlags(sphereCollidesWith);
     
-
+/*
     setCollisionShape(mPhyxShape);
     setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);    
-    
+    */
     //Entity* me = static_cast<Entity*>(mObject->getUserPointer());
     //mLog->debugStream() << "collision object's ptr : " << me->getName();
     
     btDiscreteDynamicsWorld* mWorld = PhyxEngine::getSingletonPtr()->world();
-    mWorld->addRigidBody(mPhyxBody, COL_SPHERE, sphereCollidesWith);
-		mWorld->addCollisionObject(this);
+    mWorld->addRigidBody(mPhyxBody);
+		mPhyxBody->proceedToTransform(trans);
+		//mWorld->addCollisionObject(this);
 		//setWorldTransform(trans);
-		setUserPointer(this);
+		//setUserPointer(this);
 		//mPhyxShape->setUserPointer(this);
 		//PhyxEngine::getSingletonPtr()->attachToWorld(this);
 	
-		Vector3 mPosition = mSceneNode->getPosition();
-		mPhyxBody->proceedToTransform(btTransform(btQuaternion(0,0,0,1),
-												  btVector3(mPosition.x,mPosition.y,mPosition.z)));
+
 	};
 	void Sphere::die() {};
 	

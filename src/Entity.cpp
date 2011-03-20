@@ -11,15 +11,15 @@ namespace Pixy
   
 	Entity::~Entity()
 	{
-		if (mLog) {
+		/*if (mLog) {
 			delete mLog;
 			mLog = 0;
-		}
+		}*/
 	};
 
     Entity::Entity()
     {
-		mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "Entity");
+		//mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "Entity");
 		
 		idObject = ++idCounter;
 		mName = "Unnamed";
@@ -88,12 +88,12 @@ namespace Pixy
 
     void Entity::live()
     {
-        mLog->infoStream() << mName << " is alive!";
+        //mLog->infoStream() << mName << " is alive!";
     }
 	
     void Entity::die()
     {
-        mLog->infoStream() << mName << " is dead!";
+        //mLog->infoStream() << mName << " is dead!";
     }
 	
 	void Entity::attachSceneNode(Ogre::SceneNode* inNode) { mSceneNode = inNode; }

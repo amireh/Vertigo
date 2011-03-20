@@ -64,13 +64,13 @@ namespace Pixy {
     mObstacleShape = new btSphereShape(12);
     
     mFloorShape = new btStaticPlaneShape(btVector3(0,1,0),0);
-    mFloorMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,-30,0)));
+    mFloorMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)));
     btRigidBody::btRigidBodyConstructionInfo
       mFloorRBCI(0,mFloorMS,mFloorShape,btVector3(0,0,0));
     mFloorRBCI.m_friction = 1.0f;
     
     mFloorBody = new btRigidBody(mFloorRBCI);
-    mWorld->addRigidBody(mFloorBody, COL_WALLS, wallsCollideWith);
+    mWorld->addRigidBody(mFloorBody);
     /*
     mFloor = new btCollisionObject();
     mFloor->setCollisionShape(mFloorShape);
@@ -79,11 +79,11 @@ namespace Pixy {
     */
     
     mCeilingShape = new btStaticPlaneShape(btVector3(0,-1,0),0);
-    mCeilingMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,15,0)));
+    mCeilingMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,45,0)));
     btRigidBody::btRigidBodyConstructionInfo
       mCeilingRBCI(0,mCeilingMS,mCeilingShape,btVector3(0,0,0));
     mCeilingBody = new btRigidBody(mCeilingRBCI);
-    mWorld->addRigidBody(mCeilingBody, COL_WALLS, wallsCollideWith);    
+    mWorld->addRigidBody(mCeilingBody);    
 
     // create our triangular walls now
     btTriangleMesh *mTriMesh = new btTriangleMesh();
@@ -98,23 +98,25 @@ namespace Pixy {
 
     mLWallShape = new btBvhTriangleMeshShape(mTriMesh,true);
 
-    mLWallMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(-350,-30,0)));
+    mLWallMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(-350,0,0)));
     btRigidBody::btRigidBodyConstructionInfo
       mLWallRBCI(0,mLWallMS,mLWallShape,btVector3(0,0,0));
 
     mLWallBody = new btRigidBody(mLWallRBCI);
-    mWorld->addRigidBody(mLWallBody, COL_WALLS, wallsCollideWith);
+    mWorld->addRigidBody(mLWallBody);
     
     // right wall
     mRWallShape = new btBvhTriangleMeshShape(mTriMesh,true);
 
-    mRWallMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(30,-30,0)));
+    mRWallMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(30,0,0)));
     btRigidBody::btRigidBodyConstructionInfo
       mRWallRBCI(0,mRWallMS,mRWallShape,btVector3(0,0,0));
 
     mRWallBody = new btRigidBody(mRWallRBCI);
-    mWorld->addRigidBody(mRWallBody, COL_WALLS, wallsCollideWith);
-        
+    mWorld->addRigidBody(mRWallBody);
+    
+    mLog->infoStream() << "set up!";
+    
 		fSetup = true;
 		return fSetup;
 	}
@@ -174,10 +176,10 @@ namespace Pixy {
 	
 	void PhyxEngine::attachToWorld(Entity* inEntity) {
 		mWorld->addRigidBody(inEntity->getRigidBody());
-		mWorld->addCollisionObject(inEntity);
+		//mWorld->addCollisionObject(inEntity);
 	}
 	void PhyxEngine::detachFromWorld(Entity* inEntity) {
-		mWorld->removeCollisionObject(inEntity);
+		//mWorld->removeCollisionObject(inEntity);
 		mWorld->removeRigidBody(inEntity->getRigidBody());
 	}
 	bool PhyxEngine::cleanup() {

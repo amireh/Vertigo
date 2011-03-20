@@ -17,6 +17,8 @@ namespace Pixy
 	  mType = OBSTACLE;
 	  mMesh = "ObstacleMesh";
 	  mMoveSpeed = 0.5f;
+	  mDeathDuration = 300;
+	  fDying = false;
 	  int qualifier = rand();
 	  mShield = (qualifier % 2 == 0) ? ICE : FIRE;
 	  
@@ -103,13 +105,13 @@ namespace Pixy
 	  
 	  //PhyxEngine::getSingletonPtr()->attachToWorld(this);
 	  
-    setCollisionShape(mPhyxShape);
-    setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);    
-    setUserPointer(this);
+    //setCollisionShape(mPhyxShape);
+    //setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);    
+   // setUserPointer(this);
 	  
     btDiscreteDynamicsWorld* mWorld = PhyxEngine::getSingletonPtr()->world();
-    mWorld->addRigidBody(mPhyxBody, COL_OBSTACLES, obstacleCollidesWith);
-		mWorld->addCollisionObject(this);
+    mWorld->addRigidBody(mPhyxBody);
+		//mWorld->addCollisionObject(this);
 
 	  mDirection = Vector3(0,0,-1);
 	  fDead = false;
@@ -132,11 +134,11 @@ namespace Pixy
 	  
 	  btDiscreteDynamicsWorld* mWorld = PhyxEngine::getSingletonPtr()->world();
 	  mPhyxBody->activate(false);
-		mWorld->removeCollisionObject(this);
+		//mWorld->removeCollisionObject(this);
 		mWorld->removeRigidBody(mPhyxBody);
 	  //PhyxEngine::getSingletonPtr()->detachFromWorld(this);
 	  fDead = true;
-	  
+	  fDying = false;
 	};
 	
 	void Obstacle::render() {
@@ -163,13 +165,23 @@ namespace Pixy
 	
 	
   void Obstacle::update(unsigned long lTimeElapsed) {
-    if (fDead)
+    if (fDying && mTimer.getMilliseconds() > mDeathDuration) {
+      die();
+    }
+    
+    if (fDead || fDying)
       return;
-      
+    
     if (mSphere->getSceneNode()->getPosition().z > mSceneNode->getPosition().z + 100) {
       die();
       return;
     }
+    
+    if (mSceneObject->getWorldBoundingBox().intersects(mSphere->getSceneObject()->getWorldBoundingBox())) {
+      collide(mSphere);
+      return;
+    }
+    
 		mPhyxBody->activate(true);
 		mPhyxBody->applyCentralForce(btVector3(
 		  mDirection.x * mMoveSpeed * lTimeElapsed, 
@@ -181,7 +193,12 @@ namespace Pixy
 	};
 	
 	void Obstacle::collide(Entity* target) {
+	  if (fDying || fDead) // prevent race conditions (if the obstacle gets hit twice by the player)
+	    return;
+	  
 	  mLog->debugStream() << "Obstacle" << idObject << " has collided with " << target->getName() << target->getObjectId();
+	  fDying = true;
+	  mTimer.reset();
 	  //die();
 	}
 

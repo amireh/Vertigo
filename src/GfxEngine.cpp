@@ -242,7 +242,7 @@ namespace Pixy {
 			mNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
 			mEntity->setMaterialName("BumpMapping/Terrain");
 			mNode->attachObject(mEntity);
-			mNode->setPosition(Vector3(0, 10, i * tube_length));
+			mNode->setPosition(Vector3(0, 70, i * tube_length));
 			mNode->roll(Ogre::Degree(90));
 			mNode->pitch(Ogre::Degree(90 ));
 			//mNode->showBoundingBox(true);			
@@ -365,7 +365,7 @@ namespace Pixy {
 		Ogre::String nodeName = "Node";
 		nodeName += inEntity->getName();
 		nodeName += stringify(inEntity->getObjectId());
-		//mLog->debugStream() << "Creating a SceneNode with name " << nodeName;
+		mLog->debugStream() << "Creating a SceneNode with name " << nodeName;
 		return renderEntity(inEntity, createNode(nodeName, 
 												 Vector3::ZERO, 
 												 Vector3(1.0,1.0,1.0), 
@@ -557,10 +557,10 @@ namespace Pixy {
 		}
 		
 		mCamera->setPosition(mSphere->getSceneNode()->getPosition().x,
-							 5,
+							 35,
 							 mSphere->getSceneNode()->getPosition().z-80);
 	  mCamera->lookAt(mSphere->getSceneNode()->getPosition().x,
-	  0,
+	  20,
 	  mSphere->getSceneNode()->getPosition().z);
 							 
 		evt.timeSinceLastEvent = lTimeElapsed;
