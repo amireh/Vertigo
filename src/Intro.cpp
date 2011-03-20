@@ -167,7 +167,7 @@ namespace Pixy
 		  ++_itr;     
 		}
 		
-		if (mTimer.getMilliseconds() > 1000) {
+		if (mTimer.getMilliseconds() > 600) {
 		  spawnObstacle();
 		  mTimer.reset();
 		}

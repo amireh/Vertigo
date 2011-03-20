@@ -63,6 +63,7 @@ namespace Pixy
     Vector3 randomPosition();
     Ogre::Timer mTimer;
     bool fDying;
+    bool fHasFX;
     int mDeathDuration;
 	};
 } // end of namespace
