@@ -214,11 +214,13 @@ namespace Pixy {
 		 */
         // skyz0rs
         mLog->noticeStream() << "Setting up sky";
-		mSceneMgr->setSkyDome(true, "Examples/CloudySky", 2, 0.5);
+		//mSceneMgr->setSkyDome(true, "Examples/CloudySky", 2, 0.5);
 		//mSceneMgr->setSkyBox(true, "Sky/EarlyMorning", 2000, true);				
-		 		
+		 
 		Ogre::Entity* mEntity;
 		Ogre::SceneNode* mNode;
+		Procedural::Root::getInstance()->sceneManager = mSceneMgr;
+		
 		std::string mEntityName = "";
 		int tube_length = 500;
 		float tube_radius = 80.0f;
@@ -228,7 +230,7 @@ namespace Pixy {
 			mEntityName += i;
 
 			
-			Procedural::Root::getInstance()->sceneManager = mSceneMgr;
+			
 			Procedural::TubeGenerator()
 			.setOuterRadius(tube_radius)
 			.setInnerRadius(tube_radius - 2.0f)
@@ -248,29 +250,6 @@ namespace Pixy {
 			//mNode->showBoundingBox(true);			
 			
 		}
-		/*
-		// create a fork
-		Procedural::Root::getInstance()->sceneManager = mSceneMgr;
-		Procedural::TubeGenerator()
-		.setOuterRadius(tube_radius+1.0f)
-		.setInnerRadius(tube_radius)
-		.setHeight(tube_length * 2)
-		.setNumSegBase(64)
-		.setNumSegHeight(8)
-		.realizeMesh("fork1");
-		
-		
-		mEntity = mSceneMgr->createEntity("fork1");
-		mNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-		mEntity->setMaterialName("Terrain/Tube");
-		mNode->attachObject(mEntity);
-		mNode->setPosition(Vector3(0, 10, nr_tubes * tube_length - 25));
-		mNode->roll(Ogre::Degree(90));
-		mNode->pitch(Ogre::Degree(115));
-		//mNode->showBoundingBox(true);
-		*/
-		
-		//mCamera->lookAt(mSceneMgr->getEntity("myTube_0")->getParentSceneNode()->getPosition());
     };
 	
     void GfxEngine::setupLights()
@@ -414,6 +393,7 @@ namespace Pixy {
 	void GfxEngine::keyPressed( const OIS::KeyEvent &e )
 	{
 		switch (e.key) {
+		/*
 			case OIS::KC_UP:
 				mCamera->move(Vector3(0, 0, 1));
 				break;
@@ -431,7 +411,15 @@ namespace Pixy {
 				break;
 			case OIS::KC_G:
 				mCamera->move(Vector3(0, -1, 0));
-				break;				
+				break;	*/
+		  case OIS::KC_P:
+	      time_t seconds;
+        seconds = time (NULL);
+        std::string fileName = "Screenshot_";
+        fileName += seconds;
+        fileName += ".png";
+		    mRenderWindow->writeContentsToFile(fileName);
+		    break;
 		}
 	}
 	
