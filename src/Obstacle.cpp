@@ -27,6 +27,7 @@ namespace Pixy
 	  mPosition = randomPosition();
 	  
 	  GfxEngine::getSingletonPtr()->attachToScene(this);
+	  mSceneNode->setPosition(mPosition);
 	  
 	  if (fHasFX) {
 	    // create a fire trail particle system
@@ -56,7 +57,8 @@ namespace Pixy
 		  mPhyxBodyCI(mass,mPhyxMS,mPhyxShape,fallInertia);
         
 	  mPhyxBody = new btRigidBody(mPhyxBodyCI);
-    
+    mPhyxBody->proceedToTransform(trans);
+	      
     mSceneNode->setVisible(false);
 	  fDead = true;
   };
@@ -82,7 +84,7 @@ namespace Pixy
 	  return Vector3(
 	    qualifier % 20, 
 	    0, 
-	    mSphere->getSceneNode()->getPosition().z + (qualifier % 250) + 1000);	   
+	    mSphere->getPosition().z + (qualifier % 250) + 1000);	   
 	}
 	void Obstacle::live() {
 	  //if (!fDead)
@@ -96,14 +98,14 @@ namespace Pixy
     mPhyxBody->proceedToTransform(btTransform(btQuaternion(0,0,0,1),
 	      btVector3(mPosition.x,mPosition.y,mPosition.z)));
 	  
-	  //PhyxEngine::getSingletonPtr()->attachToWorld(this);
+	  PhyxEngine::getSingletonPtr()->attachToWorld(this);
 	  
     //setCollisionShape(mPhyxShape);
     //setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);    
    // setUserPointer(this);
 	  
-    btDiscreteDynamicsWorld* mWorld = PhyxEngine::getSingletonPtr()->world();
-    mWorld->addRigidBody(mPhyxBody);
+    //btDiscreteDynamicsWorld* mWorld = PhyxEngine::getSingletonPtr()->world();
+    //mWorld->addRigidBody(mPhyxBody);
 		//mWorld->addCollisionObject(this);
 
 	  //mDirection = Vector3(0,0,-1);
@@ -129,11 +131,11 @@ namespace Pixy
 	  
 	  //mDirection = Vector3(0,0,0);
 	  
-	  btDiscreteDynamicsWorld* mWorld = PhyxEngine::getSingletonPtr()->world();
-	  mPhyxBody->activate(false);
+	  //btDiscreteDynamicsWorld* mWorld = PhyxEngine::getSingletonPtr()->world();
+	  //mPhyxBody->activate(false);
 		//mWorld->removeCollisionObject(this);
-		mWorld->removeRigidBody(mPhyxBody);
-	  //PhyxEngine::getSingletonPtr()->detachFromWorld(this);
+		//mWorld->removeRigidBody(mPhyxBody);
+	  PhyxEngine::getSingletonPtr()->detachFromWorld(this);
 	  fDead = true;
 	  fDying = false;
 	};
@@ -179,7 +181,8 @@ namespace Pixy
       return;
     }
     
-    if (mSceneObject->getWorldBoundingBox().intersects(mSphere->getSceneObject()->getWorldBoundingBox())) {
+    //if (mSceneObject->getWorldBoundingBox().intersects(mSphere->getSceneObject()->getWorldBoundingBox())) {
+    if (mSceneNode->_getWorldAABB().intersects(mSphere->getSceneNode()->_getWorldAABB())) {
       collide(mSphere);
       return;
     }

@@ -56,13 +56,17 @@ namespace Pixy
 		
 		virtual void collide(Obstacle* inObj);
 		
+		const Vector3& getPosition();
 	protected:		
 		
 		//! helper method for copy ctor and assignment operator
 		virtual void copyFrom(const Sphere& src);
 		
 		SHIELD mCurrentShield;
-		map<SHIELD, int> mShields;  
+		map<SHIELD, int> mShields;
+		
+		Ogre::SceneNode* mFireTrailNode;
+		Ogre::SceneNode* mMasterNode;
 	};
 } // end of namespace
 #endif

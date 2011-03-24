@@ -176,10 +176,12 @@ namespace Pixy {
 	
 	void PhyxEngine::attachToWorld(Entity* inEntity) {
 		mWorld->addRigidBody(inEntity->getRigidBody());
+    inEntity->getRigidBody()->activate(true);
 		//mWorld->addCollisionObject(inEntity);
 	}
 	void PhyxEngine::detachFromWorld(Entity* inEntity) {
 		//mWorld->removeCollisionObject(inEntity);
+		inEntity->getRigidBody()->activate(false);
 		mWorld->removeRigidBody(inEntity->getRigidBody());
 	}
 	bool PhyxEngine::cleanup() {

@@ -31,22 +31,14 @@ namespace Pixy
 		mUISystem = &CEGUI::System::getSingleton();
  
 		mSphere = new Sphere();
-		//mSphere->setObjectId(0);
 		mSphere->live();
 		
-		nrObstacles = 0;
+		nrObstacles = 20;
 		//createObstacle();
 		
-		for (int i =0; i < 20; ++i) {
-	    //++nrObstacles;
-	    //std::string name = "Obstacle";
-	    //name += nrObstacles;
-
-		  Obstacle* mObs = new Obstacle();
-	    //mObs->setName(name);
-	    //mObs->setObjectId(nrObstacles);
-	    mObstaclePool.push_back(mObs);
-		}
+		for (int i =0; i < nrObstacles; ++i)
+	    mObstaclePool.push_back(new Obstacle());
+		
 		
 		mGfxEngine->deferredSetup();
 		mPhyxEngine->deferredSetup();
@@ -142,8 +134,6 @@ namespace Pixy
 	
 	Sphere* Intro::getSphere() { return mSphere; };
 
-  // a predicate implemented as a function:
-  bool obstacleIsDead (Obstacle* inObs) { return inObs->dead(); }
 	void Intro::update( unsigned long lTimeElapsed ) {
 		
 		mGfxEngine->update(lTimeElapsed);
@@ -167,7 +157,7 @@ namespace Pixy
 		  ++_itr;     
 		}
 		
-		if (mTimer.getMilliseconds() > 600) {
+		if (mTimer.getMilliseconds() > 500) {
 		  spawnObstacle();
 		  mTimer.reset();
 		}

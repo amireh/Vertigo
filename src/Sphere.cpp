@@ -5,6 +5,7 @@
 #include "Intro.h"
 #include "PhyxEngine.h"
 #include "Obstacle.h"
+#include "Geometry.h"
 
 namespace Pixy
 {
@@ -36,6 +37,9 @@ namespace Pixy
 	    mLog->infoStream() <<"destructed";
 		GfxEngine::getSingletonPtr()->detachFromScene(this);
 		
+		mFireTrailNode = NULL;
+		mMasterNode = NULL;
+		
 		delete mPhyxBody->getMotionState();
         delete mPhyxBody;
 
@@ -50,15 +54,32 @@ namespace Pixy
 	void Sphere::live() {
 
     using namespace Ogre;
-		GfxEngine::getSingletonPtr()->createSphere(mMesh, 10, 64, 64);
+		Geometry::createSphere(mMesh, 10, 64, 64);
 		
 
 		
 		GfxEngine::getSingletonPtr()->attachToScene(this);
+		
     mFireTrail = GfxEngine::getSingletonPtr()->getSM()->createParticleSystem("SphereBlaze", "Vertigo/Effects/Blaze");
     mIceSteam = GfxEngine::getSingletonPtr()->getSM()->createParticleSystem("SphereSteam", "Vertigo/Effects/Steam");
     mFireTrail->setNonVisibleUpdateTimeout(0.5f);
     mIceSteam->setNonVisibleUpdateTimeout(0.5f);
+    
+    mMasterNode = GfxEngine::getSingletonPtr()->getSM()->getRootSceneNode()->createChildSceneNode();
+    mSceneNode->getParent()->removeChild(mSceneNode);
+    mMasterNode->addChild(mSceneNode);
+    mFireTrailNode = mMasterNode->createChildSceneNode();
+    mFireTrailNode->attachObject(mFireTrail);
+    
+    //mSceneNode->detachObject(mSceneObject);
+    
+    /*
+    mSphereNode = mSceneNode->createChildSceneNode();
+    mSphereNode->attachObject(mSceneObject);
+    mSphereNode->showBoundingBox(true);*/
+    
+    //mFireTrail->setVisible(false);
+    //mIceSteam->setVisible(false);
 		mLog->debugStream() << "sphere rendered";
 		render();
 		
@@ -70,7 +91,7 @@ namespace Pixy
 		btTransform trans = btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0));
 		
     mPhyxShape = new btSphereShape(10);
-		mPhyxMS = new MotionState(trans, mSceneNode);
+		mPhyxMS = new MotionState(trans, mMasterNode);
         btScalar mass = 100;
         btVector3 fallInertia(0,0,0);
 		
@@ -90,32 +111,36 @@ namespace Pixy
     //Entity* me = static_cast<Entity*>(mObject->getUserPointer());
     //mLog->debugStream() << "collision object's ptr : " << me->getName();
     
-    btDiscreteDynamicsWorld* mWorld = PhyxEngine::getSingletonPtr()->world();
-    mWorld->addRigidBody(mPhyxBody);
-		mPhyxBody->proceedToTransform(trans);
+    //btDiscreteDynamicsWorld* mWorld = PhyxEngine::getSingletonPtr()->world();
+    //mWorld->addRigidBody(mPhyxBody);
+		
 		//mWorld->addCollisionObject(this);
 		//setWorldTransform(trans);
 		//setUserPointer(this);
 		//mPhyxShape->setUserPointer(this);
-		//PhyxEngine::getSingletonPtr()->attachToWorld(this);
+		PhyxEngine::getSingletonPtr()->attachToWorld(this);
+		mPhyxBody->proceedToTransform(trans);
 	
 
 	};
-	void Sphere::die() {};
+	void Sphere::die() {
+	  PhyxEngine::getSingletonPtr()->detachFromWorld(this);
+	};
 	
 	void Sphere::render() {
 		if (mCurrentShield == FIRE) {
 		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Sphere/Fire");
-		  if (mIceSteam->isAttached())
-		    mSceneNode->detachObject(mIceSteam);
+		  /*if (mIceSteam->isAttached())
+		    mSceneNode->detachObject(mIceSteam);*/
 		    
-		  mSceneNode->attachObject(mFireTrail);
+		  //mSceneNode->attachObject(mFireTrail);
+		  mFireTrail->setVisible(true);
 		} else {
 		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Sphere/Ice");
-		  if (mFireTrail->isAttached())
-		    mSceneNode->detachObject(mFireTrail);
+		  /*if (mFireTrail->isAttached())
+		    mSceneNode->detachObject(mFireTrail);*/
 
-		  mSceneNode->attachObject(mIceSteam);
+		  //mSceneNode->attachObject(mIceSteam);
 		}
 	};
 	
@@ -212,4 +237,8 @@ namespace Pixy
 	  mLog->debugStream() << "Sphere has collided with " << target->getName() << target->getObjectId();
 	  target->collide(this);
 	}
+	
+	const Vector3& Sphere::getPosition() {
+	  return mMasterNode->getPosition();
+	};
 } // end of namespace
