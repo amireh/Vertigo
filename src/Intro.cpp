@@ -28,7 +28,7 @@ namespace Pixy
 		mPhyxEngine->setup();
 			
 		// grab CEGUI handle
-		mUISystem = &CEGUI::System::getSingleton();
+		//mUISystem = &CEGUI::System::getSingleton();
  
 		mSphere = new Sphere();
 		mSphere->live();
@@ -75,8 +75,8 @@ namespace Pixy
 	void Intro::keyPressed( const OIS::KeyEvent &e )
 	{
 	
-		mUISystem->injectKeyDown(e.key);
-		mUISystem->injectChar(e.text);
+		/*mUISystem->injectKeyDown(e.key);
+		mUISystem->injectChar(e.text);*/
 		mGfxEngine->keyPressed(e);
 		mSphere->keyPressed(e);
 		
@@ -86,7 +86,7 @@ namespace Pixy
 	
 	void Intro::keyReleased( const OIS::KeyEvent &e ) {
 		
-		mUISystem->injectKeyUp(e.key);
+		//mUISystem->injectKeyUp(e.key);
 		mGfxEngine->keyReleased(e);
 		mSphere->keyReleased(e);
 		switch (e.key) {
@@ -104,15 +104,15 @@ namespace Pixy
 	void Intro::mouseMoved( const OIS::MouseEvent &e )
 	{
 		// Update CEGUI with the mouse motion
-		mUISystem->injectMouseMove(e.state.X.rel, e.state.Y.rel);
+		//mUISystem->injectMouseMove(e.state.X.rel, e.state.Y.rel);
 	}
 	
 	void Intro::mousePressed( const OIS::MouseEvent &e, OIS::MouseButtonID id ) {
-		mUISystem->injectMouseButtonDown(convertButton(id));
+		//mUISystem->injectMouseButtonDown(convertButton(id));
 	}
 	
 	void Intro::mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id ) {
-		mUISystem->injectMouseButtonUp(convertButton(id));
+		//mUISystem->injectMouseButtonUp(convertButton(id));
 	}
 	
 	void Intro::pause( void ) {
@@ -137,7 +137,7 @@ namespace Pixy
 	void Intro::update( unsigned long lTimeElapsed ) {
 		
 		mGfxEngine->update(lTimeElapsed);
-		mUIEngine->update(lTimeElapsed);
+		//mUIEngine->update(lTimeElapsed);
 		mPhyxEngine->update(lTimeElapsed);
 		mSphere->update(lTimeElapsed);
 		
@@ -157,7 +157,7 @@ namespace Pixy
 		  ++_itr;     
 		}
 		
-		if (mTimer.getMilliseconds() > 500) {
+		if (mTimer.getMilliseconds() > 700) {
 		  spawnObstacle();
 		  mTimer.reset();
 		}

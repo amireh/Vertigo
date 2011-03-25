@@ -113,6 +113,8 @@ namespace Pixy
 		//! Prints out information about this Entity to Log ofstream; used for debugging
 		virtual void printInfo();
 		
+		virtual Ogre::SceneNode* getMasterNode();
+		
 		virtual void attachSceneNode(Ogre::SceneNode* inNode);
 		virtual Ogre::SceneNode* getSceneNode();
 		
@@ -143,7 +145,7 @@ namespace Pixy
 		bool fDead;
 		ENTITY_TYPE mType;
 		std::string mMesh;					//! Entity's in-game name		
-		Ogre::SceneNode         *mSceneNode;
+		Ogre::SceneNode         *mSceneNode, *mMasterNode;
 		Ogre::MovableObject     *mSceneObject;
     Ogre::ParticleSystem* mFireTrail;
     Ogre::ParticleSystem* mIceSteam;

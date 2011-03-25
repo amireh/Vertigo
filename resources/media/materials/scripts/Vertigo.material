@@ -75,17 +75,17 @@ material Sphere/Fire
 	}
 }*/
 
-material Terrain/Tube
+material BumpMapping/Terrain
 {
 	technique
 	{
 		pass
 		{
-			ambient 0.4 0.4 0.4
+			ambient 0.4 0.7 0.4
 			diffuse 1.0 1.0 1.0
 			texture_unit
 			{
-				texture Terrain.jpg
+				texture Raw_Emerald.jpg
 			}
 		}
 	}

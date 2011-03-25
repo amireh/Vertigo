@@ -1,0 +1,22 @@
+
+material ParticleUniverse/ExplosionFire
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend add
+			depth_write off
+			fog_override true none
+
+			texture_unit
+			{
+				texture pu_smoke_02_128x128.png
+				tex_address_mode clamp
+			}
+		}
+
+	}
+
+}

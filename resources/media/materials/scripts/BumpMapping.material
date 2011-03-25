@@ -416,7 +416,7 @@
      }
  }
  
-  material BumpMapping/Terrain
+  material BumpMapping/Terrainz
  { 
  
      // this is the preferred technique which uses both vertex and

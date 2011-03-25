@@ -59,10 +59,11 @@
 # The pre-processor and compiler options.
 MY_CFLAGS = `pkg-config --cflags OGRE OIS CEGUI bullet` -Iinclude \
 	-Imodules/log4cpp \
-	-Imodules/ogre-procedural/include
+	-Imodules/ogre-procedural/include \
+	-I/usr/local/include/OGRE/Plugins/ParticleUniverse
 
 # The linker options.
-MY_LIBS   = `pkg-config --libs OGRE OIS CEGUI bullet log4cpp` -lCEGUIOgreRenderer
+MY_LIBS   = `pkg-config --libs OGRE OIS CEGUI bullet log4cpp` -lCEGUIOgreRenderer -lPlugin_ParticleUniverse
 
 # The pre-processor options used by the cpp (man cpp for more).
 CPPFLAGS  = 

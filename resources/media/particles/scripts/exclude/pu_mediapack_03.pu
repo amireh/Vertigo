@@ -1,0 +1,534 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack product.
+//
+// Copyright (c) 2008 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License.
+// You can find a copy of the Commercial License in the Particle Universe package.
+//-----------------------------------------------------------------------------------------------------------------------
+
+system PUMediaPack/BlackHole
+{
+    technique 
+    {
+        visual_particle_quota                   2500
+        material                                PUMediaPack/Flare_04
+        default_particle_width                  300
+        default_particle_height                 300
+        renderer                                Billboard
+        {
+        }
+        emitter                                 SphereSurface 
+        {
+            emission_rate                       200
+            radius                              400
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0.2 1
+            time_colour                         0.9  0.8 0.8 1 1
+            time_colour                         1    1 1 1 1
+        }
+        affector                                Gravity 
+        {
+            gravity                             900000
+        }
+        affector                                Scale 
+        {
+            xyz_scale                           -150
+        }
+    }
+    technique 
+    {
+        visual_particle_quota                   250
+        material                                PUMediaPack/Streak_03
+        renderer                                Billboard
+        {
+            billboard_type                      oriented_self
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       30
+            angle                               360
+            time_to_live                        4
+            velocity                            1
+            particle_width                      dyn_random
+            {
+                min                             40
+                max                             80
+            }
+            particle_height                     dyn_random
+            {
+                min                             1500
+                max                             2000
+            }
+            colour                              0.1 0.1 1 1
+        }
+        affector                                Scale 
+        {
+            x_scale                             -40
+        }
+        affector                                Scale 
+        {
+            y_scale                             -1500
+        }
+        use_alias                               PUMediaPack/ColourAffectorFade_06
+    }
+}
+
+
+//-----------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+system PUMediaPack/ColouredStreaks
+{
+    category                                    LightFX
+    technique 
+    {
+        position                                -300 -200 0
+        visual_particle_quota                   3000
+        emitted_emitter_quota                   30
+        material                                PUMediaPack/Streak_04
+        default_particle_width                  70
+        default_particle_height                 800
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       4
+            angle                               0
+            time_to_live                        dyn_random
+            {
+                min                             4
+                max                             6
+            }
+            velocity                            dyn_random
+            {
+                min                             0
+                max                             200
+            }
+            direction                           1 0 0
+            emits                               emitter_particle flares
+            colour                              1 0 0 1
+        }
+        emitter                                 Point flares
+        {
+            emission_rate                       100
+            angle                               0
+            time_to_live                        2
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 0 0 1
+            time_colour                         0.2  0.3 0.1 0.6 1
+            time_colour                         0.4  1 1 0 1
+            time_colour                         0.8  0.3 1 0 1
+            time_colour                         1    0 0 0 1
+        }
+        affector                                PathFollower 
+        {
+            exclude_emitter                     flares 
+            path_follower_point                 -100 -10 -40
+            path_follower_point                 100 -50 40
+            path_follower_point                 0 -200 -10
+            path_follower_point                 100 100 70
+            path_follower_point                 -400 260 60
+        }
+    }
+}
+
+
+
+//-----------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+system PUMediaPack/Woosh
+{
+    technique 
+    {
+        position                                0 -400 0
+        visual_particle_quota                   1
+        material                                PUMediaPack/Ring_14
+        default_particle_width                  10
+        default_particle_height                 10
+        renderer                                Billboard
+        {
+            billboard_type                      perpendicular_common
+            common_direction                    0 1 0
+            common_up_vector                    0 0 1
+        }
+        emitter                                 Point wooshEmitter
+        {
+            emission_rate                       1
+            time_to_live                        1
+            direction                           0 0 0
+            force_emission                      true
+        }
+        affector                                Scale 
+        {
+            xyz_scale                           1000
+        }
+        use_alias                               PUMediaPack/ColourAffectorFade_01
+        use_alias                               PUMediaPack/OnClearDoStopSystem
+
+    }
+}
+
+//-----------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+system PUMediaPack/DirtExplosion
+{
+    category                                    Explosion
+    technique 
+    {
+        visual_particle_quota                   30
+        material                                PUMediaPack/Dirt_11
+        renderer                                Billboard
+        {
+            billboard_type                      oriented_self
+            billboard_origin                    bottom_center
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       15
+            angle                               40
+            time_to_live                        dyn_random
+            {
+                min                             1.8
+                max                             3.4
+            }
+            velocity                            1
+            particle_width                      dyn_random
+            {
+                min                             5
+                max                             12.5
+            }
+            particle_height                     dyn_random
+            {
+                min                             20
+                max                             60
+            }
+            colour                              0.76 0.7 0.64 1
+            force_emission                      true
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       15
+            angle                               40
+            time_to_live                        dyn_random
+            {
+                min                             1.8
+                max                             3.4
+            }
+            velocity                            1
+            particle_width                      dyn_random
+            {
+                min                             2.5
+                max                             7.5
+            }
+            particle_height                     dyn_random
+            {
+                min                             2
+                max                             7.5
+            }
+            direction                           0 0.5 0
+            colour                              0.76 0.7 0.64 1
+            force_emission                      true
+        }
+        affector                                Scale 
+        {
+            x_scale                             dyn_curved_linear
+            {
+                control_point                   0 1000
+                control_point                   0.2 100
+                control_point                   0.3 30
+                control_point                   1 0
+            }
+            y_scale                             dyn_curved_linear
+            {
+                control_point                   0 1000
+                control_point                   0.1 400
+                control_point                   0.2 100
+                control_point                   1 20
+            }
+        }
+        use_alias                               PUMediaPack/ColourAffectorFade_07
+    }
+    technique 
+    {
+        visual_particle_quota                   100
+        material                                PUMediaPack/Smoke_11
+        renderer                                Billboard
+        {
+            billboard_type                      oriented_self
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       100
+            angle                               10
+            time_to_live                        4
+            velocity                            dyn_random
+            {
+                min                             300
+                max                             700
+            }
+            all_particle_dimensions             dyn_random
+            {
+                min                             5
+                max                             20
+            }
+            colour                              0.32 0.3 0.2 1
+            force_emission                      true
+        }
+        affector                                LinearForce 
+        {
+            force_vector                        0 -500 0
+        }
+        use_alias                               PUMediaPack/ColourAffectorFade_07
+    }
+}
+
+//-----------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+system PUMediaPack/ElectroShield
+{
+    fast_forward                                1 0.1
+    technique 
+    {
+        visual_particle_quota                   100
+        emitted_emitter_quota                   10
+        material                                PUMediaPack/Spark_01
+        default_particle_width                  80
+        default_particle_height                 1
+        renderer                                Billboard
+        {
+            billboard_type                      oriented_shape
+            billboard_origin                    bottom_center
+        }
+        emitter                                 Point ElectroPoint
+        {
+            emission_rate                       4
+            time_to_live                        2
+            duration                            5
+            direction                           0 0 0
+            emits                               emitter_particle ElectroCircle
+        }
+        emitter                                 Circle ElectroCircle
+        {
+            emission_rate                       16
+            time_to_live                        1
+            velocity                            40
+            force_emission                      true
+            radius                              200
+            step                                0.4
+            circle_em_random                    false
+        }
+        affector                                Align 
+        {
+            exclude_emitter                     "ElectroPoint" 
+            resize                              true
+        }
+        affector                                Randomiser 
+        {
+            exclude_emitter                     "ElectroPoint" 
+            max_deviation_x                     2
+            max_deviation_y                     4
+            max_deviation_z                     2
+            time_step                           0.01
+            use_direction                       false
+        }
+        use_alias                                   PUMediaPack/ColourAffectorFade_04
+        use_alias                                   PUMediaPack/OnClearDoStopSystem
+    }
+}
+
+//-----------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+alias                                           PUMediaPack/Fire/BoxEmitter
+{
+    emitter                                     Box
+    {
+        emission_rate                           200
+        angle                                   10
+        direction                               0 1 0
+        box_width                               100
+        box_height                              4
+        box_depth                               100
+        velocity                                dyn_random
+        {
+            min                                 100
+            max                                 200
+        }
+        time_to_live                            dyn_random
+        {
+            min                                 1
+            max                                 3
+        }
+        particle_width                          dyn_random
+        {
+            min                                 30
+            max                                 70
+        }
+        particle_height                         dyn_random
+        {
+            min                                 13
+            max                                 40
+        }
+    }
+}
+//-----------------------------------------------------------------------------
+alias                                           PUMediaPack/Fire/GravityAffectorLarge
+{
+    affector                                    Gravity
+    {
+        position                                0 130 0
+        gravity                                 3000
+    }
+}
+//-----------------------------------------------------------------------------
+alias                                           PUMediaPack/Fire/GravityAffectorSmall
+{
+    affector                                    Gravity
+    {
+        position                                0 130 0
+        gravity                                 2500
+    }
+}
+//-----------------------------------------------------------------------------
+alias                                           PUMediaPack/Fire/ScaleAffectorLarge
+{
+    affector                                    Scale
+    {
+        x_scale                                 -5
+        y_scale                                 dyn_random
+        {
+            min                                 4
+            max                                 75
+        }
+    }
+}
+//-----------------------------------------------------------------------------
+alias                                           PUMediaPack/Fire/ScaleAffectorSmall
+{
+    affector                                    Scale
+    {
+        x_scale                                 -5
+        y_scale                                 dyn_random
+        {
+            min                                 3
+            max                                 26
+        }
+    }
+}
+//-----------------------------------------------------------------------------
+alias                                           PUMediaPack/Fire/ParticleFollower
+{
+    affector                                    ParticleFollower
+    {
+        follower_min_distance                   4
+        follower_max_distance                   35
+    }
+}
+//-----------------------------------------------------------------------------
+alias                                           PUMediaPack/Fire/ColourAffector
+{
+    affector                                    Colour
+    {
+        colour_aff_time_colour                  0 0 0 0
+        colour_aff_time_colour                  0.1 1 1 1
+        colour_aff_time_colour                  1 0 0 0
+    }
+}
+//-----------------------------------------------------------------------------
+system PUMediaPack/Fireplace_01
+{
+    category                                    Fire
+    technique
+    {
+        material                                PUMediaPack/Fire_01
+        visual_particle_quota                   450
+
+        // Renderer
+        renderer Billboard         
+        {
+        }
+
+        // Emitter
+        use_alias                               PUMediaPack/Fire/BoxEmitter
+
+        // Affectors
+        use_alias                               PUMediaPack/Fire/GravityAffectorLarge
+        use_alias                               PUMediaPack/Fire/ScaleAffectorLarge
+        use_alias                               PUMediaPack/Fire/ColourAffector
+    }
+
+    technique
+    {
+        material                                PUMediaPack/Fire_02
+        visual_particle_quota                   450
+
+        // Renderer
+        renderer Billboard         
+        {
+            billboard_type                      oriented_self
+        }
+
+        // Emitter
+        use_alias                               PUMediaPack/Fire/BoxEmitter
+
+        // Affectors
+        use_alias                               PUMediaPack/Fire/GravityAffectorSmall
+        use_alias                               PUMediaPack/Fire/ScaleAffectorSmall
+        use_alias                               PUMediaPack/Fire/ParticleFollower
+        use_alias                               PUMediaPack/Fire/ColourAffector
+    }
+}
+
+//-----------------------------------------------------------------------------
+system PUMediaPack/Fireplace_02
+{
+    category                                    Fire
+    technique
+    {
+        material                                PUMediaPack/Fire_03
+        visual_particle_quota                   450
+
+        // Renderer
+        renderer Billboard         
+        {
+        }
+
+        // Emitter
+        use_alias                               PUMediaPack/Fire/BoxEmitter
+
+        // Affectors
+        use_alias                               PUMediaPack/Fire/GravityAffectorLarge
+        use_alias                               PUMediaPack/Fire/ScaleAffectorLarge
+        use_alias                               PUMediaPack/Fire/ColourAffector
+    }
+
+    technique
+    {
+        material                                PUMediaPack/Fire_04
+        visual_particle_quota                   450
+
+        // Renderer
+        renderer Billboard         
+        {
+            billboard_type                      oriented_self
+        }
+
+        // Emitter
+        use_alias                               PUMediaPack/Fire/BoxEmitter
+
+        // Affectors
+        use_alias                               PUMediaPack/Fire/GravityAffectorSmall
+        use_alias                               PUMediaPack/Fire/ScaleAffectorSmall
+        use_alias                               PUMediaPack/Fire/ParticleFollower
+        use_alias                               PUMediaPack/Fire/ColourAffector
+    }
+}

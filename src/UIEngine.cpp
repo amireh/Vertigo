@@ -135,6 +135,10 @@ namespace Pixy {
 		
 		mLog->infoStream() << "Set up!";
 		
+		CEGUI::WindowManager& mWinMgr = CEGUI::WindowManager::getSingleton();
+		mLayout = mWinMgr.loadWindowLayout("vertigo.layout");
+		//mLayout->show();
+		//mUISystem->setGUISheet(mLayout);
 		//Combat::getSingletonPtr()->updateMe(getSingletonPtr());
 		
 		fSetup = true;

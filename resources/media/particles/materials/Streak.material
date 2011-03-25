@@ -1,0 +1,21 @@
+
+material PUMediaPack/Streak_02
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend add
+			depth_write off
+
+			texture_unit
+			{
+				texture pump_streak_02.png
+				tex_address_mode clamp
+			}
+		}
+
+	}
+
+}

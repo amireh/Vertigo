@@ -95,7 +95,7 @@ namespace Pixy {
 		
         setupNodes();
 		
-    Geometry::createSphere("ObstacleMesh", 12, 16, 16);
+    Geometry::createSphere("ObstacleMesh", 10, 16, 16);
 
 		
 		mTrayMgr = new OgreBites::SdkTrayManager("AOFTrayMgr", mRenderWindow, InputManager::getSingletonPtr()->getMouse(), 0);
@@ -214,26 +214,26 @@ namespace Pixy {
 		 */
         // skyz0rs
         mLog->noticeStream() << "Setting up sky";
-		//mSceneMgr->setSkyDome(true, "Examples/CloudySky", 2, 0.5);
+		mSceneMgr->setSkyDome(true, "Examples/CloudySky", 2, 0.5);
 		//mSceneMgr->setSkyBox(true, "Sky/EarlyMorning", 2000, true);				
 		 
 		Ogre::Entity* mEntity;
 		Ogre::SceneNode* mNode;
 		Procedural::Root::getInstance()->sceneManager = mSceneMgr;
 
-		int tube_length = 500;
-		float tube_radius = 80.0f;
+		int tube_length = 512;
+		float tube_radius = 30.0f;
 
 		Procedural::TubeGenerator()
 		.setOuterRadius(tube_radius)
 		.setInnerRadius(tube_radius - 2.0f)
 		.setHeight(tube_length)
-		.setNumSegBase(32)
+		.setNumSegBase(24)
 		.setNumSegHeight(1)
 		.realizeMesh("TubeMesh");
 				
 		std::string mEntityName = "";
-		int nr_tubes = 45;
+		int nr_tubes = 100;
 		for (int i =0; i < nr_tubes; ++i) {
 			mEntityName = "myTube_";
 			mEntityName += i;
@@ -244,7 +244,7 @@ namespace Pixy {
 			mNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
 			mEntity->setMaterialName("BumpMapping/Terrain");
 			mNode->attachObject(mEntity);
-			mNode->setPosition(Vector3(0, 70, i * tube_length));
+			mNode->setPosition(Vector3(0, 28, i * tube_length));
 			//mNode->roll(Ogre::Degree(90));
 			mNode->pitch(Ogre::Degree(90));
 			//mNode->yaw(Ogre::Degree(30));
@@ -276,8 +276,8 @@ namespace Pixy {
 		  
 		 
 		 Ogre::ColourValue fadeColour(0.0f, 0.0f, 0.0f);
-     mViewport->setBackgroundColour(fadeColour);
-		 mSceneMgr->setFog(Ogre::FOG_LINEAR, fadeColour, 0.0, 800, 1500);
+     //mViewport->setBackgroundColour(fadeColour);
+		 //mSceneMgr->setFog(Ogre::FOG_LINEAR, fadeColour, 0.0, 2000, 3000);
     };
 	
     void GfxEngine::setupNodes()
@@ -301,7 +301,7 @@ namespace Pixy {
         mNode = inParent->createChildSceneNode(inName, inPosition);
         mNode->setScale(inScale);
         mNode->lookAt(inDirection, Ogre::Node::TS_WORLD);
-    	mNode->showBoundingBox(true);
+    	//mNode->showBoundingBox(true);
 		
         //mNode = NULL;
         return mNode;
@@ -409,10 +409,20 @@ namespace Pixy {
 				break;
 			case OIS::KC_T:
 				mCamera->move(Vector3(0, 1, 0));
-				break;
+				break;*/
 			case OIS::KC_G:
-				mCamera->move(Vector3(0, -1, 0));
-				break;	*/
+				applyMotionBlur(500);
+				break;	
+		  case OIS::KC_R:
+		    playEffect("Atomicity", mSphere);
+		    break;
+		  case OIS::KC_T:
+		    playEffect("BlackHole", mSphere);
+		    break;
+		  case OIS::KC_Y:
+		    playEffect("Explosion", mSphere);
+		    break;
+			
 		  case OIS::KC_P:
 	      time_t seconds;
         seconds = time (NULL);
@@ -442,7 +452,7 @@ namespace Pixy {
 		  mEffectEnabled = false;
 		  Ogre::CompositorManager::getSingleton().setCompositorEnabled(mViewport, mEffect, mEffectEnabled);
 		}
-		
+			
 		mCamera->setPosition(
 		  mSphere->getPosition().x,
       35,
@@ -500,13 +510,64 @@ namespace Pixy {
   };
   
 	void GfxEngine::setupParticles() {
-	  using namespace Ogre;
-		ParticleSystem::setDefaultNonVisibleUpdateTimeout(1);  // set nonvisible timeout
+	  //using namespace ParticleUniverse;
+		//ParticleSystem::setDefaultNonVisibleUpdateTimeout(1);  // set nonvisible timeout
 
 		/*ParticleSystem* ps;
     // create aureola around ogre head perpendicular to the ground
     ps = mSceneMgr->createParticleSystem("Nimbus", "Examples/GreenyNimbus");
 		mSphere->getSceneNode()->attachObject(ps);*/
 
+    ParticleUniverse::ParticleSystemManager* fxMgr = 
+      ParticleUniverse::ParticleSystemManager::getSingletonPtr();
+      
+    ParticleUniverse::ParticleSystem* effect = NULL;
+    
+    effect = fxMgr->createParticleSystem(
+      "FxEffectExplosion",
+      "Vertigo/FX/Explosion", 
+      mSceneMgr);
+    effect->prepare();
+    effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("Explosion", effect));
+    
+    effect = fxMgr->createParticleSystem(
+      "FxBlackHole",
+      "Vertigo/FX/BlackHole", 
+      mSceneMgr);
+    effect->prepare();
+    effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("BlackHole", effect));
+
+    effect = fxMgr->createParticleSystem(
+      "FxAtomicity",
+      "Vertigo/FX/Atomicity", 
+      mSceneMgr);
+    effect->prepare();
+    effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("Atomicity", effect));    
+    
+    effectMap::iterator itr;
+    for (itr = effects.begin(); itr != effects.end(); ++itr) {
+      effect = itr->second;
+      effect->setScale(Ogre::Vector3(0.2f, 0.2f, 0.2f));
+      effect->setScaleVelocity(0.2f);
+    }
+    
+    effect = NULL;
+    //mSphere->getMasterNode()->attachObject(effectExplosion);
+    //effectExplosion->start();
+
 	}
+	
+	void GfxEngine::playEffect(std::string inEffect, Entity* inEntity) {
+	  effectMap::iterator cursor = effects.find(inEffect);
+	  if (cursor != effects.end()) {
+	    ParticleUniverse::ParticleSystem* effect = cursor->second;
+	    if (effect->isAttached())
+	      effect->getParentSceneNode()->detachObject(effect);
+	    inEntity->getMasterNode()->attachObject(effect);
+	    if (inEffect == "BlackHole")
+	      effect->startAndStopFade(1);
+	    else
+	      effect->start();
+	  }
+	};
 }

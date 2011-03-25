@@ -1,0 +1,21 @@
+
+material ParticleUniverse/Debris
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend add
+			depth_write off
+
+			texture_unit
+			{
+				texture pu_fire_01_64x64.png
+				tex_address_mode clamp
+			}
+		}
+
+	}
+
+}

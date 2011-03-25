@@ -1,0 +1,61 @@
+// Example particle systems
+//particle_system TRPlayer/Torch
+particle_system Vertigo/Effects/Player/Blaze
+{
+  material      TRPlayer/Fire
+  particle_width     30
+  particle_height    30
+  cull_each          true
+  quota              100
+  billboard_type     point
+
+  // Area emitter
+  emitter Point
+  {
+    angle                     0
+    emission_rate             25
+    time_to_live              0.25
+    position                  0 0 15
+    direction                 0 0 1
+    velocity_min              0
+    velocity_max              100
+    //colour_range_start 0.8 0.1 0.1
+    //colour_range_end  1 0.2 0.2
+  }
+
+  affector Scaler
+  {
+    rate    -25
+  }
+
+}
+
+// smoke
+particle_system Vertigo/Effects/Player/Steam
+{
+  material      TRPlayer/Snow
+  particle_width     5
+  particle_height    5
+  cull_each          false
+  quota              200
+  billboard_type     point
+
+  // Area emitter
+  emitter Point
+  {
+    angle                     0
+    emission_rate             30
+    time_to_live              0.2
+    direction                 0 0 1
+    position                  0 0 10
+    velocity_min              0
+    velocity_max              0
+    //colour_range_start 0.8 0.1 0.1
+    //colour_range_end  1 0.2 0.2
+  }
+
+  affector Scaler
+  {
+    rate    50
+  }
+}

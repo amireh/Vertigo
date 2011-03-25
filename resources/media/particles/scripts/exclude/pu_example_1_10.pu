@@ -1,0 +1,394 @@
+// ---------------------------------------------------------------------------------------------------------------
+// Define some aliasses for convenience
+// ---------------------------------------------------------------------------------------------------------------
+alias                                      PointEmitter
+{
+    emitter                                Point
+    {
+        emission_rate                      50
+        angle                              25
+        direction                          0 1 0
+        velocity                           220
+        time_to_live                       3
+    }
+}
+alias                                      LinearForce
+{
+    affector                               LinearForce
+    {
+        force_vector                       0 -100 0
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// example_001:
+// - fixed_timeout
+// - nonvisible_update_timeout
+// - iteration_interval
+// - use emitter and affector alias
+// Example will present shocking movement, because the iteration_interval is set high
+// ---------------------------------------------------------------------------------------------------------------
+system example_001
+{
+    category                                    Examples_1_10
+    fixed_timeout                               10
+    iteration_interval                          0.1
+    nonvisible_update_timeout                   3
+    technique 
+    {
+        material                                ParticleUniverse/GreenBall
+        default_particle_width                  20
+        default_particle_height                 20
+        use_alias                               defaultBillboardRenderer
+        use_alias                               PointEmitter
+        use_alias                               LinearForce
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// example_002:
+// - duration
+// - repeat/delay
+// ---------------------------------------------------------------------------------------------------------------
+system example_002
+{
+    category                                    Examples_1_10
+    technique 
+    {
+        position                                0 100 0
+        material                                ParticleUniverse/Hart
+        use_alias                               defaultBillboardRenderer
+        emitter                                 Point 
+        {
+            emission_rate                       50
+            angle                               25
+            velocity                            220
+            duration                            dyn_random
+            {
+                min                             0.1
+                max                             3
+            }
+            repeat_delay                        dyn_random
+            {
+                min                             0.1
+                max                             3
+            }
+            enabled                             false
+            position                            100 100 100
+        }
+        use_alias                               LinearForce
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// example_003:
+// - position
+// See how position of the technique, emitter and the SceneNode are combined.
+// ---------------------------------------------------------------------------------------------------------------
+system example_003
+{
+    category                                    Examples_1_10
+    keep_local                                  true
+    scale_velocity                              0.5
+    scale                                       0.5 0.5 0.5
+    technique 
+    {
+        position                                500 0 0
+        material                                ParticleUniverse/Beam_2
+        default_particle_width                  10
+        default_particle_height                 20
+        renderer                                Beam
+        {
+            beam_deviation                      0
+            number_of_segments                  1
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       50
+            angle                               25
+            time_to_live                        40
+            velocity                            200
+            duration                            2
+            position                            0 200 0
+        }
+        affector                                Gravity 
+        {
+            position                            -500 400 0
+            gravity                             50000
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// example_004:
+// - Sphere surface emitter
+// - Colour Affector
+// ---------------------------------------------------------------------------------------------------------------
+system example_004
+{
+    category                                    Examples_1_10
+    technique 
+    {
+        visual_particle_quota                   1500
+        material                                ParticleUniverse/Star
+        default_particle_width                  20
+        default_particle_height                 20
+        use_alias                               defaultBillboardRenderer
+        emitter                                 SphereSurface 
+        {
+            emission_rate                       250
+            time_to_live                        1.8
+            velocity                            0
+            direction                           0 0 0
+            radius                              100
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 1 0 1
+            time_colour                         1    1 0 0 0
+        }
+        affector                                Gravity 
+        {
+            gravity                             5000
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// example_005:
+// - Vertex emitter
+// The particles are emitted along the outline of the mesh. If all particles are gone, the particle system stops.
+// ---------------------------------------------------------------------------------------------------------------
+system example_005
+{
+    category                                    Examples_1_10
+    keep_local                                  true
+    scale_velocity                              5
+    scale                                       5 5 5
+    technique 
+    {
+        visual_particle_quota                   2500
+        material                                ParticleUniverse/Star
+        default_particle_width                  10
+        default_particle_height                 10
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Vertex 
+        {
+            emission_rate                       200
+            angle                               360
+            time_to_live                        7
+            velocity                            0
+            step                                20
+            number_of_segments                  3
+            number_of_iterations                50
+            mesh_name                           athene.mesh
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 0 0 1
+            time_colour                         1    0 0 0 1
+        }
+        extern                                  SceneDecorator 
+        {
+            mesh_name                           athene.mesh
+            material                            ParticleUniverse/Stone
+            scene_node_scale                    4.8 4.8 4.8
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// example_006:
+// - Box Renderer
+// ---------------------------------------------------------------------------------------------------------------
+system example_006
+{
+    category                                    Examples_1_10
+    technique 
+    {
+        position                                0 -200 0
+        visual_particle_quota                   10
+        material                                ParticleUniverse/Crate
+        default_particle_width                  80
+        default_particle_height                 80
+        default_particle_depth                  80
+        renderer                                Box
+        {
+        }
+        emitter                                 Box 
+        {
+            emission_rate                       5
+            angle                               40
+            time_to_live                        10
+            velocity                            300
+            orientation                         0 0.33 0.33 0.33
+            box_width                           400
+            box_height                          400
+            box_depth                           10
+        }
+        affector                                LinearForce 
+        {
+            force_vector                        0 -100 0
+        }
+        affector                                Align 
+        {
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// example_007:
+// - emitted emitters
+// This is the Particle Universe version of Ogre's fireworks particle system
+// ---------------------------------------------------------------------------------------------------------------
+system example_007
+{
+    category                                    Examples_1_10
+    technique 
+    {
+        visual_particle_quota                   1000
+        emitted_emitter_quota                   10
+        material                                ParticleUniverse/Flare
+        default_particle_width                  10
+        default_particle_height                 10
+        use_alias                               defaultBillboardRenderer
+        emitter                                 Box 
+        {
+            emission_rate                       1000
+            velocity                            260
+            emits                               emitter_particle explosion
+        }
+        emitter                                 Point explosion
+        {
+            emission_rate                       1000
+            angle                               360
+            time_to_live                        2
+            velocity                            80
+            duration                            0.1
+            repeat_delay                        dyn_random
+            {
+                min                             2
+                max                             3
+            }
+            enabled                             false
+        }
+        affector                                LinearForce 
+        {
+            force_vector                        0 -100 0
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 1 0 1
+            time_colour                         0.5  1 0 0 1
+            time_colour                         0.9  0 0 1 1
+            time_colour                         1    0 0 0 1
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// example_008:
+// - OnQuota observer
+// This particle system emits visual particles until the visual particle quota has been reached. This activates
+// the event handler, which disables the emitter from further emission of particles. This way the emitter only
+// emits the number of particles defined by the quota and then stops.
+// ---------------------------------------------------------------------------------------------------------------
+system example_008
+{
+    category                                    Examples_1_10
+    technique 
+    {
+        visual_particle_quota                   200
+        material                                ParticleUniverse/Hart
+        use_alias                               defaultBillboardRenderer
+        emitter                                 Point myPointEmitter
+        {
+            emission_rate                       100
+            angle                               25
+            time_to_live                        5
+            velocity                            220
+        }
+        observer                                OnQuota 
+        {
+            observe_particle_type               visual_particle
+            handler                             DoEnableComponent 
+            {
+                enable_component                emitter_component myPointEmitter false
+            }
+        }
+        use_alias                               LinearForce
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// example_009:
+// - Circle emitter
+// ---------------------------------------------------------------------------------------------------------------
+system example_009
+{
+    category                                    Examples_1_10
+    technique 
+    {
+        visual_particle_quota                   5000
+        material                                ParticleUniverse/GreenBall
+        default_particle_width                  10
+        default_particle_height                 10
+        use_alias                               defaultBillboardRenderer
+        emitter                                 Circle 
+        {
+            emission_rate                       1000
+            angle                               0
+            time_to_live                        5
+            velocity                            70
+            direction                           0 0 0
+            auto_direction                      true
+            step                                0.2
+            circle_em_random                    false
+        }
+        affector                                SineForce 
+        {
+            force_vector                        0 80 0
+            min_frequency                       5
+            max_frequency                       5
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// example_010:
+// - Circle emitter
+// ---------------------------------------------------------------------------------------------------------------
+system example_010
+{
+    category                                    Examples_1_10
+    technique 
+    {
+        visual_particle_quota                   2000
+        material                                ParticleUniverse/Star
+        default_particle_width                  20
+        default_particle_height                 20
+        use_alias                               defaultBillboardRenderer
+        emitter                                 Circle 
+        {
+            emission_rate                       300
+            time_to_live                        4
+            velocity                            20
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 1 0 1
+            time_colour                         0.8  0 0 1 1
+            time_colour                         1    0 0 0 1
+        }
+        affector                                Jet 
+        {
+            jet_aff_accel                       dyn_random
+            {
+                min                             0.1
+                max                             1
+            }
+        }
+    }
+}

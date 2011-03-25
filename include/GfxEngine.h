@@ -25,12 +25,15 @@
 //#include "SdkCameraMan.h"
 #include "InputManager.h"
 #include "Sphere.h"
-//#include "DotSceneLoader.h"
+#include "ParticleUniverseSystemManager.h"
+#include <map>
 
 using Ogre::Vector3;
 using Ogre::Real;
 using Ogre::SceneNode;
 using Ogre::String;
+using std::map;
+using std::pair;
 //using OgreBites::SdkCameraMan;
 
 namespace Pixy {
@@ -121,6 +124,8 @@ namespace Pixy {
 		void applyMotionBlur(float duration);
     void applyScreenShake(unsigned long lTimeElapsed);
     
+    void playEffect(std::string inEffect, Entity* inEntity);
+    
 	protected:
 		Ogre::Root           *mRoot;
 		Ogre::Camera         *mCamera, *mCamera2, *mCamera3, *mCamera4;
@@ -140,7 +145,7 @@ namespace Pixy {
 		
 		//! used for setting Objects' direction in Scene
 		Vector3 mDirection;
-		
+
 		//! regulates the movement speed by (mWalkSpeed * mTimeElapsed) keeping it consistent
 		Real mMoveSpeed;
 		
@@ -175,6 +180,9 @@ namespace Pixy {
 		bool shakingScreen, reachedThreshold;
 		Ogre::Quaternion mCameraOrientation;
 
+    typedef map< std::string, ParticleUniverse::ParticleSystem* > effectMap;
+    effectMap effects;
+    //ParticleUniverse::ParticleSystem *effectShatter, *effectExplosion;
 	private:
 		static GfxEngine* _myGfxEngine;
 		GfxEngine();
