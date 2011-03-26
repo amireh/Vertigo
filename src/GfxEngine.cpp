@@ -32,7 +32,7 @@ namespace Pixy {
 		mLog->infoStream() << "firing up";
 		fSetup = false;
 		//mPlayers.clear();
-		//mCameraMan = 0;
+		mCameraMan = 0;
 		//mFallVelocity = 0;
 		//mSceneLoader = 0;
 		//mMoveSpeed = 0.1;
@@ -102,6 +102,7 @@ namespace Pixy {
 		mTrayMgr->hideCursor();
     mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
 
+    mCameraMan = new OgreBites::SdkCameraMan(mCamera);
     //mRenderWindow->setActive(true);
                 
 		fSetup = true;
@@ -111,6 +112,8 @@ namespace Pixy {
 	bool GfxEngine::deferredSetup() {
 		mSphere = Intro::getSingleton().getSphere();
 		//mCamera->setAutoTracking (true, mSphere->getSceneNode());
+		//mCamera->setPosition(Vector3(200, 200, 200));
+		//mCamera->lookAt(mSphere->getSceneNode()->getPosition());
 		//mCamera->lookAt(mSphere->getSceneNode()->getPosition());
 		
 		setupParticles();
@@ -214,43 +217,44 @@ namespace Pixy {
 		 */
         // skyz0rs
         mLog->noticeStream() << "Setting up sky";
-		//mSceneMgr->setSkyDome(true, "Examples/CloudySky", 2, 0.5);
-		//mSceneMgr->setSkyBox(true, "Sky/EarlyMorning", 2000, true);				
-		 
-		Ogre::Entity* mEntity;
-		Ogre::SceneNode* mNode;
-		Procedural::Root::getInstance()->sceneManager = mSceneMgr;
+		  //mSceneMgr->setSkyDome(true, "Examples/CloudySky", 2, 0.5);
+		  mSceneMgr->setSkyBox(true, "Vertigo/Sky/Vortex", 5000, true);				
+		 /*
+		  Ogre::Entity* mEntity;
+		  Ogre::SceneNode* mNode;
+		  Procedural::Root::getInstance()->sceneManager = mSceneMgr;
 
-		int tube_length = 500;
-		float tube_radius = 80.0f;
+		  int tube_length = 500;
+		  float tube_radius = 80.0f;
 
-		Procedural::TubeGenerator()
-		.setOuterRadius(tube_radius)
-		.setInnerRadius(tube_radius - 2.0f)
-		.setHeight(tube_length)
-		.setNumSegBase(32)
-		.setNumSegHeight(1)
-		.realizeMesh("TubeMesh");
+		  Procedural::TubeGenerator()
+		  .setOuterRadius(tube_radius)
+		  .setInnerRadius(tube_radius - 2.0f)
+		  .setHeight(tube_length)
+		  .setNumSegBase(32)
+		  .setNumSegHeight(1)
+		  .realizeMesh("TubeMesh");
 				
-		std::string mEntityName = "";
-		int nr_tubes = 45;
-		for (int i =0; i < nr_tubes; ++i) {
-			mEntityName = "myTube_";
-			mEntityName += i;
+		  std::string mEntityName = "";
+		  int nr_tubes = 45;
+		  for (int i =0; i < nr_tubes; ++i) {
+			  mEntityName = "myTube_";
+			  mEntityName += i;
 
 			
 			
-  		mEntity = mSceneMgr->createEntity(mEntityName, "TubeMesh");
-			mNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-			mEntity->setMaterialName("BumpMapping/Terrain");
-			mNode->attachObject(mEntity);
-			mNode->setPosition(Vector3(0, 70, i * tube_length));
-			//mNode->roll(Ogre::Degree(90));
-			mNode->pitch(Ogre::Degree(90));
-			//mNode->yaw(Ogre::Degree(30));
-			//mNode->showBoundingBox(true);			
+    		mEntity = mSceneMgr->createEntity(mEntityName, "TubeMesh");
+			  mNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+			  mEntity->setMaterialName("BumpMapping/Terrain");
+			  mNode->attachObject(mEntity);
+			  mNode->setPosition(Vector3(0, 70, i * tube_length));
+			  //mNode->roll(Ogre::Degree(90));
+			  mNode->pitch(Ogre::Degree(90));
+			  //mNode->yaw(Ogre::Degree(30));
+			  //mNode->showBoundingBox(true);			
 			
-		}
+		  }*/
+		
     };
 	
     void GfxEngine::setupLights()
@@ -276,8 +280,8 @@ namespace Pixy {
 		  
 		 
 		 Ogre::ColourValue fadeColour(0.0f, 0.0f, 0.0f);
-     mViewport->setBackgroundColour(fadeColour);
-		 mSceneMgr->setFog(Ogre::FOG_LINEAR, fadeColour, 0.0, 800, 1500);
+     //mViewport->setBackgroundColour(fadeColour);
+		 //mSceneMgr->setFog(Ogre::FOG_LINEAR, fadeColour, 0.0, 800, 1500);
     };
 	
     void GfxEngine::setupNodes()
@@ -374,25 +378,26 @@ namespace Pixy {
 	
 	void GfxEngine::mouseMoved( const OIS::MouseEvent &e )
 	{
-		//if (mCameraMan)
-		//	mCameraMan->injectMouseMove(e);
+		if (mCameraMan)
+			mCameraMan->injectMouseMove(e);
 	}
 	
 	void GfxEngine::mousePressed( const OIS::MouseEvent &e, OIS::MouseButtonID id ) 
 	{
-		//if (mCameraMan)
-		//	mCameraMan->injectMouseDown(e, id);
+		if (mCameraMan)
+			mCameraMan->injectMouseDown(e, id);
 	}
 	
 	void GfxEngine::mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id ) 
 	{
-		//if (mCameraMan)
-		//	mCameraMan->injectMouseUp(e, id);
+		if (mCameraMan)
+			mCameraMan->injectMouseUp(e, id);
 	}
 	
 	
 	void GfxEngine::keyPressed( const OIS::KeyEvent &e )
 	{
+	  mCameraMan->injectKeyDown(e);
 		switch (e.key) {
 		/*
 			case OIS::KC_UP:
@@ -425,7 +430,7 @@ namespace Pixy {
 	}
 	
 	void GfxEngine::keyReleased( const OIS::KeyEvent &e ) {
-			
+			mCameraMan->injectKeyUp(e);
 	}
 	
 	
@@ -445,13 +450,15 @@ namespace Pixy {
 		
 		mCamera->setPosition(
 		  mSphere->getPosition().x,
-      35,
-      mSphere->getPosition().z-80
+      mSphere->getPosition().y + 35,
+      mSphere->getPosition().z-160
     );
-				 
+	  
+	  mCamera->setOrientation(mSphere->getMasterNode()->getOrientation());
+	  
 	  mCamera->lookAt(
 	    mSphere->getPosition().x,
-	    20,
+	    mSphere->getPosition().y + 20,
 	    mSphere->getPosition().z
 	  );
 							 
@@ -459,6 +466,7 @@ namespace Pixy {
 		evt.timeSinceLastFrame = lTimeElapsed;
 		
 		mTrayMgr->frameRenderingQueued(evt);
+		mCameraMan->update(lTimeElapsed);
 		using namespace Ogre;
 		
 	}

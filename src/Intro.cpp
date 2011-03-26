@@ -33,7 +33,7 @@ namespace Pixy
 		mSphere = new Sphere();
 		mSphere->live();
 		
-		nrObstacles = 20;
+		nrObstacles = 0;
 		//createObstacle();
 		
 		for (int i =0; i < nrObstacles; ++i)
@@ -105,14 +105,17 @@ namespace Pixy
 	{
 		// Update CEGUI with the mouse motion
 		mUISystem->injectMouseMove(e.state.X.rel, e.state.Y.rel);
+		mGfxEngine->mouseMoved(e);
 	}
 	
 	void Intro::mousePressed( const OIS::MouseEvent &e, OIS::MouseButtonID id ) {
 		mUISystem->injectMouseButtonDown(convertButton(id));
+		mGfxEngine->mousePressed(e, id);
 	}
 	
 	void Intro::mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id ) {
 		mUISystem->injectMouseButtonUp(convertButton(id));
+		mGfxEngine->mouseReleased(e, id);
 	}
 	
 	void Intro::pause( void ) {

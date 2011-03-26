@@ -22,7 +22,7 @@
 #include <OgreParticle.h>
 //#include <OgreOctreeSceneManager.h>
 #include "CEGUI/RendererModules/Ogre/CEGUIOgreRenderer.h"
-//#include "SdkCameraMan.h"
+#include "SdkCameraMan.h"
 #include "InputManager.h"
 #include "Sphere.h"
 //#include "DotSceneLoader.h"
@@ -31,7 +31,7 @@ using Ogre::Vector3;
 using Ogre::Real;
 using Ogre::SceneNode;
 using Ogre::String;
-//using OgreBites::SdkCameraMan;
+using OgreBites::SdkCameraMan;
 
 namespace Pixy {
 		
@@ -130,7 +130,7 @@ namespace Pixy {
 		Ogre::OverlayManager *mOverlayMgr;
 		Ogre::Overlay        *mOverlay;
 		EventManager		 *mEvtMgr;
-		//SdkCameraMan		 *mCameraMan;
+		SdkCameraMan		 *mCameraMan;
 		//DotSceneLoader		 *mSceneLoader;
 		
 		Ogre::Entity* sphereEntity;

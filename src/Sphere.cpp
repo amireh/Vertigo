@@ -21,12 +21,15 @@ namespace Pixy
 		  mName = "Sphere";
 		  mType = SPHERE;
 		  mMesh = "SphereMesh";
-		  mMoveSpeed = 4;
+		  mMoveSpeed = 0.2f;
+		  move = 0;
+		  mDistance = 0;
 		  mCurrentShield = FIRE;
 		  mShields[FIRE] = 100;
 		  mShields[ICE] = 100;
 		
-
+      currentStep = 0.0f;
+      step = 0.05f;
 		  
       mLog->infoStream() << "created";
 
@@ -118,13 +121,36 @@ namespace Pixy
 		//setWorldTransform(trans);
 		//setUserPointer(this);
 		//mPhyxShape->setUserPointer(this);
-		PhyxEngine::getSingletonPtr()->attachToWorld(this);
-		mPhyxBody->proceedToTransform(trans);
+		//PhyxEngine::getSingletonPtr()->attachToWorld(this);
+		//mPhyxBody->proceedToTransform(trans);
 	
-
+	  mPath = new Ogre::SimpleSpline();
+	  mPath->setAutoCalculate(false);
+	  
+	  mWaypoints.push_back(Vector3(0,0,0));
+	  
+	  mWaypoints.push_back(Vector3(0,0,-500));
+	  mWaypoints.push_back(Vector3(-100,-300,-500));
+	  mWaypoints.push_back(Vector3(-600,-300,-500));
+	  
+    //mWaypoints.push_back(Vector3(0,0,0));
+    
+    std::list<Vector3>::iterator itr;
+    for (itr = mWaypoints.begin(); itr != mWaypoints.end(); ++itr) {
+      mPath->addPoint(*itr);
+    }
+    mPath->recalcTangents();
+    
+    mWaypoints.clear();
+    for (currentStep = 0.0f; currentStep <= 1.0f; currentStep += step) {
+      mWaypoints.push_back(mPath->interpolate(currentStep));
+    }
+    
+    mDirection = Ogre::Vector3::ZERO;
+    mNextWaypoint = &mWaypoints.front();
 	};
 	void Sphere::die() {
-	  PhyxEngine::getSingletonPtr()->detachFromWorld(this);
+	  //PhyxEngine::getSingletonPtr()->detachFromWorld(this);
 	};
 	
 	void Sphere::render() {
@@ -152,7 +178,7 @@ namespace Pixy
 	{
 		
 		switch (e.key) {
-			case OIS::KC_W:
+			/*case OIS::KC_W:
 				mDirection.z = mMoveSpeed;
 				break;
 			case OIS::KC_A:
@@ -175,7 +201,7 @@ namespace Pixy
 			case OIS::KC_E:
 				//mPhyxBody->clearForces();
 				mDirection.y = -mMoveSpeed;
-				break;				
+				break;			*/	
 			case OIS::KC_SPACE:
 			  flipShields();
 			  break;
@@ -185,7 +211,7 @@ namespace Pixy
 	
 	void Sphere::keyReleased( const OIS::KeyEvent &e ) {
 		
-		switch (e.key) {
+		/*switch (e.key) {
 			case OIS::KC_W:
 				mDirection.z = 0;
 				break;
@@ -198,15 +224,49 @@ namespace Pixy
 			case OIS::KC_G:
 			  GfxEngine::getSingletonPtr()->applyMotionBlur(0.5f);
 			  break;
-		}
+		}*/
 		
 	}
 	
 
 	void Sphere::update(unsigned long lTimeElapsed) {
-		mPhyxBody->activate(true);
-		mPhyxBody->applyCentralForce(btVector3(mDirection.x *lTimeElapsed, mDirection.y *lTimeElapsed, mDirection.z *lTimeElapsed));
+		//mPhyxBody->activate(true);
+		//Ogre::Quaternion rot = mMasterNode->getPosition().getRotationTo(*mNextWaypoint);
+		//mMasterNode->setOrientation( rot );
+		//mMasterNode->translate(Vector3(rot.x + mMoveSpeed, 0, rot.z + mMoveSpeed));
+		//mPhyxBody->applyCentralForce(btVector3(mDirection.x *lTimeElapsed, mDirection.y *lTimeElapsed, mDirection.z *lTimeElapsed));
 		
+		//mLog->debugStream() << "distance to next waypoint is " << mMasterNode->getPosition().distance( *mNextWaypoint );
+
+		if (mDirection == Ogre::Vector3::ZERO ) {
+		  locateNextWaypoint();
+      mDirection = *mNextWaypoint - mMasterNode->getPosition();
+      mDistance = mDirection.normalise();
+      
+      //mLog->debugStream() << "moving now to new waypoint: " << mNextWaypoint->x << ","<<mNextWaypoint->y << ","<<mNextWaypoint->z;
+		} else {
+       move = mMoveSpeed * lTimeElapsed;
+       mDistance -= move;
+       if (mDistance <= 0.0f)
+       {
+         mMasterNode->setPosition(*mNextWaypoint);
+         mDirection = Ogre::Vector3::ZERO;
+         
+        Ogre::Vector3 src = mMasterNode->getOrientation() * Ogre::Vector3::UNIT_X;
+        if ((1.0f + src.dotProduct(mDirection)) < 0.0001f) 
+        {
+            mMasterNode->yaw(Ogre::Degree(180));
+        }
+        else
+        {
+            Ogre::Quaternion quat = src.getRotationTo(mDirection);
+            mMasterNode->rotate(quat);
+        } // else
+       } else {
+         mMasterNode->translate(mDirection * move);
+         mMasterNode->rotate(Vector3(1,0,0), Ogre::Degree(0.1f * lTimeElapsed));
+       }
+    }
 		//btTransform trans;
 		//mPhyxBody->getMotionState()->getWorldTransform(trans);
 		//mSceneNode->translate(mDirection * lTimeElapsed, Ogre::Node::TS_LOCAL);
@@ -240,5 +300,26 @@ namespace Pixy
 	
 	const Vector3& Sphere::getPosition() {
 	  return mMasterNode->getPosition();
+	};
+	
+	void Sphere::locateNextWaypoint() {
+	  if (mNextWaypoint == &mWaypoints.back()) {
+	    mNextWaypoint = &mWaypoints.front();
+	    return;
+	  }
+	  //currentStep += step;
+	  
+	  //if (currentStep > 1.0f)
+	  //  currentStep = 0.0f;
+	    
+	  //mNextWaypoint = &mPath->interpolate(currentStep);
+	  
+	  list<Vector3>::iterator itr;
+	  for (itr = mWaypoints.begin(); itr != mWaypoints.end(); ++itr) {
+	    if (&(*itr) == mNextWaypoint) {
+	      mNextWaypoint = &(*(++itr));
+	      break;
+	    } 
+	  }
 	};
 } // end of namespace

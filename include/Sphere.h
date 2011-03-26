@@ -59,6 +59,8 @@ namespace Pixy
 		const Vector3& getPosition();
 	protected:		
 		
+		void locateNextWaypoint();
+		
 		//! helper method for copy ctor and assignment operator
 		virtual void copyFrom(const Sphere& src);
 		
@@ -67,6 +69,15 @@ namespace Pixy
 		
 		Ogre::SceneNode* mFireTrailNode;
 		Ogre::SceneNode* mMasterNode;
+		Ogre::SimpleSpline *mPath;
+		list<Vector3> mWaypoints;
+		Vector3* mNextWaypoint;
+		
+		Ogre::Real mDistance;
+		Ogre::Real move;
+		float step;
+		float currentStep;
+		//Ogre::Vector3 mDirection;
 	};
 } // end of namespace
 #endif
