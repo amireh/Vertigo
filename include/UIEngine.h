@@ -62,7 +62,7 @@ namespace Pixy {
 		CEGUI::OgreRenderer		*mOgreRenderer;
 		CEGUI::System			*mUISystem;
 		EventManager			*mEvtMgr;
-		
+		CEGUI::Window *mLayout;
 	private:
 		static UIEngine* _myUIEngine;
 		UIEngine();

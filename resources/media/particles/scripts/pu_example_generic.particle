@@ -1,0 +1,48 @@
+// ---------------------------------------- Begin: Default Billboard Renderer ----------------------------------------
+// Simple, generic billboard renderer, where the billboards always face the camera.
+// -------------------------------------------------------------------------------------------------------------------
+alias                                    defaultBillboardRenderer
+{
+    renderer                             Billboard
+    {
+        billboard_type                   point
+    }
+}
+// ----------------------------------------- End: Default Billboard Renderer -----------------------------------------
+
+
+// ----------------------------------------- Begin: Flat Billboard Renderer ------------------------------------------
+// Billboard renderer that renders billboards perpendicular to the Y-axis. The billboards give the impression that
+// they are flat (i.e. tiles on the ground).
+// -------------------------------------------------------------------------------------------------------------------
+alias                                    flatBillboardRenderer
+{
+    renderer Billboard
+    {
+        billboard_type                   perpendicular_common
+        common_direction                 0 1 0
+        common_up_vector                 0 0 1
+    }
+}
+// ------------------------------------------ End: Flat Billboard Renderer -------------------------------------------
+
+
+// ----------------------------------------- Begin: Simple Emitter ------------------------------------------
+// Simple emitter for testing purposes
+// -------------------------------------------------------------------------------------------------------------------
+alias                                   simpleEmitter
+{
+    emitter                             Point
+    {
+        emission_rate                   40
+        angle                           40
+        direction                       0 1 0
+        velocity                        100
+        time_to_live                    dyn_random
+        {
+            min                         2
+            max                         6
+        }
+    }
+}
+// ------------------------------------------ End: Simple Emitter -------------------------------------------

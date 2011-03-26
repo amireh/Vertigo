@@ -125,4 +125,9 @@ namespace Pixy
 	void Entity::collide(Entity* target) {
 	  mLog->warnStream() << "parent collide() called, children MUST override";
 	}
+	
+	Ogre::SceneNode* Entity::getMasterNode() {
+	  return mMasterNode;
+	}
+	
 } // end of namespace

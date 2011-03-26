@@ -1,0 +1,448 @@
+
+// bump map vertex program, support for this is required
+ vertex_program Examples/BumpMapVP cg
+ {
+     source Example_BumpMapping.cg
+     entry_point main_vp
+     profiles vs_1_1 arbvp1
+ }
+ 
+ // bump map fragment program, support for this is optional
+ fragment_program Examples/BumpMapFP cg
+ {
+     source Example_BumpMapping.cg
+     entry_point main_fp
+     profiles ps_1_1 arbfp1 fp20
+ } 
+ 
+ // bump map with specular vertex program, support for this is required
+ vertex_program Examples/BumpMapVPSpecular cg
+ {
+     source Example_BumpMapping.cg
+     entry_point specular_vp
+     profiles vs_1_1 arbvp1
+ }
+ 
+ // bump map fragment program, support for this is optional
+ fragment_program Examples/BumpMapFPSpecular cg
+ {
+     source Example_BumpMapping.cg
+     entry_point specular_fp
+     profiles ps_1_1 arbfp1 fp20
+ }
+ 
+
+ material Obstacle/Ice
+ { 
+ 
+     // this is the preferred technique which uses both vertex and
+     // fragment programs and supports coloured lights
+     technique
+     {
+         // base ambient pass
+         pass
+         {
+             // base colours, not needed for rendering, but as information
+             // to lighting pass categorisation routine
+ 
+             ambient 1 1 1
+             diffuse 0 0 0 
+             specular 0 0 0 0 
+ 
+             // really basic vertex program
+             // NB we don't use fixed functions here because GL does not like
+             // mixing fixed functions and vertex programs (depth fighting can
+             // be an issue)
+             vertex_program_ref Ogre/BasicVertexPrograms/AmbientOneTexture
+             {
+                 param_named_auto worldViewProj worldviewproj_matrix
+                 param_named_auto ambient ambient_light_colour
+             }
+ 
+         }
+         // wow do the lighting pass
+         // NB we don't do decal texture here because this is repeated per light
+         pass
+         {
+             // base colours, not needed for rendering, but as information
+             // to lighting pass categorisation routine
+             ambient 0 0 0 
+ 
+             // do this for each light
+             iteration once_per_light
+ 
+             scene_blend add
+ 
+             // vertex program reference
+             vertex_program_ref Examples/BumpMapVP
+             {
+                 param_named_auto lightPosition light_position_object_space 0
+                 param_named_auto worldViewProj worldviewproj_matrix
+             }
+ 
+             // fragment program
+             fragment_program_ref Examples/BumpMapFP
+             {
+                 param_named_auto lightDiffuse light_diffuse_colour 0 
+             }
+ 
+             // base bump map
+             texture_unit
+             {
+                 texture IcyNM.jpg
+                 colour_op replace
+             }
+ 
+             // normalisation cube map
+             texture_unit
+             {
+                 cubic_texture nm.png combinedUVW
+                 tex_coord_set 1
+                 tex_address_mode clamp
+             }
+         }
+ 
+         // decal pass
+         pass
+         {
+             // base colours, not needed for rendering, but as information
+             // to lighting pass categorisation routine
+ 
+             lighting off
+ 
+             // really basic vertex program
+             // NB we don't use fixed function here because GL does not like
+             // mixing fixed function and vertex programs (depth fighting can
+             // be an issue)
+ 
+             vertex_program_ref Ogre/BasicVertexPrograms/AmbientOneTexture
+             {
+                 param_named_auto worldViewProj worldviewproj_matrix
+                 param_named ambient float4 1 1 1 1
+             }
+ 
+             scene_blend dest_colour zero
+ 
+             texture_unit
+             {
+                 texture Icy.png 
+             }
+
+ 
+         }
+     }
+ 
+     // this is the fallback which cards which don't have fragment program 
+     // support will use
+     // Note: this still requires vertex program support
+     technique
+     {
+         // base ambient pass
+         pass
+         {
+             // base colours, not needed for rendering, but as information
+             // to lighting pass categorisation routine
+ 
+             ambient 1 1 1
+             diffuse 0 0 0 
+             specular 0 0 0 0
+ 
+             // really basic vertex program
+             // NB we don't use fixed function here because GL does not like
+             // mixing fixed function and vertex programs (depth fighting can
+             // be an issue)
+ 
+             vertex_program_ref Ogre/BasicVertexPrograms/AmbientOneTexture
+             {
+                 param_named_auto worldViewProj worldviewproj_matrix
+                 param_named_auto ambient ambient_light_colour
+             }
+ 
+         }
+         // now do the lighting pass
+         // NB we don't do decal texture here because this is repeated per light
+         pass
+         {
+             // base colours, not needed for rendering, but as information
+             // to lighting pass categorisation routine
+ 
+             ambient 0 0 0 
+ 
+             // do this for each light
+             iteration once_per_light
+ 
+ 
+             scene_blend add
+ 
+             // vertex program reference
+             vertex_program_ref Examples/BumpMapVP
+             {
+                 param_named_auto lightPosition light_position_object_space 0
+                 param_named_auto worldViewProj worldviewproj_matrix
+             }
+ 
+             // base bump map
+             texture_unit
+             {
+                 texture IcyNM.jpg
+                 colour_op replace
+             }
+ 
+             // normalisation cube map, with dot product on bump map
+             texture_unit
+             {
+                 cubic_texture nm.png combinedUVW
+                 tex_coord_set 1
+                 tex_address_mode clamp
+                 colour_op_ex dotproduct src_texture src_current
+                 colour_op_multipass_fallback dest_colour zero
+             }
+         }
+ 
+         // decal pass
+         pass
+         {
+             lighting off
+ 
+             // really basic vertex program
+             // NB we don't use fixed function here because GL does not like
+             // mixing fixed function and vertex programs, depth fighting can
+             // be an issue
+ 
+             vertex_program_ref Ogre/BasicVertexPrograms/AmbientOneTexture
+             {
+                 param_named_auto worldViewProj worldviewproj_matrix
+                 param_named ambient float4 1 1 1 1
+             }
+             scene_blend dest_colour zero
+             texture_unit
+             {
+                 texture Icy.png 
+             }
+
+         }
+ 
+     }
+ }
+ 
+ material Obstacle/Fire
+ { 
+ 
+     // this is the preferred technique which uses both vertex and
+     // fragment programs and supports coloured lights
+     technique
+     {
+         // base ambient pass
+         pass
+         {
+             // base colours, not needed for rendering, but as information
+             // to lighting pass categorisation routine
+ 
+             ambient 1 1 1
+             diffuse 0 0 0 
+             specular 0 0 0 0 
+ 
+             // really basic vertex program
+             // NB we don't use fixed functions here because GL does not like
+             // mixing fixed functions and vertex programs (depth fighting can
+             // be an issue)
+             vertex_program_ref Ogre/BasicVertexPrograms/AmbientOneTexture
+             {
+                 param_named_auto worldViewProj worldviewproj_matrix
+                 param_named_auto ambient ambient_light_colour
+             }
+ 
+         }
+         // wow do the lighting pass
+         // NB we don't do decal texture here because this is repeated per light
+         pass
+         {
+             // base colours, not needed for rendering, but as information
+             // to lighting pass categorisation routine
+             ambient 0 0 0 
+ 
+             // do this for each light
+             iteration once_per_light
+ 
+             scene_blend add
+ 
+             // vertex program reference
+             vertex_program_ref Examples/BumpMapVP
+             {
+                 param_named_auto lightPosition light_position_object_space 0
+                 param_named_auto worldViewProj worldviewproj_matrix
+             }
+ 
+             // fragment program
+             fragment_program_ref Examples/BumpMapFP
+             {
+                 param_named_auto lightDiffuse light_diffuse_colour 0 
+             }
+ 
+             // base bump map
+             texture_unit
+             {
+                 texture FireNM.jpg
+                 colour_op replace
+             }
+ 
+             // normalisation cube map
+             texture_unit
+             {
+                 cubic_texture nm.png combinedUVW
+                 tex_coord_set 1
+                 tex_address_mode clamp
+             }
+         }
+ 
+         // decal pass
+         pass
+         {
+             // base colours, not needed for rendering, but as information
+             // to lighting pass categorisation routine
+ 
+             lighting off
+ 
+             // really basic vertex program
+             // NB we don't use fixed function here because GL does not like
+             // mixing fixed function and vertex programs (depth fighting can
+             // be an issue)
+ 
+             vertex_program_ref Ogre/BasicVertexPrograms/AmbientOneTexture
+             {
+                 param_named_auto worldViewProj worldviewproj_matrix
+                 param_named ambient float4 1 1 1 1
+             }
+ 
+             scene_blend dest_colour zero
+ 
+             texture_unit
+             {
+                 texture Fire.jpg 
+             }
+
+ 
+         }
+     }
+ 
+     // this is the fallback which cards which don't have fragment program 
+     // support will use
+     // Note: this still requires vertex program support
+     technique
+     {
+         // base ambient pass
+         pass
+         {
+             // base colours, not needed for rendering, but as information
+             // to lighting pass categorisation routine
+ 
+             ambient 1 1 1
+             diffuse 0 0 0 
+             specular 0 0 0 0
+ 
+             // really basic vertex program
+             // NB we don't use fixed function here because GL does not like
+             // mixing fixed function and vertex programs (depth fighting can
+             // be an issue)
+ 
+             vertex_program_ref Ogre/BasicVertexPrograms/AmbientOneTexture
+             {
+                 param_named_auto worldViewProj worldviewproj_matrix
+                 param_named_auto ambient ambient_light_colour
+             }
+ 
+         }
+         // now do the lighting pass
+         // NB we don't do decal texture here because this is repeated per light
+         pass
+         {
+             // base colours, not needed for rendering, but as information
+             // to lighting pass categorisation routine
+ 
+             ambient 0 0 0 
+ 
+             // do this for each light
+             iteration once_per_light
+ 
+ 
+             scene_blend add
+ 
+             // vertex program reference
+             vertex_program_ref Examples/BumpMapVP
+             {
+                 param_named_auto lightPosition light_position_object_space 0
+                 param_named_auto worldViewProj worldviewproj_matrix
+             }
+ 
+             // base bump map
+             texture_unit
+             {
+                 texture FireNM.jpg
+                 colour_op replace
+             }
+ 
+             // normalisation cube map, with dot product on bump map
+             texture_unit
+             {
+                 cubic_texture nm.png combinedUVW
+                 tex_coord_set 1
+                 tex_address_mode clamp
+                 colour_op_ex dotproduct src_texture src_current
+                 colour_op_multipass_fallback dest_colour zero
+             }
+         }
+ 
+         // decal pass
+         pass
+         {
+             lighting off
+ 
+             // really basic vertex program
+             // NB we don't use fixed function here because GL does not like
+             // mixing fixed function and vertex programs, depth fighting can
+             // be an issue
+ 
+             vertex_program_ref Ogre/BasicVertexPrograms/AmbientOneTexture
+             {
+                 param_named_auto worldViewProj worldviewproj_matrix
+                 param_named ambient float4 1 1 1 1
+             }
+             scene_blend dest_colour zero
+             texture_unit
+             {
+                 texture Fire.jpg 
+             }
+ 
+         }
+ 
+     }
+ }
+ 
+/*
+material Obstacle/Fire
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture Amethyst_Alcove.jpg
+			}
+		}
+	}
+} 
+material Obstacle/Ice
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture Crystal_Tiles.jpg
+			}
+		}
+	}
+}
+*/

@@ -61,10 +61,13 @@ namespace Pixy
     Sphere *mSphere;
     
     Vector3 randomPosition();
-    Ogre::Timer mTimer;
+    //Ogre::Timer mTimer;
     bool fDying;
     bool fHasFX;
     int mDeathDuration;
+    
+		Ogre::SceneNode* mFireTrailNode, *mIceSteamNode;
+    
 	};
 } // end of namespace
 #endif

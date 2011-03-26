@@ -1,0 +1,161 @@
+// ------------------------------------------- Begin: Explosion system -------------------------------------------
+// The explosion system is an example of a complex particle system.
+// Note, that the Projectiles and debris are not emitted immediately, but only after some time to make the effect
+// look a bit more realistic.
+// ---------------------------------------------------------------------------------------------------------------
+
+system Vertigo/FX/Explosion
+{
+    category                                    Explosion
+    technique 
+    {
+        material                                ParticleUniverse/ExplosionFire
+        default_particle_width                  10
+        default_particle_height                 10
+        use_alias                               defaultBillboardRenderer
+        emitter                                 SphereSurface BurstEmitter
+        {
+            emission_rate                       20
+            time_to_live                        2
+            direction                           0 0 0
+            auto_direction                      true
+            radius                              5
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 1 0.95 1
+            time_colour                         0.5  0.18 0.05 0.01 1
+            time_colour                         1    0 0 0 1
+        }
+        affector                                Scale 
+        {
+            xyz_scale                           200
+        }
+        observer                                OnTime 
+        {
+            handler                             DoEnableComponent 
+            {
+                enable_component                emitter_component BurstEmitter false
+            }
+            since_start_system                  true
+            on_time                             greater_than 0.7
+        }
+    }
+    technique 
+    {
+        emitted_technique_quota                 6
+        material                                BaseWhite
+        use_alias                               defaultBillboardRenderer
+        emitter                                 Point NucleusEmitter
+        {
+            emission_rate                       6
+            angle                               80
+            time_to_live                        10
+            velocity                            300
+            enabled                             false
+            emits                               technique_particle NucleusTechnique
+            force_emission                      true
+        }
+        affector                                LinearForce 
+        {
+            force_vector                        0 -100 0
+        }
+        observer                                OnTime 
+        {
+            handler                             DoEnableComponent 
+            {
+                enable_component                emitter_component NucleusEmitter true
+            }
+            since_start_system                  true
+            on_time                             greater_than 0.3
+        }
+    }
+    technique NucleusTechnique
+    {
+        material                                ParticleUniverse/Nucleus
+        default_particle_width                  15
+        default_particle_height                 15
+        use_alias                               defaultBillboardRenderer
+        emitter                                 Point 
+        {
+            emission_rate                       100
+            angle                               360
+            velocity                            2
+            direction                           0 -1 0
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0.5 0.4 0.2 1
+            time_colour                         0.1  0.5 0.2 0.05 1
+            time_colour                         0.2  0.1 0.1 0.1 1
+            time_colour                         1    0 0 0 1
+        }
+        affector                                TextureRotator 
+        {
+            use_own_rotation                    true
+            rotation                            dyn_random
+            {
+                min                             1
+                max                             90
+            }
+            rotation_speed                      dyn_random
+            {
+                min                             0.1
+                max                             1
+            }
+        }
+        affector                                Scale 
+        {
+            xyz_scale                           -5
+        }
+    }
+    technique 
+    {
+        material                                ParticleUniverse/Debris
+        renderer                                Billboard
+        {
+            billboard_type                      oriented_self
+        }
+        emitter                                 Point DebrisEmitter
+        {
+            emission_rate                       100
+            angle                               360
+            time_to_live                        5
+            velocity                            dyn_random
+            {
+                min                             100
+                max                             180
+            }
+            particle_width                      3
+            particle_height                     dyn_random
+            {
+                min                             2
+                max                             20
+            }
+            enabled                             false
+            direction                           0 -1 0
+            force_emission                      true
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 1 1 1
+            time_colour                         1    0 0 0 1
+        }
+        affector                                LinearForce 
+        {
+            force_vector                        0 -100 0
+        }
+        observer                                OnTime 
+        {
+            handler                             DoEnableComponent 
+            {
+                enable_component                emitter_component DebrisEmitter true
+            }
+            since_start_system                  true
+            on_time                             greater_than 0.3
+        }
+    }
+}
+
+// ---------------------------------------------- End: Explosion system ----------------------------------------------
+

@@ -41,6 +41,7 @@ namespace Pixy
 		GfxEngine::getSingletonPtr()->detachFromScene(this);
 		
 		mFireTrailNode = NULL;
+		mIceSteamNode = NULL;
 		mMasterNode = NULL;
 		
 		delete mPhyxBody->getMotionState();
@@ -57,22 +58,31 @@ namespace Pixy
 	void Sphere::live() {
 
     using namespace Ogre;
-		Geometry::createSphere(mMesh, 10, 64, 64);
+		Geometry::createSphere(mMesh, 10, 32, 32);
 		
 
 		
 		GfxEngine::getSingletonPtr()->attachToScene(this);
 		
-    mFireTrail = GfxEngine::getSingletonPtr()->getSM()->createParticleSystem("SphereBlaze", "Vertigo/Effects/Blaze");
-    mIceSteam = GfxEngine::getSingletonPtr()->getSM()->createParticleSystem("SphereSteam", "Vertigo/Effects/Steam");
+    mFireTrail = GfxEngine::getSingletonPtr()->getSM()->createParticleSystem("SphereBlaze", "Vertigo/Effects/Player/Blaze");
+    mIceSteam = GfxEngine::getSingletonPtr()->getSM()->createParticleSystem("SphereSteam", "Vertigo/Effects/Player/Steam");
     mFireTrail->setNonVisibleUpdateTimeout(0.5f);
     mIceSteam->setNonVisibleUpdateTimeout(0.5f);
+    
+    mFireTrail->setVisible(false);
+    mIceSteam->setVisible(false);
     
     mMasterNode = GfxEngine::getSingletonPtr()->getSM()->getRootSceneNode()->createChildSceneNode();
     mSceneNode->getParent()->removeChild(mSceneNode);
     mMasterNode->addChild(mSceneNode);
+    
     mFireTrailNode = mMasterNode->createChildSceneNode();
     mFireTrailNode->attachObject(mFireTrail);
+    mIceSteamNode = mMasterNode->createChildSceneNode();
+    mIceSteamNode->attachObject(mIceSteam);
+    
+    mFireTrailNode->setInheritOrientation(false);
+    mIceSteamNode->setInheritOrientation(false);
     
     //mSceneNode->detachObject(mSceneObject);
     
@@ -95,7 +105,7 @@ namespace Pixy
 		
     mPhyxShape = new btSphereShape(10);
 		mPhyxMS = new MotionState(trans, mMasterNode);
-        btScalar mass = 100;
+        btScalar mass = 1000;
         btVector3 fallInertia(0,0,0);
 		
     mPhyxShape->calculateLocalInertia(mass,fallInertia);
@@ -155,17 +165,19 @@ namespace Pixy
 	
 	void Sphere::render() {
 		if (mCurrentShield == FIRE) {
-		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Sphere/Fire");
+		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Obstacle/Fire");
 		  /*if (mIceSteam->isAttached())
-		    mSceneNode->detachObject(mIceSteam);*/
+		    mIceSteam->setVisible(false);
 		    
 		  //mSceneNode->attachObject(mFireTrail);
-		  mFireTrail->setVisible(true);
+		  mFireTrail->setVisible(true);*/
 		} else {
-		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Sphere/Ice");
+		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Obstacle/Ice");
 		  /*if (mFireTrail->isAttached())
-		    mSceneNode->detachObject(mFireTrail);*/
+		    mFireTrail->setVisible(false);
+		    //mSceneNode->detachObject(mFireTrail);
 
+      mIceSteam->setVisible(true);*/
 		  //mSceneNode->attachObject(mIceSteam);
 		}
 	};

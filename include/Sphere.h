@@ -66,9 +66,6 @@ namespace Pixy
 		
 		SHIELD mCurrentShield;
 		map<SHIELD, int> mShields;
-		
-		Ogre::SceneNode* mFireTrailNode;
-		Ogre::SceneNode* mMasterNode;
 		Ogre::SimpleSpline *mPath;
 		list<Vector3> mWaypoints;
 		Vector3* mNextWaypoint;
@@ -78,6 +75,7 @@ namespace Pixy
 		float step;
 		float currentStep;
 		//Ogre::Vector3 mDirection;
+		Ogre::SceneNode* mFireTrailNode, *mIceSteamNode;
 	};
 } // end of namespace
 #endif

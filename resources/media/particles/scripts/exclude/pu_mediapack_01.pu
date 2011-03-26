@@ -1,0 +1,425 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack product.
+//
+// Copyright (c) 2008 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License.
+// You can find a copy of the Commercial License in the Particle Universe package.
+//-----------------------------------------------------------------------------------------------------------------------
+system PUMediaPack/Bubbles
+{
+    technique 
+    {
+        visual_particle_quota                   250
+        material                                PUMediaPack/Bubble
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Line
+        {
+            emission_rate                       20
+            angle                               10
+            time_to_live                        10
+            velocity                            dyn_random
+            {
+                min                             100
+                max                             600
+            }
+            all_particle_dimensions             dyn_random
+            {
+                min                             50
+                max                             150
+            }
+            position                            -800 -600 0
+            end                                 1600 -600 0
+        }
+    }
+    technique 
+    {
+        visual_particle_quota                   220
+        material                                PUMediaPack/BlurredBubble
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Line
+        {
+            emission_rate                       20
+            angle                               10
+            time_to_live                        10
+            velocity                            dyn_random
+            {
+                min                             50
+                max                             200
+            }
+            all_particle_dimensions             dyn_random
+            {
+                min                             30
+                max                             100
+            }
+            position                            -800 -400 0
+            end                                 1600 -400 0
+        }
+    }
+}
+
+//-----------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+system PUMediaPack/Teleport
+{
+    category                                    LightFX
+    technique 
+    {
+        visual_particle_quota                   50
+        material                                PUMediaPack/Streak_01
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Circle 
+        {
+            emission_rate                       dyn_oscillate
+            {
+                oscillate_frequency             0.5
+                oscillate_phase                 0
+                oscillate_base                  100
+                oscillate_amplitude             100
+                oscillate_type                  sine
+            }
+            time_to_live                        0.2
+            particle_width                      dyn_random
+            {
+                min                             80
+                max                             140
+            }
+            particle_height                     dyn_random
+            {
+                min                             320
+                max                             960
+            }
+            direction                           0 0 0
+            colour                              0.3 0.65 0.76 1
+            step                                0.2
+        }
+        use_alias                               PUMediaPack/ColourAffectorFade_04
+        use_alias                               PUMediaPack/OnClearDoStopSystem
+    }
+    technique 
+    {
+        visual_particle_quota                   100
+        material                                PUMediaPack/Flare_04
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Box 
+        {
+            emission_rate                       dyn_oscillate
+            {
+                oscillate_frequency             0.5
+                oscillate_phase                 0
+                oscillate_base                  200
+                oscillate_amplitude             200
+                oscillate_type                  sine
+            }
+            time_to_live                        0.2
+            all_particle_dimensions             dyn_random
+            {
+                min                             48
+                max                             160
+            }
+            direction                           0 0 0
+            colour                              0.3 0.65 0.76 1
+            box_width                           150
+            box_height                          600
+            box_depth                           150
+        }
+        use_alias                               PUMediaPack/ColourAffectorFade_03
+    }
+}
+
+//-----------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+system PUMediaPack/Atomicity
+{
+    category                                    LightFX
+    technique 
+    {
+        visual_particle_quota                   40
+        material                                PUMediaPack/Streak_02
+        default_particle_width                  80
+        default_particle_height                 80
+        default_particle_depth                  80
+        renderer                                Sphere
+        {
+        }
+        emitter                                 Point StreakEmitter
+        {
+            emission_rate                       dyn_oscillate
+            {
+                oscillate_frequency             0.4
+                oscillate_phase                 0
+                oscillate_base                  20
+                oscillate_amplitude             20
+                oscillate_type                  sine
+            }
+            time_to_live                        1.3
+            direction                           0 0 0
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0.27 0.3 0.74 1
+            time_colour                         0.3  0.27 0.3 0.74 1
+            time_colour                         0.6  0.43 0.28 0.14 1
+            time_colour                         1    0 0 0 1
+        }
+        affector                                GeometryRotator 
+        {
+            rotation_speed                      dyn_curved_linear
+            {
+                control_point                   0 3
+                control_point                   1 0.2
+            }
+        }
+        affector                                Scale 
+        {
+            xyz_scale                           dyn_curved_linear
+            {
+                control_point                   0 400
+                control_point                   0.8 400
+                control_point                   1 800
+            }
+        }
+        observer                                OnCount 
+        {
+            handler                             DoEnableComponent 
+            {
+                enable_component                emitter_component StreakEmitter false
+            }
+            handler                             DoEnableComponent 
+            {
+                enable_component                emitter_component FlareEmitter false
+            }
+            handler                             DoEnableComponent 
+            {
+                enable_component                emitter_component FlareCoreEmitter false
+            }
+            count_threshold                     greater_than 39
+        }
+        use_alias                               PUMediaPack/OnClearDoStopSystem
+    }
+    technique 
+    {
+        visual_particle_quota                   50
+        material                                PUMediaPack/Flare_04
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Point FlareEmitter
+        {
+            emission_rate                       20
+            angle                               360
+            time_to_live                        1
+            velocity                            200
+            all_particle_dimensions             dyn_random
+            {
+                min                             20
+                max                             150
+            }
+        }
+        emitter                                 Point FlareCoreEmitter
+        {
+            emission_rate                       20
+            angle                               360
+            time_to_live                        1
+            velocity                            30
+            all_particle_dimensions             dyn_random
+            {
+                min                             40
+                max                             150
+            }
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 0.3 0.3 1
+            time_colour                         0.6  1 0.3 0.3 1
+            time_colour                         1    0 0 0 1
+        }
+    }
+}
+
+//-----------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+system PUMediaPack/LineStreak
+{
+    category                                    LightFX
+    technique 
+    {
+        visual_particle_quota                   250
+        material                                PUMediaPack/Streak_04
+        renderer                                Billboard
+        {
+            billboard_type                      oriented_self
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       200
+            angle                               360
+            time_to_live                        1
+            velocity                            dyn_random
+            {
+                min                             200
+                max                             500
+            }
+            particle_width                      dyn_random
+            {
+                min                             20
+                max                             90
+            }
+            particle_height                     dyn_random
+            {
+                min                             400
+                max                             800
+            }
+            colour                              1 0.84 0.45 1
+        }
+        use_alias                                   PUMediaPack/ColourAffectorFade_04
+    }
+}
+
+//-----------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+system PUMediaPack/SpiralStars
+{
+    category                                    LightFX
+    technique 
+    {
+        visual_particle_quota                   300
+        emitted_emitter_quota                   60
+        material                                PUMediaPack/Flare_05
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       1
+            angle                               1
+            time_to_live                        2
+            velocity                            300
+            emits                               emitter_particle CircleEmitter
+            force_emission                      true
+        }
+        emitter                                 Circle CircleEmitter
+        {
+            emission_rate                       100
+            time_to_live                        0.5
+            direction                           0 0 0
+            emits                               emitter_particle PointEmitter
+            radius                              200
+            step                                0.2
+            emit_random                         false
+        }
+        emitter                                 Point PointEmitter
+        {
+            emission_rate                       5
+            angle                               360
+            time_to_live                        1
+            velocity                            50
+            all_particle_dimensions             dyn_random
+            {
+                min                             20
+                max                             120
+            }
+            start_colour_range                  0.3 0.3 0.3 1
+        }
+        use_alias                               PUMediaPack/ColourAffectorFade_04
+        use_alias                               PUMediaPack/OnClearDoStopSystem
+    }
+}
+
+//-----------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+system PUMediaPack/TimeShift
+{
+    technique 
+    {
+        visual_particle_quota                   20
+        material                                PUMediaPack/Watch
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       dyn_curved_linear
+            {
+                control_point                   0 0
+                control_point                   0.2 10
+                control_point                   3 0
+            }
+            angle                               360
+            velocity                            dyn_random
+            {
+                min                             30
+                max                             100
+            }
+            all_particle_dimensions             dyn_random
+            {
+                min                             100
+                max                             400
+            }
+            colour                              1 0.88 0.26 1
+        }
+        use_alias                               PUMediaPack/ColourAffectorFade_05
+        affector                                TextureRotator 
+        {
+            use_own_rotation                    true
+            rotation_speed                      dyn_random
+            {
+                min                             -2
+                max                             2
+            }
+        }
+    }
+    technique 
+    {
+        visual_particle_quota                   20
+        material                                PUMediaPack/Hourglass
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       dyn_curved_linear
+            {
+                control_point                   0 0
+                control_point                   0.2 5
+                control_point                   3 0
+            }
+            angle                               360
+            velocity                            dyn_random
+            {
+                min                             30
+                max                             100
+            }
+            all_particle_dimensions             dyn_random
+            {
+                min                             100
+                max                             300
+            }
+            colour                              0.82 1 0.51 1
+        }
+        use_alias                               PUMediaPack/ColourAffectorFade_05
+        affector                                TextureRotator 
+        {
+            use_own_rotation                    true
+            rotation_speed                      dyn_random
+            {
+                min                             -2
+                max                             2
+            }
+        }
+    }
+}
+
