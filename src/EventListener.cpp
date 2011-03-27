@@ -101,7 +101,7 @@ namespace Pixy {
 			
 			// enqueue it for processing
 			/*
-			std::cout 
+			//std::cout 
 				<< "EvtListener: enqueuing event " 
 				<< inEvt 
 				<< ", and my queue has " << mEvents.size() 
@@ -121,6 +121,7 @@ namespace Pixy {
 		if (mEvents.empty())
 			return;
 		
+		//std::cout << "handling events\n";
 		// we do, grab the first
 		Event* mEvt = mEvents.front();
 		
@@ -162,12 +163,12 @@ namespace Pixy {
 				mHandlers.push_back(&(lNameTracker->second));
 			}
 			
-			/*
-			 Utility::getLogger().debugStream() << "tracking ["
+			
+			/*std::cout << "tracking ["
 			<< mHandlers[0]->size() << "] specific handlers, ["
-			<< mHandlers[1]->size() << "] category handlers, ["
-			<< mHandlers[2]->size() << "] all event handlers";
-			*/ 
+			<< mHandlers[1]->size() << "] category handlers, [\n";
+			//<< mHandlers[2]->size() << "] all event handlers\n";*/
+			
 			
 			// now do the actual tracking...
 			handler_list_t::iterator _handler;
@@ -187,28 +188,29 @@ namespace Pixy {
 		
 		// call the handlers we're tracking
 		try	{
-			list<Handler*>::const_iterator _handler = mTracker.begin();
+			list<Handler*>::iterator _handler = mTracker.begin();
 			
-			for (_handler; _handler != mTracker.end(); ++_handler) {
-				
-				if ( (*_handler)->call(mEvt) )
+			for (_handler; _handler != mTracker.end(); _handler)
+				if ( (*_handler)->call(mEvt) ) 
 					// handler is done, stop tracking it
-					stopTracking(*_handler);
-			
-			}
+				  _handler = mTracker.erase(_handler);
+			  else
+			    ++_handler;
+			  
 			
 		} catch (std::exception& e) { // discard
 			//Utility::getLogger().errorStream() << "** EvtListener: handler error! " << e.what() << "\n";
 			std::cerr << "** EvtListener: handler error! " << e.what() << "\n";
 		}
 		
-		
 		if (mTracker.empty()) {
 			// we're done with this event,
 			// remove it and reset our tracker
+			//std::cout << "no more handlers to call, detaching from event\n";
+			
 			mEvents.front()->removeHandler(); // inform the event that a handler is done
 			/*
-			std::cout 
+			//std::cout 
 			<< "EvtListener: removing event " 
 			<< mEvents.front() 
 			<< ", and my queue has " << mEvents.size() 
@@ -224,16 +226,29 @@ namespace Pixy {
 	}
 	
 	void EventListener::stopTracking(Handler* inHandler) {
+	  if (!inHandler) {
+	    //std::cout << "WARNING: INVALID HANDLER\n";
+	    return;
+	  }
+	  
+	  //std::cout << mTracker.size() << "\n";
+	  
 		list<Handler*>::iterator _itr = mTracker.begin();
 		for (_itr; _itr != mTracker.end(); ++_itr)
-			if (*_itr == inHandler)
+			if ((*_itr) == inHandler) {
+			  //std::cout << "erasing handler\n";
+			  //inHandler->call(mEvents.front());
 				mTracker.erase(_itr);
+				break;
+		  }
+		  
+		//std::cout << "handlers are freed: " << mTracker.size() << "\n";
 	}
 	
 	bool EventListener::beingTracked(Handler* inHandler) {
 		list<Handler*>::iterator _itr = mTracker.begin();
 		for (_itr; _itr != mTracker.end(); ++_itr)
-			if (*_itr == inHandler)
+			if ((*_itr) == inHandler)
 				return true;
 		
 		return false;

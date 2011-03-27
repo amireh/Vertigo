@@ -37,6 +37,7 @@ namespace Pixy {
 		//mSceneLoader = 0;
 		//mMoveSpeed = 0.1;
 		//mDirection = Ogre::Vector3::ZERO;
+		fPortalReached = false;
 		
 	}
 	
@@ -104,7 +105,12 @@ namespace Pixy {
 
     mCameraMan = new OgreBites::SdkCameraMan(mCamera);
     //mRenderWindow->setActive(true);
-                
+    
+    bindToName("ObstacleAlive", this, &GfxEngine::evtObstacleAlive);
+    bindToName("ObstacleCollided", this, &GfxEngine::evtObstacleCollided);
+    bindToName("PortalReached", this, &GfxEngine::evtPortalReached);
+    bindToName("PortalSighted", this, &GfxEngine::evtPortalSighted);
+    
 		fSetup = true;
 		return fSetup;
 	}
@@ -146,6 +152,7 @@ namespace Pixy {
 	}
 	
 	bool GfxEngine::cleanup() {		
+	  ParticleUniverse::ParticleSystemManager::getSingletonPtr()->destroyAllParticleSystems(mSceneMgr);
 	  
 		return true;
 	}
@@ -153,18 +160,18 @@ namespace Pixy {
 	
     void GfxEngine::setupSceneManager()
     {
-		mLog->debugStream() << "setting up SceneManager";
-        //mSceneMgr->setAmbientLight(Ogre::ColourValue(1,1,1));
+		  mLog->debugStream() << "setting up SceneManager";
+          //mSceneMgr->setAmbientLight(Ogre::ColourValue(1,1,1));
 
-		mCamera = mSceneMgr->getCamera("Sphere_Camera");
+		  mCamera = mSceneMgr->getCamera("Sphere_Camera");
 		
-		//mViewport = mCamera->getViewport();
-		mViewport = mRenderWindow->addViewport(mCamera);
-		if (!mViewport) {
-			mLog->errorStream() << "Viewport doesn't exist!!!";
-		}
+		  //mViewport = mCamera->getViewport();
+		  mViewport = mRenderWindow->addViewport(mCamera);
+		  if (!mViewport) {
+			  mLog->errorStream() << "Viewport doesn't exist!!!";
+		  }
 		
-		//mSceneMgr->setShadowTechnique(SHADOWTYPE_TEXTURE_MODULATIVE);
+		  //mSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_TEXTURE_MODULATIVE);
     };
 	
     void GfxEngine::setupViewports()
@@ -184,6 +191,7 @@ namespace Pixy {
 	    mEffectTimer.reset();
 	    mEffectDuration = duration;
 	    mEffectEnabled = true;
+	    mLog->debugStream() << "applying motion blur"; 
 	    Ogre::CompositorManager::getSingleton().setCompositorEnabled(mViewport, mEffect, mEffectEnabled);
 	  };
 	  
@@ -236,23 +244,21 @@ namespace Pixy {
 		  .realizeMesh("TubeMesh");
 				
 		  std::string mEntityName = "";
-		  int nr_tubes = 18;
+		  int nr_tubes = 30;
 		  for (int i =0; i < nr_tubes; ++i) {
 			  mEntityName = "myTube_";
 			  mEntityName += i;
 
-			
-			
     		mEntity = mSceneMgr->createEntity(mEntityName, "TubeMesh");
 			  mNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-			  mEntity->setMaterialName("BumpMapping/Terrain");
+			  mEntity->setMaterialName("Vertigo/Terrain");
 			  mNode->attachObject(mEntity);
 			  mNode->setPosition(Vector3(0, 70, i * tube_length));
 			  //mNode->roll(Ogre::Degree(90));
 			  mNode->pitch(Ogre::Degree(90));
 			  //mNode->yaw(Ogre::Degree(30));
 			  //mNode->showBoundingBox(true);			
-			
+			  mTubes.push_back(mNode);
 		  }
 		
     };
@@ -267,30 +273,35 @@ namespace Pixy {
 		 light->setType(Ogre::Light::LT_DIRECTIONAL);
 		 //light->setPosition(Vector3(0, 0, 1000));
 		 light->setDirection(Vector3(0,0,-1));
-		 light->setDiffuseColour(1.0f, 1.0f, 1.0f);
-		 light->setSpecularColour(1.0f, 1.0f, 1.0f);
+		 light->setDiffuseColour(0.9f, 0.9f, 0.9f);
+		 light->setSpecularColour(0.9f, 0.9f, 0.9f);
 		 
+
       /* now let's setup our light so we can see the shizzle */
-      mSpotLight = mSceneMgr->createLight("PlayerLight");
+
+      mSpotLight = mSceneMgr->createLight("TunnelLight0");
       mSpotLight->setType(Ogre::Light::LT_POINT);
-      mSpotLight->setPosition(Vector3(0, 20, -60));
-      //mSpotLight->setDirection(Vector3(0,0.5f,1));
+      mSpotLight->setPosition(Vector3(0, 0, 0));
+      mSpotLight->setDiffuseColour(0.8f, 0.8f, 0.8f);
+      mSpotLight->setSpecularColour(0.8f, 0.8f, 0.8f);
+      
+      mSpotLight = mSceneMgr->createLight("TunnelLight1");
+      mSpotLight->setType(Ogre::Light::LT_POINT);
+      mSpotLight->setPosition(Vector3(0, 20, 500));
       mSpotLight->setDiffuseColour(0.2f, 0.2f, 0.2f);
       mSpotLight->setSpecularColour(0.2f, 0.2f, 0.2f);
 		  
-		  mSpotLight = mSceneMgr->createLight("PlayerLight2");
+		  mSpotLight = mSceneMgr->createLight("TunnelLight2");
       mSpotLight->setType(Ogre::Light::LT_POINT);
-      mSpotLight->setPosition(Vector3(30, 0, 0));
-      //mSpotLight->setDirection(Vector3(0,0.5f,1));
+      mSpotLight->setPosition(Vector3(30, 0, 2500));
       mSpotLight->setDiffuseColour(0.2f, 0.2f, 0.2f);
       mSpotLight->setSpecularColour(0.2f, 0.2f, 0.2f);
       
-      mSpotLight = mSceneMgr->createLight("PlayerLight3");
+      mSpotLight = mSceneMgr->createLight("TunnelLight3");
       mSpotLight->setType(Ogre::Light::LT_POINT);
-      mSpotLight->setPosition(Vector3(-30, 0, 30));
-      //mSpotLight->setDirection(Vector3(0,0.5f,1));
-      mSpotLight->setDiffuseColour(0.2f, 0.2f, 0.2f);
-      mSpotLight->setSpecularColour(0.2f, 0.2f, 0.2f);
+      mSpotLight->setPosition(Vector3(0, 30, 4500));
+      mSpotLight->setDiffuseColour(0.8f, 0.2f, 0.2f);
+      mSpotLight->setSpecularColour(0.8f, 0.2f, 0.2f);
       
       /* now let's setup our light so we can see the shizzle */
       /*mSpotLight = mSceneMgr->createLight("PlayerLight2");
@@ -351,7 +362,7 @@ namespace Pixy {
 		  inEntity->setMesh(meshName);
 		}
 		*/
-		mLog->debugStream() << "Creating an Entity with name " << entityName;
+		//mLog->debugStream() << "Creating an Entity with name " << entityName;
 		mEntity = mSceneMgr->createEntity(entityName, inEntity->getMesh());
 		inNode->setUserAny(Ogre::Any(inEntity));
 		inNode->attachObject(mEntity);
@@ -369,7 +380,7 @@ namespace Pixy {
 		Ogre::String nodeName = "Node";
 		nodeName += inEntity->getName();
 		nodeName += stringify(inEntity->getObjectId());
-		mLog->debugStream() << "Creating a SceneNode with name " << nodeName;
+		//mLog->debugStream() << "Creating a SceneNode with name " << nodeName;
 		return renderEntity(inEntity, createNode(nodeName, 
 												 Vector3::ZERO, 
 												 Vector3(1.0,1.0,1.0), 
@@ -447,6 +458,12 @@ namespace Pixy {
 		  case OIS::KC_Y:
 		    playEffect("Explosion", mSphere);
 		    break;
+		  case OIS::KC_H:
+		    playEffect("Shatter", mSphere);
+		    break;		    
+		  case OIS::KC_F:
+		    playEffect("Despawn", mSphere);
+		    break;		    
 			
 		  case OIS::KC_P:
 	      time_t seconds;
@@ -467,75 +484,59 @@ namespace Pixy {
 
 
 	void GfxEngine::update(unsigned long lTimeElapsed) {
-		//processEvents();
+		processEvents();
 
 	  //if (shakingScreen)
 	    //applyScreenShake(lTimeElapsed);
+		if (fPortalReached)
+		  return;
+		
+		if (mSphere->getMasterNode()->getPosition().z >= mPortal->getPosition().z) {
+		  Event* evt = mEvtMgr->createEvt("PortalReached");
+		  mEvtMgr->hook(evt);
+      mSphere->getMasterNode()->setPosition(mPortal->getPosition());
+      
+      return;		
+		};
+		
+		
+		if (!fPortalSighted && mSphere->getSceneNode()->_getWorldAABB().intersects(mPortal->_getWorldAABB())) {
+		  Event* evt = mEvtMgr->createEvt("PortalSighted");
+		  mEvtMgr->hook(evt);
+		  return;
+		};
 		
 		if (mEffectEnabled && mEffectTimer.getMilliseconds() > mEffectDuration * 1000) {
 		  mEffectTimer.reset();
 		  mEffectEnabled = false;
 		  Ogre::CompositorManager::getSingleton().setCompositorEnabled(mViewport, mEffect, mEffectEnabled);
 		}
-			
+		
+		mSpherePos = mSphere->getPosition();
+		
 		mCamera->setPosition(
-		  mSphere->getPosition().x,
-      mSphere->getPosition().y + 35,
-      mSphere->getPosition().z-80
+		  mSpherePos.x,
+      mSpherePos.y + 35,
+      mSpherePos.z-120
     );
 	  
 	  //mCamera->setOrientation(mSphere->getMasterNode()->getOrientation());
 	  
 	  mCamera->lookAt(
-	    mSphere->getPosition().x,
-	    mSphere->getPosition().y + 20,
-	    mSphere->getPosition().z
+	    mSpherePos.x,
+	    mSpherePos.y + 20,
+	    mSpherePos.z
 	  );
 							 
 		evt.timeSinceLastEvent = lTimeElapsed;
 		evt.timeSinceLastFrame = lTimeElapsed;
 		
 		mTrayMgr->frameRenderingQueued(evt);
-		mCameraMan->update(lTimeElapsed);
-		using namespace Ogre;
+		//mCameraMan->update(lTimeElapsed);
+		//using namespace Ogre;
 		
 	}
 	
-  void GfxEngine::applyScreenShake(unsigned long lTimeElapsed) {
-    /*if (!mEffectStarted) {
-      //mEffectEnabled = true;
-      mEffectStarted = true;
-      shakingScreen = true;
-      mSpotLight->setDiffuseColour(0, 0, 0);
-      mSpotLight->setSpecularColour(0, 0, 0);
-      //mEffectDuration = 0.5f;
-      mEffectTimer.reset();
-      reachedThreshold = false;
-    }
-
-    float dimScale = 0.002f; 
-    
-    if (!reachedThreshold && mSpotLight->getDiffuseColour().r < 0.5f) {
-    } else {
-      reachedThreshold = true;
-      dimScale *= -1;
-    }
-     
-    float color = mSpotLight->getDiffuseColour().r+ dimScale * lTimeElapsed;
-    mSpotLight->setDiffuseColour(color, 0, 0);
-    mSpotLight->setSpecularColour(color, 0, 0);
-
-    //if (shakingScreen && mEffectTimer.getMilliseconds() > mEffectDuration * 1000) {
-    if (shakingScreen && reachedThreshold && mSpotLight->getSpecularColour().r <= 0) {
-      mSpotLight->setDiffuseColour(0.8, 0.8, 0.8);
-      mSpotLight->setSpecularColour(1.0, 1.0, 1.0);
-      mEffectTimer.reset();
-      //mEffectEnabled = false;
-      shakingScreen = false;
-      mEffectDuration = 0;
-      mEffectStarted = false;
-    }*/
-  };
   
 	void GfxEngine::setupParticles() {
 	  //using namespace ParticleUniverse;
@@ -552,12 +553,19 @@ namespace Pixy {
     ParticleUniverse::ParticleSystem* effect = NULL;
     
     effect = fxMgr->createParticleSystem(
-      "FxEffectExplosion",
+      "FxExplosion",
       "Vertigo/FX/Explosion", 
       mSceneMgr);
     effect->prepare();
     effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("Explosion", effect));
-    
+
+    effect = fxMgr->createParticleSystem(
+      "FxShatter",
+      "Vertigo/FX/Shatter", 
+      mSceneMgr);
+    effect->prepare();
+    effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("Shatter", effect));
+        
     effect = fxMgr->createParticleSystem(
       "FxBlackHole",
       "Vertigo/FX/BlackHole", 
@@ -567,11 +575,33 @@ namespace Pixy {
 
     effect = fxMgr->createParticleSystem(
       "FxAtomicity",
-      "Vertigo/FX/Atomicity", 
+      "Vertigo/FX/SphereTrail", 
       mSceneMgr);
     effect->prepare();
     effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("Atomicity", effect));    
+
+    effect = fxMgr->createParticleSystem(
+      "FxPortal",
+      "Vertigo/FX/Portal", 
+      mSceneMgr);
+    effect->prepare();
+    effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("Portal", effect));    
     
+    
+    effect = fxMgr->createParticleSystem(
+      "FxSpawnPoint",
+      "Vertigo/FX/SpawnPoint", 
+      mSceneMgr);
+    effect->prepare();
+    effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("SpawnPoint", effect));  
+
+    effect = fxMgr->createParticleSystem(
+      "FxDespawn",
+      "Vertigo/FX/Despawn", 
+      mSceneMgr);
+    effect->prepare();
+    effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("Despawn", effect));  
+        
     effectMap::iterator itr;
     for (itr = effects.begin(); itr != effects.end(); ++itr) {
       effect = itr->second;
@@ -583,6 +613,21 @@ namespace Pixy {
     //mSphere->getMasterNode()->attachObject(effectExplosion);
     //effectExplosion->start();
 
+	  effect = effects["Portal"];
+    mPortal = mSceneMgr->getRootSceneNode()->createChildSceneNode("NodePortal");
+    mPortal->attachObject(effect);
+
+    Vector3 posPortal = mTubes.back()->getPosition();
+    posPortal.y = 70;
+    posPortal.z += 500; 
+    mPortal->setPosition(posPortal);
+    effect->start();
+    mPortal->showBoundingBox(true);
+    
+    mPortableEffect = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+    mSpawnPoint = mSceneMgr->getRootSceneNode()->createChildSceneNode("NodeSpawnPoint");
+    mSpawnPoint->attachObject(effects["SpawnPoint"]);
+    effects["SpawnPoint"]->start();
 	}
 	
 	void GfxEngine::playEffect(std::string inEffect, Entity* inEntity) {
@@ -598,4 +643,65 @@ namespace Pixy {
 	      effect->start();
 	  }
 	};
+	
+	void GfxEngine::playEffect(std::string inEffect, const Vector3& inPos) {
+	  effectMap::iterator cursor = effects.find(inEffect);
+	  if (cursor != effects.end()) {
+	    ParticleUniverse::ParticleSystem* effect = cursor->second;
+	    if (effect->isAttached())
+	      effect->getParentSceneNode()->detachObject(effect);
+	    
+	    mPortableEffect->setPosition(inPos);
+	    mPortableEffect->attachObject(effect);
+      effect->start();
+	  }	
+	};
+	
+	
+	bool GfxEngine::evtObstacleAlive(Event* inEvt) {
+	  Obstacle* mObs = static_cast<Obstacle*>(inEvt->getAny());
+	  
+	  Vector3 pos = mObs->getMasterNode()->getPosition();
+	  pos.y += 30;
+	  mSpawnPoint->setPosition(pos);
+	  //playEffect("SpawnPoint", pos);
+	  
+	  return true;
+	};
+	
+	bool GfxEngine::evtObstacleCollided(Event* inEvt) {
+	  Obstacle* mObs = static_cast<Obstacle*>(inEvt->getAny());
+	  if (mObs->shield() == FIRE) {
+	    playEffect("Explosion", mSphere);
+	    if (mSphere->shield() == FIRE)
+	      applyMotionBlur(0.5f);
+	  } else {
+	    playEffect("Shatter", mSphere);
+	    if (mSphere->shield() == ICE)
+	      applyMotionBlur(0.5f);
+	    
+	  }
+	  
+	  return true;
+	};
+	
+	bool GfxEngine::evtPortalSighted(Event* inEvt) {
+	
+	  fPortalSighted = true;
+	  
+	  return true;
+	};
+	
+	bool GfxEngine::evtPortalReached(Event* inEvt) {
+	  mSphere->die();
+	  mSpawnPoint->setVisible(false);
+		mSphere->getSceneNode()->setVisible(false);
+		fPortalReached = true;
+		playEffect("Despawn", mSphere);
+		
+		
+		return true;	  
+	};
+	
+	SceneNode* GfxEngine::getPortal() { return mPortal; };
 }

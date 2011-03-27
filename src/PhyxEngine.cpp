@@ -43,9 +43,24 @@ namespace Pixy {
 		}
 	}
 	
+  void PhyxEngine::myTickCallback(btDynamicsWorld *world, btScalar timeStep) {
+    //printf("The world just ticked by %f seconds\n", (float)timeStep);
+    btRigidBody* mShipBody = Intro::getSingletonPtr()->getSphere()->getRigidBody();
+    
+    // mShipBody is the spaceship's btRigidBody
+    btVector3 velocity = mShipBody->getLinearVelocity();
+    btScalar speed = velocity.length();
+    if(speed > _myPhyxEngine->getMaxSpeed()) {
+        velocity *= _myPhyxEngine->getMaxSpeed()/speed;
+        mShipBody->setLinearVelocity(velocity);
+    }
+
+  }
+  
 	bool PhyxEngine::setup() {
 		if (fSetup)
 			return true;
+		
 		
 		mBroadphase = new btDbvtBroadphase();
 		
@@ -57,6 +72,8 @@ namespace Pixy {
     mWorld = new btDiscreteDynamicsWorld(mDispatcher,mBroadphase,mSolver,mCollisionConfig);
     //mCWorld = new btCollisionWorld(mDispatcher, mBroadphase, mCollisionConfig);
     
+    mWorld->setInternalTickCallback(PhyxEngine::myTickCallback);
+
     mWorld->setGravity(btVector3(0,-1,0));
 
     int wallsCollideWith = COL_SPHERE | COL_OBSTACLES;
@@ -79,7 +96,7 @@ namespace Pixy {
     */
     
     mCeilingShape = new btStaticPlaneShape(btVector3(0,-1,0),0);
-    mCeilingMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,45,0)));
+    mCeilingMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,75,0)));
     btRigidBody::btRigidBodyConstructionInfo
       mCeilingRBCI(0,mCeilingMS,mCeilingShape,btVector3(0,0,0));
     mCeilingBody = new btRigidBody(mCeilingRBCI);
@@ -142,7 +159,7 @@ namespace Pixy {
 	
 	
 	void PhyxEngine::update(unsigned long lTimeElapsed) {
-		mWorld->stepSimulation(lTimeElapsed, 2 * lTimeElapsed, 1.0f / 160.0f);
+		mWorld->stepSimulation(lTimeElapsed, 7);
 		/*
     mWorld->performDiscreteCollisionDetection();
    btCollisionObjectArray arrayBullet = mWorld->getCollisionObjectArray();
@@ -190,8 +207,12 @@ namespace Pixy {
 	 
 	bool PhyxEngine::deferredSetup() {
 		mSphere = Intro::getSingleton().getSphere();
+		//mMaxSpeed = mSphere->getMaxSpeed();
+		
 		return true;
 	}
+	
+	float PhyxEngine::getMaxSpeed() const { return mSphere->getMaxSpeed(); };
 	
 	void PhyxEngine::attachToWorld(Entity* inEntity) {
 		mWorld->addRigidBody(inEntity->getRigidBody());

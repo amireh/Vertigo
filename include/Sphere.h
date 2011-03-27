@@ -20,6 +20,7 @@
 #include <list>
 #include <map>
 #include "InputManager.h"
+#include "EventListener.h"
 
 using std::list;
 using std::map;
@@ -32,7 +33,7 @@ namespace Pixy
     /*! \class Sphere Sphere.h "src/Sphere.h"
      *  \brief Represents Combat Sphere GameObject
      */
-	class Sphere : public Entity
+	class Sphere : public Entity, public EventListener
 	{
 	public:
 		
@@ -51,13 +52,18 @@ namespace Pixy
 		void keyPressed( const OIS::KeyEvent &e );
 		void keyReleased( const OIS::KeyEvent &e );
 		
-		SHIELD currentShield();
+		SHIELD shield();
 		void flipShields();
+		
+		void setMaxSpeed(float inSpeed);
+		float getMaxSpeed() const;
 		
 		virtual void collide(Obstacle* inObj);
 		
 		const Vector3& getPosition();
 	protected:		
+		
+		bool evtPortalSighted(Event* inEvt);
 		
 		void locateNextWaypoint();
 		
@@ -72,6 +78,7 @@ namespace Pixy
 		
 		Ogre::Real mDistance;
 		Ogre::Real move;
+		float mMaxSpeed;
 		float step;
 		float currentStep;
 		//Ogre::Vector3 mDirection;

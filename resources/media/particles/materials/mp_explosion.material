@@ -1,0 +1,258 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+
+material mp_explosion_smoke_01
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend alpha_blend
+
+            texture_unit
+            {
+                texture mp_explosion_smoke_01.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_explosion_smoke_01_add
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+            texture_unit
+            {
+                texture mp_explosion_smoke_01_add.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_explosion_flare_01
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+
+            texture_unit
+            {
+                texture mp_explosion_flare_01.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_explosion_flare_02
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+
+            texture_unit
+            {
+                texture mp_explosion_flare_02.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_explosion_dirt
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend alpha_blend
+
+            texture_unit
+            {
+                texture mp_explosion_dirt.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_explosion_flame_01
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+
+            texture_unit
+            {
+                texture mp_explosion_flame_01.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_explosion_flame_02
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+
+            texture_unit
+            {
+                texture mp_explosion_flame_02.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_explosion_smoke_02
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend alpha_blend
+
+            texture_unit
+            {
+                texture mp_explosion_smoke_02.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_explosion_smoke_03
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend alpha_blend
+
+            texture_unit
+            {
+                texture mp_explosion_smoke_03.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_explosion_debris
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+
+            texture_unit
+            {
+                texture mp_explosion_debris.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_explosion_debris_large
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend alpha_blend
+
+            texture_unit
+            {
+                texture mp_explosion_debris_large_4x4.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_explosion_04
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+            texture_unit
+            {
+                texture mp_explosion_04.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_explosion_trail
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+
+            texture_unit
+            {
+                texture mp_explosion_trail_01.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_explosion_water
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend alpha_blend
+
+            texture_unit
+            {
+                texture mp_explosion_water.dds
+            }
+        }
+    }
+}

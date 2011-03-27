@@ -10,6 +10,7 @@
 #ifndef H_EventManager_H
 #define H_EventManager_H
 
+#include "Pixy.h"
 #include "Event.h"
 
 #include <string>
@@ -239,7 +240,7 @@ namespace Pixy
 			
 			void detachListener(EventListener* inListener, subscription_t* inContainer);
         private:
-			//log4cpp::Category* mLog;
+			log4cpp::Category* mLog;
 			
 			//typedef map< EVENT_UID, vector<EventListener*> > uid_subscription_t;
 

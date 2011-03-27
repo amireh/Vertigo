@@ -6,7 +6,7 @@
 // Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
 // You can find a copy of the Commercial License in the Media Pack 1 package.
 //-----------------------------------------------------------------------------------------------------------------------
-system Hit/mp_hit_12
+system Vertigo/FX/Tornadoxx
  {
     keep_local                                  true
     technique 
@@ -31,7 +31,7 @@ system Hit/mp_hit_12
                 min                             400
                 max                             800
             }
-            duration                            0.1
+            duration                            1
             all_particle_dimensions             dyn_random
             {
                 min                             200

@@ -51,7 +51,11 @@ namespace Pixy
 		void attachToWorld(Pixy::Entity* inEntity);
 		void detachFromWorld(Pixy::Entity* inEntity);
 		
+		static void myTickCallback(btDynamicsWorld *world, btScalar timeStep);
+		
 		btCollisionShape* obstaclesShape();
+		
+		float getMaxSpeed() const;
 		
 	protected:
 		btBroadphaseInterface* mBroadphase;
@@ -67,6 +71,8 @@ namespace Pixy
 		btRigidBody *mFloorBody, *mCeilingBody, *mLWallBody, *mRWallBody;
 		
 		Sphere* mSphere;
+		
+		//btScalar mMaxSpeed;
 	private:
 		static PhyxEngine* _myPhyxEngine;
 		PhyxEngine();

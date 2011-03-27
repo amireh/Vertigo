@@ -1,4 +1,4 @@
-system Vertigo/FX/Atomicity
+system Vertigo/FX/Atomicityz
 {
     category                                    LightFX
     technique 

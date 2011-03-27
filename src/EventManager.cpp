@@ -21,14 +21,16 @@ namespace Pixy {
 	EventManager* EventManager::mInstance = NULL;
 	
 	EventManager::EventManager() {
-		//mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "EvtMgr"); 
+		mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "EvtMgr"); 
 		//mIdCounter = 0;
-		cout << "EventManager: up and running\n";
+		mLog->infoStream() << "up and running";
+		//cout << "EventManager: up and running\n";
 	}
 	
 	EventManager::~EventManager()
 	{
-		std::cout << "EventManager: shutting down\n";
+		//std::cout << "EventManager: shutting down\n";
+		mLog->infoStream() << "shutting down";
 		// clean up events
 		while (!mEventPool.empty()) {
 			//cout << "removing event from pool\n";
@@ -47,11 +49,11 @@ namespace Pixy {
 		mFullSubscribers.clear();
 		mNameSubscribers.clear();
 		mCatSubscribers.clear();
-		/*
+		
 		if (mLog)
 			delete mLog;
 		
-		mLog = 0;*/
+		mLog = 0;
 		//mIdCounter = 0;
 	};
 	
@@ -186,7 +188,7 @@ namespace Pixy {
 		if (!mEvents.empty())
 		{
 			dispatch(mEvents.front());
-			cout << "EventManager:" << mEvents.front() << " was dispatched\n";
+			//mLog->debugStream() << mEvents.front() << " was dispatched";
 			dequeue();
 		}
 	}; // update()
@@ -232,12 +234,12 @@ namespace Pixy {
 		
 		// if event is a request (outgoing to server)
 		// then notify only the network manager
-		if (inEvt->getType() == EVT_REQ && mNetworkDispatcher) {
+		/*if (inEvt->getType() == EVT_REQ && mNetworkDispatcher) {
 			mNetworkDispatcher->enqueue(inEvt);
 			return;
 		}
-		
-		//mLog->debugStream() << "dispatching event: " << inEvt->getId() << " from server";
+		*/
+		////mLog->debugStream() << "dispatching event: " << inEvt->getId() << " from server";
 		
 		// call full subscribed listeners
 		evtListeners = &mFullSubscribers;
@@ -276,7 +278,7 @@ namespace Pixy {
 		//mLog->debugStream() << "dequeuing event";
 		Event* evt = mEvents.front();
 		if (evt->getNrHandlers() == 0) {
-			cout << "WARN - " << evt << " has no handlers! Releasing...\n";
+			mLog->warnStream() << "WARN - " << evt << " has no handlers! Releasing...";
 			releaseEvt(evt);
 			return;
 		}
@@ -301,6 +303,7 @@ namespace Pixy {
 	}	
 	*/
 	void EventManager::releaseEvt(Event* inEvt) {
+		//mLog->debugStream() << "EventPool size: " << mEventPool.size() << " Events queue size: " << mEvents.size();
 		
 		 // remove from pool
 		 list<Event*>::iterator _itr;
@@ -319,9 +322,11 @@ namespace Pixy {
 		
 		
 		 // destroy!!
-		//std::cout << "| EvtMgr: destroying\n";
+		//mLog->debugStream() << "destroying " << inEvt;
 		delete inEvt;
-		 
+		
+		//mLog->debugStream() << "EventPool size: " << mEventPool.size() << " Events queue size: " << mEvents.size();
+    inEvt = NULL;
 	}
 	
 	bool EventManager::alreadySubscribed(EventListener* inListener, vector<EventListener*>* inList) {
@@ -336,19 +341,19 @@ namespace Pixy {
 	
 	
 	void EventManager::unsubscribeFromName(std::string inName, EventListener* inListener) {
-		//mLog->debugStream() << "detaching listener from name subscriptions";
+		////mLog->debugStream() << "detaching listener from name subscriptions";
 		detachListener(inListener, &(mNameSubscribers.find(inName)->second));
 
 	}
 	
 	void EventManager::unsubscribeFromCat(std::string inCategory, EventListener* inListener) {
-		//mLog->debugStream() << "detaching listener from category subscriptions";
+		////mLog->debugStream() << "detaching listener from category subscriptions";
 		detachListener(inListener, &(mCatSubscribers.find(inCategory)->second));
 
 	}
 
 	void EventManager::unsubscribe(EventListener* inListener) {
-		//mLog->debugStream() << "detaching listener from full subscriptions";
+		////mLog->debugStream() << "detaching listener from full subscriptions";
 		detachListener(inListener, &mFullSubscribers);
 			
 

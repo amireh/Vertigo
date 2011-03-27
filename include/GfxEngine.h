@@ -27,6 +27,7 @@
 #include "Sphere.h"
 #include "ParticleUniverseSystemManager.h"
 #include <map>
+#include <vector>
 
 using Ogre::Vector3;
 using Ogre::Real;
@@ -35,6 +36,7 @@ using Ogre::String;
 using OgreBites::SdkCameraMan;
 using std::map;
 using std::pair;
+using std::vector;
 
 namespace Pixy {
 		
@@ -125,8 +127,20 @@ namespace Pixy {
     void applyScreenShake(unsigned long lTimeElapsed);
     
     void playEffect(std::string inEffect, Entity* inEntity);
+    void playEffect(std::string inEffect, const Vector3& pos);
+    
+    SceneNode* getPortal();
     
 	protected:
+	
+	  bool evtObstacleAlive(Event* inEvt);
+	  bool evtObstacleCollided(Event* inEvt);
+	  bool evtPortalReached(Event* inEvt);
+	  bool evtPortalSighted(Event* inEvt);
+	  
+	  bool fPortalReached;
+	  bool fPortalSighted;
+	  
 		Ogre::Root           *mRoot;
 		Ogre::Camera         *mCamera, *mCamera2, *mCamera3, *mCamera4;
 		Ogre::SceneManager   *mSceneMgr;
@@ -144,7 +158,7 @@ namespace Pixy {
 		OgreBites::SdkTrayManager*	        mTrayMgr;
 		
 		//! used for setting Objects' direction in Scene
-		Vector3 mDirection;
+		Vector3 mDirection, mSpherePos;
 
 		//! regulates the movement speed by (mWalkSpeed * mTimeElapsed) keeping it consistent
 		Real mMoveSpeed;
@@ -172,6 +186,8 @@ namespace Pixy {
 	
 	  Ogre::FrameEvent evt;
 		
+		SceneNode* mPortableEffect;
+		
 		Ogre::String mEffect;
 		Ogre::Timer mEffectTimer;
 		float mEffectDuration;
@@ -182,6 +198,10 @@ namespace Pixy {
 
     typedef map< std::string, ParticleUniverse::ParticleSystem* > effectMap;
     effectMap effects;
+    
+    vector<SceneNode*> mTubes;
+    SceneNode *mSpawnPoint;
+    SceneNode *mPortal;
     //ParticleUniverse::ParticleSystem *effectShatter, *effectExplosion;
 	private:
 		static GfxEngine* _myGfxEngine;

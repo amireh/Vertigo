@@ -17,6 +17,8 @@ namespace Pixy
 		
 		mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "Intro");
 		
+		mEvtMgr = EventManager::getSingletonPtr();
+		
 		// init engines
 		mGfxEngine = GfxEngine::getSingletonPtr();
 		mGfxEngine->setup();
@@ -33,15 +35,19 @@ namespace Pixy
 		mSphere = new Sphere();
 		mSphere->live();
 		
-		nrObstacles = 0;
+		nrObstacles = 20;
 		//createObstacle();
 		
 		for (int i =0; i < nrObstacles; ++i)
 	    mObstaclePool.push_back(new Obstacle());
 		
+		fSpawning = true;
 		
 		mGfxEngine->deferredSetup();
 		mPhyxEngine->deferredSetup();
+		
+		bindToName("PortalReached", this, &Intro::evtPortalReached);
+		bindToName("PortalSighted", this, &Intro::evtPortalSighted);
 		
 		mLog->infoStream() << "Initialized successfully.";
 		
@@ -50,6 +56,8 @@ namespace Pixy
 
 	
 	void Intro::exit( void ) {
+	  
+	  
 	  
 		std::list<Obstacle*>::iterator _itr;
 		for (_itr = mObstaclePool.begin(); 
@@ -64,7 +72,10 @@ namespace Pixy
 		delete mSphere;
 		delete mPhyxEngine;
 		//delete mUIEngine;
+		mGfxEngine->cleanup();
 		delete mGfxEngine;
+		
+		EventManager::shutdown();
 		
 		mLog->infoStream() << "---- Exiting Intro State ----";
 		delete mLog;
@@ -138,6 +149,9 @@ namespace Pixy
 	Sphere* Intro::getSphere() { return mSphere; };
 
 	void Intro::update( unsigned long lTimeElapsed ) {
+		mEvtMgr->update();
+		
+		processEvents();
 		
 		mGfxEngine->update(lTimeElapsed);
 		//mUIEngine->update(lTimeElapsed);
@@ -160,7 +174,7 @@ namespace Pixy
 		  ++_itr;     
 		}
 		
-		if (mTimer.getMilliseconds() > 700) {
+		if (fSpawning && mTimer.getMilliseconds() > 700) {
 		  spawnObstacle();
 		  mTimer.reset();
 		}
@@ -186,7 +200,11 @@ namespace Pixy
 		  return;
 		
 	  mObs->live();
-	  mObstacles.push_back(mObs);  
+	  mObstacles.push_back(mObs);
+	  
+	  Event* evt = mEvtMgr->createEvt("ObstacleAlive");
+	  evt->setAny((void*)mObs);
+	  mEvtMgr->hook(evt);  
   }
   
   void Intro::releaseObstacle(Obstacle* inObs) {
@@ -195,4 +213,24 @@ namespace Pixy
     //inObs->die();
     //mObstaclePool.push_back(inObs);
   }
+  
+  bool Intro::evtPortalReached(Event* inEvt) {
+    //fSpawning = false;
+    //mSphere->getRigidBody()->clearForces();
+    //mSphere->getRigidBody()->setLinearVelocity(btVector3(0,0,0));
+    mSphere->setMaxSpeed(0.0f);
+    mLog->infoStream() << "Portal is reached, reducing velocity";
+    
+    return true;
+  };
+  
+  bool Intro::evtPortalSighted(Event* inEvt) {
+    fSpawning = false;
+    //mSphere->getRigidBody()->clearForces();
+    //mSphere->getRigidBody()->setLinearVelocity(btVector3(0,0,0));
+    //mSphere->setMaxSpeed(0.0f);
+    mLog->infoStream() << "Portal is in sight";
+    
+    return true;
+  };
 } // end of namespace

@@ -27,14 +27,14 @@ namespace Pixy
     {
 		reset();
 		mName = inName;
-		std::cout << this << " created\n";
+		//std::cout << this << " created\n";
 	}
 	
 	Event::~Event()
-    {
-		std::cout << this << " destroyed\n";
-		reset();
-    }
+  {
+		//std::cout << this << " destroyed\n";
+		//reset();
+  }
 	
 	void Event::reset() {
 		mUID = EVT_DEFAULT;
@@ -48,7 +48,7 @@ namespace Pixy
 		fConfidential = false;
 		nrHandlers = 0;
 		nrProperties = 0;
-		mSender = NULL;
+		mUserData = NULL;
 	}
 	
 	/*
@@ -283,14 +283,12 @@ namespace Pixy
 	}
 	*/
 	
-	void Event::assignSender(Player* inSender) {
-		mSender = inSender;
-	}
-	
-	Player* Event::getSender() {
-		return mSender;
-	}
 	
 	uint8_t Event::getNrHandlers() { return nrHandlers; };
 	
+	void Event::setAny(void* inAny) {
+	  mUserData = inAny;
+	}
+	
+	void* Event::getAny() { return mUserData; mUserData = NULL; }
 }

@@ -179,10 +179,10 @@ namespace Pixy
 		friend ostream& operator<<(ostream& outStream, Event* inEvt);
         
 		virtual void dump(std::ostream& inStream = std::cout);
-		
-		void assignSender(Player* inPlayer);
-		Player* getSender();
-		
+
+    virtual void setAny(void* any);
+    virtual void* getAny();
+    			
 		uint8_t getNrHandlers();
 	protected:
 		typedef	map< std::string, std::string > property_t;
@@ -198,7 +198,7 @@ namespace Pixy
 		uint8_t			nrHandlers;
 		int				nrProperties;
 		property_t		mProperties;
-		Player			*mSender;
+		void * mUserData;
 		
 		virtual void reset();
 		

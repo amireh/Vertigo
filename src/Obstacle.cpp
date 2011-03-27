@@ -11,7 +11,7 @@ namespace Pixy
 	
   Obstacle::Obstacle() {
 	  mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "Obstacle");
-        mLog->infoStream() << "created";
+    //mLog->infoStream() << "created";
 
     mName = "Obstacle";
 	  mType = OBSTACLE;
@@ -24,14 +24,16 @@ namespace Pixy
 	  mShield = (qualifier % 2 == 0) ? ICE : FIRE;
 	  
 	  mSphere = Intro::getSingleton().getSphere();
-	  mPosition = randomPosition();
+	  mPosition = Vector3(0,0, -1000);
 	  
 	  GfxEngine::getSingletonPtr()->attachToScene(this);
+	  
 	  //mSceneNode->setPosition(mPosition);
 
     mMasterNode = GfxEngine::getSingletonPtr()->getSM()->getRootSceneNode()->createChildSceneNode();
     mSceneNode->getParent()->removeChild(mSceneNode);
     mMasterNode->addChild(mSceneNode);
+    mMasterNode->setPosition(mPosition);
 	  
 	  if (fHasFX) {
 	    // create a fire trail particle system
@@ -68,13 +70,13 @@ namespace Pixy
 	  mPhyxBody = new btRigidBody(mPhyxBodyCI);
     mPhyxBody->proceedToTransform(trans);
 	      
-    mMasterNode->setVisible(false);
+    mSceneNode->setVisible(false);
 	  fDead = true;
   };
 
 	Obstacle::~Obstacle()
 	{
-    mLog->infoStream() << "destructed";
+    //mLog->infoStream() << "destructed";
 
 		mFireTrailNode = NULL;
 		mIceSteamNode = NULL;
@@ -98,7 +100,7 @@ namespace Pixy
 	  return Vector3(
 	    0, 
 	    0, 
-	    mSphere->getPosition().z + 1500);	   
+	    mSphere->getPosition().z + 1200);	   
 	}
 	void Obstacle::live() {
 	  //if (!fDead)
@@ -108,7 +110,8 @@ namespace Pixy
 	  mShield = (qualifier % 2 == 0) ? ICE : FIRE;
     render();
 	  mSceneNode->setVisible(true);
-	  mPosition = randomPosition(); 
+	  mPosition = randomPosition();
+	  mMasterNode->setPosition(mPosition); 
     mPhyxBody->proceedToTransform(btTransform(btQuaternion(0,0,0,1),
 	      btVector3(mPosition.x,mPosition.y,mPosition.z)));
 	  
@@ -135,7 +138,7 @@ namespace Pixy
 	  
 	  mLog->debugStream() << mName << idObject << " is dead";
 	  
-	  mMasterNode->setVisible(false);
+	  mSceneNode->setVisible(false);
 	  /*
 	  if (fHasFX) {
 	    if (mShield == FIRE) {
@@ -190,13 +193,17 @@ namespace Pixy
     if (fDead || fDying)
       return;
     
-    if (mSphere->getPosition().z > mMasterNode->getPosition().z + 100) {
+    /*if (mSphere->getPosition().z > mMasterNode->getPosition().z + 100) {
       die();
       return;
-    }
+    }*/
     
     //if (mSceneObject->getWorldBoundingBox().intersects(mSphere->getSceneObject()->getWorldBoundingBox())) {
     if (mSceneNode->_getWorldAABB().intersects(mSphere->getSceneNode()->_getWorldAABB())) {
+      Event* evt = EventManager::getSingleton().createEvt("ObstacleCollided");
+      evt->setAny((void*)this);
+      EventManager::getSingleton().hook(evt);
+      evt = NULL;
       collide(mSphere);
       return;
     }

@@ -17,9 +17,9 @@
 #include "Entity.h"
 #endif
 
+#include "ParticleUniverseSystemManager.h"
 #include <list>
 #include <map>
-#include "InputManager.h"
 
 using std::list;
 using std::map;
@@ -66,6 +66,7 @@ namespace Pixy
     bool fHasFX;
     int mDeathDuration;
     
+    ParticleUniverse::ParticleSystem *mFireFace;
 		Ogre::SceneNode* mFireTrailNode, *mIceSteamNode;
     
 	};

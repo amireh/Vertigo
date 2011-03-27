@@ -15,6 +15,8 @@
 
 #include <list>
 #include "GameState.h"
+#include "EventManager.h"
+#include "EventListener.h"
 #include "UIEngine.h"
 #include "GfxEngine.h"
 #include "PhyxEngine.h"
@@ -32,7 +34,7 @@ namespace Pixy
      */
 	
 	
-	class Intro : public GameState {
+	class Intro : public GameState, public EventListener {
 	public:
 		
 		void enter( void );
@@ -58,11 +60,15 @@ namespace Pixy
 
 	protected:
 		void fireLoginEvt();
+		bool evtPortalReached(Event* inEvt);
+		bool evtPortalSighted(Event* inEvt);
+		
 	private:
 		Intro( void ) { }
 		Intro( const Intro& ) { }
 		Intro & operator = ( const Intro& );
 		
+		EventManager *mEvtMgr;
 		GfxEngine		*mGfxEngine;
 		UIEngine		*mUIEngine;
 		PhyxEngine		*mPhyxEngine;
@@ -74,6 +80,7 @@ namespace Pixy
 		long nrObstacles;
 		static Intro    *mIntro;
 		Ogre::Timer mTimer;
+		bool fSpawning; // are we spawning obstacles?
 		void spawnObstacle();
 		void releaseObstacle(Obstacle* inObs);
 	};

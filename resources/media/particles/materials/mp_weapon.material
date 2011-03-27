@@ -1,0 +1,372 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+
+material mp_weapon_muzzle_01
+{
+    technique
+    {
+        pass	
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+
+            texture_unit
+            {
+                texture mp_weapon_muzzle_01_2x2.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_weapon_muzzle_02
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+
+            texture_unit
+            {
+                texture mp_weapon_muzzle_02_2x2.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_weapon_muzzle_03
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+
+            texture_unit
+            {
+                texture mp_weapon_muzzle_14.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_weapon_muzzle_04
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+
+            texture_unit
+            {
+                texture mp_weapon_muzzle_15.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_weapon_muzzle_glow
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+
+            texture_unit
+            {
+                texture mp_weapon_muzzle_glow.png
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_weapon_spheretrail_lightning
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            depth_read off
+            scene_blend alpha_blend
+
+            texture_unit
+            {
+                texture mp_weapon_spheretrail_lightning.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_weapon_spheretrail_flare
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+
+            texture_unit
+            {
+                texture mp_weapon_spheretrail_flare.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_weapon_trail_lightred
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            depth_read off
+            scene_blend alpha_blend
+
+            texture_unit
+            {
+                texture mp_weapon_trail_lightred.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_weapon_trail_red
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            depth_read off
+            scene_blend alpha_blend
+
+            texture_unit
+            {
+                texture mp_weapon_trail_red.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_weapon_flare_red
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+
+            texture_unit
+            {
+                texture mp_weapon_flare_red.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_weapon_flare_blue
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+
+            texture_unit
+            {
+                texture mp_weapon_flare_blue.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_weapon_flare_green
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend alpha_blend
+
+            texture_unit
+            {
+                texture mp_weapon_flare_green.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_weapon_laser_jitter
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            depth_read off
+            scene_blend alpha_blend
+
+            texture_unit
+            {
+                texture mp_weapon_laser_jitter.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_weapon_flamethrower_01
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+
+            texture_unit
+            {
+                texture mp_weapon_flamethrower_01.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_weapon_flamethrower_02
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+
+            texture_unit
+            {
+                texture mp_weapon_flamethrower_02.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_weapon_rocket_01_1x4
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend alpha_blend
+
+            texture_unit
+            {
+                texture mp_weapon_rocket_01_1x4.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_weapon_rocket_02_1x4
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+
+            texture_unit
+            {
+                texture mp_weapon_rocket_02_1x4.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_weapon_rocketboost
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+
+            texture_unit
+            {
+                texture mp_weapon_rocketboost.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_weapon_rocketflare
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+
+            texture_unit
+            {
+                texture mp_weapon_rocketflare.png
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_weapon_muzzle_straight_01
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+
+            texture_unit
+            {
+                texture mp_weapon_muzzle_straight_01.dds
+            }
+        }
+    }
+}

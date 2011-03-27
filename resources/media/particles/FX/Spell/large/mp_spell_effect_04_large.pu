@@ -6,7 +6,7 @@
 // Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
 // You can find a copy of the Commercial License in the Media Pack 1 package.
 //-----------------------------------------------------------------------------------------------------------------------
-system Spell/mp_spell_effect_04
+system Vertigo/FX/Despawn
 {
     keep_local                                  true
     technique 
