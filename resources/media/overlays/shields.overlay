@@ -1,0 +1,18 @@
+// The name of the overlay comes first
+MyOverlays/ANewOverlay
+{
+    zorder 200
+
+    container Panel(MyOverlayElements/TestPanel)
+    {
+        // Center it horizontally, put it at the top
+        left 0
+        top 0
+        width 0
+        height 0
+        material Sphere/Ice
+
+
+    }
+
+}

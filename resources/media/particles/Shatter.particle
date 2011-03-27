@@ -10,7 +10,7 @@ system Vertigo/FX/Shatter
  {
     technique 
     {
-        visual_particle_quota                   500
+        visual_particle_quota                   1500
         material                                mp_hit_metal_sparkle
         renderer                                Billboard
         {
@@ -20,7 +20,7 @@ system Vertigo/FX/Shatter
         }
         emitter                                 Point 
         {
-            emission_rate                       400
+            emission_rate                       900
             angle                               360
             time_to_live                        dyn_random
             {

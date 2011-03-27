@@ -71,6 +71,8 @@ namespace Pixy
 		
 		delete mSphere;
 		delete mPhyxEngine;
+		
+		//mUIEngine->cleanup();
 		//delete mUIEngine;
 		mGfxEngine->cleanup();
 		delete mGfxEngine;
@@ -104,8 +106,9 @@ namespace Pixy
 			case OIS::KC_ESCAPE:
 				this->requestShutdown();
 				break;
-			case OIS::KC_SPACE:
-				//fireLoginEvt();
+		  
+			case OIS::KC_EQUALS:
+				
 				break;			
 
 		}
@@ -114,18 +117,17 @@ namespace Pixy
 	
 	void Intro::mouseMoved( const OIS::MouseEvent &e )
 	{
-		// Update CEGUI with the mouse motion
-		//mUISystem->injectMouseMove(e.state.X.rel, e.state.Y.rel);
+		//mUIEngine->mouseMoved(e);
 		mGfxEngine->mouseMoved(e);
 	}
 	
 	void Intro::mousePressed( const OIS::MouseEvent &e, OIS::MouseButtonID id ) {
-		//mUISystem->injectMouseButtonDown(convertButton(id));
+    //mUIEngine->mousePressed(e, id);
 		mGfxEngine->mousePressed(e, id);
 	}
 	
 	void Intro::mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id ) {
-		//mUISystem->injectMouseButtonUp(convertButton(id));
+		//mUIEngine->mouseReleased(e, id);
 		mGfxEngine->mouseReleased(e, id);
 	}
 	
@@ -174,7 +176,7 @@ namespace Pixy
 		  ++_itr;     
 		}
 		
-		if (fSpawning && mTimer.getMilliseconds() > 700) {
+		if (fSpawning && mTimer.getMilliseconds() > 600) {
 		  spawnObstacle();
 		  mTimer.reset();
 		}

@@ -130,4 +130,5 @@ namespace Pixy
 	  return mMasterNode;
 	}
 	
+	void Entity::setMoveSpeed(const Real inSpeed) { mMoveSpeed = inSpeed; };
 } // end of namespace

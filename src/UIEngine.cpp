@@ -123,22 +123,26 @@ namespace Pixy {
 		
 		CEGUI::SchemeManager::getSingleton().create( "TaharezLook.scheme" );
 		CEGUI::SchemeManager::getSingleton().create( "VanillaSkin.scheme" );
-		CEGUI::SchemeManager::getSingleton().create( "WindowsLook.scheme" );
+		CEGUI::SchemeManager::getSingleton().create( "SleekSpace.scheme" );
 		
 			
 		// load font and setup default if not loaded via scheme
 		CEGUI::FontManager::getSingleton().create("DejaVuSans-10.font");
 		
 		// set up defaults
-		CEGUI::System::getSingleton().setDefaultMouseCursor("WindowsLook", "MouseArrow");
+		//CEGUI::System::getSingleton().setDefaultMouseCursor("WindowsLook", "MouseArrow");
 		CEGUI::System::getSingleton().setDefaultFont("DejaVuSans-10");
 		
 		mLog->infoStream() << "Set up!";
 		
+		CEGUI::ImagesetManager::getSingleton().create( "Shields.imageset" );
+		
 		CEGUI::WindowManager& mWinMgr = CEGUI::WindowManager::getSingleton();
-		mLayout = mWinMgr.loadWindowLayout("vertigo.layout");
+		//mLayout = mWinMgr.loadWindowLayout("vertigo.layout");
 		//mLayout->show();
 		//mUISystem->setGUISheet(mLayout);
+		
+		
 		//Combat::getSingletonPtr()->updateMe(getSingletonPtr());
 		
 		fSetup = true;

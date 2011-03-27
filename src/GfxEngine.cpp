@@ -64,7 +64,7 @@ namespace Pixy {
 			return true;
 		
 		mRoot         = Ogre::Root::getSingletonPtr();
-		//mOverlayMgr   = OverlayManager::getSingletonPtr();
+		mOverlayMgr   = Ogre::OverlayManager::getSingletonPtr();
 		//if (mRoot->hasSceneManager(Ogre::ST_GENERIC))
 		//	mSceneMgr     = mRoot->getSceneManager( ST_GENERIC, "CombatScene" );
 		//else
@@ -121,6 +121,9 @@ namespace Pixy {
 		//mCamera->setPosition(Vector3(200, 200, 200));
 		//mCamera->lookAt(mSphere->getSceneNode()->getPosition());
 		//mCamera->lookAt(mSphere->getSceneNode()->getPosition());
+		
+		mOverlay = mOverlayMgr->getByName("MyOverlays/ANewOverlay");
+		mOverlay->show();
 		
 		setupParticles();
 		//mSphere->getSceneNode()->attachObject(mSceneMgr->getLight("Light2"));
@@ -266,7 +269,7 @@ namespace Pixy {
     void GfxEngine::setupLights()
     {
 		  mLog->debugStream() << "setting up lights";
-      mSceneMgr->setAmbientLight(Ogre::ColourValue(0.4f, 0.4f, 0.4f));
+      mSceneMgr->setAmbientLight(Ogre::ColourValue(0.2f, 0.2f, 0.2f));
       Ogre::Light *light;
 
      light = mSceneMgr->createLight("Light2");
@@ -450,7 +453,7 @@ namespace Pixy {
 				applyMotionBlur(500);
 				break;	
 		  case OIS::KC_R:
-		    playEffect("Atomicity", mSphere);
+		    playEffect("Blaze", mSphere);
 		    break;
 		  case OIS::KC_T:
 		    playEffect("BlackHole", mSphere);
@@ -574,11 +577,11 @@ namespace Pixy {
     effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("BlackHole", effect));
 
     effect = fxMgr->createParticleSystem(
-      "FxAtomicity",
-      "Vertigo/FX/SphereTrail", 
+      "FxBlaze",
+      "Vertigo/FX/Blaze", 
       mSceneMgr);
     effect->prepare();
-    effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("Atomicity", effect));    
+    effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("Blaze", effect));    
 
     effect = fxMgr->createParticleSystem(
       "FxPortal",
@@ -622,11 +625,11 @@ namespace Pixy {
     posPortal.z += 500; 
     mPortal->setPosition(posPortal);
     effect->start();
-    mPortal->showBoundingBox(true);
+    //mPortal->showBoundingBox(true);
     
     mPortableEffect = mSceneMgr->getRootSceneNode()->createChildSceneNode();
     mSpawnPoint = mSceneMgr->getRootSceneNode()->createChildSceneNode("NodeSpawnPoint");
-    mSpawnPoint->attachObject(effects["Despawn"]);
+    //mSpawnPoint->attachObject(effects["Despawn"]);
     
 	}
 	
@@ -659,12 +662,12 @@ namespace Pixy {
 	
 	
 	bool GfxEngine::evtObstacleAlive(Event* inEvt) {
-	  Obstacle* mObs = static_cast<Obstacle*>(inEvt->getAny());
+	  //Obstacle* mObs = static_cast<Obstacle*>(inEvt->getAny());
 	  
-	  Vector3 pos = mObs->getMasterNode()->getPosition();
-	  pos.y += 30;
-	  mSpawnPoint->setPosition(pos);
-	  effects["Despawn"]->start();
+	  //Vector3 pos = mObs->getMasterNode()->getPosition();
+	  //pos.y += 30;
+	  //mSpawnPoint->setPosition(pos);
+	  //effects["Despawn"]->start();
 	  //playEffect("SpawnPoint", pos);
 	  
 	  return true;
@@ -687,7 +690,7 @@ namespace Pixy {
 	};
 	
 	bool GfxEngine::evtPortalSighted(Event* inEvt) {
-	
+	  effects["Portal"]->start();
 	  fPortalSighted = true;
 	  
 	  return true;
@@ -699,7 +702,6 @@ namespace Pixy {
 		mSphere->getSceneNode()->setVisible(false);
 		fPortalReached = true;
 		playEffect("Despawn", mSphere);
-		
 		
 		return true;	  
 	};

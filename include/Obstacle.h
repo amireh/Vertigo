@@ -67,6 +67,7 @@ namespace Pixy
     int mDeathDuration;
     
     ParticleUniverse::ParticleSystem *mFireFace;
+    ParticleUniverse::ParticleSystem *mBlaze, *mSteam;
 		Ogre::SceneNode* mFireTrailNode, *mIceSteamNode;
     
 	};

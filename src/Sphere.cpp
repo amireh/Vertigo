@@ -356,7 +356,7 @@ namespace Pixy
 	  
 	  mPhyxBody->activate(true);
 	  mPhyxBody->clearForces();
-	  mPhyxBody->applyCentralForce(btVector3(0,0,-mMoveSpeed * 100));
+	  mPhyxBody->applyCentralForce(btVector3(mDirection.x * mMoveSpeed,mDirection.y * mMoveSpeed,-mMoveSpeed * 100));
 	  return true;
 	};
 	bool Sphere::evtPortalSighted(Event* inEvt) {

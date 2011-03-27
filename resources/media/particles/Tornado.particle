@@ -6,13 +6,13 @@
 // Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
 // You can find a copy of the Commercial License in the Media Pack 1 package.
 //-----------------------------------------------------------------------------------------------------------------------
-system Vertigo/FX/Tornadoz
+system Vertigo/FX/Steamz
 {
     keep_local                                  true
     technique 
     {
         position                                0 -100 0
-        visual_particle_quota                   150
+        visual_particle_quota                   50
         material                                mp_spell_tornado_flare
         renderer                                Billboard
         {
@@ -32,21 +32,21 @@ system Vertigo/FX/Tornadoz
                 min                             0.4
                 max                             0.8
             }
-            mass                                20
+            mass                                10
             velocity                            300
             duration                            1
             particle_width                      dyn_random
             {
-                min                             50
-                max                             80
+                min                             10
+                max                             20
             }
             particle_height                     dyn_random
             {
-                min                             50
-                max                             100
+                min                             15
+                max                             30
             }
             auto_direction                      true
-            radius                              50
+            radius                              10
             normal                              0 1 0
         }
         affector                                Vortex 

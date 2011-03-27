@@ -126,6 +126,7 @@ namespace Pixy
 		
 		Vector3& getDirection();
 		Real getMoveSpeed();
+		void setMoveSpeed(const Real inSpeed);
 		
 		//virtual btCollisionObject* getObject();
 		virtual btRigidBody* getRigidBody();

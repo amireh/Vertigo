@@ -19,7 +19,7 @@ namespace Pixy
 	  mMoveSpeed = 1.2f;
 	  mDeathDuration = 100;
 	  fDying = false;
-	  fHasFX = false;
+	  fHasFX = true;
 	  int qualifier = rand();
 	  mShield = (qualifier % 2 == 0) ? ICE : FIRE;
 	  
@@ -36,20 +36,35 @@ namespace Pixy
     mMasterNode->setPosition(mPosition);
 	  
 	  if (fHasFX) {
+	    ParticleUniverse::ParticleSystemManager* fxMgr = 
+      ParticleUniverse::ParticleSystemManager::getSingletonPtr();
+      
+      mBlaze = fxMgr->createParticleSystem(
+        Ogre::String("FxBlaze" + stringify(rand())),
+        "Vertigo/FX/Blaze",
+        GfxEngine::getSingletonPtr()->getSM());
+      mBlaze->prepare();
+      
+      mSteam = fxMgr->createParticleSystem(
+        Ogre::String("FxSteam" + stringify(rand())),
+        "Vertigo/FX/Steam",
+        GfxEngine::getSingletonPtr()->getSM());
+      mSteam->prepare();
+      
 	    // create a fire trail particle system
 	    std::ostringstream psName;
 		  psName << mName << idObject << "Blaze";
-      mFireTrail = GfxEngine::getSingletonPtr()->getSM()->createParticleSystem(psName.str(), "Vertigo/Effects/Blaze");
-      mFireTrail->setNonVisibleUpdateTimeout(0.5f);
+      //mFireTrail = GfxEngine::getSingletonPtr()->getSM()->createParticleSystem(psName.str(), "Vertigo/FX/Blaze");
+      //mFireTrail->setNonVisibleUpdateTimeout(0.5f);
       psName.clear();
       psName << mName << idObject << "Steam";
-      mIceSteam = GfxEngine::getSingletonPtr()->getSM()->createParticleSystem(psName.str(), "Vertigo/Effects/Steam");
-      mIceSteam->setNonVisibleUpdateTimeout(0.5f);
+      //mIceSteam = GfxEngine::getSingletonPtr()->getSM()->createParticleSystem(psName.str(), "Vertigo/Effects/Steam");
+      //mIceSteam->setNonVisibleUpdateTimeout(0.5f);
       
       mFireTrailNode = mMasterNode->createChildSceneNode();
-      mFireTrailNode->attachObject(mFireTrail);
+      mMasterNode->attachObject(mBlaze);
       mIceSteamNode = mMasterNode->createChildSceneNode();
-      mIceSteamNode->attachObject(mIceSteam);      
+      mMasterNode->attachObject(mSteam);      
     }
     
 	  render();
@@ -97,8 +112,9 @@ namespace Pixy
 	
 	Vector3 Obstacle::randomPosition() {
 	  int qualifier = rand();
+	  int sign = (qualifier % 2 == 0) ? 1 : -1;
 	  return Vector3(
-	    0, 
+	    (qualifier % 20) * sign, 
 	    0, 
 	    mSphere->getPosition().z + 1200);	   
 	}
@@ -164,18 +180,24 @@ namespace Pixy
 		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Obstacle/Fire");
 		  
 		  if (fHasFX) {
-		    if (mIceSteam->isAttached())
-		      mIceSteam->setVisible(false);
+		    if (mSteam->isAttached()) {
+		      mSteam->setVisible(false);
+		      mSteam->stop();
+		    }
 
-		    mFireTrail->setVisible(true);
+		    mBlaze->setVisible(true);
+		    mBlaze->start();
 		  }
 		} else {
 		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Obstacle/Ice");
 		  if (fHasFX) {
-		    if (mFireTrail->isAttached())
-		      mFireTrail->setVisible(false);
+		    if (mBlaze->isAttached()) {
+		      mBlaze->setVisible(false);
+		      mBlaze->stop();
+		    }
 
-        mIceSteam->setVisible(true);
+        mSteam->setVisible(true);
+        mSteam->start();
 		  }
 		}
 	};
