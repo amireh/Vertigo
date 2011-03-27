@@ -416,6 +416,32 @@
      }
  }
  
+ material BumpMapping/Terrain
+{
+	technique
+	{
+		pass
+		{
+			ambient 1 1 1
+			scene_blend zero
+			//depth_write off
+			cull_software none
+			cull_hardware none
+
+			texture_unit
+			{
+				texture Lava_Cracks.jpg
+				scroll_anim 0.425 0
+			}
+
+			texture_unit
+			{
+				texture Lava_Cracks.jpg
+				wave_xform scroll_y sine 0 0.1 0 0.25
+			}
+		}
+	}
+}
   material BumpMapping/Terrainz
  { 
  

@@ -1,0 +1,66 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+system Explosion/mp_explosion_02_aftermath
+ {
+    technique 
+    {
+        visual_particle_quota                   80
+        material                                mp_explosion_flame_02
+        renderer                                Billboard
+        {
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Box 
+        {
+            emission_rate                       40
+            angle                               5
+            time_to_live                        dyn_random
+            {
+                min                             1
+                max                             2
+            }
+            velocity                            dyn_random
+            {
+                min                             300
+                max                             500
+            }
+            all_particle_dimensions             dyn_random
+            {
+                min                             40
+                max                             60
+            }
+            box_height                          1
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.3  1 0.45098 0.235294 1
+            time_colour                         0.5  1 0.45098 0.235294 1
+            time_colour                         1    0 0 0 1
+        }
+        affector                                Scale 
+        {
+            xyz_scale                           200
+        }
+        affector                                TextureRotator 
+        {
+            use_own_rotation                    true
+            rotation                            dyn_random
+            {
+                min                             -3
+                max                             3
+            }
+            rotation_speed                      dyn_random
+            {
+                min                             -0.5
+                max                             0.5
+            }
+        }
+    }
+ }

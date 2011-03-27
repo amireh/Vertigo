@@ -1,0 +1,77 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+system Seal/mp_seal_04
+ {
+    keep_local                                  true
+    technique 
+    {
+        position                                0 -200 0
+        visual_particle_quota                   3
+        material                                mp_seal_04
+        default_particle_width                  400
+        default_particle_height                 400
+        renderer                                Billboard
+        {
+            billboard_type                      perpendicular_self
+            billboard_rotation_type             vertex
+            common_direction                    0 1 0
+            common_up_vector                    0 0 1
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       15
+            angle                               0
+            time_to_live                        2
+            velocity                            0.0001
+            duration                            0.3
+            colour                              0.643137 0.945098 0.360784 1
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.5  1 1 1 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+    }
+    technique 
+    {
+        position                                0 -220 0
+        visual_particle_quota                   60
+        material                                mp_seal_flare
+        default_particle_width                  150
+        default_particle_height                 150
+        renderer                                Billboard
+        {
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       20
+            angle                               0
+            time_to_live                        dyn_random
+            {
+                min                             1
+                max                             1.5
+            }
+            velocity                            dyn_random
+            {
+                min                             80
+                max                             160
+            }
+            duration                            1
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.2  0.929412 0.513726 0.376471 1
+            time_colour                         1    0 0 0 1
+        }
+    }
+ }

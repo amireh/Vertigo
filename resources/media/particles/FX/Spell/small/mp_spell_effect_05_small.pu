@@ -1,0 +1,118 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+system Spell/mp_spell_effect_05
+{
+    keep_local                                  true
+    scale_velocity                              0.001
+    scale                                       0.001 0.001 0.001
+    technique 
+    {
+        visual_particle_quota                   140
+        material                                mp_spell_flare_03
+        default_particle_width                  100
+        default_particle_height                 100
+        renderer                                Billboard
+        {
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Circle 
+        {
+            emission_rate                       50
+            time_to_live                        dyn_random
+            {
+                min                             2
+                max                             3
+            }
+            velocity                            dyn_random
+            {
+                min                             1
+                max                             5
+            }
+            duration                            2.8
+            radius                              150
+            step                                0.16
+            emit_random                         false
+            normal                              0 0 1
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.2  0.423529 0 1 1
+            time_colour                         1    0 0 0 1
+        }
+        affector                                Vortex 
+        {
+            rotation_axis                       0 1 0
+            rotation_speed                      dyn_curved_linear
+            {
+                control_point                   0 2
+                control_point                   3 6
+            }
+        }
+        observer                                OnTime 
+        {
+            observe_until_event                 true
+            handler                             DoStopSystem 
+            {
+            }
+            since_start_system                  true
+            on_time                             greater_than 6
+        }
+    }
+    technique 
+    {
+        visual_particle_quota                   60
+        material                                mp_spell_flare_03
+        default_particle_width                  150
+        default_particle_height                 150
+        renderer                                Billboard
+        {
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       20
+            angle                               0
+            time_to_live                        dyn_random
+            {
+                min                             1
+                max                             1.5
+            }
+            velocity                            dyn_random
+            {
+                min                             80
+                max                             160
+            }
+            duration                            3
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       20
+            angle                               0
+            time_to_live                        dyn_random
+            {
+                min                             1
+                max                             1.5
+            }
+            velocity                            dyn_random
+            {
+                min                             80
+                max                             160
+            }
+            duration                            3
+            direction                           0 -1 0
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.2  0.592157 0.321569 0.678431 1
+            time_colour                         1    0 0 0 1
+        }
+    }
+}

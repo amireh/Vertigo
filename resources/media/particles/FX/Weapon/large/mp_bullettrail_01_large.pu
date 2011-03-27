@@ -1,0 +1,42 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+system Weapon/mp_bullettrail_01
+{
+    technique 
+    {
+        visual_particle_quota                   31
+        material                                BaseWhite
+        renderer                                Box
+        {
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       dyn_random
+            {
+                min                             5
+                max                             15
+            }
+            angle                               1
+            velocity                            10000
+            particle_width                      2
+            particle_height                     2
+            particle_depth                      dyn_random
+            {
+                min                             5
+                max                             200
+            }
+            position                            0 0 -100
+            direction                           0 0 -1
+        }
+        affector                                LinearForce 
+        {
+            force_vector                        0 -500 0
+        }
+    }
+}

@@ -1,0 +1,83 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+system Weapon/mp_bullettrail_02
+{
+    technique 
+    {
+        position                                0 0 -200
+        visual_particle_quota                   1
+        material                                BaseWhite
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Point BulletTechnique1Emitter
+        {
+            emission_rate                       3
+            angle                               0
+            time_to_live                        2
+            velocity                            4000
+            direction                           0 0 -1
+            emits                               technique_particle BulletTechnique1
+        }
+    }
+    technique BulletTechnique1
+    {
+        keep_local                              true
+        visual_particle_quota                   1
+        emitted_technique_quota                 2
+        material                                mp_weapon_trail_lightred
+        default_particle_width                  15
+        default_particle_height                 220
+        default_particle_depth                  15
+        renderer                                Entity
+        {
+            mesh_name                           mp_weapon_bullet.mesh
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       1
+            angle                               0
+            velocity                            0
+            direction                           0 0 0
+            orientation                         0.707107 0.707107 0 0
+            force_emission                      true
+        }
+        emitter                                 Point BulletTechnique2Emitter
+        {
+            emission_rate                       1
+            angle                               0
+            velocity                            0
+            direction                           0 0 0
+            emits                               technique_particle BulletTechnique2
+            force_emission                      true
+        }
+    }
+    technique BulletTechnique2
+    {
+        keep_local                              true
+        visual_particle_quota                   1
+        material                                mp_weapon_trail_red
+        default_particle_width                  5
+        default_particle_height                 200
+        default_particle_depth                  5
+        renderer                                Entity
+        {
+            mesh_name                           mp_weapon_bullet.mesh
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       1
+            angle                               0
+            velocity                            0
+            direction                           0 0 0
+            orientation                         0.707107 0.707107 0 0
+            force_emission                      true
+        }
+    }
+}

@@ -1,0 +1,80 @@
+system Flare/mp_flare_06
+ {
+    keep_local                                  true
+    scale_velocity                              0.001
+    scale                                       0.001 0.001 0.001
+    technique 
+    {
+        material                                mp_flare_02
+        renderer                                Billboard
+        {
+            render_queue_group                  51
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       5
+            time_to_live                        100
+            velocity                            0
+            all_particle_dimensions             dyn_random
+            {
+                min                             90
+                max                             200
+            }
+            colour                              0.992157 0.639216 0.376471 1
+            force_emission                      true
+        }
+        affector                                TextureRotator 
+        {
+            use_own_rotation                    true
+            rotation                            dyn_random
+            {
+                min                             -4
+                max                             4
+            }
+            rotation_speed                      dyn_random
+            {
+                min                             -3
+                max                             3
+            }
+        }
+    }
+    technique 
+    {
+        visual_particle_quota                   8
+        material                                mp_flare_ring
+        default_particle_width                  200
+        default_particle_height                 200
+        renderer                                Billboard
+        {
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       7
+            time_to_live                        100
+            velocity                            0
+            all_particle_dimensions             dyn_random
+            {
+                min                             50
+                max                             150
+            }
+            colour                              0.980392 1 0.733333 1
+            force_emission                      true
+        }
+        affector                                TextureRotator 
+        {
+            use_own_rotation                    true
+            rotation                            dyn_random
+            {
+                min                             -3
+                max                             3
+            }
+            rotation_speed                      dyn_random
+            {
+                min                             -3
+                max                             3
+            }
+        }
+    }
+ }

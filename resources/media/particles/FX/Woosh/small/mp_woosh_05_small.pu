@@ -1,0 +1,55 @@
+system Woosh/mp_woosh_05
+ {
+    keep_local                                  true
+    scale_velocity                              0.001
+    scale                                       0.001 0.001 0.001
+    technique 
+    {
+        position                                0 -200 -200
+        visual_particle_quota                   1
+        material                                mp_woosh_circle_03
+        renderer                                Billboard
+        {
+            billboard_type                      perpendicular_self
+            billboard_rotation_type             vertex
+            common_direction                    0 1 0
+            common_up_vector                    0 0 1
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       1
+            angle                               0
+            time_to_live                        0.4
+            velocity                            0.0001
+            colour                              1 0.533333 0.0666667 1
+            force_emission                      true
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.4  1 1 1 1
+            time_colour                         0.5  1 1 1 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+        affector                                Scale 
+        {
+            xyz_scale                           3000
+        }
+        affector                                TextureRotator 
+        {
+            rotation                            dyn_random
+            {
+                min                             -3
+                max                             3
+            }
+            rotation_speed                      0
+        }
+        observer                                OnClear 
+        {
+            handler                             DoStopSystem 
+            {
+            }
+        }
+    }
+ }

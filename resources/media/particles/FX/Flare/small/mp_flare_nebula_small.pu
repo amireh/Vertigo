@@ -1,0 +1,47 @@
+system Flare/mp_nebula
+ {
+    scale_velocity                              0.001
+    scale                                       0.001 0.001 0.001
+    technique 
+    {
+        visual_particle_quota                   60
+        material                                mp_flare_01
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Box 
+        {
+            emission_rate                       30
+            angle                               360
+            time_to_live                        dyn_random
+            {
+                min                             1
+                max                             4
+            }
+            velocity                            dyn_random
+            {
+                min                             2
+                max                             5
+            }
+            all_particle_dimensions             dyn_random
+            {
+                min                             300
+                max                             1000
+            }
+            start_colour_range                  1 1 1 1
+            end_colour_range                    0 0 0 1
+            colour                              0 0.576471 0.388235 1
+            box_width                           500
+            box_height                          500
+            box_depth                           500
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.2  0.5 0.5 0.5 1
+            time_colour                         0.8  0.5 0.5 0.5 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+    }
+ }

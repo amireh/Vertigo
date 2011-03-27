@@ -1,0 +1,99 @@
+system Spell/mp_spiderweb
+ {
+    keep_local                                  true
+    scale_velocity                              0.001
+    scale                                       0.001 0.001 0.001
+    technique 
+    {
+        position                                0 -200 -150
+        visual_particle_quota                   0
+        emitted_technique_quota                 40
+        material                                BaseWhite
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Circle Base
+        {
+            emission_rate                       40
+            time_to_live                        10
+            velocity                            0
+            direction                           0 0 0
+            emits                               technique_particle LightningTechnique_1
+            radius                              200
+            step                                0.2
+            emit_random                         false
+        }
+        observer                                OnTime 
+        {
+            observe_until_event                 true
+            handler                             DoEnableComponent 
+            {
+                enable_component                emitter_component Base false
+            }
+            since_start_system                  true
+            on_time                             greater_than 5
+        }
+        observer                                OnClear 
+        {
+            handler                             DoStopSystem 
+            {
+            }
+        }
+    }
+    technique LightningTechnique_1
+    {
+        visual_particle_quota                   30
+        emitted_technique_quota                 1
+        material                                mp_spell_lightning_2x2
+        default_particle_width                  10
+        default_particle_height                 10
+        renderer                                Billboard
+        {
+            texture_coords_rows                 2
+            texture_coords_columns              2
+            billboard_type                      perpendicular_common
+            billboard_origin                    top_center
+            billboard_rotation_type             vertex
+            common_direction                    0 1 0
+            common_up_vector                    0 0 1
+        }
+        emitter                                 Point LightningEmitter_1
+        {
+            time_to_live                        dyn_random
+            {
+                min                             1
+                max                             2
+            }
+            velocity                            0
+            direction                           0 0 0
+        }
+        affector                                TextureRotator 
+        {
+            rotation                            dyn_random
+            {
+                min                             0
+                max                             6.3
+            }
+            rotation_speed                      0
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0.768627 0.443137 0
+            time_colour                         0.2  0 0.768627 0.443137 1
+            time_colour                         1    0.392157 0.168627 0.992157 0
+        }
+        affector                                Scale 
+        {
+            xyz_scale                           100
+        }
+        observer                                OnTime 
+        {
+            handler                             DoEnableComponent 
+            {
+                enable_component                emitter_component LightningEmitter_1 false
+            }
+            since_start_system                  true
+            on_time                             greater_than 4
+        }
+    }
+ }

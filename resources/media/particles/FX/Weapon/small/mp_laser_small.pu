@@ -1,0 +1,109 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+system Weapon/mp_laser
+{
+    scale_velocity                              0.001
+    scale                                       0.001 0.001 0.001
+    technique 
+    {
+        position                                0 0 -2000
+        keep_local                              true
+        visual_particle_quota                   1
+        material                                mp_weapon_trail_red
+        default_particle_width                  5
+        default_particle_height                 2000
+        default_particle_depth                  5
+        renderer                                Entity
+        {
+            mesh_name                           mp_weapon_bullet.mesh
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       1
+            angle                               0
+            velocity                            0
+            direction                           0 0 0
+            orientation                         0.707107 0.707107 0 0
+            force_emission                      true
+        }
+        affector                                Scale 
+        {
+            x_scale                             dyn_oscillate
+            {
+                oscillate_frequency             15
+                oscillate_phase                 0
+                oscillate_base                  0
+                oscillate_amplitude             10
+                oscillate_type                  sine
+            }
+            y_scale                             dyn_oscillate
+            {
+                oscillate_frequency             1
+                oscillate_phase                 0
+                oscillate_base                  0
+                oscillate_amplitude             1
+                oscillate_type                  sine
+            }
+            z_scale                             dyn_oscillate
+            {
+                oscillate_frequency             15
+                oscillate_phase                 0
+                oscillate_base                  0
+                oscillate_amplitude             10
+                oscillate_type                  sine
+            }
+        }
+    }
+    technique 
+    {
+        position                                0 0 -2000
+        keep_local                              true
+        visual_particle_quota                   1
+        material                                mp_weapon_laser_jitter
+        default_particle_width                  7
+        default_particle_height                 2000
+        default_particle_depth                  7
+        renderer                                Entity
+        {
+            mesh_name                           mp_weapon_bullet.mesh
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       1
+            angle                               0
+            velocity                            0
+            direction                           0 0 0
+            orientation                         0.707107 0.707107 0 0
+            force_emission                      true
+        }
+        affector                                Scale 
+        {
+            x_scale                             dyn_oscillate
+            {
+                oscillate_frequency             9
+                oscillate_phase                 0
+                oscillate_base                  0
+                oscillate_amplitude             20
+                oscillate_type                  sine
+            }
+            z_scale                             dyn_oscillate
+            {
+                oscillate_frequency             9
+                oscillate_phase                 0
+                oscillate_base                  0
+                oscillate_amplitude             20
+                oscillate_type                  sine
+            }
+        }
+        affector                                TextureRotator 
+        {
+            rotation_speed                      5
+        }
+    }
+ }

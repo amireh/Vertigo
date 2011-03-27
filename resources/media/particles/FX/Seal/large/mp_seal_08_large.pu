@@ -1,0 +1,94 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+system Seal/mp_seal_08
+ {
+    keep_local                                  true
+    technique 
+    {
+        position                                0 -200 0
+        visual_particle_quota                   3
+        material                                mp_seal_08
+        default_particle_width                  400
+        default_particle_height                 400
+        renderer                                Billboard
+        {
+            billboard_type                      perpendicular_self
+            billboard_rotation_type             vertex
+            common_direction                    0 1 0
+            common_up_vector                    0 0 1
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       15
+            angle                               0
+            time_to_live                        2
+            velocity                            0.0001
+            duration                            0.3
+            colour                              0.168627 0.490196 0.976471 1
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.5  1 1 1 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+        observer                                OnTime 
+        {
+            handler                             DoStopSystem 
+            {
+            }
+            since_start_system                  true
+            on_time                             greater_than 3
+        }
+    }
+    technique 
+    {
+        position                                0 -200 0
+        visual_particle_quota                   1000
+        emitted_emitter_quota                   100
+        material                                mp_seal_flare
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Box 
+        {
+            emission_rate                       100
+            angle                               0
+            time_to_live                        dyn_random
+            {
+                min                             0.4
+                max                             1
+            }
+            velocity                            dyn_random
+            {
+                min                             10
+                max                             500
+            }
+            duration                            1
+            all_particle_dimensions             dyn_random
+            {
+                min                             80
+                max                             120
+            }
+            start_colour_range                  0.823529 0.32549 0.67451 1
+            end_colour_range                    0.00392157 0.772549 0.694118 1
+            box_width                           200
+            box_height                          1
+            box_depth                           200
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.5  1 1 1 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+    }
+ }

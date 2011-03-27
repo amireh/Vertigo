@@ -1,0 +1,63 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+system Flare/mp_flare_01
+ {
+    technique 
+    {
+        visual_particle_quota                   160
+        material                                mp_flare_01
+        default_particle_width                  1
+        default_particle_height                 1
+        default_particle_depth                  1
+        renderer                                Billboard
+        {
+            billboard_rotation_type             vertex
+            common_direction                    0 1 0
+            common_up_vector                    0 0 1
+        }
+        emitter                                 Box 
+        {
+            emission_rate                       5
+            angle                               0
+            velocity                            0
+            emits                               emitter_particle PointEmitter
+            colour                              0 0 0 1
+            box_height                          1
+        }
+        emitter                                 Point PointEmitter
+        {
+            emission_rate                       20
+            angle                               0
+            time_to_live                        dyn_random
+            {
+                min                             1
+                max                             2
+            }
+            velocity                            dyn_random
+            {
+                min                             10
+                max                             50
+            }
+            duration                            1
+            all_particle_dimensions             dyn_random
+            {
+                min                             5
+                max                             50
+            }
+            colour                              0.996078 0.372549 0.843137 1
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.5  1 1 1 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+    }
+ }

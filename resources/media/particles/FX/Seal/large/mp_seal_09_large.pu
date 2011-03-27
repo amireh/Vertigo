@@ -1,0 +1,54 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+system Seal/mp_seal_09
+ {
+    keep_local                                  true
+    technique 
+    {
+        position                                0 -200 0
+        visual_particle_quota                   3
+        material                                mp_seal_09
+        default_particle_width                  400
+        default_particle_height                 400
+        renderer                                Billboard
+        {
+            billboard_type                      perpendicular_self
+            billboard_rotation_type             vertex
+            common_direction                    0 1 0
+            common_up_vector                    0 0 1
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       15
+            angle                               0
+            time_to_live                        2
+            velocity                            0.0001
+            duration                            0.3
+            colour                              0.882353 0 0.0196078 1
+            force_emission                      true
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.5  1 1 1 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+        affector                                TextureRotator 
+        {
+            rotation_speed                      2
+        }
+        observer                                OnClear 
+        {
+            handler                             DoStopSystem 
+            {
+            }
+        }
+    }
+ }

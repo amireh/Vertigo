@@ -1,0 +1,88 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+system Explosion/mp_dirt_02
+{
+    scale_velocity                              0.001
+    scale                                       0.001 0.001 0.001
+    technique 
+    {
+        visual_particle_quota                   200
+        material                                mp_explosion_smoke_03
+        renderer                                Billboard
+        {
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       500
+            time_to_live                        dyn_random
+            {
+                min                             1
+                max                             3
+            }
+            velocity                            dyn_random
+            {
+                min                             120
+                max                             1000
+            }
+            all_particle_dimensions             dyn_random
+            {
+                min                             50
+                max                             100
+            }
+            colour                              0.34902 0.27451 0.258824 1
+            force_emission                      true
+        }
+        affector                                TextureRotator 
+        {
+            use_own_rotation                    true
+            rotation                            dyn_random
+            {
+                min                             -0.5
+                max                             0.5
+            }
+            rotation_speed                      0
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 1 1 1
+            time_colour                         1    1 1 1 0
+            colour_operation                    multiply
+        }
+        affector                                ScaleVelocity 
+        {
+            velocity_scale                      dyn_curved_linear
+            {
+                control_point                   0 -2000
+                control_point                   1 0
+            }
+            since_start_system                  true
+        }
+        affector                                Scale 
+        {
+            x_scale                             dyn_random
+            {
+                min                             75
+                max                             150
+            }
+            y_scale                             dyn_random
+            {
+                min                             250
+                max                             500
+            }
+            since_start_system                  true
+        }
+        observer                                OnClear 
+        {
+            handler                             DoStopSystem 
+            {
+            }
+        }
+    }
+ }

@@ -1,0 +1,107 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+system Seal/mp_seal_06
+{
+    keep_local                                  true
+    scale_velocity                              0.001
+    scale                                       0.001 0.001 0.001
+    technique 
+    {
+        position                                0 -200 -100
+        visual_particle_quota                   3
+        material                                mp_seal_06
+        default_particle_width                  400
+        default_particle_height                 400
+        renderer                                Billboard
+        {
+            billboard_type                      perpendicular_self
+            billboard_rotation_type             vertex
+            common_direction                    0 1 0
+            common_up_vector                    0 0 1
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       15
+            angle                               0
+            time_to_live                        2
+            velocity                            0.0001
+            duration                            0.3
+            colour                              0.290196 0.411765 0.172549 1
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.5  1 1 1 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+        observer                                OnTime 
+        {
+            observe_until_event                 true
+            handler                             DoStopSystem 
+            {
+            }
+            since_start_system                  true
+            on_time                             greater_than 3
+        }
+    }
+    technique 
+    {
+        position                                0 -200 -100
+        visual_particle_quota                   400
+        emitted_emitter_quota                   100
+        material                                mp_seal_flare
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Point PointEmitter
+        {
+            emission_rate                       30
+            angle                               0
+            time_to_live                        dyn_random
+            {
+                min                             0.5
+                max                             1
+            }
+            velocity                            dyn_random
+            {
+                min                             10
+                max                             500
+            }
+            duration                            1
+            all_particle_dimensions             dyn_random
+            {
+                min                             80
+                max                             120
+            }
+            colour                              0 0 0 1
+        }
+        emitter                                 Circle CircleEmitter
+        {
+            emission_rate                       16
+            velocity                            0
+            emits                               emitter_particle PointEmitter
+            force_emission                      true
+            radius                              150
+            step                                0.4
+            emit_random                         false
+            normal                              0 1 0
+        }
+        affector                                Scale 
+        {
+            xyz_scale                           -30
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.5  0.494118 0.996078 0.160784 1
+            time_colour                         1    0 0 0 1
+        }
+    }
+ }

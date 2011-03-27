@@ -1,0 +1,63 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+system Flare/mp_flare_07
+ {
+    keep_local                                  true
+    technique 
+    {
+        visual_particle_quota                   55
+        emitted_emitter_quota                   100
+        material                                mp_flare_streak_02
+        default_particle_width                  300
+        default_particle_height                 300
+        renderer                                Billboard
+        {
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Circle CircleEmitter
+        {
+            emission_rate                       50
+            velocity                            0
+            colour                              0.301961 0.984314 0.984314 1
+            force_emission                      true
+            radius                              180
+            step                                0.15
+            emit_random                         false
+            normal                              0 1 0
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 1 1 1
+            time_colour                         0.5  1 1 1 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+        affector                                Vortex 
+        {
+            rotation_axis                       0 1 0
+            rotation_speed                      -6
+        }
+        affector                                TextureRotator 
+        {
+            use_own_rotation                    true
+            rotation                            dyn_random
+            {
+                min                             -3
+                max                             3
+            }
+            rotation_speed                      -6
+        }
+        observer                                OnClear 
+        {
+            handler                             DoStopSystem 
+            {
+            }
+        }
+    }
+ }

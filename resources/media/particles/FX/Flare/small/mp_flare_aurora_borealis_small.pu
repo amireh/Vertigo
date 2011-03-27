@@ -1,0 +1,110 @@
+system Flare/mp_aurora_borealis
+ {
+    scale_velocity                              0.001
+    scale                                       0.001 0.001 0.001
+    technique 
+    {
+        visual_particle_quota                   60
+        material                                mp_flare_01
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Box 
+        {
+            emission_rate                       30
+            angle                               360
+            time_to_live                        dyn_random
+            {
+                min                             3
+                max                             4
+            }
+            velocity                            dyn_random
+            {
+                min                             2
+                max                             5
+            }
+            duration                            2
+            all_particle_dimensions             dyn_random
+            {
+                min                             300
+                max                             400
+            }
+            colour                              0 0.576471 0.388235 1
+            box_width                           200
+            box_height                          300
+            box_depth                           200
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.2  0.5 0.5 0.5 1
+            time_colour                         0.8  0.5 0.5 0.5 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+    }
+    technique 
+    {
+        visual_particle_quota                   100
+        material                                mp_flare_05
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Box 
+        {
+            emission_rate                       dyn_curved_linear
+            {
+                control_point                   0 0
+                control_point                   0.5 0
+                control_point                   2 200
+                control_point                   3 0
+            }
+            angle                               360
+            time_to_live                        dyn_random
+            {
+                min                             0.3
+                max                             1
+            }
+            velocity                            dyn_random
+            {
+                min                             2
+                max                             5
+            }
+            duration                            3
+            all_particle_dimensions             dyn_random
+            {
+                min                             2
+                max                             10
+            }
+            box_width                           180
+            box_height                          280
+            box_depth                           180
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.1  0.5 0.5 0.5 1
+            time_colour                         0.6  0.5 0.5 0.5 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+        affector                                Scale 
+        {
+            xyz_scale                           dyn_curved_linear
+            {
+                control_point                   0 300
+                control_point                   0.2 10
+                control_point                   1 0
+            }
+        }
+        observer                                OnTime 
+        {
+            observe_until_event                 true
+            handler                             DoStopSystem 
+            {
+            }
+            since_start_system                  true
+            on_time                             greater_than 6
+        }
+    }
+ }

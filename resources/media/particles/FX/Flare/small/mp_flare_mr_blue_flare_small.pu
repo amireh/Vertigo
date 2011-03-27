@@ -1,0 +1,47 @@
+system Flare/mp_mr_blue_flare
+ {
+    keep_local                                  true
+    scale_velocity                              0.001
+    scale                                       0.001 0.001 0.001
+    technique 
+    {
+        visual_particle_quota                   12
+        material                                mp_flare_04
+        default_particle_width                  5
+        default_particle_height                 5
+        renderer                                Billboard
+        {
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       20
+            time_to_live                        dyn_random
+            {
+                min                             0.2
+                max                             0.6
+            }
+            velocity                            0
+            direction                           0 0 0
+            colour                              0.203922 0.305882 0.996078 1
+        }
+        affector                                Scale 
+        {
+            xyz_scale                           dyn_curved_linear
+            {
+                control_point                   0 1500
+                control_point                   1 -1500
+            }
+        }
+        affector                                TextureRotator 
+        {
+            use_own_rotation                    true
+            rotation                            dyn_random
+            {
+                min                             -3
+                max                             3
+            }
+            rotation_speed                      0
+        }
+    }
+ }

@@ -1,0 +1,77 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+system Nature/mp_snow
+{
+    scale_velocity                              0.001
+    scale                                       0.001 0.001 0.001
+    technique 
+    {
+        position                                0 500 0
+        material                                mp_nature_snow
+        renderer                                Billboard
+        {
+            texture_coords_rows                 2
+            texture_coords_columns              2
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Box 
+        {
+            emission_rate                       100
+            time_to_live                        dyn_random
+            {
+                min                             5
+                max                             8
+            }
+            velocity                            dyn_random
+            {
+                min                             100
+                max                             200
+            }
+            all_particle_dimensions             dyn_random
+            {
+                min                             3
+                max                             7
+            }
+            direction                           0 -1 0
+            end_texture_coords_range            3
+            box_width                           1000
+            box_height                          5
+            box_depth                           1000
+        }
+        affector                                Randomiser 
+        {
+            max_deviation_x                     10
+            max_deviation_y                     2
+            max_deviation_z                     10
+            time_step                           0.05
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.2  1 1 1 1
+            time_colour                         0.8  1 1 1 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+        affector                                TextureRotator 
+        {
+            use_own_rotation                    true
+            rotation                            dyn_random
+            {
+                min                             -3
+                max                             3
+            }
+            rotation_speed                      dyn_random
+            {
+                min                             -5
+                max                             5
+            }
+        }
+    }
+ }

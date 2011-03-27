@@ -1,0 +1,50 @@
+Particle Universe Mediapack 1 License
+=====================================
+
+Copyright (C) 2010 Henry van Merode. All rights reserved.
+
+
+General.
+========
+This document is an agreement between Henry van Merode ("Licensor") and Licensee regarding the use of the
+"Particle Universe Mediapack 1" by Licensee in one or more products.
+
+
+Transfer.
+=========
+Licensee may not rent, lease, redistribute, sublicense, or otherwise transfer the limited rights granted by this 
+license.
+
+
+Copyright and distribution.
+===========================
+All code and content in the Particle Universe Mediapack 1 package is protected by copyright and other intellectual property 
+laws and by international treaties. Both code and content of the Particle Universe Mediapack 1 package is copyright (C) of Licensor.
+Licensee acknowledges and agrees that he is not acquiring title to any intellectual property rights of 
+both code and content of the Particle Universe Mediapack 1 package. Licensee may improve the code and content and use 
+the modified
+versions in a product.
+
+
+Disclaimer of warranty.
+=======================
+Licensee expressly acknowledge and agrees that use of the Particle Universe Mediapack 1 package is at licensees sole risk and that 
+the entire risk as to satisfactory quality, performance, accuracy and effort is with the licensee. The code and content
+in the Particle Universe Mediapack 1 package are provided "as is" and "as available" and without ant warranty or representation
+whatsoever, express or implied. Licensor specifically disclaims any implied warranties of merchantability,
+title, and fitness for a particular purpose.
+
+
+Limitation of Liability.
+=======================
+To the extend not prohibited by law, in no event shall Licensor be liable for personal injury, or any incidental, 
+special, indirect or consequential damages whatsoever, including, without limitation, damages for loss of
+profits, loss of data, business interruption, or any other commercial damages or losses, arising out of or related
+to your use of inability to use the Particle Universe Mediapack 1 product, however caused, regardless of the theory of liability
+(contract, tort or otherwise) and even if Licensor has been advised of the possibility of such damages.
+
+
+Agreement.
+===================================
+This agreement constitutes the complete agreement concerning this license. Any change to this agreement must be made 
+in writing. 

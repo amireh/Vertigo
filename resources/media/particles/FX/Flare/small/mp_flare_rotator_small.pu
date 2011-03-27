@@ -1,0 +1,70 @@
+system Flare/mp_rotator
+ {
+    keep_local                                  true
+    fast_forward                                1 0.1
+    scale_velocity                              0.001
+    scale                                       0.001 0.001 0.001
+    technique 
+    {
+        visual_particle_quota                   300
+        emitted_emitter_quota                   60
+        material                                mp_flare_04
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Circle CircleEmitter
+        {
+            emission_rate                       50
+            time_to_live                        1
+            emits                               emitter_particle PointEmitter
+            auto_direction                      true
+            force_emission                      true
+            step                                0.2
+        }
+        emitter                                 Box PointEmitter
+        {
+            angle                               0
+            time_to_live                        10
+            velocity                            0
+            duration                            1
+            all_particle_dimensions             dyn_random
+            {
+                min                             5
+                max                             10
+            }
+            colour                              0.996078 0.486275 0.180392 1
+            box_width                           30
+            box_height                          60
+            box_depth                           30
+        }
+        affector                                Vortex 
+        {
+            rotation_axis                       0 1 0
+            rotation_speed                      0.6
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 1 1 1
+            time_colour                         0.9  1 1 1 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+        affector                                Scale 
+        {
+            xyz_scale                           dyn_oscillate
+            {
+                oscillate_frequency             10
+                oscillate_phase                 0
+                oscillate_base                  0
+                oscillate_amplitude             100
+                oscillate_type                  sine
+            }
+        }
+        observer                                OnClear 
+        {
+            handler                             DoStopSystem 
+            {
+            }
+        }
+    }
+ }

@@ -1,0 +1,43 @@
+system Flare/mp_lightning
+ {
+    keep_local                                  true
+    scale_velocity                              0.001
+    scale                                       0.001 0.001 0.001
+    technique 
+    {
+        visual_particle_quota                   5
+        material                                mp_flare_lightning_bolt_1x2
+        default_particle_width                  200
+        default_particle_height                 200
+        renderer                                Billboard
+        {
+            texture_coords_columns              2
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       9
+            time_to_live                        dyn_random
+            {
+                min                             0.3
+                max                             0.6
+            }
+            velocity                            0
+            duration                            0.7
+            end_texture_coords_range            1
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 1 1 1
+            time_colour                         0.1  1 1 1 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+        observer                                OnClear 
+        {
+            handler                             DoStopSystem 
+            {
+            }
+        }
+    }
+ }

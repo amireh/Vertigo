@@ -1,0 +1,76 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+system Spell/mp_spell_effect_07
+ {
+    keep_local                                  true
+    technique 
+    {
+        visual_particle_quota                   10
+        material                                mp_spell_flare_03
+        default_particle_width                  100
+        default_particle_height                 100
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       3
+            angle                               0
+            velocity                            500
+            duration                            2
+            start_colour_range                  0.309804 0.607843 0.235294 1
+            end_colour_range                    0.545098 0.87451 0.47451 1
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       3
+            angle                               0
+            velocity                            500
+            duration                            2
+            direction                           0 -1 0
+            start_colour_range                  0.309804 0.607843 0.235294 1
+            end_colour_range                    0.545098 0.87451 0.47451 1
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.1  1 1 1 1
+            time_colour                         0.7  1 1 1 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+        affector                                ScaleVelocity 
+        {
+            velocity_scale                      -800
+            stop_at_flip                        true
+        }
+        affector                                Vortex RotationAffector
+        {
+            enabled                             false
+            rotation_axis                       1 1 1
+            rotation_speed                      10
+        }
+        observer                                OnClear 
+        {
+            handler                             DoStopSystem 
+            {
+            }
+        }
+        observer                                OnTime 
+        {
+            observe_until_event                 true
+            handler                             DoEnableComponent 
+            {
+                enable_component                affector_component RotationAffector true
+            }
+            since_start_system                  true
+            on_time                             greater_than 2.5
+        }
+    }
+ }

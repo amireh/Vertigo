@@ -1,0 +1,92 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+system Spell/mp_spell_effect_02
+{
+    keep_local                                  true
+    technique 
+    {
+        visual_particle_quota                   20
+        material                                mp_spell_stripe
+        default_particle_width                  200
+        default_particle_height                 200
+        default_particle_depth                  200
+        renderer                                Sphere
+        {
+        }
+        emitter                                 Point 
+        {
+            angle                               0
+            time_to_live                        0.5
+            velocity                            300
+            duration                            1
+            colour                              0.992157 0.101961 0 1
+        }
+        emitter                                 Point 
+        {
+            angle                               0
+            time_to_live                        0.5
+            velocity                            300
+            duration                            1
+            direction                           0 -1 0
+            colour                              0.992157 0.101961 0 1
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 1 1 1
+            time_colour                         0.5  1 1 1 1
+            time_colour                         1    1 1 1 0
+            colour_operation                    multiply
+        }
+    }
+    technique 
+    {
+        visual_particle_quota                   170
+        material                                mp_spell_flare_03
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Circle 
+        {
+            emission_rate                       200
+            angle                               180
+            time_to_live                        dyn_random
+            {
+                min                             0.5
+                max                             1
+            }
+            velocity                            dyn_random
+            {
+                min                             20
+                max                             50
+            }
+            duration                            1
+            all_particle_dimensions             dyn_random
+            {
+                min                             20
+                max                             80
+            }
+            direction                           0 -1 0
+            colour                              0.992157 0.101961 0 1
+            normal                              0 1 0
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 1 1 1
+            time_colour                         0.5  1 1 1 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+        observer                                OnClear 
+        {
+            handler                             DoStopSystem 
+            {
+            }
+        }
+    }
+}

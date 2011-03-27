@@ -1,0 +1,119 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+system Woosh/mp_woosh_14
+ {
+    technique 
+    {
+        visual_particle_quota                   61
+        material                                mp_woosh_glow_01
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Circle 
+        {
+            emission_rate                       60
+            angle                               0
+            time_to_live                        dyn_random
+            {
+                min                             0.05
+                max                             0.2
+            }
+            velocity                            400
+            all_particle_dimensions             dyn_random
+            {
+                min                             30
+                max                             80
+            }
+            start_colour_range                  0.996078 0.611765 0.329412 1
+            end_colour_range                    0.996078 0.960784 0.572549 1
+            auto_direction                      true
+            force_emission                      true
+            radius                              20
+        }
+        emitter                                 Point PointEmitter
+        {
+            emission_rate                       0
+            angle                               0
+            time_to_live                        dyn_random
+            {
+                min                             0.1
+                max                             0.2
+            }
+            velocity                            0
+            duration                            0.4
+            all_particle_dimensions             dyn_random
+            {
+                min                             30
+                max                             80
+            }
+            start_colour_range                  0.996078 0.611765 0.329412 1
+            end_colour_range                    0.996078 0.960784 0.572549 1
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.5  1 1 1 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+        observer                                OnExpire 
+        {
+            observe_interval                    0
+            handler                             DoPlacementParticle 
+            {
+                force_emitter                   PointEmitter
+                inherit_direction               true
+                inherit_colour                  true
+            }
+        }
+        observer                                OnExpire 
+        {
+            handler                             DoPlacementParticle 
+            {
+                force_emitter                   FlashEmitter
+            }
+        }
+        observer                                OnTime 
+        {
+            handler                             DoStopSystem 
+            {
+            }
+            since_start_system                  true
+            on_time                             greater_than 1
+        }
+    }
+    technique 
+    {
+        visual_particle_quota                   20
+        material                                mp_woosh_glow_01
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Point FlashEmitter
+        {
+            emission_rate                       0
+            angle                               0
+            time_to_live                        0.05
+            velocity                            0
+            all_particle_dimensions             dyn_random
+            {
+                min                             120
+                max                             200
+            }
+            start_colour_range                  1 1 1 1
+            end_colour_range                    0.992157 0.937255 0.258824 1
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 1 1 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+    }
+ }

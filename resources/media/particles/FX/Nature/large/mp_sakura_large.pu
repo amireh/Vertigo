@@ -1,0 +1,85 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+system Nature/mp_sakura
+ {
+    technique 
+    {
+        position                                0 500 0
+        visual_particle_quota                   100
+        material                                mp_nature_sakura
+        max_velocity                            100
+        renderer                                Billboard
+        {
+            billboard_type                      oriented_self
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Box 
+        {
+            angle                               0
+            time_to_live                        dyn_random
+            {
+                min                             10
+                max                             20
+            }
+            velocity                            dyn_random
+            {
+                min                             10
+                max                             30
+            }
+            all_particle_dimensions             dyn_random
+            {
+                min                             5
+                max                             10
+            }
+            direction                           0 -1 0
+            start_colour_range                  1 0.87451 0.980392 1
+            end_colour_range                    1 0.701961 1 1
+            box_width                           1000
+            box_height                          5
+            box_depth                           1000
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 1 1 0
+            time_colour                         0.2  1 1 1 1
+            time_colour                         0.8  1 1 1 1
+            time_colour                         1    1 1 1 0
+            colour_operation                    multiply
+        }
+        affector                                LinearForce 
+        {
+            force_vector                        0 -5 0
+        }
+        affector                                ForceField 
+        {
+            force                               100
+            octaves                             3
+            frequency                           4
+            amplitude                           4
+            persistence                         2
+            worldsize                           1000 1000 1000
+            movement                            1000 0 0
+            movement_frequency                  1
+        }
+        affector                                TextureRotator 
+        {
+            use_own_rotation                    true
+            rotation                            dyn_random
+            {
+                min                             -3
+                max                             3
+            }
+            rotation_speed                      dyn_random
+            {
+                min                             -3
+                max                             3
+            }
+        }
+    }
+ }

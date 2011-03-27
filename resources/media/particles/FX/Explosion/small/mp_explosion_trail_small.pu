@@ -1,0 +1,194 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+system Explosion/mp_trail
+{
+    scale_velocity                              0.001
+    scale                                       0.001 0.001 0.001
+    technique TrailTechnique
+    {
+        visual_particle_quota                   700
+        emitted_emitter_quota                   100
+        material                                mp_explosion_trail
+        renderer                                Billboard
+        {
+            render_queue_group                  51
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Point PointEmitter
+        {
+            emission_rate                       dyn_curved_linear
+            {
+                control_point                   0 300
+                control_point                   1 0
+            }
+            angle                               360
+            time_to_live                        dyn_random
+            {
+                min                             1
+                max                             2
+            }
+            velocity                            dyn_random
+            {
+                min                             5
+                max                             10
+            }
+            all_particle_dimensions             dyn_random
+            {
+                min                             30
+                max                             80
+            }
+            colour                              1 0.611765 0.258824 1
+        }
+        emitter                                 Box BaseEmitter
+        {
+            emission_rate                       50
+            angle                               30
+            time_to_live                        dyn_random
+            {
+                min                             1
+                max                             2
+            }
+            velocity                            dyn_random
+            {
+                min                             1300
+                max                             1500
+            }
+            duration                            0.1
+            emits                               emitter_particle PointEmitter
+            box_height                          10
+        }
+        affector                                ScaleVelocity 
+        {
+            enabled                             false
+            exclude_emitter                     PointEmitter 
+            velocity_scale                      dyn_curved_linear
+            {
+                control_point                   0 -4500
+                control_point                   1 500
+            }
+            since_start_system                  true
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 1 1 1
+            time_colour                         1    0 0 0 0
+            colour_operation                    multiply
+        }
+        affector                                Scale 
+        {
+            xyz_scale                           dyn_curved_linear
+            {
+                control_point                   -20 0
+                control_point                   1 -40
+            }
+            since_start_system                  true
+        }
+        affector                                TextureRotator 
+        {
+            use_own_rotation                    true
+            rotation                            dyn_random
+            {
+                min                             -3
+                max                             3
+            }
+            rotation_speed                      0
+        }
+        affector                                LinearForce 
+        {
+            exclude_emitter                     PointEmitter 
+            force_vector                        0 -1600 0
+        }
+        observer                                OnTime 
+        {
+            observe_until_event                 true
+            handler                             DoStopSystem 
+            {
+            }
+            since_start_system                  true
+            on_time                             greater_than 4
+        }
+    }
+    technique BlackSmokeTechnique
+    {
+        visual_particle_quota                   450
+        emitted_emitter_quota                   100
+        material                                mp_explosion_smoke_01
+        renderer                                Billboard
+        {
+            render_queue_group                  51
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Slave SmokeEmitter
+        {
+            emission_rate                       0
+            angle                               360
+            time_to_live                        dyn_random
+            {
+                min                             0.8
+                max                             0.1
+            }
+            velocity                            0
+            all_particle_dimensions             dyn_random
+            {
+                min                             40
+                max                             80
+            }
+            colour                              0.992157 0.443137 0.207843 1
+            master_technique_name               TrailTechnique
+            master_emitter_name                 PointEmitter
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 1 1 1
+            time_colour                         1    1 1 1 0
+            colour_operation                    multiply
+        }
+        affector                                Scale 
+        {
+            xyz_scale                           dyn_curved_linear
+            {
+                control_point                   0 100
+                control_point                   0.5 -100
+            }
+            since_start_system                  true
+        }
+    }
+    technique FlareTechnique
+    {
+        visual_particle_quota                   120
+        emitted_emitter_quota                   100
+        material                                mp_explosion_flare_01
+        renderer                                Billboard
+        {
+            render_queue_group                  51
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Slave FlareEmitter
+        {
+            emission_rate                       0
+            angle                               360
+            time_to_live                        0.1
+            velocity                            0
+            all_particle_dimensions             dyn_random
+            {
+                min                             100
+                max                             300
+            }
+            colour                              1 0.984314 0.976471 1
+            master_technique_name               TrailTechnique
+            master_emitter_name                 PointEmitter
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0.1 0.1 0.1 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+    }
+ }

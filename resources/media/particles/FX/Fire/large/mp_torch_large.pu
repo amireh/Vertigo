@@ -1,0 +1,63 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+system Fire/mp_torch
+{
+    technique 
+    {
+        visual_particle_quota                   20
+        material                                mp_fire_02
+        renderer                                Billboard
+        {
+            texture_coords_rows                 2
+            texture_coords_columns              2
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       30
+            angle                               5
+            time_to_live                        dyn_random
+            {
+                min                             0.4
+                max                             0.6
+            }
+            velocity                            dyn_random
+            {
+                min                             160
+                max                             180
+            }
+            all_particle_dimensions             dyn_random
+            {
+                min                             40
+                max                             60
+            }
+            end_texture_coords_range            3
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.3  1 0.45098 0.235294 1
+            time_colour                         0.5  1 0.45098 0.235294 1
+            time_colour                         1    0 0 0 1
+        }
+        affector                                Scale 
+        {
+            x_scale                             dyn_curved_linear
+            {
+                control_point                   0 10
+                control_point                   0.5 10
+                control_point                   1 -100
+            }
+            y_scale                             dyn_curved_linear
+            {
+                control_point                   0 500
+                control_point                   0.6 -100
+            }
+        }
+    }
+}

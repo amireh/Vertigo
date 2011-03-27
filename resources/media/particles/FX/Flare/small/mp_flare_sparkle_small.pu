@@ -1,0 +1,63 @@
+system Flare/mp_sparkle
+ {
+    keep_local                                  true
+    scale_velocity                              0.001
+    scale                                       0.001 0.001 0.001
+    technique 
+    {
+        visual_particle_quota                   120
+        material                                mp_flare_03
+        default_particle_width                  200
+        default_particle_height                 200
+        renderer                                Billboard
+        {
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       200
+            time_to_live                        dyn_random
+            {
+                min                             0.1
+                max                             0.8
+            }
+            velocity                            0
+            particle_width                      dyn_random
+            {
+                min                             30
+                max                             150
+            }
+            particle_height                     dyn_random
+            {
+                min                             5
+                max                             10
+            }
+            colour                              0.984314 0.92549 0.509804 1
+        }
+        affector                                TextureRotator 
+        {
+            use_own_rotation                    true
+            rotation                            dyn_random
+            {
+                min                             -4
+                max                             4
+            }
+            rotation_speed                      0
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.5  1 1 1 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+        affector                                Scale 
+        {
+            y_scale                             dyn_random
+            {
+                min                             200
+                max                             500
+            }
+        }
+    }
+ }

@@ -1,0 +1,80 @@
+system Woosh/mp_bolt
+ {
+    keep_local                                  true
+    scale_velocity                              0.001
+    scale                                       0.001 0.001 0.001
+    technique 
+    {
+        position                                0 -200 -200
+        material                                mp_woosh_bolt_1x2
+        renderer                                Billboard
+        {
+            texture_coords_columns              2
+            billboard_type                      perpendicular_self
+            billboard_rotation_type             vertex
+            common_direction                    0 1 0
+            common_up_vector                    0 0 1
+        }
+        emitter                                 Circle 
+        {
+            angle                               0
+            time_to_live                        dyn_random
+            {
+                min                             0.3
+                max                             0.6
+            }
+            velocity                            dyn_random
+            {
+                min                             600
+                max                             800
+            }
+            direction                           0 0 1
+            emits                               emitter_particle Bolt
+            auto_direction                      true
+            force_emission                      true
+            radius                              10
+        }
+        emitter                                 Box Bolt
+        {
+            emission_rate                       30
+            angle                               0
+            time_to_live                        dyn_random
+            {
+                min                             0.7
+                max                             1
+            }
+            velocity                            0.0001
+            all_particle_dimensions             dyn_curved_linear
+            {
+                control_point                   0 200
+                control_point                   1 0
+            }
+            end_texture_coords_range            1
+            colour                              0 0 0 0.00392157
+            box_width                           10
+            box_height                          0
+            box_depth                           10
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.3  1 1 1 1
+            time_colour                         1    0 0 0 1
+        }
+        affector                                TextureRotator 
+        {
+            rotation                            dyn_random
+            {
+                min                             -3
+                max                             3
+            }
+            rotation_speed                      0
+        }
+        observer                                OnClear 
+        {
+            handler                             DoStopSystem 
+            {
+            }
+        }
+    }
+ }

@@ -1,0 +1,137 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+system Seal/mp_seal_07
+{
+    keep_local                                  true
+    scale_velocity                              0.001
+    scale                                       0.001 0.001 0.001
+    technique 
+    {
+        position                                0 -200 -100
+        visual_particle_quota                   3
+        material                                mp_seal_07
+        default_particle_width                  400
+        default_particle_height                 400
+        renderer                                Billboard
+        {
+            billboard_type                      perpendicular_self
+            billboard_rotation_type             vertex
+            common_direction                    0 1 0
+            common_up_vector                    0 0 1
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       15
+            angle                               0
+            time_to_live                        2
+            velocity                            0.0001
+            duration                            0.3
+            colour                              0.87451 0.34902 0 1
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.5  1 1 1 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+        observer                                OnClear 
+        {
+            handler                             DoStopSystem 
+            {
+            }
+        }
+    }
+    technique 
+    {
+        position                                0 -200 -100
+        visual_particle_quota                   100
+        material                                mp_seal_flare
+        renderer                                Billboard
+        {
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Line 
+        {
+            emission_rate                       dyn_curved_linear
+            {
+                control_point                   0 300
+                control_point                   1.2 0
+            }
+            angle                               360
+            time_to_live                        dyn_random
+            {
+                min                             0.3
+                max                             0.5
+            }
+            velocity                            0
+            duration                            1
+            all_particle_dimensions             dyn_random
+            {
+                min                             60
+                max                             150
+            }
+            colour                              1 0.345098 0.12549 1
+            end                                 0 200 0
+            min_increment                       5
+            max_increment                       5
+            max_deviation                       10
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 1 1 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+    }
+    technique 
+    {
+        position                                0 -200 -100
+        visual_particle_quota                   20
+        material                                mp_seal_ribbon
+        renderer                                RibbonTrail
+        {
+            max_elements                        50
+            ribbontrail_length                  500
+            random_initial_colour               false
+            initial_colour                      0.980392 0.313726 0.0862745 1
+            colour_change                       0 0 0 1
+        }
+        emitter                                 Circle RibbonEmitter
+        {
+            emission_rate                       20
+            angle                               0
+            time_to_live                        dyn_random
+            {
+                min                             0.5
+                max                             1
+            }
+            velocity                            dyn_random
+            {
+                min                             50
+                max                             300
+            }
+            all_particle_dimensions             dyn_random
+            {
+                min                             50
+                max                             100
+            }
+            force_emission                      true
+        }
+        affector                                Vortex 
+        {
+            rotation_axis                       0 1 0
+            rotation_speed                      dyn_curved_linear
+            {
+                control_point                   0 30
+                control_point                   0.4 5
+            }
+        }
+    }
+ }

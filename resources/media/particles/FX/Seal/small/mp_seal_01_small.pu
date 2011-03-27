@@ -1,0 +1,107 @@
+system Seal/mp_seal_01
+ {
+    keep_local                                  true
+    scale_velocity                              0.001
+    scale                                       0.001 0.001 0.001
+    technique 
+    {
+        position                                0 -200 -100
+        visual_particle_quota                   3
+        material                                mp_seal_01
+        default_particle_width                  400
+        default_particle_height                 400
+        renderer                                Billboard
+        {
+            billboard_type                      perpendicular_self
+            billboard_rotation_type             vertex
+            common_direction                    0 1 0
+            common_up_vector                    0 0 1
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       15
+            angle                               0
+            time_to_live                        2
+            velocity                            0.0001
+            duration                            0.3
+            colour                              0.513726 0.160784 0.988235 1
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.5  1 1 1 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+        observer                                OnClear 
+        {
+            handler                             DoStopSystem 
+            {
+            }
+        }
+    }
+    technique 
+    {
+        position                                0 -200 -100
+        visual_particle_quota                   400
+        emitted_emitter_quota                   100
+        material                                mp_seal_arrow
+        renderer                                Billboard
+        {
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Circle CircleEmitter
+        {
+            emission_rate                       16
+            velocity                            0
+            emits                               emitter_particle PointEmitter
+            force_emission                      true
+            radius                              150
+            step                                0.628
+            emit_random                         false
+            normal                              0 1 0
+        }
+        emitter                                 Box PointEmitter
+        {
+            emission_rate                       8
+            angle                               0
+            time_to_live                        dyn_random
+            {
+                min                             0.5
+                max                             1
+            }
+            velocity                            dyn_random
+            {
+                min                             0.5
+                max                             1
+            }
+            duration                            1
+            particle_width                      dyn_random
+            {
+                min                             10
+                max                             20
+            }
+            particle_height                     dyn_random
+            {
+                min                             300
+                max                             600
+            }
+            colour                              0 0 0 1
+            box_width                           10
+            box_height                          1
+            box_depth                           10
+        }
+        affector                                Scale 
+        {
+            enabled                             false
+            xyz_scale                           -30
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.2  1 0.576471 0 1
+            time_colour                         0.8  0.482353 0.207843 0.992157 1
+            time_colour                         1    0 0 0 1
+        }
+    }
+ }

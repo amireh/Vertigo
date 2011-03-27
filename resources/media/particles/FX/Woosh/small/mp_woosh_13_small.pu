@@ -1,0 +1,104 @@
+system Woosh/mp_woosh_13
+ {
+    keep_local                                  true
+    scale_velocity                              0.001
+    scale_time                                  1.2
+    scale                                       0.001 0.001 0.001
+    technique 
+    {
+        position                                0 -200 -200
+        visual_particle_quota                   65
+        material                                mp_woosh_glow_01
+        renderer                                Billboard
+        {
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Circle 
+        {
+            emission_rate                       60
+            angle                               90
+            time_to_live                        dyn_random
+            {
+                min                             0.2
+                max                             0.4
+            }
+            velocity                            dyn_random
+            {
+                min                             300
+                max                             600
+            }
+            duration                            0.1
+            all_particle_dimensions             dyn_random
+            {
+                min                             50
+                max                             150
+            }
+            colour                              0.509804 0.752941 1 1
+            auto_direction                      true
+            force_emission                      true
+            radius                              1
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.5  1 1 1 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+        observer                                OnTime 
+        {
+            observe_until_event                 true
+            handler                             DoStopSystem 
+            {
+            }
+            since_start_system                  true
+            on_time                             greater_than 1
+        }
+    }
+    technique 
+    {
+        position                                0 -200 -200
+        visual_particle_quota                   50
+        material                                mp_woosh_circle_08
+        renderer                                Billboard
+        {
+            billboard_type                      perpendicular_self
+            billboard_rotation_type             vertex
+            common_direction                    0 1 0
+            common_up_vector                    0 0 1
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       100
+            angle                               0
+            time_to_live                        0.4
+            velocity                            0.0001
+            duration                            0.11
+            start_colour_range                  0 0.403922 0.807843 1
+            end_colour_range                    0.666667 1 1 1
+            colour                              0 0 0 1
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.05  0 0 0 1
+            time_colour                         0.06  1 1 1 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+        affector                                Scale 
+        {
+            xyz_scale                           3000
+        }
+        affector                                TextureRotator 
+        {
+            use_own_rotation                    true
+            rotation                            dyn_random
+            {
+                min                             -3
+                max                             3
+            }
+            rotation_speed                      0
+        }
+    }
+ }

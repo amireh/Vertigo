@@ -21,7 +21,7 @@ namespace Pixy
 		  mName = "Sphere";
 		  mType = SPHERE;
 		  mMesh = "SphereMesh";
-		  mMoveSpeed = 0.2f;
+		  mMoveSpeed = 60.0f;
 		  move = 0;
 		  mDistance = 0;
 		  mCurrentShield = FIRE;
@@ -90,9 +90,7 @@ namespace Pixy
     mSphereNode = mSceneNode->createChildSceneNode();
     mSphereNode->attachObject(mSceneObject);
     mSphereNode->showBoundingBox(true);*/
-    
-    //mFireTrail->setVisible(false);
-    //mIceSteam->setVisible(false);
+
 		mLog->debugStream() << "sphere rendered";
 		render();
 		
@@ -105,7 +103,7 @@ namespace Pixy
 		
     mPhyxShape = new btSphereShape(10);
 		mPhyxMS = new MotionState(trans, mMasterNode);
-        btScalar mass = 1000;
+        btScalar mass = 100;
         btVector3 fallInertia(0,0,0);
 		
     mPhyxShape->calculateLocalInertia(mass,fallInertia);
@@ -131,8 +129,8 @@ namespace Pixy
 		//setWorldTransform(trans);
 		//setUserPointer(this);
 		//mPhyxShape->setUserPointer(this);
-		//PhyxEngine::getSingletonPtr()->attachToWorld(this);
-		//mPhyxBody->proceedToTransform(trans);
+		PhyxEngine::getSingletonPtr()->attachToWorld(this);
+		mPhyxBody->proceedToTransform(trans);
 	
 	  mPath = new Ogre::SimpleSpline();
 	  mPath->setAutoCalculate(false);
@@ -160,24 +158,24 @@ namespace Pixy
     mNextWaypoint = &mWaypoints.front();
 	};
 	void Sphere::die() {
-	  //PhyxEngine::getSingletonPtr()->detachFromWorld(this);
+	  PhyxEngine::getSingletonPtr()->detachFromWorld(this);
 	};
 	
 	void Sphere::render() {
 		if (mCurrentShield == FIRE) {
 		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Obstacle/Fire");
-		  /*if (mIceSteam->isAttached())
+		  if (mIceSteam->isAttached())
 		    mIceSteam->setVisible(false);
 		    
 		  //mSceneNode->attachObject(mFireTrail);
-		  mFireTrail->setVisible(true);*/
+		  mFireTrail->setVisible(true);
 		} else {
 		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Obstacle/Ice");
-		  /*if (mFireTrail->isAttached())
+		  if (mFireTrail->isAttached())
 		    mFireTrail->setVisible(false);
 		    //mSceneNode->detachObject(mFireTrail);
 
-      mIceSteam->setVisible(true);*/
+      mIceSteam->setVisible(true);
 		  //mSceneNode->attachObject(mIceSteam);
 		}
 	};
@@ -190,7 +188,7 @@ namespace Pixy
 	{
 		
 		switch (e.key) {
-			/*case OIS::KC_W:
+			case OIS::KC_W:
 				mDirection.z = mMoveSpeed;
 				break;
 			case OIS::KC_A:
@@ -213,7 +211,7 @@ namespace Pixy
 			case OIS::KC_E:
 				//mPhyxBody->clearForces();
 				mDirection.y = -mMoveSpeed;
-				break;			*/	
+				break;			
 			case OIS::KC_SPACE:
 			  flipShields();
 			  break;
@@ -223,7 +221,7 @@ namespace Pixy
 	
 	void Sphere::keyReleased( const OIS::KeyEvent &e ) {
 		
-		/*switch (e.key) {
+		switch (e.key) {
 			case OIS::KC_W:
 				mDirection.z = 0;
 				break;
@@ -236,20 +234,21 @@ namespace Pixy
 			case OIS::KC_G:
 			  GfxEngine::getSingletonPtr()->applyMotionBlur(0.5f);
 			  break;
-		}*/
+		}
 		
 	}
 	
 
 	void Sphere::update(unsigned long lTimeElapsed) {
-		//mPhyxBody->activate(true);
+		mPhyxBody->activate(true);
+		mPhyxBody->applyCentralForce(btVector3(mDirection.x *lTimeElapsed, mDirection.y *lTimeElapsed, mDirection.z *lTimeElapsed));
 		//Ogre::Quaternion rot = mMasterNode->getPosition().getRotationTo(*mNextWaypoint);
 		//mMasterNode->setOrientation( rot );
 		//mMasterNode->translate(Vector3(rot.x + mMoveSpeed, 0, rot.z + mMoveSpeed));
-		//mPhyxBody->applyCentralForce(btVector3(mDirection.x *lTimeElapsed, mDirection.y *lTimeElapsed, mDirection.z *lTimeElapsed));
+		
 		
 		//mLog->debugStream() << "distance to next waypoint is " << mMasterNode->getPosition().distance( *mNextWaypoint );
-
+/*
 		if (mDirection == Ogre::Vector3::ZERO ) {
 		  locateNextWaypoint();
       mDirection = *mNextWaypoint - mMasterNode->getPosition();
@@ -278,7 +277,7 @@ namespace Pixy
          mMasterNode->translate(mDirection * move);
          mMasterNode->rotate(Vector3(1,0,0), Ogre::Degree(0.1f * lTimeElapsed));
        }
-    }
+    }*/
 		//btTransform trans;
 		//mPhyxBody->getMotionState()->getWorldTransform(trans);
 		//mSceneNode->translate(mDirection * lTimeElapsed, Ogre::Node::TS_LOCAL);

@@ -75,7 +75,7 @@ material Sphere/Fire
 	}
 }*/
 
-material BumpMapping/Terrain
+material BumpMapping/Terrainz
 {
 	technique
 	{
@@ -248,7 +248,7 @@ material Vertigo/Sky/Vortex
 
 			texture_unit
 			{
-				cubic_texture APC_F.png APC_B.png APC_R.png APC_L.png APC_U.png APC_D.png separateUV
+				cubic_texture FLM_F.png FLM_B.png FLM_R.png FLM_L.png FLM_U.png FLM_D.png separateUV
 
 			}
 		}

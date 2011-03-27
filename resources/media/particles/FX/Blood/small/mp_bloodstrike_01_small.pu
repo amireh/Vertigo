@@ -1,0 +1,104 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+system Blood/mp_bloodsstrike_01
+{
+    scale_velocity                              0.001
+    scale                                       0.001 0.001 0.001
+    technique 
+    {
+        visual_particle_quota                   0
+        emitted_technique_quota                 2
+        material                                BaseWhite
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Point Base
+        {
+            time_to_live                        2
+            velocity                            dyn_random
+            {
+                min                             400
+                max                             600
+            }
+            direction                           1 1 0
+            emits                               technique_particle BloodClump
+            force_emission                      true
+        }
+        affector                                LinearForce 
+        {
+            force_vector                        0 -1200 0
+        }
+        observer                                OnClear 
+        {
+            observe_until_event                 true
+            handler                             DoStopSystem 
+            {
+            }
+        }
+    }
+    technique BloodClump
+    {
+        visual_particle_quota                   150
+        emitted_emitter_quota                   5
+        material                                mp_bloodsplat_05
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       50
+            angle                               360
+            time_to_live                        1
+            velocity                            dyn_random
+            {
+                min                             50
+                max                             100
+            }
+            all_particle_dimensions             dyn_random
+            {
+                min                             10
+                max                             25
+            }
+            direction                           0 -1 0
+        }
+        emitter                                 Point BloodClump
+        {
+            emission_rate                       5
+            time_to_live                        2
+            velocity                            dyn_random
+            {
+                min                             50
+                max                             100
+            }
+            emits                               emitter_particle BloodEmitter
+        }
+        emitter                                 Point BloodEmitter
+        {
+            emission_rate                       20
+            angle                               360
+            time_to_live                        1
+            velocity                            dyn_random
+            {
+                min                             50
+                max                             100
+            }
+            all_particle_dimensions             dyn_random
+            {
+                min                             30
+                max                             40
+            }
+            direction                           0 -1 0
+            force_emission                      true
+        }
+        affector                                LinearForce 
+        {
+            force_vector                        0 -1200 0
+        }
+    }
+}

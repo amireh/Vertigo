@@ -1,0 +1,54 @@
+system Woosh/mp_woosh_09
+ {
+    scale_velocity                              0.001
+    scale                                       0.001 0.001 0.001
+    technique 
+    {
+        position                                0 0 -150
+        material                                mp_woosh_glow_01
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Circle 
+        {
+            emission_rate                       200
+            velocity                            0
+            duration                            0.2
+            all_particle_dimensions             dyn_random
+            {
+                min                             20
+                max                             80
+            }
+            colour                              0 0.776471 0.694118 1
+            radius                              200
+        }
+        affector                                Vortex 
+        {
+            rotation_axis                       0 1 0
+            rotation_speed                      5
+        }
+        affector                                Gravity 
+        {
+            gravity                             100000
+        }
+        affector                                SphereCollider 
+        {
+            collision_type                      flow
+            radius                              10
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.1  1 1 1 1
+            time_colour                         0.5  1 1 1 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+        observer                                OnCollision 
+        {
+            handler                             DoExpire 
+            {
+            }
+        }
+    }
+ }

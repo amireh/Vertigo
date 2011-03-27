@@ -1,0 +1,69 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+system Explosion/mp_flare
+{
+    scale_velocity                              0.001
+    scale                                       0.001 0.001 0.001
+    technique 
+    {
+        visual_particle_quota                   100
+        material                                mp_explosion_flare_02
+        renderer                                Billboard
+        {
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       400
+            angle                               360
+            time_to_live                        dyn_random
+            {
+                min                             0.4
+                max                             0.8
+            }
+            velocity                            dyn_random
+            {
+                min                             200
+                max                             500
+            }
+            duration                            0.3
+            all_particle_dimensions             dyn_random
+            {
+                min                             60
+                max                             80
+            }
+            direction                           1 0.5 0
+            colour                              0 0 0 1
+            force_emission                      true
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0.992157 0.243137 0.243137 1
+            time_colour                         1    0 0 0 1
+        }
+        affector                                Scale 
+        {
+            xyz_scale                           -10
+        }
+        affector                                ScaleVelocity 
+        {
+            velocity_scale                      dyn_curved_linear
+            {
+                control_point                   0 -1000
+                control_point                   1 0
+            }
+        }
+        observer                                OnClear 
+        {
+            handler                             DoStopSystem 
+            {
+            }
+        }
+    }
+ }

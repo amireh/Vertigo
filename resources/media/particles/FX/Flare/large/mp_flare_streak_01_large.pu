@@ -1,0 +1,85 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+system Flare/mp_streak_01
+ {
+    keep_local                                  true
+    technique 
+    {
+        visual_particle_quota                   30
+        material                                mp_flare_streak_01
+        renderer                                Billboard
+        {
+            billboard_origin                    bottom_center
+        }
+        emitter                                 Circle 
+        {
+            emission_rate                       15
+            time_to_live                        1.2
+            particle_width                      dyn_random
+            {
+                min                             20
+                max                             300
+            }
+            particle_height                     dyn_random
+            {
+                min                             200
+                max                             300
+            }
+            direction                           0 0 0
+            colour                              0.984314 0.188235 0.0745098 1
+            radius                              50
+            step                                0.2
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.5  0.8 0.8 0.8 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+    }
+    technique 
+    {
+        visual_particle_quota                   1000
+        emitted_emitter_quota                   100
+        material                                mp_flare_04
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Circle 
+        {
+            emission_rate                       20
+            angle                               0
+            time_to_live                        dyn_random
+            {
+                min                             1
+                max                             1.4
+            }
+            velocity                            dyn_random
+            {
+                min                             50
+                max                             150
+            }
+            all_particle_dimensions             dyn_random
+            {
+                min                             20
+                max                             60
+            }
+            colour                              1 0.717647 0.0509804 1
+            radius                              40
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.5  0.8 0.8 0.8 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+    }
+ }

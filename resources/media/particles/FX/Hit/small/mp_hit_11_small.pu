@@ -1,0 +1,86 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+system Hit/mp_hit_11
+{
+    scale_velocity                              0.001
+    scale                                       0.001 0.001 0.001
+    technique 
+    {
+        position                                0 -200 0
+        visual_particle_quota                   30
+        material                                mp_hit_circle_02
+        default_particle_width                  1
+        default_particle_height                 1
+        default_particle_depth                  1
+        renderer                                Billboard
+        {
+            billboard_type                      perpendicular_self
+            billboard_rotation_type             vertex
+            common_direction                    0 1 0
+            common_up_vector                    0 0 1
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       1
+            angle                               0
+            velocity                            500
+            direction                           0 0 -1
+            emits                               emitter_particle CircleEmitter
+            colour                              0 0 0 1
+            force_emission                      true
+        }
+        emitter                                 Box CircleEmitter
+        {
+            emission_rate                       20
+            angle                               0
+            time_to_live                        dyn_random
+            {
+                min                             0.2
+                max                             0.8
+            }
+            velocity                            0.0001
+            duration                            1
+            all_particle_dimensions             dyn_random
+            {
+                min                             5
+                max                             50
+            }
+            colour                              0.317647 0.403922 0.823529 1
+            box_width                           30
+            box_height                          1
+            box_depth                           30
+        }
+        affector                                Scale 
+        {
+            xyz_scale                           200
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.5  1 1 1 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+        affector                                TextureRotator 
+        {
+            rotation                            dyn_random
+            {
+                min                             -3
+                max                             3
+            }
+            rotation_speed                      0
+        }
+        observer                                OnClear 
+        {
+            handler                             DoStopSystem 
+            {
+            }
+        }
+    }
+ }

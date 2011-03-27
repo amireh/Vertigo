@@ -1,0 +1,50 @@
+system Woosh/mp_woosh_01
+ {
+    scale_velocity                              0.001
+    scale                                       0.001 0.001 0.001
+    technique 
+    {
+        position                                0 0 -200
+        visual_particle_quota                   10
+        material                                mp_woosh_blurred
+        renderer                                Sphere
+        {
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       5
+            angle                               0
+            time_to_live                        1.5
+            velocity                            0.0001
+            duration                            0.3
+            colour                              1 0.207843 0.207843 1
+            force_emission                      true
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.5  1 1 1 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+        affector                                Scale 
+        {
+            xyz_scale                           dyn_curved_linear
+            {
+                control_point                   0 1000
+                control_point                   0.3 100
+            }
+        }
+        affector                                GeometryRotator 
+        {
+            use_own_rotation                    true
+            rotation_speed                      1
+        }
+        observer                                OnClear 
+        {
+            handler                             DoStopSystem 
+            {
+            }
+        }
+    }
+ }

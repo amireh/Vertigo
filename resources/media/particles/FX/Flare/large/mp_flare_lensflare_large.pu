@@ -1,0 +1,91 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+system Flare/mp_lensflare
+{
+    keep_local                                  true
+    technique 
+    {
+        visual_particle_quota                   2
+        material                                mp_flare_lensflare_centre
+        default_particle_width                  200
+        default_particle_height                 200
+        renderer                                Billboard
+        {
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Point 
+        {
+            time_to_live                        111
+            velocity                            0
+            colour                              1 1 1 0.25098
+            force_emission                      true
+        }
+    }
+    technique 
+    {
+        visual_particle_quota                   2
+        material                                mp_flare_lensflare_left
+        default_particle_width                  200
+        default_particle_height                 200
+        renderer                                Billboard
+        {
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Point 
+        {
+            time_to_live                        16
+            velocity                            0
+            force_emission                      true
+        }
+        affector                                TextureRotator 
+        {
+            rotation_speed                      dyn_curved_linear
+            {
+                control_point                   0 0.5
+                control_point                   0.4 0
+            }
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 1 1 0.3
+            time_colour                         0.35 1 1 1 0
+        }
+    }
+    technique 
+    {
+        visual_particle_quota                   2
+        material                                mp_flare_lensflare_right
+        default_particle_width                  200
+        default_particle_height                 200
+        renderer                                Billboard
+        {
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Point 
+        {
+            time_to_live                        16
+            velocity                            0
+            force_emission                      true
+        }
+        affector                                TextureRotator 
+        {
+            rotation_speed                      dyn_curved_linear
+            {
+                control_point                   0 0.5
+                control_point                   0.4 0
+            }
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 1 1 0
+            time_colour                         0.05 1 1 1 0
+            time_colour                         0.4  1 1 1 0.3
+        }
+    }
+}

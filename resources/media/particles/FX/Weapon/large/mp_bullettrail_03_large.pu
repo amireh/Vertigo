@@ -1,0 +1,51 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+system Weapon/mp_bullettrail_03
+{
+    technique 
+    {
+        visual_particle_quota                   150
+        material                                mp_weapon_flare_red
+        renderer                                Billboard
+        {
+        }
+        emitter                                 SphereSurface FireEmitter
+        {
+            emission_rate                       dyn_curved_linear
+            {
+                control_point                   0 500
+                control_point                   0.02 200
+                control_point                   0.5 50
+            }
+            angle                               0
+            velocity                            10000
+            all_particle_dimensions             dyn_curved_linear
+            {
+                control_point                   0 250
+                control_point                   0.2 70
+            }
+            direction                           0 0 -1
+            radius                              30
+        }
+        observer                                OnCount 
+        {
+            handler                             DoEnableComponent 
+            {
+                enable_component                emitter_component FireEmitter false
+            }
+            count_threshold                     greater_than 50
+        }
+        observer                                OnClear 
+        {
+            handler                             DoStopSystem 
+            {
+            }
+        }
+    }
+}

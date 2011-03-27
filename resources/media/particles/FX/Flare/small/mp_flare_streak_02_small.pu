@@ -1,0 +1,125 @@
+system Flare/mp_streak_02
+ {
+    keep_local                                  true
+    scale_velocity                              0.001
+    scale                                       0.001 0.001 0.001
+    technique 
+    {
+        position                                0 -10 0
+        visual_particle_quota                   10
+        material                                mp_flare_streak_02
+        renderer                                Billboard
+        {
+            billboard_origin                    bottom_center
+        }
+        emitter                                 Circle 
+        {
+            time_to_live                        1.2
+            particle_width                      1
+            particle_height                     dyn_random
+            {
+                min                             200
+                max                             300
+            }
+            direction                           0 0 0
+            colour                              0.984314 0.188235 0.0745098 1
+            radius                              50
+            step                                0.2
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.5  0.8 0.8 0.8 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+        affector                                Scale 
+        {
+            x_scale                             dyn_random
+            {
+                min                             200
+                max                             400
+            }
+        }
+    }
+    technique 
+    {
+        position                                0 -10 0
+        visual_particle_quota                   10
+        material                                mp_flare_streak_02
+        renderer                                Billboard
+        {
+            billboard_origin                    bottom_center
+        }
+        emitter                                 Circle 
+        {
+            time_to_live                        1.2
+            particle_width                      1
+            particle_height                     dyn_random
+            {
+                min                             200
+                max                             300
+            }
+            direction                           0 0 0
+            colour                              0.984314 0.188235 0.0745098 1
+            radius                              50
+            step                                0.2
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.5  0.8 0.8 0.8 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+        affector                                Scale 
+        {
+            x_scale                             dyn_random
+            {
+                min                             200
+                max                             400
+            }
+        }
+        affector                                TextureRotator 
+        {
+            rotation                            3.14
+            rotation_speed                      0
+        }
+    }
+    technique 
+    {
+        visual_particle_quota                   40
+        material                                mp_flare_zero_star
+        renderer                                Billboard
+        {
+            billboard_type                      perpendicular_self
+            billboard_rotation_type             vertex
+            common_direction                    0 1 0
+            common_up_vector                    0 0 1
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       40
+            angle                               0
+            time_to_live                        dyn_random
+            {
+                min                             0.3
+                max                             0.6
+            }
+            velocity                            0.0001
+            all_particle_dimensions             dyn_random
+            {
+                min                             250
+                max                             400
+            }
+            colour                              0.992157 0.313726 0.215686 1
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.5  0.3 0.3 0.3 1
+            time_colour                         1    0 0 0 1
+            colour_operation                    multiply
+        }
+    }
+ }

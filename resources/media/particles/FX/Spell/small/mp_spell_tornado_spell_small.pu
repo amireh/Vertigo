@@ -1,0 +1,79 @@
+system Spell/mp_tornado_spell
+ {
+    keep_local                                  true
+    scale_velocity                              0.001
+    scale                                       0.001 0.001 0.001
+    technique 
+    {
+        position                                0 -100 -100
+        visual_particle_quota                   150
+        material                                mp_spell_tornado_flare
+        renderer                                Billboard
+        {
+            billboard_type                      oriented_self
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Circle 
+        {
+            emission_rate                       dyn_curved_linear
+            {
+                control_point                   0 100
+                control_point                   1 300
+            }
+            angle                               0
+            time_to_live                        dyn_random
+            {
+                min                             0.4
+                max                             0.8
+            }
+            mass                                20
+            velocity                            300
+            duration                            1
+            particle_width                      dyn_random
+            {
+                min                             50
+                max                             80
+            }
+            particle_height                     dyn_random
+            {
+                min                             50
+                max                             100
+            }
+            auto_direction                      true
+            radius                              50
+            normal                              0 1 0
+        }
+        affector                                Vortex 
+        {
+            rotation_axis                       0 1 0
+            rotation_speed                      4
+        }
+        affector                                Gravity 
+        {
+            position                            0 200 0
+            gravity                             10000
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    0 0 0 1
+            time_colour                         0.1  0.701961 0.972549 1 1
+            time_colour                         0.8  0.701961 0.972549 1 1
+            time_colour                         1    0 0 0 1
+        }
+        affector                                Scale 
+        {
+            y_scale                             dyn_curved_linear
+            {
+                control_point                   0 0
+                control_point                   0.5 0
+                control_point                   1 1000
+            }
+        }
+        observer                                OnClear 
+        {
+            handler                             DoStopSystem 
+            {
+            }
+        }
+    }
+ }

@@ -1,0 +1,85 @@
+system Flare/mp_lensflare
+ {
+    keep_local                                  true
+    scale_velocity                              0.001
+    scale                                       0.001 0.001 0.001
+    technique 
+    {
+        visual_particle_quota                   2
+        material                                mp_flare_lensflare_centre
+        default_particle_width                  200
+        default_particle_height                 200
+        renderer                                Billboard
+        {
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Point 
+        {
+            time_to_live                        111
+            velocity                            0
+            colour                              1 1 1 0.25098
+            force_emission                      true
+        }
+    }
+    technique 
+    {
+        visual_particle_quota                   2
+        material                                mp_flare_lensflare_left
+        default_particle_width                  200
+        default_particle_height                 200
+        renderer                                Billboard
+        {
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Point 
+        {
+            time_to_live                        16
+            velocity                            0
+            force_emission                      true
+        }
+        affector                                TextureRotator 
+        {
+            rotation_speed                      dyn_curved_linear
+            {
+                control_point                   0 0.5
+                control_point                   0.4 0
+            }
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 1 1 0.3
+            time_colour                         0.35  1 1 1 0
+        }
+    }
+    technique 
+    {
+        visual_particle_quota                   2
+        material                                mp_flare_lensflare_right
+        default_particle_width                  200
+        default_particle_height                 200
+        renderer                                Billboard
+        {
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Point 
+        {
+            time_to_live                        16
+            velocity                            0
+            force_emission                      true
+        }
+        affector                                TextureRotator 
+        {
+            rotation_speed                      dyn_curved_linear
+            {
+                control_point                   0 0.5
+                control_point                   0.4 0
+            }
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 1 1 0
+            time_colour                         0.05  1 1 1 0
+            time_colour                         0.4  1 1 1 0.3
+        }
+    }
+ }

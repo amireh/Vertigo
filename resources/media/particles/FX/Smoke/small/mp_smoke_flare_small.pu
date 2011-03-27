@@ -1,0 +1,106 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+system Smoke/mp_smokeflare
+{
+    keep_local                                  true
+    scale_velocity                              0.001
+    scale                                       0.001 0.001 0.001
+    technique 
+    {
+        visual_particle_quota                   80
+        material                                mp_smoke_flare
+        renderer                                Billboard
+        {
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       100
+            angle                               360
+            time_to_live                        dyn_random
+            {
+                min                             0.5
+                max                             0.8
+            }
+            velocity                            dyn_random
+            {
+                min                             100
+                max                             200
+            }
+        }
+        affector                                Scale 
+        {
+            xyz_scale                           500
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 1 1 1
+            time_colour                         0.6  0.705882 0.156863 0.156863 1
+            time_colour                         1    0 0 0 1
+        }
+        affector                                TextureRotator 
+        {
+            rotation                            dyn_random
+            {
+                min                             -3
+                max                             3
+            }
+            rotation_speed                      0
+        }
+    }
+    technique 
+    {
+        visual_particle_quota                   40
+        material                                mp_smoke_04_add
+        default_particle_width                  30
+        default_particle_height                 30
+        renderer                                Billboard
+        {
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       40
+            angle                               90
+            time_to_live                        dyn_random
+            {
+                min                             0.5
+                max                             1.1
+            }
+            velocity                            dyn_random
+            {
+                min                             80
+                max                             160
+            }
+        }
+        affector                                Scale 
+        {
+            xyz_scale                           500
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 1 1 1
+            time_colour                         0.8  0.705882 0.156863 0.156863 1
+            time_colour                         1    0 0 0 1
+        }
+        affector                                TextureRotator 
+        {
+            rotation                            dyn_random
+            {
+                min                             -3
+                max                             3
+            }
+            rotation_speed                      dyn_random
+            {
+                min                             -1
+                max                             1
+            }
+        }
+    }
+}

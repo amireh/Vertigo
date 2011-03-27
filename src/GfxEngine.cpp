@@ -219,7 +219,7 @@ namespace Pixy {
         mLog->noticeStream() << "Setting up sky";
 		  //mSceneMgr->setSkyDome(true, "Examples/CloudySky", 2, 0.5);
 		  mSceneMgr->setSkyBox(true, "Vertigo/Sky/Vortex", 5000, true);				
-		 /*
+		 
 		  Ogre::Entity* mEntity;
 		  Ogre::SceneNode* mNode;
 		  Procedural::Root::getInstance()->sceneManager = mSceneMgr;
@@ -236,7 +236,7 @@ namespace Pixy {
 		  .realizeMesh("TubeMesh");
 				
 		  std::string mEntityName = "";
-		  int nr_tubes = 45;
+		  int nr_tubes = 18;
 		  for (int i =0; i < nr_tubes; ++i) {
 			  mEntityName = "myTube_";
 			  mEntityName += i;
@@ -253,14 +253,14 @@ namespace Pixy {
 			  //mNode->yaw(Ogre::Degree(30));
 			  //mNode->showBoundingBox(true);			
 			
-		  }*/
+		  }
 		
     };
 	
     void GfxEngine::setupLights()
     {
 		  mLog->debugStream() << "setting up lights";
-      mSceneMgr->setAmbientLight(Ogre::ColourValue(0.1f, 0.1f, 0.1f));
+      mSceneMgr->setAmbientLight(Ogre::ColourValue(0.4f, 0.4f, 0.4f));
       Ogre::Light *light;
 
      light = mSceneMgr->createLight("Light2");
@@ -273,11 +273,31 @@ namespace Pixy {
       /* now let's setup our light so we can see the shizzle */
       mSpotLight = mSceneMgr->createLight("PlayerLight");
       mSpotLight->setType(Ogre::Light::LT_POINT);
-      mSpotLight->setPosition(Vector3(0, 0, -100));
-      mSpotLight->setDirection(Vector3(0,0.5f,1));
-      mSpotLight->setDiffuseColour(0.6f, 0.6f, 0.6f);
-      mSpotLight->setSpecularColour(0.8f, 0.8f, 0.8f);
+      mSpotLight->setPosition(Vector3(0, 20, -60));
+      //mSpotLight->setDirection(Vector3(0,0.5f,1));
+      mSpotLight->setDiffuseColour(0.2f, 0.2f, 0.2f);
+      mSpotLight->setSpecularColour(0.2f, 0.2f, 0.2f);
 		  
+		  mSpotLight = mSceneMgr->createLight("PlayerLight2");
+      mSpotLight->setType(Ogre::Light::LT_POINT);
+      mSpotLight->setPosition(Vector3(30, 0, 0));
+      //mSpotLight->setDirection(Vector3(0,0.5f,1));
+      mSpotLight->setDiffuseColour(0.2f, 0.2f, 0.2f);
+      mSpotLight->setSpecularColour(0.2f, 0.2f, 0.2f);
+      
+      mSpotLight = mSceneMgr->createLight("PlayerLight3");
+      mSpotLight->setType(Ogre::Light::LT_POINT);
+      mSpotLight->setPosition(Vector3(-30, 0, 30));
+      //mSpotLight->setDirection(Vector3(0,0.5f,1));
+      mSpotLight->setDiffuseColour(0.2f, 0.2f, 0.2f);
+      mSpotLight->setSpecularColour(0.2f, 0.2f, 0.2f);
+      
+      /* now let's setup our light so we can see the shizzle */
+      /*mSpotLight = mSceneMgr->createLight("PlayerLight2");
+      mSpotLight->setType(Ogre::Light::LT_DIRECTIONAL);
+      mSpotLight->setDirection(Vector3(1,1,-1));
+      mSpotLight->setDiffuseColour(0.6f, 0.6f, 0.6f);
+      mSpotLight->setSpecularColour(0.8f, 0.8f, 0.8f);*/		  
 		 
 		 Ogre::ColourValue fadeColour(0.0f, 0.0f, 0.0f);
      //mViewport->setBackgroundColour(fadeColour);
@@ -397,7 +417,7 @@ namespace Pixy {
 	
 	void GfxEngine::keyPressed( const OIS::KeyEvent &e )
 	{
-	  mCameraMan->injectKeyDown(e);
+	  //mCameraMan->injectKeyDown(e);
 		switch (e.key) {
 		/*
 			case OIS::KC_UP:
@@ -440,7 +460,7 @@ namespace Pixy {
 	}
 	
 	void GfxEngine::keyReleased( const OIS::KeyEvent &e ) {
-			mCameraMan->injectKeyUp(e);
+			//mCameraMan->injectKeyUp(e);
 	}
 	
 	
@@ -449,8 +469,8 @@ namespace Pixy {
 	void GfxEngine::update(unsigned long lTimeElapsed) {
 		//processEvents();
 
-	  if (shakingScreen)
-	    applyScreenShake(lTimeElapsed);
+	  //if (shakingScreen)
+	    //applyScreenShake(lTimeElapsed);
 		
 		if (mEffectEnabled && mEffectTimer.getMilliseconds() > mEffectDuration * 1000) {
 		  mEffectTimer.reset();
@@ -461,10 +481,10 @@ namespace Pixy {
 		mCamera->setPosition(
 		  mSphere->getPosition().x,
       mSphere->getPosition().y + 35,
-      mSphere->getPosition().z-160
+      mSphere->getPosition().z-80
     );
 	  
-	  mCamera->setOrientation(mSphere->getMasterNode()->getOrientation());
+	  //mCamera->setOrientation(mSphere->getMasterNode()->getOrientation());
 	  
 	  mCamera->lookAt(
 	    mSphere->getPosition().x,
@@ -482,7 +502,7 @@ namespace Pixy {
 	}
 	
   void GfxEngine::applyScreenShake(unsigned long lTimeElapsed) {
-    if (!mEffectStarted) {
+    /*if (!mEffectStarted) {
       //mEffectEnabled = true;
       mEffectStarted = true;
       shakingScreen = true;
@@ -514,7 +534,7 @@ namespace Pixy {
       shakingScreen = false;
       mEffectDuration = 0;
       mEffectStarted = false;
-    }
+    }*/
   };
   
 	void GfxEngine::setupParticles() {
