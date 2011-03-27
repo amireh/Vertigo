@@ -64,6 +64,7 @@ namespace Pixy
 	protected:		
 		
 		bool evtPortalSighted(Event* inEvt);
+		bool evtObstacleCollided(Event* inEvt);
 		
 		void locateNextWaypoint();
 		

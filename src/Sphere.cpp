@@ -33,6 +33,7 @@ namespace Pixy
 		  
       mLog->infoStream() << "created";
 
+      bindToName("ObstacleCollided", this, &Sphere::evtObstacleCollided);
       bindToName("PortalSighted", this, &Sphere::evtPortalSighted);
     };
 
@@ -309,13 +310,7 @@ namespace Pixy
 	  if (target->dead())
 	    return;
 	  
-	  // hit our shields
-	  if (mCurrentShield != target->shield()) {
-	    mShields[mCurrentShield] -= 5;
-	  } else {
-	    mShields[mCurrentShield] += 5;
-	    //GfxEngine::getSingletonPtr()->applyScreenShake(0);
-	  }
+
 	  //GfxEngine::getSingletonPtr()->applyMotionBlur(0.5f);
 	  
 	  mLog->debugStream() << "Sphere has collided with " << target->getName() << target->getObjectId();
@@ -349,6 +344,21 @@ namespace Pixy
 	  }
 	};*/
 	
+	bool Sphere::evtObstacleCollided(Event* inEvt) {
+	  Obstacle* mObs = static_cast<Obstacle*>(inEvt->getAny());
+	  
+	  // hit our shields
+	  if (mCurrentShield != mObs->shield()) {
+	    mShields[mCurrentShield] -= 5;
+	  } else {
+	    mShields[mCurrentShield] += 5;
+	  }
+	  
+	  mPhyxBody->activate(true);
+	  mPhyxBody->clearForces();
+	  mPhyxBody->applyCentralForce(btVector3(0,0,-mMoveSpeed * 100));
+	  return true;
+	};
 	bool Sphere::evtPortalSighted(Event* inEvt) {
 	  Vector3 dest = GfxEngine::getSingletonPtr()->getPortal()->getPosition();
 	  mMaxSpeed = 100.0f;
