@@ -626,8 +626,8 @@ namespace Pixy {
     
     mPortableEffect = mSceneMgr->getRootSceneNode()->createChildSceneNode();
     mSpawnPoint = mSceneMgr->getRootSceneNode()->createChildSceneNode("NodeSpawnPoint");
-    mSpawnPoint->attachObject(effects["SpawnPoint"]);
-    effects["SpawnPoint"]->start();
+    mSpawnPoint->attachObject(effects["Despawn"]);
+    
 	}
 	
 	void GfxEngine::playEffect(std::string inEffect, Entity* inEntity) {
@@ -664,6 +664,7 @@ namespace Pixy {
 	  Vector3 pos = mObs->getMasterNode()->getPosition();
 	  pos.y += 30;
 	  mSpawnPoint->setPosition(pos);
+	  effects["Despawn"]->start();
 	  //playEffect("SpawnPoint", pos);
 	  
 	  return true;

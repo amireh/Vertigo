@@ -316,7 +316,7 @@
  
              texture_unit
              {
-                 texture Fire.jpg 
+                 texture Killing_Chamber.jpg 
              }
 
  
@@ -408,7 +408,7 @@
              scene_blend dest_colour zero
              texture_unit
              {
-                 texture Fire.jpg 
+                 texture Killing_Chamber.jpg 
              }
  
          }

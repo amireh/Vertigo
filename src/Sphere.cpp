@@ -173,14 +173,14 @@ namespace Pixy
 	
 	void Sphere::render() {
 		if (mCurrentShield == FIRE) {
-		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Obstacle/Fire");
+		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Sphere/Fire");
 		  /*if (mIceSteam->isAttached())
 		    mIceSteam->setVisible(false);
 		    
 		  //mSceneNode->attachObject(mFireTrail);
 		  mFireTrail->setVisible(true);*/
 		} else {
-		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Obstacle/Ice");
+		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Sphere/Ice");
 		  /*if (mFireTrail->isAttached())
 		    mFireTrail->setVisible(false);
 		    //mSceneNode->detachObject(mFireTrail);
