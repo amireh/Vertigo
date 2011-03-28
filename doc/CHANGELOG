@@ -1,0 +1,42 @@
+-- Rv3 --
+[General]
+- the game now compiles on Linux and Mac OS X systems
+
+[Graphics]
+- implemented basic particle systems:
+  - fire "blaze" effect: fire spheres are now engulfed in flames and leave a fire trail
+  - ice "steam" effect for ice spheres
+- added bump maps to sphere models and the terrain
+- implemented a "Motion Blur" effect which will be used when the sphere transitions
+  between tunnels
+- a "screen shake" effect is now in place to notify the player of an unhealthy collision
+
+[Physics]
+- collision between the sphere and obstacles is functional now
+
+[Gameplay]
+- shield state is now being tracked
+
+-- Rv2 --
+
+[Gameplay]
+- introduced obstacles
+- sphere can now flip shields
+
+[Physics]
+- integrated BulletPhysics
+- defined primitive world collision boundaries: two static planes to imitate
+  a floor and a ceiling, and two trimeshes to simulate linear curved walls
+- the player's sphere owns a rigid body now
+- sphere and obstacles are alive now and affected by central forces
+
+-- Rv1 --
+
+[General]
+- app skeleton is defined and the systems to be used are integrated, namely:
+  - Ogre with nVidia's CG shader library
+  - CEGUI
+
+[Graphics]
+- terrain geometry is now rendered (tunnel)
+- player sphere is rendered with two materials for each shield

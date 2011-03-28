@@ -20,8 +20,6 @@
 #include <OgreOverlayElement.h>
 #include <OgreOverlayManager.h>
 #include <OgreParticle.h>
-//#include <OgreOctreeSceneManager.h>
-//#include "CEGUI/RendererModules/Ogre/CEGUIOgreRenderer.h"
 #include "UIEngine.h"
 #include "SdkCameraMan.h"
 #include "InputManager.h"
