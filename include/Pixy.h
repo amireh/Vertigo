@@ -34,10 +34,17 @@
 /* -------------
  * PATHS
  * ------------- */
+#ifdef _WIN32
+#define PROJECT_ROOT "C:\\Workspace\\Projects\\Vertigo"
+#define PROJECT_LOG_DIR "C:\\Workspace\\Projects\\Vertigo\\log"
+#define PROJECT_RESOURCES "\\resources"
+#define PROJECT_SCRIPTS "\\resources\\scripts"
+#else
 #define PROJECT_ROOT "/home/kandie/Workspace/Projects/Vertigo"
 #define PROJECT_LOG_DIR "/home/kandie/Workspace/Projects/Vertigo/log"
 #define PROJECT_RESOURCES "/resources"
 #define PROJECT_SCRIPTS "/resources/scripts"
+#endif
 
 #ifndef PATH_MAX
 #define PATH_MAX 200

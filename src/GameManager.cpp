@@ -2,7 +2,7 @@
 #include "GameState.h"
 #include "Intro.h"
 //#include "Combat.h"
-#include "PixyLogLayout.h"
+#include "log4cpp/PixyLogLayout.h"
 using namespace Ogre;
 
 namespace Pixy
@@ -78,6 +78,10 @@ namespace Pixy
 		// we use it to calculate the time since last frame
 		unsigned long lTimeLastFrame, lTimeCurrentFrame, lTimeSinceLastFrame = 0;
 		
+		lTimeLastFrame = 0;
+		lTimeCurrentFrame = 0;
+		lTimeSinceLastFrame = 0;
+
 		// main game loop
 		while( !fShutdown ) {
 			
@@ -252,8 +256,11 @@ namespace Pixy
 
 
 		std::string lLogPath = PROJECT_LOG_DIR;
+#ifdef _WIN32
+		lLogPath += "\Pixy.log";
+#else
 		lLogPath += "/Pixy.log";
-		
+#endif	
 		std::cout << "| Initting log4cpp logger @ " << lLogPath << "!\n";
 		
 		log4cpp::Appender* lApp = new 

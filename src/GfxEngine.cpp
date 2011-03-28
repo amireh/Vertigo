@@ -9,8 +9,8 @@
 
 #include "GfxEngine.h"
 #include "GameManager.h"
-#include "OGRE/Terrain/OgreTerrain.h"
-#include "OGRE/Terrain/OgreTerrainGroup.h"
+//#include "OGRE/Terrain/OgreTerrain.h"
+//#include "OGRE/Terrain/OgreTerrainGroup.h"
 #include "Intro.h"
 #include "Procedural.h"
 #include "Geometry.h"

@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{3A6FED03-22B5-4B26-867E-8E862D0B4A63}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Vertigo</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level2</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>E:\Applications\Windows\Development\bullet-2.77\src;C:\Workspace\Projects\Vertigo;C:\Workspace\Projects\Vertigo\include;C:\Workspace\Projects\Vertigo\modules\include\ogre;C:\Workspace\Build\ogre-procedural\include;C:\Workspace\Projects\Vertigo\modules\include;E:\Applications\Windows\Development\CEGUI\CEGUI-SDK-0.7.5-vc10\cegui\include;E:\Applications\Windows\Development\Ogre\ogre_src_v1-7-2\OgreMain\include;E:\Applications\Windows\Development\Ogre\ogre_src_v1-7-2\Dependencies\include\OIS;E:\Applications\Windows\Development\Ogre\ogre_src_v1-7-2\PlugIns\ParticleUniverse\include;C:\Workspace\Build\Ogre1.7.2\include;C:\Workspace\Build\log4cpp\log4cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>OgreMain_d.lib;CEGUIBase_d.lib;CEGUIOgreRenderer_d.lib;BulletSoftBody.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;OIS_d.lib;log4cpp.lib;Ogre-Procedural.lib;Plugin_ParticleUniverse_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>E:\Applications\Windows\Development\Ogre\ogre_src_v1-7-2\Dependencies\lib\Debug;E:\Applications\Windows\Development\bullet-2.77\lib\Debug;C:\Workspace\Build\ogre-procedural\Debug;C:\Workspace\Build\log4cpp\log4cpp\Debug;E:\Applications\Windows\Development\CEGUI\CEGUI-SDK-0.7.5-vc10\lib;E:\Applications\Windows\Development\CEGUI\CEGUI-SDK-0.7.5-vc10\bin;C:\Workspace\Build\Ogre1.7.2\lib\Debug;C:\Workspace\Build\Ogre1.7.2\bin\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>E:\Applications\Windows\Development\bullet-2.77\src;C:\Workspace\Projects\Vertigo;C:\Workspace\Projects\Vertigo\include;C:\Workspace\Projects\Vertigo\modules\include\ogre;C:\Workspace\Build\ogre-procedural\include;C:\Workspace\Projects\Vertigo\modules\include;E:\Applications\Windows\Development\CEGUI\CEGUI-SDK-0.7.5-vc10\cegui\include;E:\Applications\Windows\Development\Ogre\ogre_src_v1-7-2\OgreMain\include;E:\Applications\Windows\Development\Ogre\ogre_src_v1-7-2\Dependencies\include\OIS;E:\Applications\Windows\Development\Ogre\ogre_src_v1-7-2\PlugIns\ParticleUniverse\include;C:\Workspace\Build\Ogre1.7.2\include;C:\Workspace\Build\log4cpp\log4cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>OgreMain.lib;CEGUIBase.lib;CEGUIOgreRenderer.lib;BulletSoftBody.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;OIS.lib;log4cpp.lib;Ogre-Procedural.lib;Plugin_ParticleUniverse.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Workspace\Build\ogre-procedural\release;C:\Workspace\Build\log4cpp\log4cpp\release;E:\Applications\Windows\Development\CEGUI\CEGUI-SDK-0.7.5-vc10\lib;C:\Workspace\Build\Ogre1.7.2\bin\release;C:\Workspace\Build\Ogre1.7.2\lib\release;E:\Applications\Windows\Development\CEGUI\CEGUI-SDK-0.7.5-vc10\bin;E:\Applications\Windows\Development\bullet-2.77\lib\release;E:\Applications\Windows\Development\Ogre\ogre_src_v1-7-2\Dependencies\lib\release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\include\AudioEngine.h" />
+    <ClInclude Include="..\..\..\include\Engine.h" />
+    <ClInclude Include="..\..\..\include\Entity.h" />
+    <ClInclude Include="..\..\..\include\Event.h" />
+    <ClInclude Include="..\..\..\include\EventHandler.h" />
+    <ClInclude Include="..\..\..\include\EventListener.h" />
+    <ClInclude Include="..\..\..\include\EventManager.h" />
+    <ClInclude Include="..\..\..\include\GameManager.h" />
+    <ClInclude Include="..\..\..\include\GameState.h" />
+    <ClInclude Include="..\..\..\include\Geometry.h" />
+    <ClInclude Include="..\..\..\include\GfxEngine.h" />
+    <ClInclude Include="..\..\..\include\Handler.h" />
+    <ClInclude Include="..\..\..\include\InputManager.h" />
+    <ClInclude Include="..\..\..\include\Intro.h" />
+    <ClInclude Include="..\..\..\include\Level.h" />
+    <ClInclude Include="..\..\..\include\Listener.h" />
+    <ClInclude Include="..\..\..\include\MotionState.h" />
+    <ClInclude Include="..\..\..\include\Obstacle.h" />
+    <ClInclude Include="..\..\..\include\PhyxEngine.h" />
+    <ClInclude Include="..\..\..\include\Pixy.h" />
+    <ClInclude Include="..\..\..\include\PixyLog.h" />
+    <ClInclude Include="..\..\..\include\ResourceManager.h" />
+    <ClInclude Include="..\..\..\include\SdkCameraMan.h" />
+    <ClInclude Include="..\..\..\include\Sphere.h" />
+    <ClInclude Include="..\..\..\include\UIEngine.h" />
+    <ClInclude Include="..\..\..\include\Utility.h" />
+    <ClInclude Include="..\..\..\modules\include\log4cpp\PixyLogLayout.h" />
+    <ClInclude Include="..\..\..\modules\include\ogre\OgreSample.h" />
+    <ClInclude Include="..\..\..\modules\include\ogre\OgreSdkTrays.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\modules\src\log4cpp\PixyLogLayout.cpp" />
+    <ClCompile Include="..\..\..\src\Entity.cpp" />
+    <ClCompile Include="..\..\..\src\Event.cpp" />
+    <ClCompile Include="..\..\..\src\EventListener.cpp" />
+    <ClCompile Include="..\..\..\src\EventManager.cpp" />
+    <ClCompile Include="..\..\..\src\GameManager.cpp" />
+    <ClCompile Include="..\..\..\src\GameState.cpp" />
+    <ClCompile Include="..\..\..\src\Geometry.cpp" />
+    <ClCompile Include="..\..\..\src\GfxEngine.cpp" />
+    <ClCompile Include="..\..\..\src\InputManager.cpp" />
+    <ClCompile Include="..\..\..\src\Intro.cpp" />
+    <ClCompile Include="..\..\..\src\main.cpp" />
+    <ClCompile Include="..\..\..\src\Obstacle.cpp" />
+    <ClCompile Include="..\..\..\src\PhyxEngine.cpp" />
+    <ClCompile Include="..\..\..\src\Sphere.cpp" />
+    <ClCompile Include="..\..\..\src\UIEngine.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

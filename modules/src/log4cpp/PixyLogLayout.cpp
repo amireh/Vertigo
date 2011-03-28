@@ -7,7 +7,7 @@
  *
  */
 //#include "log4cpp/PortabilityImpl.hh"
-#include "PixyLogLayout.h"
+#include "log4cpp/PixyLogLayout.h"
 #include "log4cpp/Priority.hh"
 #include "log4cpp/FactoryParams.hh"
 #ifdef LOG4CPP_HAVE_SSTREAM
