@@ -13,6 +13,6 @@
 #include "log4cpp/Category.hh"
 #include "log4cpp/FixedContextCategory.hh"
 #include "log4cpp/FileAppender.hh"
-#include "PixyLogLayout.h"
+#include "log4cpp/PixyLogLayout.h"
 
 #endif

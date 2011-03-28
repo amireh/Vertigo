@@ -19,7 +19,11 @@
 #ifndef H_InputManager_H
 #include "InputManager.h"
 #endif
+#ifdef _WIN32
+#include <CEGUI.h>
+#else
 #include <CEGUI/CEGUI.h>
+#endif
 
 namespace Pixy
 {

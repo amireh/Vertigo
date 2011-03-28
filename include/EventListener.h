@@ -183,12 +183,12 @@ namespace Pixy
 				// register Event if it isn't already
 				if (_binder == mNameBindings.end())
 				{
-					vector<Handler*> _handlers;
+					std::vector<Handler*> _handlers;
 					_binder = mNameBindings.insert(make_pair(inName, _handlers)).first;
 				}
 				
 				// create handler
-				vector<Handler*>* _handlers = &_binder->second;
+				std::vector<Handler*>* _handlers = &_binder->second;
 				try {
 					_handlers->push_back(new EventHandler<T, EventType>(static_cast<T*>(inInstance), inMethod));
 				} catch (std::exception& e) {
@@ -248,7 +248,7 @@ namespace Pixy
 			bool listeningTo(Event* inEvt);
 			
 			//typedef map< EVENT_UID, vector<Handler*> > _bindMap;
-			typedef vector<Handler*>				handler_list_t;
+			typedef std::vector<Handler*>				handler_list_t;
 			typedef handler_list_t					full_bind_t;
 			typedef map< string, handler_list_t >	cat_bind_t;
 			typedef map< string, handler_list_t >	name_bind_t;

@@ -19,13 +19,19 @@
 #include <Ogre.h>
 
 // CEGUI
+#ifdef _WIN32
+#include <CEGUI.h>
+#include <CEGUISystem.h>
+#include <CEGUISchemeManager.h>
+#include "RendererModules/Ogre/CEGUIOgreRenderer.h"
+#else
 #include <CEGUI/CEGUI.h>
 #include <CEGUI/CEGUISystem.h>
 #include <CEGUI/CEGUISchemeManager.h>
 
 //#include "CEGUI/ScriptingModules/LuaScriptModule/CEGUILua.h"
 #include "CEGUI/RendererModules/Ogre/CEGUIOgreRenderer.h"
-
+#endif
 namespace Pixy {
 	
 	/*	\class UIEngine
