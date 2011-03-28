@@ -50,9 +50,7 @@ namespace Pixy
 		virtual void update(unsigned long lTimeElapsed);
 				
 		SHIELD shield();
-		
-		virtual void collide(Entity* inObj);
-		
+			
 	protected:		
 		
 		//! helper method for copy ctor and assignment operator
@@ -61,14 +59,11 @@ namespace Pixy
     Sphere *mSphere;
     
     Vector3 randomPosition();
-    //Ogre::Timer mTimer;
+
     bool fDying;
     bool fHasFX;
-    int mDeathDuration;
     
-    ParticleUniverse::ParticleSystem *mFireFace;
     ParticleUniverse::ParticleSystem *mBlaze, *mSteam;
-		Ogre::SceneNode* mFireTrailNode, *mIceSteamNode;
     
 	};
 } // end of namespace

@@ -65,10 +65,10 @@ namespace Pixy
 		btDiscreteDynamicsWorld *mWorld;
 		btCollisionWorld* mCWorld;
 		
-		btCollisionObject *mFloor, *mCeiling, *mLWall, *mRWall;
-		btCollisionShape *mFloorShape, *mCeilingShape, *mLWallShape, *mRWallShape, *mObstacleShape;
-		btDefaultMotionState *mFloorMS, *mCeilingMS, *mLWallMS, *mRWallMS;
-		btRigidBody *mFloorBody, *mCeilingBody, *mLWallBody, *mRWallBody;
+		btCollisionObject *mFloor, *mCeiling, *mLWall, *mRWall, *mBWall;
+		btCollisionShape *mFloorShape, *mCeilingShape, *mLWallShape, *mRWallShape, *mBWallShape, *mObstacleShape;
+		btDefaultMotionState *mFloorMS, *mCeilingMS, *mLWallMS, *mRWallMS, *mBWallMS;
+		btRigidBody *mFloorBody, *mCeilingBody, *mLWallBody, *mRWallBody, *mBWallBody;
 		
 		Sphere* mSphere;
 		

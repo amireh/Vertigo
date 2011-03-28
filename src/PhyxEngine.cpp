@@ -12,9 +12,6 @@
 #include "Intro.h"
 #include "Sphere.h"
 #include "MotionState.h"
-//#include <OpenGL/gl.h>
-//#include <GLUT/glut.h>
-//#include <GL/gle.h>
 
 namespace Pixy {
 	PhyxEngine* PhyxEngine::_myPhyxEngine = NULL;
@@ -88,12 +85,6 @@ namespace Pixy {
     
     mFloorBody = new btRigidBody(mFloorRBCI);
     mWorld->addRigidBody(mFloorBody);
-    /*
-    mFloor = new btCollisionObject();
-    mFloor->setCollisionShape(mFloorShape);
-    mFloor->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);    
-    mWorld->addCollisionObject(mFloor);
-    */
     
     mCeilingShape = new btStaticPlaneShape(btVector3(0,-1,0),0);
     mCeilingMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,75,0)));
@@ -104,7 +95,6 @@ namespace Pixy {
 
 
     mLWallShape = new btStaticPlaneShape(btVector3(1,0.5f,0),0);
-
     mLWallMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(-15,0,0)));
     btRigidBody::btRigidBodyConstructionInfo
       mLWallRBCI(0,mLWallMS,mLWallShape,btVector3(0,0,0));
@@ -114,43 +104,20 @@ namespace Pixy {
     
     // right wall
     mRWallShape = new btStaticPlaneShape(btVector3(-1,0.5f,0),0);
-
     mRWallMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(15,0,0)));
     btRigidBody::btRigidBodyConstructionInfo
       mRWallRBCI(0,mRWallMS,mRWallShape,btVector3(0,0,0));
 
     mRWallBody = new btRigidBody(mRWallRBCI);
     mWorld->addRigidBody(mRWallBody);
-    // create our triangular walls now
-    /*btTriangleMesh *mTriMesh = new btTriangleMesh();
-
-    for (int i=-10; i<22500; ++i) {
-      btVector3 v0(0,0,i);
-      btVector3 v1(160,110,i);
-      btVector3 v2(320,0,i);
-
-      mTriMesh->addTriangle(v0,v1,v2);
-    }
-
-    mLWallShape = new btBvhTriangleMeshShape(mTriMesh,true);
-
-    mLWallMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(-300,-35,0)));
-    btRigidBody::btRigidBodyConstructionInfo
-      mLWallRBCI(0,mLWallMS,mLWallShape,btVector3(0,0,0));
-
-    mLWallBody = new btRigidBody(mLWallRBCI);
-    mWorld->addRigidBody(mLWallBody);
     
-    // right wall
-    mRWallShape = new btBvhTriangleMeshShape(mTriMesh,true);
-
-    mRWallMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(25,-35,0)));
+    mBWallShape = new btStaticPlaneShape(btVector3(0,0,1),0);
+    mBWallMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,-10)));
     btRigidBody::btRigidBodyConstructionInfo
-      mRWallRBCI(0,mRWallMS,mRWallShape,btVector3(0,0,0));
+      mBWallRBCI(0,mBWallMS,mBWallShape,btVector3(0,0,0));
 
-    mRWallBody = new btRigidBody(mRWallRBCI);
-    mWorld->addRigidBody(mRWallBody);
-    */
+    mBWallBody = new btRigidBody(mBWallRBCI);
+    mWorld->addRigidBody(mBWallBody);    
     mLog->infoStream() << "set up!";
     
 		fSetup = true;
@@ -160,47 +127,6 @@ namespace Pixy {
 	
 	void PhyxEngine::update(unsigned long lTimeElapsed) {
 		mWorld->stepSimulation(lTimeElapsed, 7);
-		/*
-    mWorld->performDiscreteCollisionDetection();
-   btCollisionObjectArray arrayBullet = mWorld->getCollisionObjectArray();
-   int numManifolds = mWorld->getDispatcher()->getNumManifolds();
-   for(int i=0; i<numManifolds; i++) {
-      btPersistentManifold* pm = mWorld->getDispatcher()->getManifoldByIndexInternal(i);
-      if(pm->getNumContacts() > 0) {
-        try {
-         btRigidBody* co1 = static_cast<btRigidBody*>(pm->getBody0());
-         btRigidBody* co2 = static_cast<btRigidBody*>(pm->getBody1());
-         // find out if it's a Sphere and an Obstacle that r colliding...
-         // i'm currently doing this by testing the shapes
-         if (!co1 || !co2)
-           continue;
-         
-         if ((co1->getCollisionShape() == mSphere->getCollisionShape() &&
-             co2->getCollisionShape() == mObstacleShape) ||
-             (co2->getCollisionShape() == mSphere->getCollisionShape() &&
-             co1->getCollisionShape() == mObstacleShape)
-            )
-         {
-          // now here's the funny part:
-          // we grab a handle to the Entity's MotionState using the RigidBody
-          // to get a handle of the Ogre::SceneNode which has our Entity casted
-          // as void* ... friggin clean ah?
-          if (co1->getCollisionShape() == mSphere->getCollisionShape()) {
-            MotionState *ms = dynamic_cast<MotionState*>(co2->getMotionState());
-            if (ms)
-              mSphere->collide(static_cast<Obstacle*>(Ogre::any_cast<Entity*>(ms->getNode()->getUserAny())));
-          } else {
-            MotionState *ms = dynamic_cast<MotionState*>(co1->getMotionState());
-            if (ms)
-              mSphere->collide(static_cast<Obstacle*>(Ogre::any_cast<Entity*>(ms->getNode()->getUserAny())));
-          }
-        } 
-        } catch (...) {
-          // do nothing
-        }
-      mWorld->getDispatcher()->clearManifold(pm);
-    }
-	}*/
 	}
 	
 	btCollisionShape* PhyxEngine::obstaclesShape() { return mObstacleShape; };
@@ -230,22 +156,26 @@ namespace Pixy {
     mWorld->removeRigidBody(mCeilingBody);
     mWorld->removeRigidBody(mLWallBody);
     mWorld->removeRigidBody(mRWallBody);
+    mWorld->removeRigidBody(mBWallBody);
     
     delete mFloorBody->getMotionState();
     delete mCeilingBody->getMotionState();
     delete mLWallBody->getMotionState();
     delete mRWallBody->getMotionState();
+    delete mBWallBody->getMotionState();
     
     delete mFloorBody;
     delete mCeilingBody;
     delete mLWallBody;
     delete mRWallBody;
+    delete mBWallBody;
     
     delete mObstacleShape;
     delete mFloorShape;
     delete mCeilingShape;
     delete mLWallShape;
     delete mRWallShape;
+    delete mBWallShape;
 
     delete mWorld;
     delete mSolver;
@@ -254,18 +184,6 @@ namespace Pixy {
     delete mBroadphase;
 		return true;
 	}
-	/*
-	void PhyxEngine::mouseMoved( const OIS::MouseEvent &e )
-	{
-	}
-	
-	void PhyxEngine::mousePressed( const OIS::MouseEvent &e, OIS::MouseButtonID id ) 
-	{
-	}
-	
-	void PhyxEngine::mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id ) 
-	{
-	}*/
 	
 	btDiscreteDynamicsWorld* PhyxEngine::world() { return mWorld; };
 }

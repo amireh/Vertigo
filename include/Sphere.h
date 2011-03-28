@@ -58,7 +58,7 @@ namespace Pixy
 		void setMaxSpeed(float inSpeed);
 		float getMaxSpeed() const;
 		
-		virtual void collide(Obstacle* inObj);
+		//virtual void collide(Obstacle* inObj);
 		
 		const Vector3& getPosition();
 	protected:		

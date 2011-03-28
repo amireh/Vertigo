@@ -27,9 +27,7 @@ namespace Pixy
 		  mCurrentShield = FIRE;
 		  mShields[FIRE] = 100;
 		  mShields[ICE] = 100;
-		
-      currentStep = 0.0f;
-      step = 0.05f;
+		  mDirection = Vector3(0,0,mMoveSpeed);
 		  
       mLog->infoStream() << "created";
 
@@ -39,15 +37,14 @@ namespace Pixy
 
 	Sphere::~Sphere()
 	{
-	    mLog->infoStream() <<"destructed";
-		GfxEngine::getSingletonPtr()->detachFromScene(this);
+	  mLog->infoStream() <<"destructed";
 		
 		mFireTrailNode = NULL;
 		mIceSteamNode = NULL;
 		mMasterNode = NULL;
 		
 		delete mPhyxBody->getMotionState();
-        delete mPhyxBody;
+    delete mPhyxBody;
 
 		delete mPhyxShape;
 
@@ -67,48 +64,17 @@ namespace Pixy
     using namespace Ogre;
 		Geometry::createSphere(mMesh, 14, 32, 32);
 		
-
-		
 		GfxEngine::getSingletonPtr()->attachToScene(this);
 		mSceneObject->setCastShadows(true);
     mMasterNode = GfxEngine::getSingletonPtr()->getSM()->getRootSceneNode()->createChildSceneNode();
     mSceneNode->getParent()->removeChild(mSceneNode);
     mMasterNode->addChild(mSceneNode);
     //mSceneNode->setVisible(false);
-    /*
-    mFireTrail = GfxEngine::getSingletonPtr()->getSM()->createParticleSystem("SphereBlaze", "Vertigo/Effects/Player/Blaze");
-    mIceSteam = GfxEngine::getSingletonPtr()->getSM()->createParticleSystem("SphereSteam", "Vertigo/Effects/Player/Steam");
-    mFireTrail->setNonVisibleUpdateTimeout(0.5f);
-    mIceSteam->setNonVisibleUpdateTimeout(0.5f);
-    
-    mFireTrail->setVisible(false);
-    mIceSteam->setVisible(false);
-    
 
-    
-    mFireTrailNode = mMasterNode->createChildSceneNode();
-    mFireTrailNode->attachObject(mFireTrail);
-    mIceSteamNode = mMasterNode->createChildSceneNode();
-    mIceSteamNode->attachObject(mIceSteam);
-    
-    mFireTrailNode->setInheritOrientation(false);
-    mIceSteamNode->setInheritOrientation(false);
-    */
-    //mSceneNode->detachObject(mSceneObject);
-    
-    /*
-    mSphereNode = mSceneNode->createChildSceneNode();
-    mSphereNode->attachObject(mSceneObject);
-    mSphereNode->showBoundingBox(true);*/
 
 		mLog->debugStream() << "sphere rendered";
 		render();
-		
-		
-		//mSceneNode->setScale(0.1f, 0.1f, 0.1f);
-		//mSceneNode->pitch(Ogre::Degree(90));
-		//mSceneNode->setPosition(Ogre::Vector3(0,0,0));
-		
+				
 		btTransform trans = btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0));
 		
     mPhyxShape = new btSphereShape(14);
@@ -123,22 +89,6 @@ namespace Pixy
         
 		mPhyxBody = new btRigidBody(mPhyxBodyCI);
     
-    //mPhyxBody->setFlags(sphereCollidesWith);
-    
-/*
-    setCollisionShape(mPhyxShape);
-    setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);    
-    */
-    //Entity* me = static_cast<Entity*>(mObject->getUserPointer());
-    //mLog->debugStream() << "collision object's ptr : " << me->getName();
-    
-    //btDiscreteDynamicsWorld* mWorld = PhyxEngine::getSingletonPtr()->world();
-    //mWorld->addRigidBody(mPhyxBody);
-		
-		//mWorld->addCollisionObject(this);
-		//setWorldTransform(trans);
-		//setUserPointer(this);
-		//mPhyxShape->setUserPointer(this);
 		PhyxEngine::getSingletonPtr()->attachToWorld(this);
 		mPhyxBody->proceedToTransform(trans);
 		
@@ -170,24 +120,14 @@ namespace Pixy
 	};
 	void Sphere::die() {
 	  PhyxEngine::getSingletonPtr()->detachFromWorld(this);
+	  GfxEngine::getSingletonPtr()->detachFromScene(this);
 	};
 	
 	void Sphere::render() {
 		if (mCurrentShield == FIRE) {
 		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Sphere/Fire");
-		  /*if (mIceSteam->isAttached())
-		    mIceSteam->setVisible(false);
-		    
-		  //mSceneNode->attachObject(mFireTrail);
-		  mFireTrail->setVisible(true);*/
 		} else {
 		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Sphere/Ice");
-		  /*if (mFireTrail->isAttached())
-		    mFireTrail->setVisible(false);
-		    //mSceneNode->detachObject(mFireTrail);
-
-      mIceSteam->setVisible(true);
-		  //mSceneNode->attachObject(mIceSteam);*/
 		}
 	};
 	
@@ -200,7 +140,7 @@ namespace Pixy
 		
 		switch (e.key) {
 			case OIS::KC_W:
-				mDirection.z = mMoveSpeed;
+				mDirection.z = mMoveSpeed * 2;
 				break;
 			case OIS::KC_A:
 				//mPhyxBody->clearForces();
@@ -216,11 +156,9 @@ namespace Pixy
 				mPhyxBody->clearForces();
 				break;
 			case OIS::KC_Q:
-				//mPhyxBody->clearForces();
 				mDirection.y = mMoveSpeed;
 				break;
 			case OIS::KC_E:
-				//mPhyxBody->clearForces();
 				mDirection.y = -mMoveSpeed;
 				break;			
 			case OIS::KC_SPACE:
@@ -234,7 +172,7 @@ namespace Pixy
 		
 		switch (e.key) {
 			case OIS::KC_W:
-				mDirection.z = 0;
+				mDirection.z = mMoveSpeed;
 				break;
 			case OIS::KC_A:
 				mDirection.x = (mDirection.x > 0) ? 0 : mDirection.x;
@@ -242,9 +180,6 @@ namespace Pixy
 			case OIS::KC_D:
 				mDirection.x = (mDirection.x < 0) ? 0 : mDirection.x;
 				break;
-			case OIS::KC_G:
-			  GfxEngine::getSingletonPtr()->applyMotionBlur(0.5f);
-			  break;
 		}
 		
 	}
@@ -256,13 +191,15 @@ namespace Pixy
 		mPhyxBody->activate(true);
 		//mPhyxBody->setLinearVelocity(btVector3(0,0,mMoveSpeed * lTimeElapsed));
 		mPhyxBody->applyCentralForce(btVector3(mDirection.x *lTimeElapsed, mDirection.y *lTimeElapsed, mDirection.z *lTimeElapsed));
+		
+		
 		//Ogre::Quaternion rot = mMasterNode->getPosition().getRotationTo(*mNextWaypoint);
 		//mMasterNode->setOrientation( rot );
 		//mMasterNode->translate(Vector3(rot.x + mMoveSpeed, 0, rot.z + mMoveSpeed));
 		
 		
 		//mLog->debugStream() << "distance to next waypoint is " << mMasterNode->getPosition().distance( *mNextWaypoint );
-/*
+    /*
 		if (mDirection == Ogre::Vector3::ZERO ) {
 		  locateNextWaypoint();
       mDirection = *mNextWaypoint - mMasterNode->getPosition();
@@ -292,30 +229,12 @@ namespace Pixy
          mMasterNode->rotate(Vector3(1,0,0), Ogre::Degree(0.1f * lTimeElapsed));
        }
     }*/
-		//btTransform trans;
-		//mPhyxBody->getMotionState()->getWorldTransform(trans);
-		//mSceneNode->translate(mDirection * lTimeElapsed, Ogre::Node::TS_LOCAL);
-		//mSceneNode->setPosition(Vector3(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ()));
 	};
 	
 	void Sphere::flipShields() {
 	  mCurrentShield = (mCurrentShield == FIRE) ? ICE : FIRE;
 	  render();
 	};
-	
-	void Sphere::collide(Obstacle* target) {
-	  if (!target)
-	    return;
-	  
-	  if (target->dead())
-	    return;
-	  
-
-	  //GfxEngine::getSingletonPtr()->applyMotionBlur(0.5f);
-	  
-	  mLog->debugStream() << "Sphere has collided with " << target->getName() << target->getObjectId();
-	  //target->collide(this);
-	}
 	
 	const Vector3& Sphere::getPosition() {
 	  return mMasterNode->getPosition();
@@ -352,11 +271,11 @@ namespace Pixy
 	    mShields[mCurrentShield] -= 5;
 	  } else {
 	    mShields[mCurrentShield] += 5;
+	    mPhyxBody->activate(true);
+	    mPhyxBody->clearForces();
+	    mPhyxBody->applyCentralForce(btVector3(mDirection.x * mMoveSpeed,mDirection.y * mMoveSpeed,-mMoveSpeed * 100));
 	  }
 	  
-	  mPhyxBody->activate(true);
-	  mPhyxBody->clearForces();
-	  mPhyxBody->applyCentralForce(btVector3(mDirection.x * mMoveSpeed,mDirection.y * mMoveSpeed,-mMoveSpeed * 100));
 	  return true;
 	};
 	bool Sphere::evtPortalSighted(Event* inEvt) {

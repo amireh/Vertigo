@@ -17,7 +17,6 @@ namespace Pixy
 	  mType = OBSTACLE;
 	  mMesh = "ObstacleMesh";
 	  mMoveSpeed = 1.2f;
-	  mDeathDuration = 100;
 	  fDying = false;
 	  fHasFX = true;
 	  int qualifier = rand();
@@ -40,30 +39,18 @@ namespace Pixy
       ParticleUniverse::ParticleSystemManager::getSingletonPtr();
       
       mBlaze = fxMgr->createParticleSystem(
-        Ogre::String("FxBlaze" + stringify(rand())),
+        Ogre::String("FxBlaze" + stringify(idObject)),
         "Vertigo/FX/Blaze",
         GfxEngine::getSingletonPtr()->getSM());
       mBlaze->prepare();
       
       mSteam = fxMgr->createParticleSystem(
-        Ogre::String("FxSteam" + stringify(rand())),
+        Ogre::String("FxSteam" + stringify(idObject)),
         "Vertigo/FX/Steam",
         GfxEngine::getSingletonPtr()->getSM());
       mSteam->prepare();
-      
-	    // create a fire trail particle system
-	    std::ostringstream psName;
-		  psName << mName << idObject << "Blaze";
-      //mFireTrail = GfxEngine::getSingletonPtr()->getSM()->createParticleSystem(psName.str(), "Vertigo/FX/Blaze");
-      //mFireTrail->setNonVisibleUpdateTimeout(0.5f);
-      psName.clear();
-      psName << mName << idObject << "Steam";
-      //mIceSteam = GfxEngine::getSingletonPtr()->getSM()->createParticleSystem(psName.str(), "Vertigo/Effects/Steam");
-      //mIceSteam->setNonVisibleUpdateTimeout(0.5f);
-      
-      mFireTrailNode = mMasterNode->createChildSceneNode();
+         
       mMasterNode->attachObject(mBlaze);
-      mIceSteamNode = mMasterNode->createChildSceneNode();
       mMasterNode->attachObject(mSteam);      
     }
     
@@ -93,8 +80,6 @@ namespace Pixy
 	{
     //mLog->infoStream() << "destructed";
 
-		mFireTrailNode = NULL;
-		mIceSteamNode = NULL;
 		mMasterNode = NULL;
 
 		GfxEngine::getSingletonPtr()->detachFromScene(this);	
@@ -135,15 +120,7 @@ namespace Pixy
 	  
 	  mPhyxBody->activate(true);
 	  mPhyxBody->setLinearVelocity(btVector3(0,0,-mMoveSpeed));
-    //setCollisionShape(mPhyxShape);
-    //setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);    
-   // setUserPointer(this);
-	  
-    //btDiscreteDynamicsWorld* mWorld = PhyxEngine::getSingletonPtr()->world();
-    //mWorld->addRigidBody(mPhyxBody);
-		//mWorld->addCollisionObject(this);
 
-	  //mDirection = Vector3(0,0,-1);
 	  fDead = false;
 	  
 	  mLog->debugStream() << mName << idObject << " is alive";
@@ -155,24 +132,20 @@ namespace Pixy
 	  mLog->debugStream() << mName << idObject << " is dead";
 	  
 	  mSceneNode->setVisible(false);
-	  /*
+	  
 	  if (fHasFX) {
 	    if (mShield == FIRE) {
-	      mSceneNode->detachObject(mFireTrail);
+	      mBlaze->stop();
+	      mBlaze->setVisible(false);
 	    } else {
-	      mSceneNode->detachObject(mIceSteam);
+	      mSteam->stop();
+	      mSteam->setVisible(false);
 	    }
 	  }
-	  */
-	  //mDirection = Vector3(0,0,0);
 	  
-	  //btDiscreteDynamicsWorld* mWorld = PhyxEngine::getSingletonPtr()->world();
-	  //mPhyxBody->activate(false);
-		//mWorld->removeCollisionObject(this);
-		//mWorld->removeRigidBody(mPhyxBody);
 	  PhyxEngine::getSingletonPtr()->detachFromWorld(this);
 	  fDead = true;
-	  fDying = false;
+
 	};
 	
 	void Obstacle::render() {
@@ -226,8 +199,7 @@ namespace Pixy
       evt->setAny((void*)this);
       EventManager::getSingleton().hook(evt);
       evt = NULL;
-      collide(mSphere);
-      return;
+      return die();
     }
 	  
     mDirection = mSphere->getPosition() - mMasterNode->getPosition();
@@ -247,17 +219,13 @@ namespace Pixy
 		);
 
 	};
-	
-	void Obstacle::collide(Entity* target) {
-	  if (fDying || fDead) // prevent race conditions (if the obstacle gets hit twice by the player)
-	    return;
-	  
-	  mLog->debugStream() << "Obstacle" << idObject << " has collided with " << target->getName() << target->getObjectId();
-	  //fDying = true;
-	  //mTimer.reset();
+	/*
+	bool Obstacle::evtObstacleCollided(Event* inEvt) {
 	  die();
-	}
-
+	  
+	  return true;
+	};*/
+	
   SHIELD Obstacle::shield() { return mShield; }
 	
 } // end of namespace
