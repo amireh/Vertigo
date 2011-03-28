@@ -6,7 +6,7 @@ material Vertigo/Overlays/Shields/Fire
 		pass
 		{
 			ambient 1 1 1
-			scene_blend zero
+			//scene_blend zero
 			//depth_write off
 			cull_software none
 			cull_hardware none

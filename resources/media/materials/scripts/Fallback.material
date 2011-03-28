@@ -1,0 +1,46 @@
+//
+material Sphere/Fire
+{
+	technique
+	{
+		pass
+		{
+			ambient 1 1 1
+			//scene_blend zero
+			//depth_write off
+			cull_software none
+			cull_hardware none
+
+			texture_unit
+			{
+				texture Killing_Chamber.jpg
+			}
+
+		}
+	}
+}
+
+//
+material Sphere/Ice
+{
+	technique
+	{
+		pass
+		{
+			ambient 1 1 1
+
+			texture_unit
+			{
+				texture Icy.png
+			}
+		}
+	}
+}
+
+material Obstacle/Ice : Sphere/Ice
+{
+}
+
+material Obstacle/Fire : Sphere/Fire
+{
+}

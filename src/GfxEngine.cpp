@@ -465,7 +465,11 @@ namespace Pixy {
 		    playEffect("Shatter", mSphere);
 		    break;		    
 		  case OIS::KC_F:
-		    playEffect("Despawn", mSphere);
+		    //playEffect("Despawn", mSphere);
+		    if (mTrayMgr->areTraysVisible())
+		      mTrayMgr->hideTrays();
+		    else
+		      mTrayMgr->showTrays();
 		    break;		    
 			
 		  case OIS::KC_P:
