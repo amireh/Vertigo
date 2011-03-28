@@ -39,15 +39,28 @@ namespace Pixy
 		initLogger();
 		using std::ostringstream;
 		ostringstream lPathResources, lPathPlugins, lPathOgreCfg, lPathLog;
-		lPathResources << PROJECT_ROOT << PROJECT_RESOURCES << "/config/resources.cfg";
-		lPathPlugins << PROJECT_ROOT << PROJECT_RESOURCES << "/config/plugins.cfg";
-		lPathOgreCfg << PROJECT_ROOT << PROJECT_RESOURCES << "/config/ogre.cfg";
+#if OGRE_PLATFORM == OGRE_PLATFORM_WINDOWS
+		lPathResources << PROJECT_ROOT << PROJECT_RESOURCES << "\\config\\resources_win32.cfg";
+    lPathPlugins << PROJECT_ROOT << PROJECT_RESOURCES << "\\config\\plugins.cfg";
+		lPathOgreCfg << PROJECT_ROOT << PROJECT_RESOURCES << "\\config\\ogre.cfg";	
+		lPathLog << PROJECT_LOG_DIR << "\\Ogre.log";	
+#elsif OGRE_PLATFORM == OGRE_PLATFORM_APPLE
+		lPathResources << PROJECT_ROOT << PROJECT_RESOURCES << "/config/resources_osx.cfg";
+    lPathPlugins << PROJECT_ROOT << PROJECT_RESOURCES << "/config/plugins.cfg";
+		lPathOgreCfg << PROJECT_ROOT << PROJECT_RESOURCES << "/config/ogre.cfg";	
+		lPathLog << PROJECT_LOG_DIR << "/Ogre.log";    
+#else
+		lPathResources << PROJECT_ROOT << PROJECT_RESOURCES << "/config/resources_linux.cfg";
+    lPathPlugins << PROJECT_ROOT << PROJECT_RESOURCES << "/config/plugins.cfg";
+		lPathOgreCfg << PROJECT_ROOT << PROJECT_RESOURCES << "/config/ogre.cfg";	
 		lPathLog << PROJECT_LOG_DIR << "/Ogre.log";
+#endif
+
 		mRoot = OGRE_NEW Root(lPathPlugins.str(), lPathOgreCfg.str(), lPathLog.str());
 		if (!mRoot) {
 			throw Ogre::Exception( Ogre::Exception::ERR_INTERNAL_ERROR, 
 								  "Error - Couldn't initalize OGRE!", 
-								  "Elementum - Error");
+								  "Vertigo - Error");
 		}
 		
 	
@@ -57,7 +70,7 @@ namespace Pixy
 		    // If game can't be configured, throw exception and quit application
 		    throw Ogre::Exception( Ogre::Exception::ERR_INTERNAL_ERROR,
 								  "Error - Couldn't Configure Renderwindow",
-								  "Elementum - Error" );
+								  "Vertigo - Error" );
 		    return;
 		}
 		
@@ -76,7 +89,7 @@ namespace Pixy
 		
 		// lTimeLastFrame remembers the last time that it was checked
 		// we use it to calculate the time since last frame
-		unsigned long lTimeLastFrame, lTimeCurrentFrame, lTimeSinceLastFrame = 0;
+		unsigned long lTimeLastFrame, lTimeCurrentFrame, lTimeSinceLastFrame;
 		
 		lTimeLastFrame = 0;
 		lTimeCurrentFrame = 0;
@@ -85,25 +98,22 @@ namespace Pixy
 		// main game loop
 		while( !fShutdown ) {
 			
-		    // calculate time since last frame and remember current time for next frame
-		    lTimeCurrentFrame = mRoot->getTimer()->getMilliseconds();
-		    lTimeSinceLastFrame = lTimeCurrentFrame - lTimeLastFrame;
-		    lTimeLastFrame = lTimeCurrentFrame;
-			
-		    // update input manager
-		    mInputMgr->capture();
-			
-		    // cpdate current state
-		    mStates.back()->update( lTimeSinceLastFrame );
-			
-			
+	    // calculate time since last frame and remember current time for next frame
+	    lTimeCurrentFrame = mRoot->getTimer()->getMilliseconds();
+	    lTimeSinceLastFrame = lTimeCurrentFrame - lTimeLastFrame;
+	    lTimeLastFrame = lTimeCurrentFrame;
+		
+	    // update input manager
+	    mInputMgr->capture();
+		
+	    // cpdate current state
+	    mStates.back()->update( lTimeSinceLastFrame );
+
 			WindowEventUtilities::messagePump();
 
 			// render next frame
-		    mRoot->renderOneFrame();
-			
+		  mRoot->renderOneFrame();
 
-			
 		}
 		
 	}
@@ -256,12 +266,12 @@ namespace Pixy
 
 
 		std::string lLogPath = PROJECT_LOG_DIR;
-#ifdef _WIN32
-		lLogPath += "\Pixy.log";
+#if OGRE_PLATFORM == OGRE_PLATFORM_WINDOWS
+		lLogPath += "\\Pixy.log";
 #else
 		lLogPath += "/Pixy.log";
 #endif	
-		std::cout << "| Initting log4cpp logger @ " << lLogPath << "!\n";
+		//std::cout << "| Initting log4cpp logger @ " << lLogPath << "!\n";
 		
 		log4cpp::Appender* lApp = new 
 		log4cpp::FileAppender("FileAppender",

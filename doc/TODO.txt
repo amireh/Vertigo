@@ -3,13 +3,34 @@
 * sphere: track shield state (DONE)
 * obstacles: collision (DONE)
 * obstacles: stationary and suicidal
-* obstacles: track player
-* terrain: multi tunnels
+* obstacles: track player (done)
+* terrain: multi tunnels (revised)
+* add portals (done)
 * create UI...
+* implement states:
+  # intro
+  # transition
+  # game (done)
+  # score
 
 -- Enhancements --
-* reimplement collision to use Ogre's Ray queries instead of Bullet
+* reimplement collision to use Ogre's Ray queries instead of Bullet (done)
 * effects: motion blur (DONE)
-* effects: screen shake on bad collision
-* normalize FPS across Gfx and Phyx
-* install shaders for the spheres
+* effects: screen shake on bad collision (dropped)
+* normalize FPS across Gfx and Phyx (done)
+* install shaders for the spheres (done)
+* bump map the material of the sphere (done)
+* add collision effects (done)
+
+
+-- compatibility --
+* proper logging for debug / release
+* add some configuration:
+  # slow down the game / speed up
+  # toggle FPS frame (done)
+  # pause the game
+
+-- maintenance --
+* strip away unused procedural geometry files
+* clean up unused media
+

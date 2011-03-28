@@ -20,6 +20,7 @@
 // misc
 #include <exception>
 #include <stdint.h>
+#include <OGRE/OgrePlatform.h>
 
 // VERTIGO
 #include "PixyLog.h"
@@ -34,14 +35,18 @@
 /* -------------
  * PATHS
  * ------------- */
-#ifdef _WIN32
-#define PROJECT_ROOT "C:\\Workspace\\Projects\\Vertigo"
-#define PROJECT_LOG_DIR "C:\\Workspace\\Projects\\Vertigo\\log"
+#define PROJECT_ROOT ".."
+
+#if OGRE_PLATFORM == OGRE_PLATFORM_WINDOWS
+#define PROJECT_LOG_DIR "..\\log"
 #define PROJECT_RESOURCES "\\resources"
 #define PROJECT_SCRIPTS "\\resources\\scripts"
+#elsif OGRE_PLATFORM == OGRE_PLATFORM_APPLE
+#define PROJECT_LOG_DIR "../Resources/log"
+#define PROJECT_RESOURCES "../Resources"
+#define PROJECT_SCRIPTS "../Resources/scripts"
 #else
-#define PROJECT_ROOT "/home/kandie/Workspace/Projects/Vertigo"
-#define PROJECT_LOG_DIR "/home/kandie/Workspace/Projects/Vertigo/log"
+#define PROJECT_LOG_DIR "../log"
 #define PROJECT_RESOURCES "/resources"
 #define PROJECT_SCRIPTS "/resources/scripts"
 #endif
