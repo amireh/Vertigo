@@ -1,0 +1,54 @@
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_explosion_trail
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+
+            texture_unit
+            {
+                texture mp_explosion_trail_01.dds
+            }
+        }
+    }
+}
+
+material mp_explosion_smoke_01
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend alpha_blend
+
+            texture_unit
+            {
+                texture mp_explosion_smoke_01.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_explosion_flare_01
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+
+            texture_unit
+            {
+                texture mp_explosion_flare_01.dds
+            }
+        }
+    }
+}

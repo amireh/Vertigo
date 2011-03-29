@@ -1,0 +1,206 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+
+material mp_smoke_smolder
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend alpha_blend
+
+            texture_unit
+            {
+                texture mp_smoke_smolder.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_smoke_02
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend alpha_blend
+
+            texture_unit
+            {
+                texture mp_smoke_02.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_smoke_04
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend alpha_blend
+
+            texture_unit
+            {
+                texture mp_smoke_04.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_smoke_04_mod
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend src_colour one
+
+            texture_unit
+            {
+                texture mp_smoke_04_add.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_smoke_04_add
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+
+            texture_unit
+            {
+                texture mp_smoke_04_add.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_smoke_zone_1x2
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend alpha_blend
+
+            texture_unit
+            {
+                texture mp_smoke_zone_1x2.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_smoke_flare
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+
+            texture_unit
+            {
+                texture mp_smoke_flare.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_smoke_flare_sparkle
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+
+            texture_unit
+            {
+                texture mp_smoke_flare_sparkle.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_smoke_chimney
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+
+            texture_unit
+            {
+                texture mp_smoke_chimney.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_smoke_from_hell
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend alpha_blend
+
+            texture_unit
+            {
+                texture mp_smoke_from_hell.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_smoke_puff
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend alpha_blend
+
+            texture_unit
+            {
+                texture mp_smoke_puff.dds
+            }
+        }
+    }
+}

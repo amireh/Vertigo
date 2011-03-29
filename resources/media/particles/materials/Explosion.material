@@ -1,0 +1,87 @@
+material mp_explosion_smoke_01
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend alpha_blend
+
+            texture_unit
+            {
+                texture mp_explosion_smoke_01.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_explosion_smoke_01_add
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+            texture_unit
+            {
+                texture mp_explosion_smoke_01_add.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_explosion_debris
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+
+            texture_unit
+            {
+                texture mp_explosion_debris.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_explosion_debris_large
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend alpha_blend
+
+            texture_unit
+            {
+                texture mp_explosion_debris_large_4x4.dds
+            }
+        }
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+material mp_explosion_04
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            scene_blend add
+            texture_unit
+            {
+                texture mp_explosion_04.dds
+            }
+        }
+    }
+}
