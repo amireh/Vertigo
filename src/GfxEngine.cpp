@@ -510,12 +510,12 @@ namespace Pixy {
     effect->prepare();
     effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("Shatter", effect));
         
-    effect = fxMgr->createParticleSystem(
+    /*effect = fxMgr->createParticleSystem(
       "FxBlackHole",
       "Vertigo/FX/BlackHole", 
       mSceneMgr);
     effect->prepare();
-    effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("BlackHole", effect));
+    effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("BlackHole", effect));*/
 
     effect = fxMgr->createParticleSystem(
       "FxBlaze",
@@ -524,12 +524,12 @@ namespace Pixy {
     effect->prepare();
     effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("Blaze", effect));    
 
-    effect = fxMgr->createParticleSystem(
+    /*effect = fxMgr->createParticleSystem(
       "FxSpawnPoint",
       "Vertigo/FX/SpawnPoint", 
       mSceneMgr);
     effect->prepare();
-    effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("SpawnPoint", effect));  
+    effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("SpawnPoint", effect));  */
 
     effect = fxMgr->createParticleSystem(
       "FxDespawn",
@@ -563,9 +563,9 @@ namespace Pixy {
 	    if (effect->isAttached())
 	      effect->getParentSceneNode()->detachObject(effect);
 	    inEntity->getMasterNode()->attachObject(effect);
-	    if (inEffect == "BlackHole")
+	    /*if (inEffect == "BlackHole")
 	      effect->startAndStopFade(1);
-	    else
+	    else*/
 	      effect->start();
 	  }
 	};

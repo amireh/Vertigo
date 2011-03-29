@@ -93,17 +93,17 @@
     <ClInclude Include="..\..\..\include\GfxEngine.h" />
     <ClInclude Include="..\..\..\include\Handler.h" />
     <ClInclude Include="..\..\..\include\InputManager.h" />
-    <ClInclude Include="..\..\..\include\Intro.h" />
-    <ClInclude Include="..\..\..\include\Level.h" />
     <ClInclude Include="..\..\..\include\Listener.h" />
     <ClInclude Include="..\..\..\include\MotionState.h" />
     <ClInclude Include="..\..\..\include\Obstacle.h" />
     <ClInclude Include="..\..\..\include\PhyxEngine.h" />
     <ClInclude Include="..\..\..\include\Pixy.h" />
     <ClInclude Include="..\..\..\include\PixyLog.h" />
-    <ClInclude Include="..\..\..\include\ResourceManager.h" />
     <ClInclude Include="..\..\..\include\SdkCameraMan.h" />
     <ClInclude Include="..\..\..\include\Sphere.h" />
+    <ClInclude Include="..\..\..\include\StateGame.h" />
+    <ClInclude Include="..\..\..\include\StatePause.h" />
+    <ClInclude Include="..\..\..\include\Tunnel.h" />
     <ClInclude Include="..\..\..\include\UIEngine.h" />
     <ClInclude Include="..\..\..\include\Utility.h" />
     <ClInclude Include="..\..\..\modules\include\log4cpp\PixyLogLayout.h" />
@@ -121,11 +121,13 @@
     <ClCompile Include="..\..\..\src\Geometry.cpp" />
     <ClCompile Include="..\..\..\src\GfxEngine.cpp" />
     <ClCompile Include="..\..\..\src\InputManager.cpp" />
-    <ClCompile Include="..\..\..\src\Intro.cpp" />
     <ClCompile Include="..\..\..\src\main.cpp" />
     <ClCompile Include="..\..\..\src\Obstacle.cpp" />
     <ClCompile Include="..\..\..\src\PhyxEngine.cpp" />
     <ClCompile Include="..\..\..\src\Sphere.cpp" />
+    <ClCompile Include="..\..\..\src\StateGame.cpp" />
+    <ClCompile Include="..\..\..\src\StatePause.cpp" />
+    <ClCompile Include="..\..\..\src\Tunnel.cpp" />
     <ClCompile Include="..\..\..\src\UIEngine.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

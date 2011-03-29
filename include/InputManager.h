@@ -18,10 +18,17 @@
 #endif
 
 // OIS
+#if OGRE_PLATFORM == OGRE_PLATFORM_WINDOWS || defined(_WIN32)
+#include <OIS.h>
+#include <OISMouse.h>
+#include <OISKeyboard.h>
+#include <OISInputManager.h>
+#else
 #include <OIS/OIS.h>
 #include <OIS/OISMouse.h>
 #include <OIS/OISKeyboard.h>
 #include <OIS/OISInputManager.h>
+#endif
 #include <Ogre.h>
 namespace Pixy
 {

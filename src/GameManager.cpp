@@ -266,7 +266,7 @@ namespace Pixy
 
 
 		std::string lLogPath = PROJECT_LOG_DIR;
-#if OGRE_PLATFORM == OGRE_PLATFORM_WINDOWS
+#if OGRE_PLATFORM == OGRE_PLATFORM_WINDOWS || defined(_WIN32)
 		lLogPath += "\\Pixy.log";
 #else
 		lLogPath += "/Pixy.log";

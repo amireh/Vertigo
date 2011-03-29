@@ -29,11 +29,17 @@
 #define __SdkCameraMan_H__
 
 #include "Ogre.h"
+#if OGRE_PLATFORM == OGRE_PLATFORM_WINDOWS || defined(_WIN32)
+#include <OIS.h>
+#include <OISMouse.h>
+#include <OISKeyboard.h>
+#include <OISInputManager.h>
+#else
 #include <OIS/OIS.h>
 #include <OIS/OISMouse.h>
 #include <OIS/OISKeyboard.h>
 #include <OIS/OISInputManager.h>
-
+#endif
 namespace OgreBites
 {
 	enum CameraStyle   // enumerator values for different styles of camera movement

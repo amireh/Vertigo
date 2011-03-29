@@ -24,6 +24,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\modules\include\ogre\OgreSample.h">
+      <Filter>Modules\Ogre</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\modules\include\ogre\OgreSdkTrays.h">
+      <Filter>Modules\Ogre</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\modules\include\log4cpp\PixyLogLayout.h">
+      <Filter>Modules\log4cpp</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\include\AudioEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -63,12 +72,6 @@
     <ClInclude Include="..\..\..\include\InputManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\Intro.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\Level.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\Listener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -87,13 +90,19 @@
     <ClInclude Include="..\..\..\include\PixyLog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\ResourceManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\SdkCameraMan.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\Sphere.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\StateGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\StatePause.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\Tunnel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\UIEngine.h">
@@ -102,17 +111,11 @@
     <ClInclude Include="..\..\..\include\Utility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\modules\include\ogre\OgreSample.h">
-      <Filter>Modules\Ogre</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\modules\include\ogre\OgreSdkTrays.h">
-      <Filter>Modules\Ogre</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\modules\include\log4cpp\PixyLogLayout.h">
-      <Filter>Modules\log4cpp</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\modules\src\log4cpp\PixyLogLayout.cpp">
+      <Filter>Modules\log4cpp</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\src\Entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -140,9 +143,6 @@
     <ClCompile Include="..\..\..\src\InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\Intro.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -155,11 +155,17 @@
     <ClCompile Include="..\..\..\src\Sphere.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\UIEngine.cpp">
+    <ClCompile Include="..\..\..\src\StateGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\modules\src\log4cpp\PixyLogLayout.cpp">
-      <Filter>Modules\log4cpp</Filter>
+    <ClCompile Include="..\..\..\src\StatePause.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Tunnel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\UIEngine.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
