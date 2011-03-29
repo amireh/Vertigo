@@ -200,6 +200,19 @@ namespace Pixy
 					EventManager::getSingletonPtr()->subscribeToName(inName, inInstance);
 			}
 			
+			inline void 
+			unbind(std::string inName) 
+			{	
+			  name_bind_t::iterator _binder = mNameBindings.find(inName);
+				
+				// register Event if it isn't already
+				if (_binder != mNameBindings.end())
+				{
+					_binder->second.clear();
+					mNameBindings.erase(_binder);
+				}
+			};
+			
 			template < class T >
 			inline void 
 			bindToAll( EventListener* inInstance, 
@@ -240,7 +253,9 @@ namespace Pixy
 				EventManager::getSingletonPtr()->hook(_msg);
 			}
 			*/
-        protected:
+			
+
+    protected:
 			void track(Handler*);
 			void stopTracking(Handler*);
 			bool beingTracked(Handler*);

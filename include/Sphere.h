@@ -63,6 +63,7 @@ namespace Pixy
 		const Vector3& getPosition();
 	protected:		
 		
+		bool evtPortalEntered(Event* inEvt);
 		bool evtPortalSighted(Event* inEvt);
 		bool evtObstacleCollided(Event* inEvt);
 		

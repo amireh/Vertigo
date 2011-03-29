@@ -13,8 +13,8 @@ system Vertigo/FX/Portal
     {
         visual_particle_quota                   20
         material                                mp_spell_swirl
-        default_particle_width                  800
-        default_particle_height                 800
+        default_particle_width                  170
+        default_particle_height                 170
         renderer                                Billboard
         {
             billboard_rotation_type             vertex
@@ -22,9 +22,9 @@ system Vertigo/FX/Portal
         emitter                                 Point 
         {
             angle                               0
-            time_to_live                        300
+            time_to_live                        180
             velocity                            0
-            duration                            300
+            duration                            180
         }
         affector                                Colour 
         {
@@ -33,8 +33,8 @@ system Vertigo/FX/Portal
             //time_colour                         0.7  0.921569 0.137255 0.00392157 1
             //time_colour                         0    0 0 0 1
             time_colour                         0  0.2 0.1 0.0 1
-            time_colour                         150  0.6 0.4 0.0 1
-            time_colour                         300  0.2 0.1 0.0 1
+            time_colour                         10  0.6 0.4 0.0 1
+            time_colour                         180  0.2 0.1 0.0 1
             //time_colour                         10    0 0 0 1
         }
         affector                                TextureRotator 

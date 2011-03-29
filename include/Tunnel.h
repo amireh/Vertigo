@@ -40,17 +40,25 @@ namespace Pixy {
 	   *  inAutoShow: will render the moment it's created and start its portal effect
 	   *  inCapped: if true, there will be portals placed at both ends of the tunnel
 	   */
-    Tunnel(const int inNrSegments, 
-           const Real inSegmentLength, 
-           const Real inRadius, 
-           const String& inMaterial, 
-           const Vector3& inPosition,
-           bool inAutoShow = true);
+    Tunnel(const String inMaterial,
+           const int inNrSegments = 10, 
+           const Real inSegmentLength = 500, 
+           const Real inRadius = 80, 
+           const Vector3& inPosition = Vector3(0,0,0),
+           bool inAutoShow = false);
     virtual ~Tunnel();
     
     void update(unsigned long lTimeElapsed);
     
     void show();
+    
+    // changes the materials of all the segments in this tunnel
+    //void applyMaterial(Ogre::String inMaterial);
+    
+    SceneNode* getNode();
+    
+    SceneNode* getEntrancePortal();
+    SceneNode* getExitPortal();
     
     /*
      * Remove the tunnel from the scene and stop its effects.
@@ -71,6 +79,8 @@ namespace Pixy {
     
     std::vector<SceneNode*> mSegments;
     int mNrSegments;
+    int idObject;
+    
     Real mSegmentLength;
     Real mLength;
     Real mRadius;
@@ -78,9 +88,10 @@ namespace Pixy {
     
     bool fPassedEntrance; // tracker for when the player passes the entrance portal
     bool fPortalSighted; // triggered when the player almost reaches the exit
+    bool fPortalReached;
     
     typedef Ogre::SceneNode Portal;
-    Portal *mEntrance, *mExit, *mPortal;
+    Portal *mEntrance, *mExit;
     
     Sphere* mSphere;
     SceneNode* mSphereNode;
@@ -88,7 +99,7 @@ namespace Pixy {
     void generateSegments();
     void generatePortals();
     
-    static int idTunnel;
+    static int nrTunnels;
     static bool fMeshGenerated;
     static bool fEffectPrepared;
     static ParticleSystem* mPortalEffect;

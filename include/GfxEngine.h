@@ -134,6 +134,7 @@ namespace Pixy {
 	
 	  bool evtObstacleAlive(Event* inEvt);
 	  bool evtObstacleCollided(Event* inEvt);
+	  bool evtPortalEntered(Event* inEvt);
 	  bool evtPortalReached(Event* inEvt);
 	  bool evtPortalSighted(Event* inEvt);
 	  

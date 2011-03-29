@@ -123,13 +123,13 @@ namespace Pixy
 
 	  fDead = false;
 	  
-	  mLog->debugStream() << mName << idObject << " is alive";
+	  //mLog->debugStream() << mName << idObject << " is alive";
 	};
 	void Obstacle::die() {
 	  //if (fDead)
 	  //  return;
 	  
-	  mLog->debugStream() << mName << idObject << " is dead";
+	  //mLog->debugStream() << mName << idObject << " is dead";
 	  
 	  mSceneNode->setVisible(false);
 	  

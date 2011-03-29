@@ -108,6 +108,7 @@ namespace Pixy {
     
     bindToName("ObstacleAlive", this, &GfxEngine::evtObstacleAlive);
     bindToName("ObstacleCollided", this, &GfxEngine::evtObstacleCollided);
+    bindToName("PortalEntered", this, &GfxEngine::evtPortalEntered);
     bindToName("PortalReached", this, &GfxEngine::evtPortalReached);
     bindToName("PortalSighted", this, &GfxEngine::evtPortalSighted);
     
@@ -611,10 +612,17 @@ namespace Pixy {
 	  return true;
 	};
 	
+	bool GfxEngine::evtPortalEntered(Event* inEvt) {
+	  playEffect("Despawn", mSphere);
+	  mSphere->getSceneNode()->setVisible(true);
+	  fPortalReached = false;
+	  
+	  return true;
+	};
 	
 	bool GfxEngine::evtPortalReached(Event* inEvt) {
-	  mSphere->die();
-	  mSpawnPoint->setVisible(false);
+	  //mSphere->die();
+	  //mSpawnPoint->setVisible(false);
 		mSphere->getSceneNode()->setVisible(false);
 		fPortalReached = true;
 		playEffect("Despawn", mSphere);

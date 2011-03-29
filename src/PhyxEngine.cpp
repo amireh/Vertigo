@@ -112,7 +112,7 @@ namespace Pixy {
     mWorld->addRigidBody(mRWallBody);
     
     mBWallShape = new btStaticPlaneShape(btVector3(0,0,1),0);
-    mBWallMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,-10)));
+    mBWallMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,-100)));
     btRigidBody::btRigidBodyConstructionInfo
       mBWallRBCI(0,mBWallMS,mBWallShape,btVector3(0,0,0));
 

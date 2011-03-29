@@ -32,6 +32,7 @@ namespace Pixy
       mLog->infoStream() << "created";
 
       bindToName("ObstacleCollided", this, &Sphere::evtObstacleCollided);
+      bindToName("PortalEntered", this, &Sphere::evtPortalEntered);
       bindToName("PortalSighted", this, &Sphere::evtPortalSighted);
     };
 
@@ -75,7 +76,7 @@ namespace Pixy
 		mLog->debugStream() << "sphere rendered";
 		render();
 				
-		btTransform trans = btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0));
+		btTransform trans = btTransform(btQuaternion(0,0,0,1),btVector3(0,70,-10));
 		
     mPhyxShape = new btSphereShape(14);
 		mPhyxMS = new MotionState(trans, mMasterNode);
@@ -278,12 +279,22 @@ namespace Pixy
 	  
 	  return true;
 	};
+	
+	bool Sphere::evtPortalEntered(Event* inEvt) {
+	  mLog->debugStream() << "entered portal";
+	  mDirection = Vector3(0,0,1);
+	  mPhyxBody->activate(true);
+	  mPhyxBody->applyCentralForce(btVector3(0,-10,100000));
+	  
+	  return true;
+	};
+	
 	bool Sphere::evtPortalSighted(Event* inEvt) {
-	  Vector3 dest = GfxEngine::getSingletonPtr()->getPortal()->getPosition();
+	  Vector3 dest = StateGame::getSingletonPtr()->getTunnel()->getExitPortal()->getPosition();
 	  mMaxSpeed = 100.0f;
 	  mMoveSpeed = 50.0f;
 	  
-	  mDirection = Vector3(0, 100, 1) * mMoveSpeed;
+	  mDirection = Vector3(0, 8, 1) * mMoveSpeed;
 	  return true;
 	};
 } // end of namespace

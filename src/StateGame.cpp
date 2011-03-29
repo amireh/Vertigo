@@ -37,6 +37,7 @@ namespace Pixy
 		mSphere->live();
 		
 		nrObstacles = 20;
+		nrTunnels = 2;
 		//createObstacle();
 		
 		for (int i =0; i < nrObstacles; ++i)
@@ -47,9 +48,18 @@ namespace Pixy
 		mGfxEngine->deferredSetup();
 		mPhyxEngine->deferredSetup();
 		
+		bindToName("PortalEntered", this, &StateGame::evtPortalEntered);
 		bindToName("PortalReached", this, &StateGame::evtPortalReached);
 		bindToName("PortalSighted", this, &StateGame::evtPortalSighted);
-		
+
+    //for (int i =0; i < nrTunnels; ++i) {
+      
+    //};
+    mTunnels.push_back(new Tunnel("Vertigo/Tunnel/Lava"));
+    mTunnels.push_back(new Tunnel("Vertigo/Tunnel/Lava/Translucent"));
+    mTunnel = mTunnels.back();
+    mTunnel->show();
+    		
 		mLog->infoStream() << "Initialized successfully.";
 		
 	}
@@ -60,15 +70,22 @@ namespace Pixy
 	  
 	  
 	  
-		std::list<Obstacle*>::iterator _itr;
-		for (_itr = mObstaclePool.begin(); 
+		for (std::list<Obstacle*>::iterator _itr = mObstaclePool.begin(); 
 		     _itr != mObstaclePool.end();
 		     ++_itr) {
 		    //mLog->debugStream() << "updating objects";
 		  delete *_itr;
 		}
-		
+
+		for (std::list<Tunnel*>::iterator _itr = mTunnels.begin(); 
+		     _itr != mTunnels.end();
+		     ++_itr) {
+		    //mLog->debugStream() << "updating objects";
+		  delete *_itr;
+		}
+				
 		mObstacles.clear();
+		mTunnels.clear();
 		
 		delete mSphere;
 		delete mPhyxEngine;
@@ -162,6 +179,7 @@ namespace Pixy
 		//mUIEngine->update(lTimeElapsed);
 		mPhyxEngine->update(lTimeElapsed);
 		mSphere->update(lTimeElapsed);
+		mTunnel->update(lTimeElapsed);
 		
 		std::list<Obstacle*>::iterator _itr;
 		for (_itr = mObstacles.begin(); 
@@ -219,14 +237,62 @@ namespace Pixy
     //mObstaclePool.push_back(inObs);
   }
   
+  bool StateGame::evtPortalEntered(Event* inEvt) {
+    mSphere->setMaxSpeed(25.0f);
+    mSphere->setMoveSpeed(25.0f);
+    
+    mTimer.reset();
+	  fSpawning = true;
+		
+    return true;
+  };
+  
   bool StateGame::evtPortalReached(Event* inEvt) {
     //fSpawning = false;
     //mSphere->getRigidBody()->clearForces();
     //mSphere->getRigidBody()->setLinearVelocity(btVector3(0,0,0));
     mSphere->setMaxSpeed(0.0f);
-    mLog->infoStream() << "Portal is reached, reducing velocity";
+    //mLog->infoStream() << "Portal is reached, reducing velocity";
     
-    return true;
+		std::list<Obstacle*>::iterator _itr;
+		for (_itr = mObstacles.begin(); 
+		     _itr != mObstacles.end();)
+		{      
+      Obstacle *mObs = *_itr;
+      ++_itr;
+      mObs->die();
+      releaseObstacle(mObs);
+      continue;
+		}
+		
+		// teleport the player to the second tunnel after 5 secs from sighting the portal
+		if (mTimer.getMilliseconds() > 5000) {
+		  mTunnel->hide();
+		  
+		  if (mTunnel == mTunnels.back())
+		    mTunnel = mTunnels.front();
+		  else {
+		    for (std::list<Tunnel*>::iterator _itr = mTunnels.begin();
+		         _itr != mTunnels.end();
+		         ++_itr) {
+		      if ((*_itr) == mTunnel)
+		        mTunnel = *(++_itr);   // this is our next tunnel  
+		    }
+		  }
+		  
+		  // relocate the sphere
+		  
+		  Vector3 pos = mTunnel->getNode()->getPosition();
+		  btTransform trans = btTransform(btQuaternion(0,0,0,1),btVector3(pos.x,pos.y,pos.z));
+		  mSphere->getRigidBody()->proceedToTransform(trans);
+		  mLog->debugStream() << "relocating sphere to " << pos.x << ", " << pos.y << ", " << pos.z;
+		  // and show the shizzle
+		  mTunnel->show();
+		  
+		  
+		  return true;
+		};
+    return false;
   };
   
   bool StateGame::evtPortalSighted(Event* inEvt) {
@@ -234,8 +300,13 @@ namespace Pixy
     //mSphere->getRigidBody()->clearForces();
     //mSphere->getRigidBody()->setLinearVelocity(btVector3(0,0,0));
     //mSphere->setMaxSpeed(0.0f);
+    mTimer.reset();
     mLog->infoStream() << "Portal is in sight";
     
     return true;
+  };
+  
+  Tunnel* StateGame::getTunnel() {
+    return mTunnel;
   };
 } // end of namespace

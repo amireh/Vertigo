@@ -30,8 +30,8 @@ system Vertigo/FX/Blaze
             angle                               180
             time_to_live                        dyn_random
             {
-                min                             1
-                max                             2
+                min                             3
+                max                             5
             }
             velocity                            dyn_random
             {
@@ -51,8 +51,8 @@ system Vertigo/FX/Blaze
             angle                               30
             time_to_live                        dyn_random
             {
-                min                             1
-                max                             2
+                min                             3
+                max                             5
             }
             velocity                            dyn_random
             {
@@ -97,12 +97,12 @@ system Vertigo/FX/Blaze
                 min                             -3
                 max                             3
             }
-            rotation_speed                      0
+            rotation_speed                      100
         }
         affector                                LinearForce 
         {
             exclude_emitter                     PointEmitter 
-            force_vector                        0 -1600 -40000
+            force_vector                        0 -1600 -20000
         }
         observer                                OnTime 
         {
@@ -130,8 +130,8 @@ system Vertigo/FX/Blaze
             angle                               360
             time_to_live                        dyn_random
             {
-                min                             0.8
-                max                             0.1
+                min                             2.4
+                max                             3
             }
             velocity                            0
             all_particle_dimensions             dyn_random

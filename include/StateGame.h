@@ -23,7 +23,7 @@
 #include <map>
 #include "Sphere.h"
 #include "Obstacle.h"
-
+#include "Tunnel.h"
 
 using std::list;
 namespace Pixy
@@ -57,11 +57,16 @@ namespace Pixy
 		virtual GAME_STATE getId() const;
 
 		Sphere* getSphere();
-
+    Tunnel* getTunnel();
+    
 	protected:
 		void fireLoginEvt();
+		bool evtPortalEntered(Event* inEvt);
 		bool evtPortalReached(Event* inEvt);
 		bool evtPortalSighted(Event* inEvt);
+		
+		Tunnel *mTunnel;
+		std::list<Tunnel*> mTunnels;
 		
 	private:
 		StateGame( void ) { }
@@ -77,7 +82,10 @@ namespace Pixy
 		std::list<Obstacle*> mObstacles;
 		std::list<Obstacle*> mObstaclePool;
 		std::list<Obstacle*> mDeadObstacles;
+		
 		long nrObstacles;
+		int nrTunnels;
+		
 		static StateGame    *mStateGame;
 		Ogre::Timer mTimer;
 		bool fSpawning; // are we spawning obstacles?

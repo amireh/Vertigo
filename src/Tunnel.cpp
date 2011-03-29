@@ -4,26 +4,27 @@
 
 namespace Pixy {
 
-  int Tunnel::idTunnel = 0;
-  bool Tunnel::fMeshGenerated = 0;
-  bool Tunnel::fEffectPrepared = 0;
+  int Tunnel::nrTunnels = 0;
+  bool Tunnel::fMeshGenerated = false;
+  bool Tunnel::fEffectPrepared = false;
   ParticleSystem* Tunnel::mPortalEffect = NULL;
   
-  Tunnel::Tunnel(const int inNrSegments, 
-         const Real inSegmentLength, 
-         const Real inRadius, 
-         const String& inMaterial, 
-         const Vector3& inPosition,
-         bool inAutoShow) {
+  Tunnel::Tunnel(const String inMaterial, 
+                 const int inNrSegments, 
+                 const Real inSegmentLength, 
+                 const Real inRadius, 
+                 const Vector3& inPosition,
+                 bool inAutoShow) {
     
-    ++idTunnel;
-    mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "Tunnel" + stringify(idTunnel));
+    idObject = ++nrTunnels;
+    mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "Tunnel" + stringify(idObject));
     
     mNrSegments = inNrSegments;
     mSegmentLength = inSegmentLength;
     mRadius = inRadius;
     mMaterial = inMaterial;
     
+    mEvtMgr = EventManager::getSingletonPtr();
     mGfxEngine = GfxEngine::getSingletonPtr();
     mSceneMgr = mGfxEngine->getSM();
     mFxMgr = ParticleUniverse::ParticleSystemManager::getSingletonPtr();
@@ -35,18 +36,21 @@ namespace Pixy {
     
     // create our master node and set its starting position
     mNode = mSceneMgr->getRootSceneNode()->
-      createChildSceneNode(String("Terrain/Tunnel/" + stringify(idTunnel)));
+      createChildSceneNode(String("Terrain/Tunnel/" + stringify(idObject)));
     mNode->setPosition(inPosition);
-
+    
+    
     mEntrance = mExit = NULL;
     fPassedEntrance = false;
     fPortalSighted = false;
+    fPortalReached = false;
+    
+    mLog->debugStream() << "created";
     
     generateSegments();
     generatePortals();
     
-    bindToName("PortalSighted", this, &Tunnel::evtPortalSighted);
-    bindToName("PortalReached", this, &Tunnel::evtPortalReached);
+    mNode->setVisible(false);
     
     if (inAutoShow)
       show();
@@ -74,6 +78,8 @@ namespace Pixy {
   
   void Tunnel::generateSegments() {
 
+    mLog->debugStream() << "generating segments";
+    
     if (!fMeshGenerated) {
       Procedural::Root::getInstance()->sceneManager = mSceneMgr;
             
@@ -83,7 +89,7 @@ namespace Pixy {
 	    .setHeight(mSegmentLength)
 	    .setNumSegBase(32)
 	    .setNumSegHeight(1)
-	    .realizeMesh("TubeMesh");
+	    .realizeMesh("TunnelMesh");
 			
 			fMeshGenerated = true;
 	  }
@@ -93,10 +99,10 @@ namespace Pixy {
 	  Ogre::SceneNode* tmpNode;
 	  Ogre::String tmpName = "";
 	  for (int i =0; i < mNrSegments; ++i) {
-		  tmpName = String("Tunnel" + stringify(idTunnel) + "/Segment" + stringify(i));
+		  tmpName = String("Tunnel" + stringify(idObject) + "/Segment" + stringify(i));
 
   		tmpEntity = mSceneMgr->createEntity(tmpName, "TunnelMesh");
-		  tmpNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+		  tmpNode = mNode->createChildSceneNode();
 		  tmpEntity->setMaterialName(mMaterial);
 		  tmpNode->attachObject(tmpEntity);
 		  tmpNode->setPosition(
@@ -119,6 +125,8 @@ namespace Pixy {
   
   void Tunnel::generatePortals() {
   
+    mLog->debugStream() << "generating portals";
+    
     if (!fEffectPrepared) {
       mPortalEffect = mFxMgr->createParticleSystem(
         "FxPortal",
@@ -128,88 +136,129 @@ namespace Pixy {
       fEffectPrepared = true;
     }
 
-    Portal* mPortal;
+    Portal** mPortal;
     SceneNode* mSegment;
     Ogre::String tmpName;
     Vector3 offset;
     int i;
     for (i = 0; i < 2; ++i) {
-      tmpName = String("Tunnel" + stringify(idTunnel) + "/Portal/" + stringify(i));
+      tmpName = String("Tunnel" + stringify(idObject) + "/Portal/" + stringify(i));
       
       if (i % 2 == 0) {
-        mPortal = mEntrance;
+        mPortal = &mEntrance;
         mSegment = mSegments.front();
-        offset.z = 0;
+        offset.z = -5;
       } else {
-        mPortal = mExit;
+        mPortal = &mExit;
         mSegment = mSegments.back();
-        offset.z = mSegmentLength;
+        offset.z = mSegmentLength + 5;
       }
       
       // create our node
-      mPortal = mSceneMgr->getRootSceneNode()->createChildSceneNode(tmpName);
+      (*mPortal) = mNode->createChildSceneNode(tmpName);
       
       // place it at the end of the tunnel or at the beginning
       Vector3 posPortal = mSegment->getPosition();
       posPortal.y = 70;
       posPortal.z += offset.z; 
-      mPortal->setPosition(posPortal);
+      (*mPortal)->setPosition(posPortal);
       
     }
-    mEntrance->attachObject(mPortalEffect);
     
-    mPortal = mEntrance;
+    
+    mPortal = NULL;
     mSegment = NULL;
   };
   
   void Tunnel::show() {
+  
+    bindToName("PortalSighted", this, &Tunnel::evtPortalSighted);
+    bindToName("PortalReached", this, &Tunnel::evtPortalReached);
+    
     mNode->setVisible(true);
-    mPortalEffect->start();
+    if (mPortalEffect->isAttached())
+      mPortalEffect->getParentSceneNode()->detachObject(mPortalEffect);
+    mEntrance->attachObject(mPortalEffect);
+    mPortalEffect->startAndStopFade(1);
+    
+    Event* evt = mEvtMgr->createEvt("PortalEntered");
+    mEvtMgr->hook(evt);
+	    
+    mLog->infoStream() << "Tunnel" << idObject << " is rendered";
   };
   void Tunnel::hide() {
+  
+    unbind("PortalSighted");
+    unbind("PortalReached");
+    
+    fPassedEntrance = fPortalReached = fPortalSighted = false;
+    
     mNode->setVisible(false);
-    mPortalEffect->stop();    
+    if (mPortalEffect->isAttached())
+      mPortalEffect->getParentSceneNode()->detachObject(mPortalEffect);
+    mPortalEffect->stop();
+    
+    mLog->infoStream() << "Tunnel" << idObject << " is hidden";
   };
   
   void Tunnel::update(unsigned long lTimeElapsed) {
-
-	  if (mSphereNode->getPosition().z >= mPortal->getPosition().z) {
-	    Event* evt = mEvtMgr->createEvt("PortalReached");
-	    mEvtMgr->hook(evt);
-      mSphereNode->setPosition(mPortal->getPosition());
-      
-      return;		
-	  };
-
+    processEvents();
+    
     // if the player is past our entrance portal, we can stop showing it 
     if (!fPassedEntrance && mSphere->getMasterNode()->getPosition().z > mEntrance->getPosition().z + 1000) {
+      mLog->debugStream() << "stopped portal effect";
       mPortalEffect->stop();
-      mPortal = mExit;
+      
+      //mPortal = mExit;
       mEntrance->detachObject(mPortalEffect);
+	    mExit->attachObject(mPortalEffect);
+	    mPortalEffect->start();      
       
       fPassedEntrance = true;
     };
-    		
+    
 	  if (!fPortalSighted && mSphereNode->getPosition().z >= mSegments.back()->getPosition().z) {
+	    mLog->debugStream() << "exit portal is sighted";
+	    
 	    Event* evt = mEvtMgr->createEvt("PortalSighted");
 	    mEvtMgr->hook(evt);
 	    
 	    fPortalSighted = true;
 	  };
+
+	  if (!fPortalReached && mSphereNode->getPosition().z >= mExit->getPosition().z) {
+	    mLog->debugStream() << "exit portal is reached";
+	    
+	    Event* evt = mEvtMgr->createEvt("PortalReached");
+	    mEvtMgr->hook(evt);
+      //mSphereNode->setPosition(mExit->getPosition());
+      
+      return;		
+	  };
+
   };
     
 	bool Tunnel::evtPortalSighted(Event* inEvt) {
-	  mPortal = mExit;
-	  mPortal->attachObject(mPortalEffect);
-	  mPortalEffect->start();
-	  fPortalSighted = true;
+	  //mPortal = mExit;
+	  
+	  mLog->debugStream() << "spawned exit portal";
 	  
 	  return true;
 	};    
 
 	bool Tunnel::evtPortalReached(Event* inEvt) {
-	  hide();
+	  //hide();
+	  
+	  fPortalReached = true;
 	  return true;
+	};
+	
+	SceneNode* Tunnel::getExitPortal() {
+	  return mExit;
 	};    
-
+  SceneNode* Tunnel::getEntrancePortal() {
+	  return mEntrance;
+	};
+	
+	SceneNode* Tunnel::getNode() { return mNode; }; 
 };
