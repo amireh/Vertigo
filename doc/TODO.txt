@@ -23,7 +23,7 @@
 * install shaders for the spheres (done)
 * bump map the material of the sphere (done)
 * add collision effects (done)
-
+* linear increase in sphere velocity 
 
 -- compatibility --
 * proper logging for debug / release

@@ -21,7 +21,8 @@ namespace Pixy
 		  mName = "Sphere";
 		  mType = SPHERE;
 		  mMesh = "SphereMesh";
-		  mMaxSpeed = mMoveSpeed = 25.0f;
+		  mMoveSpeed = 50.0f;
+		  mMaxSpeed = 100.0f * mMoveSpeed;
 		  move = 0;
 		  mDistance = 0;
 		  mCurrentShield = FIRE;
@@ -140,20 +141,21 @@ namespace Pixy
 	{
 		
 		switch (e.key) {
-			case OIS::KC_W:
-				mDirection.z = mMoveSpeed * 2;
-				break;
+			/*case OIS::KC_W:
+				mDirection.z += mMoveSpeed;
+				mMaxSpeed += mMoveSpeed;
+				break;*/
 			case OIS::KC_A:
 				//mPhyxBody->clearForces();
-				mDirection.x = mMoveSpeed * 4;
+				mDirection.x = mMoveSpeed * 12;
 				//mDirection.z = mMoveSpeed;
 				break;
 			case OIS::KC_D:
 				//mPhyxBody->clearForces();
-				mDirection.x = -mMoveSpeed * 4;
+				mDirection.x = -mMoveSpeed * 12;
 				//mDirection.z = mMoveSpeed;
 				break;
-			case OIS::KC_S:
+			/*case OIS::KC_S:
 				mPhyxBody->clearForces();
 				break;
 			case OIS::KC_Q:
@@ -161,7 +163,7 @@ namespace Pixy
 				break;
 			case OIS::KC_E:
 				mDirection.y = -mMoveSpeed;
-				break;			
+				break;			*/
 			case OIS::KC_SPACE:
 			  flipShields();
 			  break;
@@ -172,9 +174,10 @@ namespace Pixy
 	void Sphere::keyReleased( const OIS::KeyEvent &e ) {
 		
 		switch (e.key) {
-			case OIS::KC_W:
-				mDirection.z = mMoveSpeed;
-				break;
+			/*case OIS::KC_W:
+				mDirection.z -= mMoveSpeed;
+				mMaxSpeed -= mMoveSpeed;
+				break;*/
 			case OIS::KC_A:
 				mDirection.x = (mDirection.x > 0) ? 0 : mDirection.x;
 				break;
@@ -188,6 +191,10 @@ namespace Pixy
 
 	void Sphere::update(unsigned long lTimeElapsed) {
 	  processEvents();
+	  
+	  mDirection.z += mMoveSpeed;
+	  if (mDirection.z >= mMaxSpeed)
+	    mDirection.z = mMaxSpeed;
 	  
 		mPhyxBody->activate(true);
 		//mPhyxBody->setLinearVelocity(btVector3(0,0,mMoveSpeed * lTimeElapsed));
@@ -270,11 +277,16 @@ namespace Pixy
 	  // hit our shields
 	  if (mCurrentShield != mObs->shield()) {
 	    mShields[mCurrentShield] -= 5;
+	    mPhyxBody->activate(true);
+	    mPhyxBody->clearForces();
+	    // push the player forward a little
+	    mPhyxBody->applyCentralForce(btVector3(mDirection.x * mMoveSpeed,mDirection.y * mMoveSpeed, mDirection.z * mMoveSpeed));
 	  } else {
 	    mShields[mCurrentShield] += 5;
 	    mPhyxBody->activate(true);
 	    mPhyxBody->clearForces();
-	    mPhyxBody->applyCentralForce(btVector3(mDirection.x * mMoveSpeed,mDirection.y * mMoveSpeed,-mMoveSpeed * 100));
+	    // push the player back
+	    mPhyxBody->applyCentralForce(btVector3(mDirection.x * mMoveSpeed,mDirection.y * mMoveSpeed,-mMoveSpeed * 1000));
 	  }
 	  
 	  return true;
@@ -290,7 +302,7 @@ namespace Pixy
 	};
 	
 	bool Sphere::evtPortalSighted(Event* inEvt) {
-	  Vector3 dest = StateGame::getSingletonPtr()->getTunnel()->getExitPortal()->getPosition();
+	  //Vector3 dest = StateGame::getSingletonPtr()->getTunnel()->getExitPortal()->getPosition();
 	  mMaxSpeed = 100.0f;
 	  mMoveSpeed = 50.0f;
 	  

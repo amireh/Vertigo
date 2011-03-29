@@ -119,6 +119,8 @@ namespace Pixy {
 		  mSegments.push_back(tmpNode);
 	  }
 	  
+	  mLength = mNrSegments * mSegmentLength;
+	  
 	  tmpNode = NULL;
 	  tmpEntity = NULL;
   };
@@ -172,28 +174,48 @@ namespace Pixy {
   
   void Tunnel::show() {
   
+    mNode->setVisible(true);
+    
     bindToName("PortalSighted", this, &Tunnel::evtPortalSighted);
     bindToName("PortalReached", this, &Tunnel::evtPortalReached);
     
-    mNode->setVisible(true);
+    fPassedEntrance = false;
+    fPortalReached = false;
+    fPortalSighted = false;
+    
+    mSphereNode = mSphere->getMasterNode();
+    
+    
+    
     if (mPortalEffect->isAttached())
       mPortalEffect->getParentSceneNode()->detachObject(mPortalEffect);
     mEntrance->attachObject(mPortalEffect);
-    mPortalEffect->startAndStopFade(1);
+    mPortalEffect->start();
     
     Event* evt = mEvtMgr->createEvt("PortalEntered");
     mEvtMgr->hook(evt);
 	    
     mLog->infoStream() << "Tunnel" << idObject << " is rendered";
+    
+    mLog->debugStream() << "My length: " << mLength << ", sphere is at " 
+      << mSphereNode->getPosition().x << ", "
+      << mSphereNode->getPosition().y << ", "
+      << mSphereNode->getPosition().z << 
+      ". Portal reached? " << (fPortalReached ? "yes" : "no");
   };
   void Tunnel::hide() {
   
+    mNode->setVisible(false);
+    
     unbind("PortalSighted");
     unbind("PortalReached");
     
-    fPassedEntrance = fPortalReached = fPortalSighted = false;
+    fPassedEntrance = false;
+    fPortalReached = false;
+    fPortalSighted = false;
     
-    mNode->setVisible(false);
+    mSphereNode = NULL;
+    
     if (mPortalEffect->isAttached())
       mPortalEffect->getParentSceneNode()->detachObject(mPortalEffect);
     mPortalEffect->stop();
@@ -223,10 +245,14 @@ namespace Pixy {
 	    Event* evt = mEvtMgr->createEvt("PortalSighted");
 	    mEvtMgr->hook(evt);
 	    
+	    mLog->debugStream() << "Portal reached? " << (fPortalReached ? "yes" : "no")
+	      << ", node position z : " << mSphereNode->getPosition().z;
+	    
+	    fPortalReached = false;
 	    fPortalSighted = true;
 	  };
 
-	  if (!fPortalReached && mSphereNode->getPosition().z >= mExit->getPosition().z) {
+	  if (!fPortalReached && mSphereNode->getPosition().z >= mLength) {
 	    mLog->debugStream() << "exit portal is reached";
 	    
 	    Event* evt = mEvtMgr->createEvt("PortalReached");

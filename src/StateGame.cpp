@@ -37,7 +37,7 @@ namespace Pixy
 		mSphere->live();
 		
 		nrObstacles = 20;
-		nrTunnels = 2;
+		nrTunnels = 1;
 		//createObstacle();
 		
 		for (int i =0; i < nrObstacles; ++i)
@@ -238,8 +238,8 @@ namespace Pixy
   }
   
   bool StateGame::evtPortalEntered(Event* inEvt) {
-    mSphere->setMaxSpeed(25.0f);
-    mSphere->setMoveSpeed(25.0f);
+    mSphere->setMaxSpeed(30.0f);
+    mSphere->setMoveSpeed(5.0f);
     
     mTimer.reset();
 	  fSpawning = true;
@@ -285,6 +285,7 @@ namespace Pixy
 		  Vector3 pos = mTunnel->getNode()->getPosition();
 		  btTransform trans = btTransform(btQuaternion(0,0,0,1),btVector3(pos.x,pos.y,pos.z));
 		  mSphere->getRigidBody()->proceedToTransform(trans);
+		  mSphere->getMasterNode()->setPosition(pos);
 		  mLog->debugStream() << "relocating sphere to " << pos.x << ", " << pos.y << ", " << pos.z;
 		  // and show the shizzle
 		  mTunnel->show();
