@@ -1,5 +1,6 @@
-#include "Intro.h"
+#include "StateGame.h"
 #include "EventManager.h"
+#include "StatePause.h"
 #include <cstdlib>
 #include <ctime> 
 
@@ -7,15 +8,15 @@ using namespace Ogre;
 namespace Pixy
 {
 	
-	Intro* Intro::mIntro;
+	StateGame* StateGame::mStateGame;
 	
-	GAME_STATE Intro::getId() const { return STATE_INTRO; }
+	GAME_STATE StateGame::getId() const { return STATE_GAME; }
 	
-	void Intro::enter( void ) {
+	void StateGame::enter( void ) {
 		
 		srand((unsigned)time(0));
 		
-		mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "Intro");
+		mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "StateGame");
 		
 		mEvtMgr = EventManager::getSingletonPtr();
 		
@@ -46,8 +47,8 @@ namespace Pixy
 		mGfxEngine->deferredSetup();
 		mPhyxEngine->deferredSetup();
 		
-		bindToName("PortalReached", this, &Intro::evtPortalReached);
-		bindToName("PortalSighted", this, &Intro::evtPortalSighted);
+		bindToName("PortalReached", this, &StateGame::evtPortalReached);
+		bindToName("PortalSighted", this, &StateGame::evtPortalSighted);
 		
 		mLog->infoStream() << "Initialized successfully.";
 		
@@ -55,7 +56,7 @@ namespace Pixy
 
 
 	
-	void Intro::exit( void ) {
+	void StateGame::exit( void ) {
 	  
 	  
 	  
@@ -79,13 +80,13 @@ namespace Pixy
 		
 		EventManager::shutdown();
 		
-		mLog->infoStream() << "---- Exiting Intro State ----";
+		mLog->infoStream() << "---- Exiting StateGame State ----";
 		delete mLog;
 		mLog = 0;
 		 
 	}
 	
-	void Intro::keyPressed( const OIS::KeyEvent &e )
+	void StateGame::keyPressed( const OIS::KeyEvent &e )
 	{
 	
 		/*mUISystem->injectKeyDown(e.key);
@@ -97,7 +98,7 @@ namespace Pixy
 		}
 	}
 	
-	void Intro::keyReleased( const OIS::KeyEvent &e ) {
+	void StateGame::keyReleased( const OIS::KeyEvent &e ) {
 		
 		//mUISystem->injectKeyUp(e.key);
 		mGfxEngine->keyReleased(e);
@@ -106,7 +107,9 @@ namespace Pixy
 			case OIS::KC_ESCAPE:
 				this->requestShutdown();
 				break;
-		  
+		  case OIS::KC_P:
+		    GameManager::getSingleton().pushState(StatePause::getSingletonPtr());
+		    break;
 			case OIS::KC_EQUALS:
 				
 				break;			
@@ -115,42 +118,42 @@ namespace Pixy
 		
 	}
 	
-	void Intro::mouseMoved( const OIS::MouseEvent &e )
+	void StateGame::mouseMoved( const OIS::MouseEvent &e )
 	{
 		//mUIEngine->mouseMoved(e);
 		mGfxEngine->mouseMoved(e);
 	}
 	
-	void Intro::mousePressed( const OIS::MouseEvent &e, OIS::MouseButtonID id ) {
+	void StateGame::mousePressed( const OIS::MouseEvent &e, OIS::MouseButtonID id ) {
     //mUIEngine->mousePressed(e, id);
 		mGfxEngine->mousePressed(e, id);
 	}
 	
-	void Intro::mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id ) {
+	void StateGame::mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id ) {
 		//mUIEngine->mouseReleased(e, id);
 		mGfxEngine->mouseReleased(e, id);
 	}
 	
-	void Intro::pause( void ) {
+	void StateGame::pause( void ) {
 	}
 	
-	void Intro::resume( void ) {
+	void StateGame::resume( void ) {
 	}
 		
-	Intro* Intro::getSingletonPtr( void ) {
-		if( !mIntro )
-		    mIntro = new Intro();
+	StateGame* StateGame::getSingletonPtr( void ) {
+		if( !mStateGame )
+		    mStateGame = new StateGame();
 		
-		return mIntro;
+		return mStateGame;
 	}
 	
-	Intro& Intro::getSingleton( void ) {
+	StateGame& StateGame::getSingleton( void ) {
 		return *getSingletonPtr();
 	}
 	
-	Sphere* Intro::getSphere() { return mSphere; };
+	Sphere* StateGame::getSphere() { return mSphere; };
 
-	void Intro::update( unsigned long lTimeElapsed ) {
+	void StateGame::update( unsigned long lTimeElapsed ) {
 		mEvtMgr->update();
 		
 		processEvents();
@@ -182,7 +185,7 @@ namespace Pixy
 		}
 	}
 	
-  void Intro::spawnObstacle() {
+  void StateGame::spawnObstacle() {
     //mLog->debugStream() << "obstacle is pulled from the pool";
     
     Obstacle* mObs = NULL;// = mObstaclePool.front();
@@ -209,14 +212,14 @@ namespace Pixy
 	  mEvtMgr->hook(evt);  
   }
   
-  void Intro::releaseObstacle(Obstacle* inObs) {
+  void StateGame::releaseObstacle(Obstacle* inObs) {
     //mLog->debugStream() << "obstacle is released into the pool";
     mObstacles.remove(inObs);
     //inObs->die();
     //mObstaclePool.push_back(inObs);
   }
   
-  bool Intro::evtPortalReached(Event* inEvt) {
+  bool StateGame::evtPortalReached(Event* inEvt) {
     //fSpawning = false;
     //mSphere->getRigidBody()->clearForces();
     //mSphere->getRigidBody()->setLinearVelocity(btVector3(0,0,0));
@@ -226,7 +229,7 @@ namespace Pixy
     return true;
   };
   
-  bool Intro::evtPortalSighted(Event* inEvt) {
+  bool StateGame::evtPortalSighted(Event* inEvt) {
     fSpawning = false;
     //mSphere->getRigidBody()->clearForces();
     //mSphere->getRigidBody()->setLinearVelocity(btVector3(0,0,0));

@@ -11,7 +11,7 @@
 #include "GameManager.h"
 //#include "OGRE/Terrain/OgreTerrain.h"
 //#include "OGRE/Terrain/OgreTerrainGroup.h"
-#include "Intro.h"
+#include "StateGame.h"
 #include "Procedural.h"
 #include "Geometry.h"
 
@@ -116,7 +116,7 @@ namespace Pixy {
 	}
 	
 	bool GfxEngine::deferredSetup() {
-		mSphere = Intro::getSingleton().getSphere();
+		mSphere = StateGame::getSingleton().getSphere();
 		//mCamera->setAutoTracking (true, mSphere->getSceneNode());
 		//mCamera->setPosition(Vector3(200, 200, 200));
 		//mCamera->lookAt(mSphere->getSceneNode()->getPosition());
@@ -231,38 +231,7 @@ namespace Pixy {
 		  //mSceneMgr->setSkyDome(true, "Examples/CloudySky", 2, 0.5);
 		  mSceneMgr->setSkyBox(true, "Vertigo/Sky/Vortex", 5000, true);				
 		 
-		  Ogre::Entity* mEntity;
-		  Ogre::SceneNode* mNode;
-		  Procedural::Root::getInstance()->sceneManager = mSceneMgr;
 
-		  int tube_length = 500;
-		  float tube_radius = 80.0f;
-
-		  Procedural::TubeGenerator()
-		  .setOuterRadius(tube_radius)
-		  .setInnerRadius(tube_radius - 2.0f)
-		  .setHeight(tube_length)
-		  .setNumSegBase(32)
-		  .setNumSegHeight(1)
-		  .realizeMesh("TubeMesh");
-				
-		  std::string mEntityName = "";
-		  int nr_tubes = 30;
-		  for (int i =0; i < nr_tubes; ++i) {
-			  mEntityName = "myTube_";
-			  mEntityName += i;
-
-    		mEntity = mSceneMgr->createEntity(mEntityName, "TubeMesh");
-			  mNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-			  mEntity->setMaterialName("Vertigo/Terrain");
-			  mNode->attachObject(mEntity);
-			  mNode->setPosition(Vector3(0, 70, i * tube_length));
-			  //mNode->roll(Ogre::Degree(90));
-			  mNode->pitch(Ogre::Degree(90));
-			  //mNode->yaw(Ogre::Degree(30));
-			  //mNode->showBoundingBox(true);			
-			  mTubes.push_back(mNode);
-		  }
 		
     };
 	
@@ -346,49 +315,39 @@ namespace Pixy {
     };
 	
     Ogre::SceneNode* 
-	GfxEngine::renderEntity(Pixy::Entity* inEntity, Ogre::SceneNode* inNode)
+	  GfxEngine::renderEntity(Pixy::Entity* inEntity, Ogre::SceneNode* inNode)
     {
-		//mLog->debugStream() << "rendering entity " << inEntity->getName();
-    Ogre::Entity* mEntity;
+		  //mLog->debugStream() << "rendering entity " << inEntity->getName();
+      Ogre::Entity* mEntity;
 		
-    String entityName = "Entity";
-		entityName += inEntity->getName();
-		entityName += stringify(inEntity->getObjectId());
+      String entityName = "Entity";
+		  entityName += inEntity->getName();
+		  entityName += stringify(inEntity->getObjectId());
 		
-		/*
-		if (inEntity->type() == OBSTACLE) {
-		  String meshName = "MeshObstacle";
-		  meshName += stringify(inEntity->getObjectId());
-		
-		  // create obstacles mesh
-		  createSphere(meshName, 2, 16, 16);
-		  inEntity->setMesh(meshName);
-		}
-		*/
-		//mLog->debugStream() << "Creating an Entity with name " << entityName;
-		mEntity = mSceneMgr->createEntity(entityName, inEntity->getMesh());
-		inNode->setUserAny(Ogre::Any(inEntity));
-		inNode->attachObject(mEntity);
+		  //mLog->debugStream() << "Creating an Entity with name " << entityName;
+		  mEntity = mSceneMgr->createEntity(entityName, inEntity->getMesh());
+		  inNode->setUserAny(Ogre::Any(inEntity));
+		  inNode->attachObject(mEntity);
 		
 		
-		inEntity->attachSceneNode(inNode);
-		inEntity->attachSceneObject(mEntity);
+		  inEntity->attachSceneNode(inNode);
+		  inEntity->attachSceneObject(mEntity);
 		
-		return inNode;// create aureola around ogre head perpendicular to the ground
+		  return inNode;// create aureola around ogre head perpendicular to the ground
     };
 	
 	
     bool GfxEngine::attachToScene(Pixy::Entity* inEntity)
     {
-		Ogre::String nodeName = "Node";
-		nodeName += inEntity->getName();
-		nodeName += stringify(inEntity->getObjectId());
-		//mLog->debugStream() << "Creating a SceneNode with name " << nodeName;
-		return renderEntity(inEntity, createNode(nodeName, 
-												 Vector3::ZERO, 
-												 Vector3(1.0,1.0,1.0), 
-												 Vector3::ZERO,
-												 NULL)) && true;
+		  Ogre::String nodeName = "Node";
+		  nodeName += inEntity->getName();
+		  nodeName += stringify(inEntity->getObjectId());
+		  //mLog->debugStream() << "Creating a SceneNode with name " << nodeName;
+		  return renderEntity(inEntity, createNode(nodeName, 
+												   Vector3::ZERO, 
+												   Vector3(1.0,1.0,1.0), 
+												   Vector3::ZERO,
+												   NULL)) && true;
     };
 	
 	
@@ -398,14 +357,13 @@ namespace Pixy {
         //Ogre::String ownerName = inEntity->getOwner();// == ID_HOST) ? "host" : "client";
         Ogre::SceneNode* mTmpNode = NULL;
 		
-		mTmpNode = inEntity->getSceneNode();
+		    mTmpNode = inEntity->getSceneNode();
+
+		    //mLog->debugStream() << "I'm detaching Entity '" << inEntity->getName() << "' from SceneNode : " + mTmpNode->getName();
+		    mTmpNode->showBoundingBox(false);
+		    mTmpNode->detachObject(inEntity->getSceneObject());
 		
-		
-		//mLog->debugStream() << "I'm detaching Entity '" << inEntity->getName() << "' from SceneNode : " + mTmpNode->getName();
-		mTmpNode->showBoundingBox(false);
-		mTmpNode->detachObject(inEntity->getSceneObject());
-		
-		mSceneMgr->destroyEntity((Ogre::Entity*)inEntity->getSceneObject());
+		    mSceneMgr->destroyEntity((Ogre::Entity*)inEntity->getSceneObject());
 		
     }
 
@@ -498,21 +456,6 @@ namespace Pixy {
 		if (fPortalReached)
 		  return;
 		
-		if (mSphere->getMasterNode()->getPosition().z >= mPortal->getPosition().z) {
-		  Event* evt = mEvtMgr->createEvt("PortalReached");
-		  mEvtMgr->hook(evt);
-      mSphere->getMasterNode()->setPosition(mPortal->getPosition());
-      
-      return;		
-		};
-		
-		
-		if (!fPortalSighted && mSphere->getSceneNode()->_getWorldAABB().intersects(mPortal->_getWorldAABB())) {
-		  Event* evt = mEvtMgr->createEvt("PortalSighted");
-		  mEvtMgr->hook(evt);
-		  return;
-		};
-		
 		if (mEffectEnabled && mEffectTimer.getMilliseconds() > mEffectDuration * 1000) {
 		  mEffectTimer.reset();
 		  mEffectEnabled = false;
@@ -546,13 +489,6 @@ namespace Pixy {
 	
   
 	void GfxEngine::setupParticles() {
-	  //using namespace ParticleUniverse;
-		//ParticleSystem::setDefaultNonVisibleUpdateTimeout(1);  // set nonvisible timeout
-
-		/*ParticleSystem* ps;
-    // create aureola around ogre head perpendicular to the ground
-    ps = mSceneMgr->createParticleSystem("Nimbus", "Examples/GreenyNimbus");
-		mSphere->getSceneNode()->attachObject(ps);*/
 
     ParticleUniverse::ParticleSystemManager* fxMgr = 
       ParticleUniverse::ParticleSystemManager::getSingletonPtr();
@@ -588,14 +524,6 @@ namespace Pixy {
     effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("Blaze", effect));    
 
     effect = fxMgr->createParticleSystem(
-      "FxPortal",
-      "Vertigo/FX/Portal", 
-      mSceneMgr);
-    effect->prepare();
-    effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("Portal", effect));    
-    
-    
-    effect = fxMgr->createParticleSystem(
       "FxSpawnPoint",
       "Vertigo/FX/SpawnPoint", 
       mSceneMgr);
@@ -620,16 +548,6 @@ namespace Pixy {
     //mSphere->getMasterNode()->attachObject(effectExplosion);
     //effectExplosion->start();
 
-	  effect = effects["Portal"];
-    mPortal = mSceneMgr->getRootSceneNode()->createChildSceneNode("NodePortal");
-    mPortal->attachObject(effect);
-
-    Vector3 posPortal = mTubes.back()->getPosition();
-    posPortal.y = 70;
-    posPortal.z += 500; 
-    mPortal->setPosition(posPortal);
-    effect->start();
-    //mPortal->showBoundingBox(true);
     
     mPortableEffect = mSceneMgr->getRootSceneNode()->createChildSceneNode();
     mSpawnPoint = mSceneMgr->getRootSceneNode()->createChildSceneNode("NodeSpawnPoint");
@@ -693,12 +611,6 @@ namespace Pixy {
 	  return true;
 	};
 	
-	bool GfxEngine::evtPortalSighted(Event* inEvt) {
-	  effects["Portal"]->start();
-	  fPortalSighted = true;
-	  
-	  return true;
-	};
 	
 	bool GfxEngine::evtPortalReached(Event* inEvt) {
 	  mSphere->die();
@@ -706,6 +618,11 @@ namespace Pixy {
 		mSphere->getSceneNode()->setVisible(false);
 		fPortalReached = true;
 		playEffect("Despawn", mSphere);
+		
+		return true;	  
+	};
+	
+	bool GfxEngine::evtPortalSighted(Event* inEvt) {
 		
 		return true;	  
 	};

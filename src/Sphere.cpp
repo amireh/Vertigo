@@ -2,7 +2,7 @@
 #include "Sphere.h"
 #include "Utility.h"
 #include "GfxEngine.h"
-#include "Intro.h"
+#include "StateGame.h"
 #include "PhyxEngine.h"
 #include "Obstacle.h"
 #include "Geometry.h"

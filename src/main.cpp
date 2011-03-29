@@ -1,5 +1,5 @@
 #include "GameManager.h"
-#include "Intro.h"
+#include "StateGame.h"
 
 using namespace Pixy;
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32

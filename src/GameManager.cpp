@@ -1,6 +1,6 @@
 #include "GameManager.h"
 #include "GameState.h"
-#include "Intro.h"
+#include "StateGame.h"
 //#include "Combat.h"
 #include "log4cpp/PixyLogLayout.h"
 using namespace Ogre;
@@ -85,7 +85,7 @@ namespace Pixy
 		
 		
 		// Change to first state
-		this->changeState( Intro::getSingletonPtr() );
+		this->changeState( StateGame::getSingletonPtr() );
 		
 		// lTimeLastFrame remembers the last time that it was checked
 		// we use it to calculate the time since last frame

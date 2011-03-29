@@ -7,11 +7,13 @@
 * terrain: multi tunnels (revised)
 * add portals (done)
 * create UI...
+* implement events (done)
 * implement states:
   # intro
   # transition
   # game (done)
   # score
+* install sound effects
 
 -- Enhancements --
 * reimplement collision to use Ogre's Ray queries instead of Bullet (done)
@@ -34,3 +36,6 @@
 * strip away unused procedural geometry files
 * clean up unused media
 
+-- code --
+* create Level objects that encapsulate the creation of a tunnel and its portal
+* refactor GfxEngine .. it's a bloody mess there

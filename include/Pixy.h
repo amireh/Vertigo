@@ -61,8 +61,9 @@ namespace Pixy
 
 	enum GAME_STATE {
 		STATE_INTRO,
-		STATE_LOBBY,
-		STATE_COMBAT
+		STATE_GAME,
+		STATE_PAUSE,
+		STATE_SCORE,
 	};
 	
 

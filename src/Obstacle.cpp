@@ -2,7 +2,7 @@
 #include "Obstacle.h"
 #include "Utility.h"
 #include "GfxEngine.h"
-#include "Intro.h"
+#include "StateGame.h"
 #include "PhyxEngine.h"
 #include <cstdlib>
 
@@ -22,7 +22,7 @@ namespace Pixy
 	  int qualifier = rand();
 	  mShield = (qualifier % 2 == 0) ? ICE : FIRE;
 	  
-	  mSphere = Intro::getSingleton().getSphere();
+	  mSphere = StateGame::getSingleton().getSphere();
 	  mPosition = Vector3(0,0, -1000);
 	  
 	  GfxEngine::getSingletonPtr()->attachToScene(this);

@@ -42,7 +42,7 @@ namespace Pixy
 	public:
 		~GameManager( void );
 		
-		//! Loads Intro game state to start the game.
+		//! Loads StateGame game state to start the game.
 		/*! 
 		 *	
 		 */
@@ -164,7 +164,7 @@ namespace Pixy
 		InputManager		*mInputMgr;
 		
 		GAME_STATE mCurrentState;
-		//GameState			*mIntro;
+		//GameState			*mStateGame;
 		//GameState			*mLobby;
 		//GameState			*mCombat;
 		
