@@ -266,7 +266,7 @@ namespace Pixy
 		}
 		
 		// teleport the player to the second tunnel after 5 secs from sighting the portal
-		if (mTimer.getMilliseconds() > 5000) {
+		//if (mTimer.getMilliseconds() > 5000) {
 		  mTunnel->hide();
 		  
 		  if (mTunnel == mTunnels.back())
@@ -291,7 +291,7 @@ namespace Pixy
 		  
 		  
 		  return true;
-		};
+		//};
     return false;
   };
   

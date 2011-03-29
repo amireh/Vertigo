@@ -294,7 +294,7 @@ namespace Pixy
 	  mMaxSpeed = 100.0f;
 	  mMoveSpeed = 50.0f;
 	  
-	  mDirection = Vector3(0, 8, 1) * mMoveSpeed;
+	  mDirection = Vector3(0, 8, 5) * mMoveSpeed;
 	  return true;
 	};
 } // end of namespace

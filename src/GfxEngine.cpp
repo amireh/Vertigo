@@ -415,7 +415,7 @@ namespace Pixy {
 		    playEffect("Blaze", mSphere);
 		    break;
 		  case OIS::KC_T:
-		    playEffect("BlackHole", mSphere);
+		    playEffect("Despawn", mSphere);
 		    break;
 		  case OIS::KC_Y:
 		    playEffect("Explosion", mSphere);
@@ -613,8 +613,8 @@ namespace Pixy {
 	};
 	
 	bool GfxEngine::evtPortalEntered(Event* inEvt) {
-	  playEffect("Despawn", mSphere);
 	  mSphere->getSceneNode()->setVisible(true);
+	  playEffect("Despawn", mSphere);
 	  fPortalReached = false;
 	  
 	  return true;
@@ -625,7 +625,7 @@ namespace Pixy {
 	  //mSpawnPoint->setVisible(false);
 		mSphere->getSceneNode()->setVisible(false);
 		fPortalReached = true;
-		playEffect("Despawn", mSphere);
+		//playEffect("Despawn", mSphere);
 		
 		return true;	  
 	};

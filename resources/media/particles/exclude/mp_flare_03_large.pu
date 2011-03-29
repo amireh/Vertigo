@@ -1,0 +1,95 @@
+//-----------------------------------------------------------------------------------------------------------------------
+// This script is part of the Particle Universe Media Pack 1 product.
+//
+// Copyright (c) 2010 Henry van Merode
+//
+// Usage of this program is licensed under the terms of the Particle Universe Commercial License Media Pack 1.
+// You can find a copy of the Commercial License in the Media Pack 1 package.
+//-----------------------------------------------------------------------------------------------------------------------
+system Flare/mp_flare_03
+ {
+    scale_time                                  1.5
+    technique 
+    {
+        material                                mp_flare_04
+        renderer                                Billboard
+        {
+            billboard_rotation_type             vertex
+        }
+        emitter                                 Point VisualEmitter
+        {
+            emission_rate                       300
+            angle                               360
+            time_to_live                        dyn_random
+            {
+                min                             0.2
+                max                             0.6
+            }
+            velocity                            dyn_random
+            {
+                min                             100
+                max                             300
+            }
+            duration                            0.2
+            all_particle_dimensions             dyn_random
+            {
+                min                             20
+                max                             60
+            }
+            colour                              0 0 0 1
+        }
+        emitter                                 SphereSurface 
+        {
+            emission_rate                       25
+            angle                               90
+            time_to_live                        1
+            velocity                            0
+            duration                            1
+            emits                               emitter_particle VisualEmitter
+            colour                              0 0 0 1
+            radius                              200
+        }
+        emitter                                 Point LargeFlareEmitter
+        {
+            emission_rate                       0
+            time_to_live                        0.2
+            velocity                            0
+            all_particle_dimensions             dyn_random
+            {
+                min                             200
+                max                             300
+            }
+        }
+        affector                                Colour 
+        {
+            exclude_emitter                     PlacementEmitter LargeFlareEmitter 
+            time_colour                         0    0 0 0 1
+            time_colour                         0.1  1 0.458824 0.101961 1
+            time_colour                         0.5  1 0.458824 0.101961 1
+            time_colour                         0.7  1 0.858824 0.764706 1
+            time_colour                         1    0 0 0 1
+        }
+        affector                                Colour 
+        {
+            exclude_emitter                     VisualEmitter 
+            time_colour                         0    1 0.839216 0.592157 1
+            time_colour                         1    0 0 0 1
+        }
+        observer                                OnClear 
+        {
+            enabled                             false
+            handler                             DoStopSystem 
+            {
+            }
+        }
+        observer                                OnEmission 
+        {
+            observe_particle_type               emitter_particle
+            handler                             DoPlacementParticle 
+            {
+                force_emitter                   LargeFlareEmitter
+                number_of_particles             5
+            }
+        }
+    }
+ }

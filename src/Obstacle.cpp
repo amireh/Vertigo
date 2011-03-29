@@ -98,10 +98,16 @@ namespace Pixy
 	Vector3 Obstacle::randomPosition() {
 	  int qualifier = rand();
 	  int sign = (qualifier % 2 == 0) ? 1 : -1;
+	  float z = mSphere->getPosition().z + 1200;
+	  float portalZ = StateGame::getSingletonPtr()->getTunnel()->getExitPortal()->getPosition().z;
+	  if (z > portalZ)
+	    z = portalZ;
 	  return Vector3(
 	    (qualifier % 20) * sign, 
-	    0, 
-	    mSphere->getPosition().z + 1200);	   
+	    0,
+	    z); 
+	    //mSphere->getPosition().z + 1200);
+	    
 	}
 	void Obstacle::live() {
 	  //if (!fDead)
