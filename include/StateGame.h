@@ -24,6 +24,7 @@
 #include "Sphere.h"
 #include "Obstacle.h"
 #include "Tunnel.h"
+#include "AudioEngine.h"
 
 using std::list;
 namespace Pixy
@@ -77,6 +78,7 @@ namespace Pixy
 		GfxEngine		*mGfxEngine;
 		UIEngine		*mUIEngine;
 		PhyxEngine		*mPhyxEngine;
+		AudioEngine *mSfxEngine;
 		CEGUI::System	*mUISystem;
 		Sphere			  *mSphere;
 		std::list<Obstacle*> mObstacles;

@@ -26,6 +26,11 @@ using std::map;
 using std::pair;
 using std::make_pair;
 using Ogre::Vector3;
+
+namespace OgreOggSound {
+  class OgreOggISound;
+}
+
 namespace Pixy
 {
   
@@ -62,6 +67,8 @@ namespace Pixy
 
     bool fDying;
     bool fHasFX;
+    bool fSfxCreated;
+    OgreOggSound::OgreOggISound *mSfxExplosion, *mSfxShatter, **mSfx;
     
     ParticleUniverse::ParticleSystem *mBlaze, *mSteam;
     

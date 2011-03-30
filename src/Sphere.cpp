@@ -6,6 +6,7 @@
 #include "PhyxEngine.h"
 #include "Obstacle.h"
 #include "Geometry.h"
+#include "AudioEngine.h"
 
 namespace Pixy
 {
@@ -298,6 +299,7 @@ namespace Pixy
 	  mPhyxBody->activate(true);
 	  mPhyxBody->applyCentralForce(btVector3(0,-10,100000));
 	  
+	  AudioEngine::getSingletonPtr()->playEffect(SFX_EXPLOSION, mMasterNode);
 	  return true;
 	};
 	

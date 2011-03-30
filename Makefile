@@ -62,9 +62,12 @@ MY_CFLAGS = `pkg-config --cflags OGRE OIS CEGUI bullet` -Iinclude \
 	-Imodules/include/ogre \
 	-Imodules/include/ogre-procedural \
 	-I/usr/local/include/OGRE/Plugins/ParticleUniverse
+	#-I/usr/include/AL \
+	#-I/usr/include/vorbis \
+	#-I/usr/include/ogg
 
 # The linker options.
-MY_LIBS   = `pkg-config --libs OGRE OIS CEGUI bullet log4cpp` -lCEGUIOgreRenderer -lPlugin_ParticleUniverse
+MY_LIBS   = `pkg-config --libs OGRE OIS CEGUI bullet log4cpp` -lOgreOggSound -lCEGUIOgreRenderer -lPlugin_ParticleUniverse
 
 # The pre-processor options used by the cpp (man cpp for more).
 CPPFLAGS  = 

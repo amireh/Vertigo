@@ -7,7 +7,7 @@ namespace Pixy {
   int Tunnel::nrTunnels = 0;
   bool Tunnel::fMeshGenerated = false;
   bool Tunnel::fEffectPrepared = false;
-  ParticleSystem* Tunnel::mPortalEffect = NULL;
+  ParticleUniverse::ParticleSystem* Tunnel::mPortalEffect = NULL;
   
   Tunnel::Tunnel(const String inMaterial, 
                  const int inNrSegments, 

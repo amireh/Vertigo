@@ -30,6 +30,9 @@ namespace Pixy
 		mPhyxEngine = PhyxEngine::getSingletonPtr();
 		mPhyxEngine->setup();
 			
+		mSfxEngine = AudioEngine::getSingletonPtr();
+		mSfxEngine->setup();
+		
 		// grab CEGUI handle
 		//mUISystem = &CEGUI::System::getSingleton();
  
@@ -45,8 +48,7 @@ namespace Pixy
 		
 		fSpawning = true;
 		
-		mGfxEngine->deferredSetup();
-		mPhyxEngine->deferredSetup();
+
 		
 		bindToName("PortalEntered", this, &StateGame::evtPortalEntered);
 		bindToName("PortalReached", this, &StateGame::evtPortalReached);
@@ -59,9 +61,16 @@ namespace Pixy
     mTunnels.push_back(new Tunnel("Vertigo/Tunnel/Lava/Translucent"));
     mTunnel = mTunnels.back();
     mTunnel->show();
-    		
+
+		mGfxEngine->deferredSetup();
+		mPhyxEngine->deferredSetup();
+		mSfxEngine->deferredSetup();
+		  		
 		mLog->infoStream() << "Initialized successfully.";
 		
+
+   
+   
 	}
 
 
@@ -88,6 +97,11 @@ namespace Pixy
 		mTunnels.clear();
 		
 		delete mSphere;
+		
+		mSfxEngine->cleanup();
+		delete mSfxEngine;
+		
+		mPhyxEngine->cleanup();
 		delete mPhyxEngine;
 		
 		//mUIEngine->cleanup();
@@ -175,11 +189,13 @@ namespace Pixy
 		
 		processEvents();
 		
+		mSfxEngine->update(lTimeElapsed);
 		mGfxEngine->update(lTimeElapsed);
 		//mUIEngine->update(lTimeElapsed);
 		mPhyxEngine->update(lTimeElapsed);
 		mSphere->update(lTimeElapsed);
 		mTunnel->update(lTimeElapsed);
+		
 		
 		std::list<Obstacle*>::iterator _itr;
 		for (_itr = mObstacles.begin(); 

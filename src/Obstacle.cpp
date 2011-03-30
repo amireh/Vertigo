@@ -5,6 +5,7 @@
 #include "StateGame.h"
 #include "PhyxEngine.h"
 #include <cstdlib>
+#include "AudioEngine.h"
 
 namespace Pixy
 {
@@ -73,6 +74,7 @@ namespace Pixy
     mPhyxBody->proceedToTransform(trans);
 	      
     mSceneNode->setVisible(false);
+    fSfxCreated = false;
 	  fDead = true;
   };
 
@@ -87,6 +89,13 @@ namespace Pixy
 		delete mPhyxBody->getMotionState();
     delete mPhyxBody;
     
+    if (fSfxCreated) {
+      OgreOggSound::OgreOggSoundManager *mSoundMgr;
+      mSoundMgr = AudioEngine::getSingletonPtr()->getSoundMgr();
+      mSoundMgr->destroySound(mSfxExplosion);
+      mSoundMgr = NULL;
+      mSfxExplosion = NULL;
+    }
 		//delete mPhyxShape;
     
 		if (mLog) {
@@ -127,6 +136,29 @@ namespace Pixy
 	  mPhyxBody->activate(true);
 	  mPhyxBody->setLinearVelocity(btVector3(0,0,-mMoveSpeed));
 
+    if (!fSfxCreated) {
+      OgreOggSound::OgreOggSoundManager *mSoundMgr;
+      mSoundMgr = AudioEngine::getSingletonPtr()->getSoundMgr();
+      mSfxExplosion = mSoundMgr->createSound(Ogre::String("Explosion" + stringify(idObject)), "explosion.wav", false, false, true) ;
+      mSfxShatter = mSoundMgr->createSound(Ogre::String("Shatter" + stringify(idObject)), "shatter.wav", false, false, true) ;
+      mMasterNode->attachObject(mSfxExplosion);
+      mMasterNode->attachObject(mSfxShatter);
+      
+      mSfxExplosion->setRolloffFactor(2.f);
+      mSfxExplosion->setReferenceDistance(1000.f);
+      mSfxShatter->setRolloffFactor(2.f);
+      mSfxShatter->setReferenceDistance(1000.f);
+      
+      mLog->debugStream() << "created sound effect";
+    
+      fSfxCreated = true;
+    }
+    
+    if (mShield == FIRE)
+      mSfx = &mSfxExplosion;
+    else
+      mSfx = &mSfxShatter;
+       
 	  fDead = false;
 	  
 	  //mLog->debugStream() << mName << idObject << " is alive";
@@ -198,6 +230,8 @@ namespace Pixy
       die();
       return;
     }*/
+    //if (mSfxExplosion)
+      (*mSfx)->update(lTimeElapsed);
     
     //if (mSceneObject->getWorldBoundingBox().intersects(mSphere->getSceneObject()->getWorldBoundingBox())) {
     if (mSceneNode->_getWorldAABB().intersects(mSphere->getSceneNode()->_getWorldAABB())) {
@@ -205,6 +239,14 @@ namespace Pixy
       evt->setAny((void*)this);
       EventManager::getSingleton().hook(evt);
       evt = NULL;
+      
+      //OgreOggSound::OgreOggSoundManager *mSoundMgr;
+      //mSoundMgr = AudioEngine::getSingletonPtr()->getSoundMgr();
+      //mSoundMgr->getSound(Ogre::String("Explosion" + stringify(idObject)))->play();
+      //mSfxExplosion->setPosition(mMasterNode->getPosition());
+      (*mSfx)->stop();
+      (*mSfx)->play(true);
+      //mSoundMgr = NULL;
       return die();
     }
 	  

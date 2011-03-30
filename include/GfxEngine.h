@@ -196,7 +196,7 @@ namespace Pixy {
 		bool shakingScreen, reachedThreshold;
 		Ogre::Quaternion mCameraOrientation;
 
-    typedef map< std::string, ParticleUniverse::ParticleSystem* > effectMap;
+    typedef std::map< std::string, ParticleUniverse::ParticleSystem* > effectMap;
     effectMap effects;
     
     vector<SceneNode*> mTubes;
