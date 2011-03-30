@@ -68,11 +68,15 @@ namespace Pixy {
     mSoundMgr->createSound("Shatter", "shatter2.wav", false, false, true) ;
 
     mMusicTrack = mSoundMgr->createSound("MusicTrack", "music.ogg", false, false, true);
+    mMusicTrack->setVolume(0.5f);
     
     bindToName("ObstacleCollided", this, &AudioEngine::evtObstacleCollided);
     bindToName("PortalEntered", this, &AudioEngine::evtPortalEntered);
     
     mLog->infoStream() << "set up!";
+    
+    fAudioStopped = false;
+    toggleAudioState();
     
 		fSetup = true;
 		return fSetup;
@@ -158,4 +162,16 @@ namespace Pixy {
 	};
 	
 	OgreOggSound::OgreOggSoundManager* AudioEngine::getSoundMgr() { return mSoundMgr; };
+	
+	void AudioEngine::toggleAudioState() {
+	  if (!fAudioStopped) {
+	    mSoundMgr->pauseAllSounds();
+	    mSoundMgr->muteAllSounds();
+	  } else {
+	    mSoundMgr->resumeAllPausedSounds();
+	    mSoundMgr->unmuteAllSounds(); 
+	  }
+	  
+	  fAudioStopped = !fAudioStopped;
+	};
 }

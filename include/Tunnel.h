@@ -21,6 +21,10 @@ using Ogre::SceneNode;
 using Ogre::String;
 using ParticleUniverse::ParticleSystem;
 
+namespace OgreOggSound {
+  class OgreOggISound;
+};
+
 namespace Pixy {
   
 	/*! \class Tunnel
@@ -103,6 +107,8 @@ namespace Pixy {
     static bool fMeshGenerated;
     static bool fEffectPrepared;
     static ParticleSystem* mPortalEffect;
+    
+    static OgreOggSound::OgreOggISound *mSfxPortal;
     
 	private:
 		Tunnel(const Tunnel& src);

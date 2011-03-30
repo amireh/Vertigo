@@ -1,6 +1,7 @@
 #include "Tunnel.h"
 #include "GfxEngine.h"
 #include "StateGame.h"
+#include "AudioEngine.h"
 
 namespace Pixy {
 
@@ -8,7 +9,8 @@ namespace Pixy {
   bool Tunnel::fMeshGenerated = false;
   bool Tunnel::fEffectPrepared = false;
   ParticleUniverse::ParticleSystem* Tunnel::mPortalEffect = NULL;
-  
+  OgreOggSound::OgreOggISound* Tunnel::mSfxPortal = NULL;
+    
   Tunnel::Tunnel(const String inMaterial, 
                  const int inNrSegments, 
                  const Real inSegmentLength, 
@@ -50,6 +52,15 @@ namespace Pixy {
     generateSegments();
     generatePortals();
     
+    // prepare sound effect
+    if (!mSfxPortal) {
+      OgreOggSound::OgreOggSoundManager *mSoundMgr;
+      mSoundMgr = AudioEngine::getSingletonPtr()->getSoundMgr();
+      mSfxPortal = mSoundMgr->createSound("Teleport", "teleport.wav", false, false, true) ;
+      mSfxPortal->setRolloffFactor(2.f);
+      mSfxPortal->setReferenceDistance(1000.f);
+    };
+    
     mNode->setVisible(false);
     
     if (inAutoShow)
@@ -62,6 +73,14 @@ namespace Pixy {
       mPortalEffect->stop();
       mPortalEffect = NULL;
     }
+    
+    if (mSfxPortal) {
+      OgreOggSound::OgreOggSoundManager *mSoundMgr;
+      mSoundMgr = AudioEngine::getSingletonPtr()->getSoundMgr();
+      mSoundMgr->destroySound(mSfxPortal);
+      mSoundMgr = NULL;
+      mSfxPortal = NULL;
+    };
     
     // TODO remove scene nodes
     
@@ -191,6 +210,9 @@ namespace Pixy {
       mPortalEffect->getParentSceneNode()->detachObject(mPortalEffect);
     mEntrance->attachObject(mPortalEffect);
     mPortalEffect->start();
+    //if (mSfxPortal->isAttached())
+    //  mSfxPortal->getParentSceneNode()->detachObject(mSfxPortal);
+    //mEntrance->attachObject(mSfxPortal);
     
     Event* evt = mEvtMgr->createEvt("PortalEntered");
     mEvtMgr->hook(evt);
@@ -202,6 +224,8 @@ namespace Pixy {
       << mSphereNode->getPosition().y << ", "
       << mSphereNode->getPosition().z << 
       ". Portal reached? " << (fPortalReached ? "yes" : "no");
+      
+    //mSfxPortal->play(true);
   };
   void Tunnel::hide() {
   
@@ -225,6 +249,7 @@ namespace Pixy {
   
   void Tunnel::update(unsigned long lTimeElapsed) {
     processEvents();
+    mSfxPortal->update(lTimeElapsed);
     
     // if the player is past our entrance portal, we can stop showing it 
     if (!fPassedEntrance && mSphere->getMasterNode()->getPosition().z > mEntrance->getPosition().z + 1000) {
@@ -234,7 +259,10 @@ namespace Pixy {
       //mPortal = mExit;
       mEntrance->detachObject(mPortalEffect);
 	    mExit->attachObject(mPortalEffect);
-	    mPortalEffect->start();      
+	    mPortalEffect->start();
+	    //if (mSfxPortal->isAttached())
+      //mSfxPortal->getParentSceneNode()->detachObject(mSfxPortal);   
+	    //mExit->attachObject(mSfxPortal);
       
       fPassedEntrance = true;
     };
@@ -274,6 +302,8 @@ namespace Pixy {
 
 	bool Tunnel::evtPortalReached(Event* inEvt) {
 	  //hide();
+	  
+	  mSfxPortal->play(true);
 	  
 	  fPortalReached = true;
 	  return true;

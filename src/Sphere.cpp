@@ -95,6 +95,16 @@ namespace Pixy
 		PhyxEngine::getSingletonPtr()->attachToWorld(this);
 		mPhyxBody->proceedToTransform(trans);
 		
+
+    OgreOggSound::OgreOggSoundManager *mSoundMgr;
+    mSoundMgr = AudioEngine::getSingletonPtr()->getSoundMgr();
+    mSfxBeep = mSoundMgr->createSound("SphereBeep", "beep.wav", false, false, true) ;
+    mMasterNode->attachObject(mSfxBeep);
+    
+    mSfxBeep->setRolloffFactor(2.f);
+    mSfxBeep->setReferenceDistance(1000.f);
+    
+    mLog->debugStream() << "created sound effect";
 	/*
 	  mPath = new Ogre::SimpleSpline();
 	  mPath->setAutoCalculate(false);
@@ -193,6 +203,8 @@ namespace Pixy
 	void Sphere::update(unsigned long lTimeElapsed) {
 	  processEvents();
 	  
+	  mSfxBeep->update(lTimeElapsed);
+	  
 	  mDirection.z += mMoveSpeed;
 	  if (mDirection.z >= mMaxSpeed)
 	    mDirection.z = mMaxSpeed;
@@ -288,6 +300,10 @@ namespace Pixy
 	    mPhyxBody->clearForces();
 	    // push the player back
 	    mPhyxBody->applyCentralForce(btVector3(mDirection.x * mMoveSpeed,mDirection.y * mMoveSpeed,-mMoveSpeed * 1000));
+	    
+	    // play beep sound
+	    mSfxBeep->stop();
+	    mSfxBeep->play(true);
 	  }
 	  
 	  return true;

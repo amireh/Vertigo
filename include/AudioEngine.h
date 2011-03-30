@@ -46,6 +46,8 @@ namespace Pixy
     void startMusic();
     void pauseMusic();
     
+    void toggleAudioState();
+    
     void attachListener(Entity* inEntity);
 		
 		void playEffect(SOUND_EFFECT inEffect, SceneNode* inEmitter);
@@ -55,7 +57,7 @@ namespace Pixy
 
     bool evtObstacleCollided(Event* inEvt);
     bool evtPortalEntered(Event* inEvt);
-    
+  
     
 		OgreOggISound *mMusicTrack;
 		unsigned int idSound;
@@ -65,7 +67,8 @@ namespace Pixy
 		OgreOggSound::OgreOggSoundManager *mSoundMgr;
 		typedef std::map<SOUND_EFFECT, unsigned long> t_sounds;
 		t_sounds mSounds;
-		
+    
+    bool fAudioStopped;		
 	private:
 		static AudioEngine* _myAudioEngine;
 		AudioEngine();

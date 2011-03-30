@@ -93,8 +93,9 @@ namespace Pixy
       OgreOggSound::OgreOggSoundManager *mSoundMgr;
       mSoundMgr = AudioEngine::getSingletonPtr()->getSoundMgr();
       mSoundMgr->destroySound(mSfxExplosion);
+      mSoundMgr->destroySound(mSfxShatter);
       mSoundMgr = NULL;
-      mSfxExplosion = NULL;
+      mSfxExplosion = mSfxShatter = NULL;
     }
 		//delete mPhyxShape;
     
@@ -140,7 +141,7 @@ namespace Pixy
       OgreOggSound::OgreOggSoundManager *mSoundMgr;
       mSoundMgr = AudioEngine::getSingletonPtr()->getSoundMgr();
       mSfxExplosion = mSoundMgr->createSound(Ogre::String("Explosion" + stringify(idObject)), "explosion.wav", false, false, true) ;
-      mSfxShatter = mSoundMgr->createSound(Ogre::String("Shatter" + stringify(idObject)), "shatter.wav", false, false, true) ;
+      mSfxShatter = mSoundMgr->createSound(Ogre::String("Shatter" + stringify(idObject)), "shatter3.wav", false, false, true) ;
       mMasterNode->attachObject(mSfxExplosion);
       mMasterNode->attachObject(mSfxShatter);
       

@@ -141,6 +141,9 @@ namespace Pixy
 		  case OIS::KC_P:
 		    GameManager::getSingleton().pushState(StatePause::getSingletonPtr());
 		    break;
+		  case OIS::KC_M:
+		    mSfxEngine->toggleAudioState();
+		    break;
 			case OIS::KC_EQUALS:
 				
 				break;			

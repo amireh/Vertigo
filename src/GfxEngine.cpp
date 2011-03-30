@@ -1,4 +1,4 @@
-/*
+/* mTrayMgr->hideTrays();
  *  GfxEngine.cpp
  *  Elementum
  *
@@ -102,7 +102,8 @@ namespace Pixy {
 		mTrayMgr = new OgreBites::SdkTrayManager("AOFTrayMgr", mRenderWindow, InputManager::getSingletonPtr()->getMouse(), 0);
 		mTrayMgr->hideCursor();
     mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
-
+    mTrayMgr->hideTrays();
+    
     mCameraMan = new OgreBites::SdkCameraMan(mCamera);
     //mRenderWindow->setActive(true);
     
@@ -123,7 +124,7 @@ namespace Pixy {
 		//mCamera->lookAt(mSphere->getSceneNode()->getPosition());
 		//mCamera->lookAt(mSphere->getSceneNode()->getPosition());
 		
-		mOverlay = mOverlayMgr->getByName("MyOverlays/ANewOverlay");
+		mOverlay = mOverlayMgr->getByName("Vertigo/Overlays/Level");
 		mOverlay->show();
 		
 		setupParticles();

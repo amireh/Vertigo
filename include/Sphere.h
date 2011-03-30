@@ -26,6 +26,11 @@ using std::list;
 using std::map;
 using std::pair;
 using std::make_pair;
+
+namespace OgreOggSound {
+  class OgreOggISound;
+};
+
 namespace Pixy
 {
 
@@ -84,6 +89,7 @@ namespace Pixy
 		float step;
 		float currentStep;
 		//Ogre::Vector3 mDirection;
+		OgreOggSound::OgreOggISound *mSfxRumbling, *mSfxFlipShield, *mSfxBeep;
 		Ogre::SceneNode* mFireTrailNode, *mIceSteamNode;
 	};
 } // end of namespace

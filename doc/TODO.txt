@@ -13,7 +13,7 @@
   # transition
   # game (done)
   # score
-* install sound effects
+* install sound effects (DONE)
 
 -- Enhancements --
 * reimplement collision to use Ogre's Ray queries instead of Bullet (done)
@@ -37,5 +37,5 @@
 * clean up unused media
 
 -- code --
-* create Level objects that encapsulate the creation of a tunnel and its portal
-* refactor GfxEngine .. it's a bloody mess there
+* create Level objects that encapsulate the creation of a tunnel and its portal (done)
+* refactor GfxEngine .. it's a bloody mess there (done)
