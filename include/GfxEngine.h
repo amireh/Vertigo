@@ -54,8 +54,7 @@ namespace Pixy {
 		
 		virtual bool setup();
 		virtual bool deferredSetup();
-		virtual void update(unsigned long lTimeElapsed
-		);
+		virtual void update(unsigned long lTimeElapsed);
 		virtual bool cleanup();
 		
 		void setCamera(const Ogre::String& inCameraName);
@@ -68,7 +67,7 @@ namespace Pixy {
 		 * to the given Ogre::Entity for later retrieval, thus,
 		 * linking the GameObject with SceneObject.
 		 */
-		bool attachToScene(Pixy::Entity* inEntity);
+		bool attachToScene(Entity* inEntity);
 		
 		//! Detaches a Pixy::Entity from an SceneNode and removes it from Scene
 		/*!
@@ -77,7 +76,7 @@ namespace Pixy {
 		 * stops rendering it. Also detaches Pixy::Entity
 		 * from the Ogre::Entity.
 		 */
-		void detachFromScene(Pixy::Entity* inEntity);
+		void detachFromScene(Entity* inEntity);
 		
 		//! Moves a SceneNode to a destination using a Waypoint
 		/*!

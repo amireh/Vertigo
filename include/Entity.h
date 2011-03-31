@@ -144,6 +144,10 @@ namespace Pixy
 		std::string mName;					//! Entity's in-game name
 		int mHP;                            //! Entity's health stat
 		bool fDead;
+		
+		bool fHasSfx; // toggler for sound effects
+		bool fHasFx; // toggler for visual effects
+		
 		ENTITY_TYPE mType;
 		std::string mMesh;					//! Entity's in-game name		
 		Ogre::SceneNode         *mSceneNode, *mMasterNode;

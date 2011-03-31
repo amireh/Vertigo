@@ -66,7 +66,7 @@ namespace Pixy
     Vector3 randomPosition();
 
     bool fDying;
-    bool fHasFX;
+    //bool fHasFX;
     bool fSfxCreated;
     OgreOggSound::OgreOggISound *mSfxExplosion, *mSfxShatter, **mSfx;
     

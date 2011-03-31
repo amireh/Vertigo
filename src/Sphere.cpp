@@ -2,7 +2,7 @@
 #include "Sphere.h"
 #include "Utility.h"
 #include "GfxEngine.h"
-#include "StateGame.h"
+#include "Level.h"
 #include "PhyxEngine.h"
 #include "Obstacle.h"
 #include "Geometry.h"
@@ -46,6 +46,16 @@ namespace Pixy
 		mIceSteamNode = NULL;
 		mMasterNode = NULL;
 		
+		if (fHasSfx) {
+      OgreOggSound::OgreOggSoundManager *mSoundMgr;
+      mSoundMgr = AudioEngine::getSingletonPtr()->getSoundMgr();
+      
+      mSoundMgr->destroySound(mSfxBeep);
+      
+      mSoundMgr = NULL;
+      mSfxBeep = NULL;
+    }
+    
 		delete mPhyxBody->getMotionState();
     delete mPhyxBody;
 
@@ -96,15 +106,17 @@ namespace Pixy
 		mPhyxBody->proceedToTransform(trans);
 		
 
-    OgreOggSound::OgreOggSoundManager *mSoundMgr;
-    mSoundMgr = AudioEngine::getSingletonPtr()->getSoundMgr();
-    mSfxBeep = mSoundMgr->createSound("SphereBeep", "beep.wav", false, false, true) ;
-    mMasterNode->attachObject(mSfxBeep);
-    
-    mSfxBeep->setRolloffFactor(2.f);
-    mSfxBeep->setReferenceDistance(1000.f);
-    
-    mLog->debugStream() << "created sound effect";
+    if (fHasSfx) {
+      OgreOggSound::OgreOggSoundManager *mSoundMgr;
+      mSoundMgr = AudioEngine::getSingletonPtr()->getSoundMgr();
+      mSfxBeep = mSoundMgr->createSound("SphereBeep", "beep.wav", false, false, true) ;
+      mMasterNode->attachObject(mSfxBeep);
+      
+      mSfxBeep->setRolloffFactor(2.f);
+      mSfxBeep->setReferenceDistance(1000.f);
+      
+      mLog->debugStream() << "created sound effect";
+    }
 	/*
 	  mPath = new Ogre::SimpleSpline();
 	  mPath->setAutoCalculate(false);
@@ -203,7 +215,8 @@ namespace Pixy
 	void Sphere::update(unsigned long lTimeElapsed) {
 	  processEvents();
 	  
-	  mSfxBeep->update(lTimeElapsed);
+	  if (fHasSfx)
+	    mSfxBeep->update(lTimeElapsed);
 	  
 	  mDirection.z += mMoveSpeed;
 	  if (mDirection.z >= mMaxSpeed)
@@ -301,9 +314,11 @@ namespace Pixy
 	    // push the player back
 	    mPhyxBody->applyCentralForce(btVector3(mDirection.x * mMoveSpeed,mDirection.y * mMoveSpeed,-mMoveSpeed * 1000));
 	    
-	    // play beep sound
-	    mSfxBeep->stop();
-	    mSfxBeep->play(true);
+	    if (fHasSfx) {
+	      // play beep sound
+	      mSfxBeep->stop();
+	      mSfxBeep->play(true);
+	    }
 	  }
 	  
 	  return true;
@@ -315,12 +330,12 @@ namespace Pixy
 	  mPhyxBody->activate(true);
 	  mPhyxBody->applyCentralForce(btVector3(0,-10,100000));
 	  
-	  AudioEngine::getSingletonPtr()->playEffect(SFX_EXPLOSION, mMasterNode);
+	  //AudioEngine::getSingletonPtr()->playEffect(SFX_EXPLOSION, mMasterNode);
 	  return true;
 	};
 	
 	bool Sphere::evtPortalSighted(Event* inEvt) {
-	  //Vector3 dest = StateGame::getSingletonPtr()->getTunnel()->getExitPortal()->getPosition();
+	  //Vector3 dest = Level::getSingletonPtr()->getTunnel()->getExitPortal()->getPosition();
 	  mMaxSpeed = 100.0f;
 	  mMoveSpeed = 50.0f;
 	  

@@ -2,7 +2,7 @@
 #include "Obstacle.h"
 #include "Utility.h"
 #include "GfxEngine.h"
-#include "StateGame.h"
+#include "Level.h"
 #include "PhyxEngine.h"
 #include <cstdlib>
 #include "AudioEngine.h"
@@ -19,11 +19,11 @@ namespace Pixy
 	  mMesh = "ObstacleMesh";
 	  mMoveSpeed = 1.2f;
 	  fDying = false;
-	  fHasFX = true;
+	  fHasFx = true;
 	  int qualifier = rand();
 	  mShield = (qualifier % 2 == 0) ? ICE : FIRE;
 	  
-	  mSphere = StateGame::getSingleton().getSphere();
+	  mSphere = Level::getSingleton().getSphere();
 	  mPosition = Vector3(0,0, -1000);
 	  
 	  GfxEngine::getSingletonPtr()->attachToScene(this);
@@ -35,7 +35,7 @@ namespace Pixy
     mMasterNode->addChild(mSceneNode);
     mMasterNode->setPosition(mPosition);
 	  
-	  if (fHasFX) {
+	  if (fHasFx) {
 	    ParticleUniverse::ParticleSystemManager* fxMgr = 
       ParticleUniverse::ParticleSystemManager::getSingletonPtr();
       
@@ -89,7 +89,7 @@ namespace Pixy
 		delete mPhyxBody->getMotionState();
     delete mPhyxBody;
     
-    if (fSfxCreated) {
+    if (fHasSfx && fSfxCreated) {
       OgreOggSound::OgreOggSoundManager *mSoundMgr;
       mSoundMgr = AudioEngine::getSingletonPtr()->getSoundMgr();
       mSoundMgr->destroySound(mSfxExplosion);
@@ -109,7 +109,7 @@ namespace Pixy
 	  int qualifier = rand();
 	  int sign = (qualifier % 2 == 0) ? 1 : -1;
 	  float z = mSphere->getPosition().z + 1200;
-	  float portalZ = StateGame::getSingletonPtr()->getTunnel()->getExitPortal()->getPosition().z;
+	  float portalZ = Level::getSingletonPtr()->getTunnel()->getExitPortal()->getPosition().z;
 	  if (z > portalZ)
 	    z = portalZ;
 	  return Vector3(
@@ -137,28 +137,31 @@ namespace Pixy
 	  mPhyxBody->activate(true);
 	  mPhyxBody->setLinearVelocity(btVector3(0,0,-mMoveSpeed));
 
-    if (!fSfxCreated) {
-      OgreOggSound::OgreOggSoundManager *mSoundMgr;
-      mSoundMgr = AudioEngine::getSingletonPtr()->getSoundMgr();
-      mSfxExplosion = mSoundMgr->createSound(Ogre::String("Explosion" + stringify(idObject)), "explosion.wav", false, false, true) ;
-      mSfxShatter = mSoundMgr->createSound(Ogre::String("Shatter" + stringify(idObject)), "shatter3.wav", false, false, true) ;
-      mMasterNode->attachObject(mSfxExplosion);
-      mMasterNode->attachObject(mSfxShatter);
+    if (fHasSfx) {
+      if (!fSfxCreated) {
+        OgreOggSound::OgreOggSoundManager *mSoundMgr;
+        mSoundMgr = AudioEngine::getSingletonPtr()->getSoundMgr();
+        mSfxExplosion = mSoundMgr->createSound(Ogre::String("Explosion" + stringify(idObject)), "explosion.wav", false, false, true) ;
+        mSfxShatter = mSoundMgr->createSound(Ogre::String("Shatter" + stringify(idObject)), "shatter3.wav", false, false, true) ;
+        mMasterNode->attachObject(mSfxExplosion);
+        mMasterNode->attachObject(mSfxShatter);
+        
+        mSfxExplosion->setRolloffFactor(2.f);
+        mSfxExplosion->setReferenceDistance(1000.f);
+        mSfxShatter->setRolloffFactor(2.f);
+        mSfxShatter->setReferenceDistance(1000.f);
+        
+        mLog->debugStream() << "created sound effect";
       
-      mSfxExplosion->setRolloffFactor(2.f);
-      mSfxExplosion->setReferenceDistance(1000.f);
-      mSfxShatter->setRolloffFactor(2.f);
-      mSfxShatter->setReferenceDistance(1000.f);
-      
-      mLog->debugStream() << "created sound effect";
-    
-      fSfxCreated = true;
+        fSfxCreated = true;
+      }
+
+      if (mShield == FIRE)
+        mSfx = &mSfxExplosion;
+      else
+        mSfx = &mSfxShatter;
+
     }
-    
-    if (mShield == FIRE)
-      mSfx = &mSfxExplosion;
-    else
-      mSfx = &mSfxShatter;
        
 	  fDead = false;
 	  
@@ -170,9 +173,9 @@ namespace Pixy
 	  
 	  //mLog->debugStream() << mName << idObject << " is dead";
 	  
-	  mSceneNode->setVisible(false);
 	  
-	  if (fHasFX) {
+	  
+	  if (fHasFx) {
 	    if (mShield == FIRE) {
 	      mBlaze->stop();
 	      mBlaze->setVisible(false);
@@ -181,17 +184,19 @@ namespace Pixy
 	      mSteam->setVisible(false);
 	    }
 	  }
-	  
+	  mSceneNode->setVisible(false);
 	  PhyxEngine::getSingletonPtr()->detachFromWorld(this);
+	  
 	  fDead = true;
 
 	};
 	
 	void Obstacle::render() {
+	  // switch our materials and visual effects based on our shield
 		if (mShield == FIRE) {
 		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Obstacle/Fire");
 		  
-		  if (fHasFX) {
+		  if (fHasFx) {
 		    if (mSteam->isAttached()) {
 		      mSteam->setVisible(false);
 		      mSteam->stop();
@@ -202,7 +207,7 @@ namespace Pixy
 		  }
 		} else {
 		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Obstacle/Ice");
-		  if (fHasFX) {
+		  if (fHasFx) {
 		    if (mBlaze->isAttached()) {
 		      mBlaze->setVisible(false);
 		      mBlaze->stop();
@@ -231,7 +236,7 @@ namespace Pixy
       die();
       return;
     }*/
-    //if (mSfxExplosion)
+    if (fHasSfx)
       (*mSfx)->update(lTimeElapsed);
     
     //if (mSceneObject->getWorldBoundingBox().intersects(mSphere->getSceneObject()->getWorldBoundingBox())) {
@@ -245,8 +250,10 @@ namespace Pixy
       //mSoundMgr = AudioEngine::getSingletonPtr()->getSoundMgr();
       //mSoundMgr->getSound(Ogre::String("Explosion" + stringify(idObject)))->play();
       //mSfxExplosion->setPosition(mMasterNode->getPosition());
-      (*mSfx)->stop();
-      (*mSfx)->play(true);
+      if (fHasSfx) {
+        (*mSfx)->stop();
+        (*mSfx)->play(true);
+      }
       //mSoundMgr = NULL;
       return die();
     }

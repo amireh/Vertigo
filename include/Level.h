@@ -1,5 +1,5 @@
 /* -----------------------------------------------
- *  Filename: StateGame.h
+ *  Filename: Level.h
  *  Date Created: ??/2009
  *
  *  Original Author:
@@ -10,32 +10,34 @@
  *      By:     Ahmad Amireh
  * ----------------------------------------------- */
 
-#ifndef H_StateGame_H
-#define H_StateGame_H
+#ifndef H_Level_H
+#define H_Level_H
 
 #include <list>
+#include <map>
 #include "GameState.h"
 #include "EventManager.h"
 #include "EventListener.h"
+
 #include "UIEngine.h"
 #include "GfxEngine.h"
 #include "PhyxEngine.h"
-#include <map>
+#include "AudioEngine.h"
+
 #include "Sphere.h"
 #include "Obstacle.h"
 #include "Tunnel.h"
-#include "AudioEngine.h"
 
 using std::list;
 namespace Pixy
 {
-    /*! \class StateGame
+    /*! \class Level
      *  \brief
      *  Main Menu state, handles non-Combat game tasks.
      */
 	
 	
-	class StateGame : public GameState, public EventListener {
+	class Level : public GameState, public EventListener {
 	public:
 		
 		void enter( void );
@@ -52,27 +54,35 @@ namespace Pixy
 		void mousePressed( const OIS::MouseEvent &e, OIS::MouseButtonID id );
 		void mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id );
 		
-		static StateGame* getSingletonPtr( void );
-		static StateGame& getSingleton();
+		static Level* getSingletonPtr( void );
+		static Level& getSingleton();
 		
 		virtual GAME_STATE getId() const;
 
 		Sphere* getSphere();
     Tunnel* getTunnel();
     
+    bool areFxEnabled();
+    bool areSfxEnabled();
+    
+    void dontUpdateMe(Engine* inEngine);
+    
 	protected:
-		void fireLoginEvt();
+
 		bool evtPortalEntered(Event* inEvt);
 		bool evtPortalReached(Event* inEvt);
 		bool evtPortalSighted(Event* inEvt);
 		
 		Tunnel *mTunnel;
 		std::list<Tunnel*> mTunnels;
+		std::list<Engine*> mEngines;
 		
+		std::list<Obstacle*>::iterator _itrObstacles;
+		std::list<Engine*>::iterator _itrEngines;
 	private:
-		StateGame( void ) { }
-		StateGame( const StateGame& ) { }
-		StateGame & operator = ( const StateGame& );
+		Level( void ) { }
+		Level( const Level& ) { }
+		Level & operator = ( const Level& );
 		
 		EventManager *mEvtMgr;
 		GfxEngine		*mGfxEngine;
@@ -85,10 +95,12 @@ namespace Pixy
 		std::list<Obstacle*> mObstaclePool;
 		std::list<Obstacle*> mDeadObstacles;
 		
+		
+		
 		long nrObstacles;
 		int nrTunnels;
 		
-		static StateGame    *mStateGame;
+		static Level    *mLevel;
 		Ogre::Timer mTimer;
 		bool fSpawning; // are we spawning obstacles?
 		void spawnObstacle();

@@ -1,6 +1,6 @@
 #include "Tunnel.h"
 #include "GfxEngine.h"
-#include "StateGame.h"
+#include "Level.h"
 #include "AudioEngine.h"
 
 namespace Pixy {
@@ -30,7 +30,7 @@ namespace Pixy {
     mGfxEngine = GfxEngine::getSingletonPtr();
     mSceneMgr = mGfxEngine->getSM();
     mFxMgr = ParticleUniverse::ParticleSystemManager::getSingletonPtr();
-    mSphere = StateGame::getSingletonPtr()->getSphere();
+    mSphere = Level::getSingletonPtr()->getSphere();
     if (mSphere)
       mSphereNode = mSphere->getMasterNode();
     else
@@ -43,6 +43,7 @@ namespace Pixy {
     
     
     mEntrance = mExit = NULL;
+    fHasSfx = Level::getSingleton().areSfxEnabled();
     fPassedEntrance = false;
     fPortalSighted = false;
     fPortalReached = false;
@@ -53,7 +54,7 @@ namespace Pixy {
     generatePortals();
     
     // prepare sound effect
-    if (!mSfxPortal) {
+    if (fHasSfx && !mSfxPortal) {
       OgreOggSound::OgreOggSoundManager *mSoundMgr;
       mSoundMgr = AudioEngine::getSingletonPtr()->getSoundMgr();
       mSfxPortal = mSoundMgr->createSound("Teleport", "teleport.wav", false, false, true) ;
@@ -74,7 +75,7 @@ namespace Pixy {
       mPortalEffect = NULL;
     }
     
-    if (mSfxPortal) {
+    if (fHasSfx && mSfxPortal) {
       OgreOggSound::OgreOggSoundManager *mSoundMgr;
       mSoundMgr = AudioEngine::getSingletonPtr()->getSoundMgr();
       mSoundMgr->destroySound(mSfxPortal);
@@ -249,7 +250,9 @@ namespace Pixy {
   
   void Tunnel::update(unsigned long lTimeElapsed) {
     processEvents();
-    mSfxPortal->update(lTimeElapsed);
+    
+    if (fHasSfx)
+      mSfxPortal->update(lTimeElapsed);
     
     // if the player is past our entrance portal, we can stop showing it 
     if (!fPassedEntrance && mSphere->getMasterNode()->getPosition().z > mEntrance->getPosition().z + 1000) {
@@ -303,7 +306,8 @@ namespace Pixy {
 	bool Tunnel::evtPortalReached(Event* inEvt) {
 	  //hide();
 	  
-	  mSfxPortal->play(true);
+	  if (fHasSfx)
+	    mSfxPortal->play(true);
 	  
 	  fPortalReached = true;
 	  return true;

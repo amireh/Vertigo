@@ -1,4 +1,4 @@
-#include "StateGame.h"
+#include "Level.h"
 #include "EventManager.h"
 #include "StatePause.h"
 #include <cstdlib>
@@ -8,30 +8,37 @@ using namespace Ogre;
 namespace Pixy
 {
 	
-	StateGame* StateGame::mStateGame;
+	Level* Level::mLevel;
 	
-	GAME_STATE StateGame::getId() const { return STATE_GAME; }
+	GAME_STATE Level::getId() const { return STATE_GAME; }
 	
-	void StateGame::enter( void ) {
+	void Level::enter( void ) {
 		
 		srand((unsigned)time(0));
 		
-		mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "StateGame");
+		mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "Level");
 		
 		mEvtMgr = EventManager::getSingletonPtr();
 		
+		mEngines.clear();
+		
 		// init engines
 		mGfxEngine = GfxEngine::getSingletonPtr();
-		mGfxEngine->setup();
+		mPhyxEngine = PhyxEngine::getSingletonPtr();
+		mSfxEngine = AudioEngine::getSingletonPtr();
+		
+		mEngines.push_back(mGfxEngine);
+		mEngines.back()->setup();
 				
 		//mUIEngine = UIEngine::getSingletonPtr();
 		//mUIEngine->setup();
 		
-		mPhyxEngine = PhyxEngine::getSingletonPtr();
-		mPhyxEngine->setup();
-			
-		mSfxEngine = AudioEngine::getSingletonPtr();
-		mSfxEngine->setup();
+		mEngines.push_back(mPhyxEngine);
+		mEngines.back()->setup();
+		
+		mEngines.push_back(mSfxEngine);
+		mEngines.back()->setup();
+		
 		
 		// grab CEGUI handle
 		//mUISystem = &CEGUI::System::getSingleton();
@@ -50,32 +57,33 @@ namespace Pixy
 		
 
 		
-		bindToName("PortalEntered", this, &StateGame::evtPortalEntered);
-		bindToName("PortalReached", this, &StateGame::evtPortalReached);
-		bindToName("PortalSighted", this, &StateGame::evtPortalSighted);
+		bindToName("PortalEntered", this, &Level::evtPortalEntered);
+		bindToName("PortalReached", this, &Level::evtPortalReached);
+		bindToName("PortalSighted", this, &Level::evtPortalSighted);
 
     //for (int i =0; i < nrTunnels; ++i) {
       
     //};
-    mTunnels.push_back(new Tunnel("Vertigo/Tunnel/Lava"));
+    mTunnels.push_back(new Tunnel("Vertigo/Tunnel/Rose"));
+    mTunnels.push_back(new Tunnel("Vertigo/Tunnel/Inferno"));
     mTunnels.push_back(new Tunnel("Vertigo/Tunnel/Lava/Translucent"));
-    mTunnel = mTunnels.back();
+    mTunnels.push_back(new Tunnel("Vertigo/Tunnel/Lava"));
+    
+    mTunnel = mTunnels.front();
     mTunnel->show();
 
-		mGfxEngine->deferredSetup();
-		mPhyxEngine->deferredSetup();
-		mSfxEngine->deferredSetup();
+		for (_itrEngines = mEngines.begin();
+		     _itrEngines != mEngines.end();
+		     ++_itrEngines)
+		    (*_itrEngines)->deferredSetup();
 		  		
 		mLog->infoStream() << "Initialized successfully.";
 		
-
-   
-   
 	}
 
 
 	
-	void StateGame::exit( void ) {
+	void Level::exit( void ) {
 	  
 	  
 	  
@@ -98,6 +106,10 @@ namespace Pixy
 		
 		delete mSphere;
 		
+		mEngines.clear();
+		
+		
+		     
 		mSfxEngine->cleanup();
 		delete mSfxEngine;
 		
@@ -109,15 +121,16 @@ namespace Pixy
 		mGfxEngine->cleanup();
 		delete mGfxEngine;
 		
+		
 		EventManager::shutdown();
 		
-		mLog->infoStream() << "---- Exiting StateGame State ----";
+		mLog->infoStream() << "---- Exiting Level State ----";
 		delete mLog;
 		mLog = 0;
 		 
 	}
 	
-	void StateGame::keyPressed( const OIS::KeyEvent &e )
+	void Level::keyPressed( const OIS::KeyEvent &e )
 	{
 	
 		/*mUISystem->injectKeyDown(e.key);
@@ -129,7 +142,7 @@ namespace Pixy
 		}
 	}
 	
-	void StateGame::keyReleased( const OIS::KeyEvent &e ) {
+	void Level::keyReleased( const OIS::KeyEvent &e ) {
 		
 		//mUISystem->injectKeyUp(e.key);
 		mGfxEngine->keyReleased(e);
@@ -152,68 +165,73 @@ namespace Pixy
 		
 	}
 	
-	void StateGame::mouseMoved( const OIS::MouseEvent &e )
+	void Level::mouseMoved( const OIS::MouseEvent &e )
 	{
 		//mUIEngine->mouseMoved(e);
 		mGfxEngine->mouseMoved(e);
 	}
 	
-	void StateGame::mousePressed( const OIS::MouseEvent &e, OIS::MouseButtonID id ) {
+	void Level::mousePressed( const OIS::MouseEvent &e, OIS::MouseButtonID id ) {
     //mUIEngine->mousePressed(e, id);
 		mGfxEngine->mousePressed(e, id);
 	}
 	
-	void StateGame::mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id ) {
+	void Level::mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id ) {
 		//mUIEngine->mouseReleased(e, id);
 		mGfxEngine->mouseReleased(e, id);
 	}
 	
-	void StateGame::pause( void ) {
+	void Level::pause( void ) {
 	}
 	
-	void StateGame::resume( void ) {
+	void Level::resume( void ) {
 	}
 		
-	StateGame* StateGame::getSingletonPtr( void ) {
-		if( !mStateGame )
-		    mStateGame = new StateGame();
+	Level* Level::getSingletonPtr( void ) {
+		if( !mLevel )
+		    mLevel = new Level();
 		
-		return mStateGame;
+		return mLevel;
 	}
 	
-	StateGame& StateGame::getSingleton( void ) {
+	Level& Level::getSingleton( void ) {
 		return *getSingletonPtr();
 	}
 	
-	Sphere* StateGame::getSphere() { return mSphere; };
+	Sphere* Level::getSphere() { return mSphere; };
 
-	void StateGame::update( unsigned long lTimeElapsed ) {
+	void Level::update( unsigned long lTimeElapsed ) {
 		mEvtMgr->update();
 		
 		processEvents();
 		
-		mSfxEngine->update(lTimeElapsed);
-		mGfxEngine->update(lTimeElapsed);
+		for (_itrEngines = mEngines.begin();
+		     _itrEngines != mEngines.end();
+		     ++_itrEngines)
+		    (*_itrEngines)->update(lTimeElapsed);
+		    
+		//mSfxEngine->update(lTimeElapsed);
+		//mGfxEngine->update(lTimeElapsed);
 		//mUIEngine->update(lTimeElapsed);
-		mPhyxEngine->update(lTimeElapsed);
+		//mPhyxEngine->update(lTimeElapsed);
 		mSphere->update(lTimeElapsed);
 		mTunnel->update(lTimeElapsed);
 		
 		
-		std::list<Obstacle*>::iterator _itr;
-		for (_itr = mObstacles.begin(); 
-		     _itr != mObstacles.end();
+		//std::list<Obstacle*>::iterator _itr;
+		for (_itrObstacles = mObstacles.begin(); 
+		     _itrObstacles != mObstacles.end();
 		     ) {
 		    //mLog->debugStream() << "updating objects";
-		    if ((*_itr)->dead()) {
+		    if ((*_itrObstacles)->dead()) {
 		      
-		      Obstacle *mObs = *_itr;
-		      ++_itr;
+		      Obstacle *mObs = *_itrObstacles;
+		      ++_itrObstacles;
 		      releaseObstacle(mObs);
 		      continue;
 		    };	  
-		  (*_itr)->update(lTimeElapsed);
-		  ++_itr;     
+		  (*_itrObstacles)->update(lTimeElapsed);
+		  ++_itrObstacles;
 		}
 		
 		if (fSpawning && mTimer.getMilliseconds() > 600) {
@@ -222,7 +240,7 @@ namespace Pixy
 		}
 	}
 	
-  void StateGame::spawnObstacle() {
+  void Level::spawnObstacle() {
     //mLog->debugStream() << "obstacle is pulled from the pool";
     
     Obstacle* mObs = NULL;// = mObstaclePool.front();
@@ -249,14 +267,14 @@ namespace Pixy
 	  mEvtMgr->hook(evt);  
   }
   
-  void StateGame::releaseObstacle(Obstacle* inObs) {
+  void Level::releaseObstacle(Obstacle* inObs) {
     //mLog->debugStream() << "obstacle is released into the pool";
     mObstacles.remove(inObs);
     //inObs->die();
     //mObstaclePool.push_back(inObs);
   }
   
-  bool StateGame::evtPortalEntered(Event* inEvt) {
+  bool Level::evtPortalEntered(Event* inEvt) {
     mSphere->setMaxSpeed(30.0f);
     mSphere->setMoveSpeed(5.0f);
     
@@ -266,7 +284,7 @@ namespace Pixy
     return true;
   };
   
-  bool StateGame::evtPortalReached(Event* inEvt) {
+  bool Level::evtPortalReached(Event* inEvt) {
     //fSpawning = false;
     //mSphere->getRigidBody()->clearForces();
     //mSphere->getRigidBody()->setLinearVelocity(btVector3(0,0,0));
@@ -315,7 +333,7 @@ namespace Pixy
     return false;
   };
   
-  bool StateGame::evtPortalSighted(Event* inEvt) {
+  bool Level::evtPortalSighted(Event* inEvt) {
     fSpawning = false;
     //mSphere->getRigidBody()->clearForces();
     //mSphere->getRigidBody()->setLinearVelocity(btVector3(0,0,0));
@@ -326,7 +344,14 @@ namespace Pixy
     return true;
   };
   
-  Tunnel* StateGame::getTunnel() {
+  Tunnel* Level::getTunnel() {
     return mTunnel;
+  };
+  
+  bool Level::areFxEnabled() { return true; }
+  bool Level::areSfxEnabled() { return false; }
+  
+  void Level::dontUpdateMe(Engine* inEngine) {
+    mEngines.remove(inEngine);
   };
 } // end of namespace

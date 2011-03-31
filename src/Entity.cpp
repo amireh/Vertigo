@@ -1,6 +1,7 @@
 // Entity.cpp
 #include "Entity.h"
 #include "Utility.h"
+#include "Level.h"
 //using namespace Ogre;
 namespace Pixy
 {
@@ -26,6 +27,10 @@ namespace Pixy
 		mHP = 1;
 		mMoveSpeed = 0;
 		mDirection = Vector3::ZERO;
+		
+		fHasFx = Level::getSingleton().areFxEnabled();
+		fHasSfx = Level::getSingleton().areSfxEnabled();
+		
 	};
 
 	void Entity::setObjectId(int inIdEntity)

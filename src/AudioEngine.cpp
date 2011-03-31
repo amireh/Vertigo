@@ -1,5 +1,5 @@
 #include "AudioEngine.h"
-#include "StateGame.h"
+#include "Level.h"
 #include "GfxEngine.h"
 
 using std::map;
@@ -39,6 +39,11 @@ namespace Pixy {
 		if (fSetup)
 			return true;
 
+    if ( !Level::getSingleton().areSfxEnabled() ) {
+      Level::getSingleton().dontUpdateMe(this);
+      return true;
+    }
+      
 		/*
     mSoundMgr = SoundManager::createManager();
     mSoundMgr->init();
@@ -64,8 +69,8 @@ namespace Pixy {
     mSoundMgr = OgreOggSound::OgreOggSoundManager::getSingletonPtr();
     mSoundMgr->init();
     mSoundMgr->setSceneManager(GfxEngine::getSingletonPtr()->getSM());
-    mSoundMgr->createSound("Explosion", "explosion.wav", false, false, true) ;
-    mSoundMgr->createSound("Shatter", "shatter2.wav", false, false, true) ;
+    //mSoundMgr->createSound("Explosion", "explosion.wav", false, false, true) ;
+    //mSoundMgr->createSound("Shatter", "shatter2.wav", false, false, true) ;
 
     mMusicTrack = mSoundMgr->createSound("MusicTrack", "music.ogg", false, false, true);
     mMusicTrack->setVolume(0.5f);
@@ -76,14 +81,17 @@ namespace Pixy {
     mLog->infoStream() << "set up!";
     
     fAudioStopped = false;
-    toggleAudioState();
+    //toggleAudioState();
     
 		fSetup = true;
 		return fSetup;
 	}
 	
 	bool AudioEngine::deferredSetup() {
-	  mSphere = StateGame::getSingletonPtr()->getSphere();
+	  if (!fSetup)
+	    return false;
+	  
+	  mSphere = Level::getSingletonPtr()->getSphere();
 	  mMusicTrack->play();
 	  /*if (!mListener && mSphere)
 	    attachListener(mSphere);*/
@@ -138,6 +146,14 @@ namespace Pixy {
   };
   
 	bool AudioEngine::cleanup() {
+	  if (!fSetup)
+	    return true;
+
+    mMusicTrack->stop();
+    mSoundMgr->destroySound(mMusicTrack);
+    mMusicTrack = NULL;
+    mSoundMgr = NULL;
+    
 		return true;
 	}
 	
@@ -156,7 +172,7 @@ namespace Pixy {
 	
 	bool AudioEngine::evtPortalEntered(Event* inEvt) {
 	
-	  playEffect(SFX_SHATTER, StateGame::getSingletonPtr()->getTunnel()->getEntrancePortal());
+	  playEffect(SFX_SHATTER, Level::getSingletonPtr()->getTunnel()->getEntrancePortal());
 	  
 	  return true;
 	};

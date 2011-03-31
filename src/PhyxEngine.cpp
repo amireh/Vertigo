@@ -9,7 +9,7 @@
 
 
 #include "PhyxEngine.h"
-#include "StateGame.h"
+#include "Level.h"
 #include "Sphere.h"
 #include "MotionState.h"
 
@@ -42,7 +42,7 @@ namespace Pixy {
 	
   void PhyxEngine::myTickCallback(btDynamicsWorld *world, btScalar timeStep) {
     //printf("The world just ticked by %f seconds\n", (float)timeStep);
-    btRigidBody* mShipBody = StateGame::getSingletonPtr()->getSphere()->getRigidBody();
+    btRigidBody* mShipBody = Level::getSingletonPtr()->getSphere()->getRigidBody();
     
     // mShipBody is the spaceship's btRigidBody
     btVector3 velocity = mShipBody->getLinearVelocity();
@@ -132,7 +132,7 @@ namespace Pixy {
 	btCollisionShape* PhyxEngine::obstaclesShape() { return mObstacleShape; };
 	 
 	bool PhyxEngine::deferredSetup() {
-		mSphere = StateGame::getSingleton().getSphere();
+		mSphere = Level::getSingleton().getSphere();
 		//mMaxSpeed = mSphere->getMaxSpeed();
 		
 		return true;

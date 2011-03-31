@@ -11,7 +11,7 @@
 #include "GameManager.h"
 //#include "OGRE/Terrain/OgreTerrain.h"
 //#include "OGRE/Terrain/OgreTerrainGroup.h"
-#include "StateGame.h"
+#include "Level.h"
 #include "Procedural.h"
 #include "Geometry.h"
 
@@ -118,7 +118,7 @@ namespace Pixy {
 	}
 	
 	bool GfxEngine::deferredSetup() {
-		mSphere = StateGame::getSingleton().getSphere();
+		mSphere = Level::getSingleton().getSphere();
 		//mCamera->setAutoTracking (true, mSphere->getSceneNode());
 		//mCamera->setPosition(Vector3(200, 200, 200));
 		//mCamera->lookAt(mSphere->getSceneNode()->getPosition());
