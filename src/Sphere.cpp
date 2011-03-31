@@ -329,6 +329,8 @@ namespace Pixy
 	  mDirection = Vector3(0,0,1);
 	  mPhyxBody->activate(true);
 	  mPhyxBody->applyCentralForce(btVector3(0,-10,100000));
+	  if (fHasFx)
+	    GfxEngine::getSingletonPtr()->playEffect("Despawn", this);
 	  
 	  //AudioEngine::getSingletonPtr()->playEffect(SFX_EXPLOSION, mMasterNode);
 	  return true;

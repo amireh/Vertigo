@@ -46,7 +46,7 @@ namespace Pixy
 		mSphere = new Sphere();
 		mSphere->live();
 		
-		nrObstacles = 20;
+		nrObstacles = 10;
 		nrTunnels = 1;
 		//createObstacle();
 		
@@ -348,7 +348,7 @@ namespace Pixy
     return mTunnel;
   };
   
-  bool Level::areFxEnabled() { return true; }
+  bool Level::areFxEnabled() { return false; }
   bool Level::areSfxEnabled() { return false; }
   
   void Level::dontUpdateMe(Engine* inEngine) {

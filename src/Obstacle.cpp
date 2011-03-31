@@ -19,7 +19,7 @@ namespace Pixy
 	  mMesh = "ObstacleMesh";
 	  mMoveSpeed = 1.2f;
 	  fDying = false;
-	  fHasFx = true;
+
 	  int qualifier = rand();
 	  mShield = (qualifier % 2 == 0) ? ICE : FIRE;
 	  

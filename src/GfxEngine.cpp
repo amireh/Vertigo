@@ -615,7 +615,7 @@ namespace Pixy {
 	
 	bool GfxEngine::evtPortalEntered(Event* inEvt) {
 	  mSphere->getSceneNode()->setVisible(true);
-	  playEffect("Despawn", mSphere);
+	  
 	  fPortalReached = false;
 	  
 	  return true;
