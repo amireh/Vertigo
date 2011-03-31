@@ -56,6 +56,7 @@ namespace Pixy
 		
 		void keyPressed( const OIS::KeyEvent &e );
 		void keyReleased( const OIS::KeyEvent &e );
+		void mouseMoved( const OIS::MouseEvent& e );
 		
 		SHIELD shield();
 		void flipShields();
@@ -91,6 +92,8 @@ namespace Pixy
 		//Ogre::Vector3 mDirection;
 		OgreOggSound::OgreOggISound *mSfxRumbling, *mSfxFlipShield, *mSfxBeep;
 		Ogre::SceneNode* mFireTrailNode, *mIceSteamNode;
+		
+		bool fDamped;
 	};
 } // end of namespace
 #endif

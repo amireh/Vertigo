@@ -372,8 +372,8 @@ namespace Pixy {
 	
 	void GfxEngine::mouseMoved( const OIS::MouseEvent &e )
 	{
-		if (mCameraMan)
-			mCameraMan->injectMouseMove(e);
+		//if (mCameraMan)
+		//	mCameraMan->injectMouseMove(e);
 	}
 	
 	void GfxEngine::mousePressed( const OIS::MouseEvent &e, OIS::MouseButtonID id ) 

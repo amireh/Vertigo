@@ -15,6 +15,9 @@
 #include "Engine.h"
 #include "Entity.h"
 #include <btBulletDynamicsCommon.h>
+#include "BtOgrePG.h"
+#include "BtOgreGP.h"
+#include "BtOgreExtras.h"
 
 namespace Pixy
 {
@@ -65,10 +68,15 @@ namespace Pixy
 		btDiscreteDynamicsWorld *mWorld;
 		btCollisionWorld* mCWorld;
 		
-		btCollisionObject *mFloor, *mCeiling, *mLWall, *mRWall, *mBWall;
+		/*btCollisionObject *mFloor, *mCeiling, *mLWall, *mRWall, *mBWall;
 		btCollisionShape *mFloorShape, *mCeilingShape, *mLWallShape, *mRWallShape, *mBWallShape, *mObstacleShape;
 		btDefaultMotionState *mFloorMS, *mCeilingMS, *mLWallMS, *mRWallMS, *mBWallMS;
-		btRigidBody *mFloorBody, *mCeilingBody, *mLWallBody, *mRWallBody, *mBWallBody;
+		btRigidBody *mFloorBody, *mCeilingBody, *mLWallBody, *mRWallBody, *mBWallBody;*/
+		Ogre::Entity *mTunnelEntity;
+    btRigidBody *mTunnelBody;
+    btCollisionShape *mTunnelShape, *mObstacleShape;
+    
+    BtOgre::DebugDrawer *mDbgdraw;
 		
 		Sphere* mSphere;
 		

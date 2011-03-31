@@ -12,6 +12,8 @@
 #include "Level.h"
 #include "Sphere.h"
 #include "MotionState.h"
+#include "Procedural.h"
+#include "GfxEngine.h"
 
 namespace Pixy {
 	PhyxEngine* PhyxEngine::_myPhyxEngine = NULL;
@@ -71,12 +73,18 @@ namespace Pixy {
     
     mWorld->setInternalTickCallback(PhyxEngine::myTickCallback);
 
-    mWorld->setGravity(btVector3(0,-1,0));
+    mWorld->setGravity(btVector3(0,-2,0));
+
+    Ogre::SceneManager* mSceneMgr = GfxEngine::getSingletonPtr()->getSM();
+    
+    mDbgdraw = new BtOgre::DebugDrawer(mSceneMgr->getRootSceneNode(), mWorld);
+    mWorld->setDebugDrawer(mDbgdraw);
+    mDbgdraw->setDebugMode(true);
 
     int wallsCollideWith = COL_SPHERE | COL_OBSTACLES;
     
     mObstacleShape = new btSphereShape(8);
-    
+    /*
     mFloorShape = new btStaticPlaneShape(btVector3(0,1,0),0);
     mFloorMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)));
     btRigidBody::btRigidBodyConstructionInfo
@@ -118,6 +126,50 @@ namespace Pixy {
 
     mBWallBody = new btRigidBody(mBWallRBCI);
     mWorld->addRigidBody(mBWallBody);    
+    */
+    
+    //----------------------------------------------------------
+    // Ground!
+    //----------------------------------------------------------
+
+    //Create Ogre stuff.
+    //MeshManager::getSingleton().createPlane("groundPlane", "General", Plane(Vector3::UNIT_Y, 0), 100, 100,
+    //10, 10, true, 1, 5, 5, Vector3::UNIT_Z);
+
+    Procedural::Root::getInstance()->sceneManager = mSceneMgr;
+    
+    Procedural::TubeGenerator()
+    .setOuterRadius(80)
+    .setInnerRadius(78.0f)
+    .setHeight(500)
+    .setNumSegBase(32)
+    .setNumSegHeight(1)
+    .realizeMesh("PhysicsTunnelMesh");
+    
+    //Create the ground shape.
+    mTunnelEntity = mSceneMgr->createEntity("PhysicsTunnelEntity", "PhysicsTunnelMesh");
+    Ogre::SceneNode *tmpNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("PhysicsTunnelNode");
+    tmpNode->attachObject(mTunnelEntity);
+    tmpNode->pitch(Ogre::Degree(90));
+	  tmpNode->setPosition(Vector3(0, 70, 0 ));    
+	  
+    BtOgre::StaticMeshToShapeConverter converter(mTunnelEntity);
+    mTunnelShape = converter.createTrimesh();
+    mTunnelShape->setLocalScaling(BtOgre::Convert::toBullet(Vector3(1.0f,100.0f,1.0f)));
+    tmpNode->setVisible(false);
+    
+    //Create MotionState (no need for BtOgre here, you can use it if you want to though).
+    btDefaultMotionState* tunnelState = new btDefaultMotionState(
+      btTransform(btQuaternion(1,0,0,1),btVector3(0,70,0)));
+
+    //Create the Body.
+    btRigidBody::btRigidBodyConstructionInfo
+      mTunnelRBCI(0,tunnelState,mTunnelShape,btVector3(0,0,0));
+    mTunnelRBCI.m_friction = 30.0f;    
+    mTunnelBody = new btRigidBody(mTunnelRBCI);
+    
+    mWorld->addRigidBody(mTunnelBody);	    
+
     mLog->infoStream() << "set up!";
     
 		fSetup = true;
@@ -127,12 +179,20 @@ namespace Pixy {
 	
 	void PhyxEngine::update(unsigned long lTimeElapsed) {
 		mWorld->stepSimulation(lTimeElapsed, 7);
+		
+		//mWorld->debugDrawWorld();
+
+    
+    //mDbgdraw->step();
 	}
 	
 	btCollisionShape* PhyxEngine::obstaclesShape() { return mObstacleShape; };
 	 
 	bool PhyxEngine::deferredSetup() {
 		mSphere = Level::getSingleton().getSphere();
+		
+
+    		
 		//mMaxSpeed = mSphere->getMaxSpeed();
 		
 		return true;
@@ -152,7 +212,7 @@ namespace Pixy {
 	}
 	bool PhyxEngine::cleanup() {
 		
-    mWorld->removeRigidBody(mFloorBody);
+    /*mWorld->removeRigidBody(mFloorBody);
     mWorld->removeRigidBody(mCeilingBody);
     mWorld->removeRigidBody(mLWallBody);
     mWorld->removeRigidBody(mRWallBody);
@@ -175,7 +235,7 @@ namespace Pixy {
     delete mCeilingShape;
     delete mLWallShape;
     delete mRWallShape;
-    delete mBWallShape;
+    delete mBWallShape;*/
 
     delete mWorld;
     delete mSolver;

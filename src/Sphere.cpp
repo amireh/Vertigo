@@ -84,11 +84,14 @@ namespace Pixy
     mMasterNode->addChild(mSceneNode);
     //mSceneNode->setVisible(false);
 
-
+    // preload our materials
+    static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Sphere/Ice");
+    static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Sphere/Fire");
+    
 		mLog->debugStream() << "sphere rendered";
 		render();
 				
-		btTransform trans = btTransform(btQuaternion(0,0,0,1),btVector3(0,70,-10));
+		btTransform trans = btTransform(btQuaternion(0,0,0,1),btVector3(0,30,-10));
 		
     mPhyxShape = new btSphereShape(14);
 		mPhyxMS = new MotionState(trans, mMasterNode);
@@ -164,18 +167,18 @@ namespace Pixy
 	{
 		
 		switch (e.key) {
-			/*case OIS::KC_W:
+			case OIS::KC_W:
 				mDirection.z += mMoveSpeed;
 				mMaxSpeed += mMoveSpeed;
-				break;*/
+				break;
 			case OIS::KC_A:
 				//mPhyxBody->clearForces();
-				mDirection.x = mMoveSpeed * 12;
+				mDirection.x = mMoveSpeed;
 				//mDirection.z = mMoveSpeed;
 				break;
 			case OIS::KC_D:
 				//mPhyxBody->clearForces();
-				mDirection.x = -mMoveSpeed * 12;
+				mDirection.x = -mMoveSpeed;
 				//mDirection.z = mMoveSpeed;
 				break;
 			/*case OIS::KC_S:
@@ -197,10 +200,10 @@ namespace Pixy
 	void Sphere::keyReleased( const OIS::KeyEvent &e ) {
 		
 		switch (e.key) {
-			/*case OIS::KC_W:
+			case OIS::KC_W:
 				mDirection.z -= mMoveSpeed;
 				mMaxSpeed -= mMoveSpeed;
-				break;*/
+				break;
 			case OIS::KC_A:
 				mDirection.x = (mDirection.x > 0) ? 0 : mDirection.x;
 				break;
@@ -210,6 +213,14 @@ namespace Pixy
 		}
 		
 	}
+	
+	void Sphere::mouseMoved( const OIS::MouseEvent& e ) {
+    /*if (e.state.X.rel > 0) {
+      mDirection.x = -1 * (mMoveSpeed / 10.0f);
+    } else {
+      mDirection.x = mMoveSpeed / 10.0f;
+    }*/
+	};
 	
 
 	void Sphere::update(unsigned long lTimeElapsed) {
@@ -223,8 +234,8 @@ namespace Pixy
 	    mDirection.z = mMaxSpeed;
 	  
 		mPhyxBody->activate(true);
-		//mPhyxBody->setLinearVelocity(btVector3(0,0,mMoveSpeed * lTimeElapsed));
-		mPhyxBody->applyCentralForce(btVector3(mDirection.x *lTimeElapsed, mDirection.y *lTimeElapsed, mDirection.z *lTimeElapsed));
+		mPhyxBody->setLinearVelocity(btVector3(mDirection.x * lTimeElapsed, -2, mMoveSpeed * lTimeElapsed));
+		//mPhyxBody->applyCentralForce(btVector3(mDirection.x *lTimeElapsed, mDirection.y *lTimeElapsed, mDirection.z *lTimeElapsed));
 		
 		
 		//Ogre::Quaternion rot = mMasterNode->getPosition().getRotationTo(*mNextWaypoint);
@@ -332,6 +343,8 @@ namespace Pixy
 	  if (fHasFx)
 	    GfxEngine::getSingletonPtr()->playEffect("Despawn", this);
 	  
+	  setMaxSpeed(25.0f);
+    setMoveSpeed(2.0f);
 	  //AudioEngine::getSingletonPtr()->playEffect(SFX_EXPLOSION, mMasterNode);
 	  return true;
 	};

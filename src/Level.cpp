@@ -46,7 +46,7 @@ namespace Pixy
 		mSphere = new Sphere();
 		mSphere->live();
 		
-		nrObstacles = 10;
+		nrObstacles = 0;
 		nrTunnels = 1;
 		//createObstacle();
 		
@@ -168,6 +168,7 @@ namespace Pixy
 	void Level::mouseMoved( const OIS::MouseEvent &e )
 	{
 		//mUIEngine->mouseMoved(e);
+		mSphere->mouseMoved(e);
 		mGfxEngine->mouseMoved(e);
 	}
 	
@@ -275,8 +276,7 @@ namespace Pixy
   }
   
   bool Level::evtPortalEntered(Event* inEvt) {
-    mSphere->setMaxSpeed(30.0f);
-    mSphere->setMoveSpeed(5.0f);
+    
     
     mTimer.reset();
 	  fSpawning = true;
