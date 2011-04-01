@@ -348,7 +348,7 @@ namespace Pixy
     return mTunnel;
   };
   
-  bool Level::areFxEnabled() { return false; }
+  bool Level::areFxEnabled() { return true; }
   bool Level::areSfxEnabled() { return false; }
   
   void Level::dontUpdateMe(Engine* inEngine) {

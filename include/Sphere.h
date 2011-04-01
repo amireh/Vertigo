@@ -21,6 +21,7 @@
 #include <map>
 #include "InputManager.h"
 #include "EventListener.h"
+#include "ParticleUniverseSystemManager.h"
 
 using std::list;
 using std::map;
@@ -92,6 +93,7 @@ namespace Pixy
 		//Ogre::Vector3 mDirection;
 		OgreOggSound::OgreOggISound *mSfxRumbling, *mSfxFlipShield, *mSfxBeep;
 		Ogre::SceneNode* mFireTrailNode, *mIceSteamNode;
+		ParticleUniverse::ParticleSystem *mFireEffect, *mIceEffect;
 		
 		bool fDamped;
 	};

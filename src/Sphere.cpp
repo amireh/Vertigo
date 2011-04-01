@@ -88,8 +88,7 @@ namespace Pixy
     static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Sphere/Ice");
     static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Sphere/Fire");
     
-		mLog->debugStream() << "sphere rendered";
-		render();
+
 				
 		btTransform trans = btTransform(btQuaternion(0,0,0,1),btVector3(0,30,-10));
 		
@@ -120,6 +119,31 @@ namespace Pixy
       
       mLog->debugStream() << "created sound effect";
     }
+    
+    if (fHasFx) {
+	    ParticleUniverse::ParticleSystemManager* fxMgr = 
+      ParticleUniverse::ParticleSystemManager::getSingletonPtr();
+      
+      mFireEffect = fxMgr->createParticleSystem(
+        Ogre::String("FxSphereFireEffect"),
+        "Vertigo/FX/Sphere/FireTrail",
+        GfxEngine::getSingletonPtr()->getSM());
+      mFireEffect->prepare();
+               
+      mIceEffect = fxMgr->createParticleSystem(
+        Ogre::String("FxSphereIceEffect"),
+        "Vertigo/FX/Sphere/IceSteam",
+        GfxEngine::getSingletonPtr()->getSM());
+      mIceEffect->prepare();
+         
+      mMasterNode->attachObject(mFireEffect);
+      mMasterNode->attachObject(mIceEffect);
+            
+      //mFireTrail->start();
+    }
+    
+		mLog->debugStream() << "sphere rendered";
+		render();    
 	/*
 	  mPath = new Ogre::SimpleSpline();
 	  mPath->setAutoCalculate(false);
@@ -154,8 +178,29 @@ namespace Pixy
 	void Sphere::render() {
 		if (mCurrentShield == FIRE) {
 		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Sphere/Fire");
+		  
+		  if (fHasFx) {
+		    if (mIceEffect->isAttached()) {
+		      mIceEffect->setVisible(false);
+		      mIceEffect->stop();
+		    }
+
+		    mFireEffect->setVisible(true);
+		    mFireEffect->start();
+		  }
 		} else {
 		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Sphere/Ice");
+		  
+		  if (fHasFx) {
+		    if (mFireEffect->isAttached()) {
+		      mFireEffect->setVisible(false);
+		      mFireEffect->stop();
+		    }
+
+		    mIceEffect->setVisible(true);
+		    mIceEffect->start();
+		  }
+		  
 		}
 	};
 	
@@ -234,7 +279,7 @@ namespace Pixy
 	    mDirection.z = mMaxSpeed;
 	  
 		mPhyxBody->activate(true);
-		mPhyxBody->setLinearVelocity(btVector3(mDirection.x * lTimeElapsed, -2, mMoveSpeed * lTimeElapsed));
+		mPhyxBody->setLinearVelocity(btVector3(mDirection.x * lTimeElapsed, mDirection.y * lTimeElapsed, mDirection.z * lTimeElapsed));
 		//mPhyxBody->applyCentralForce(btVector3(mDirection.x *lTimeElapsed, mDirection.y *lTimeElapsed, mDirection.z *lTimeElapsed));
 		
 		
@@ -343,18 +388,21 @@ namespace Pixy
 	  if (fHasFx)
 	    GfxEngine::getSingletonPtr()->playEffect("Despawn", this);
 	  
-	  setMaxSpeed(25.0f);
+	  setMaxSpeed(3.0f);
     setMoveSpeed(2.0f);
+    
+    mDirection = Vector3(0, -1, 1);
 	  //AudioEngine::getSingletonPtr()->playEffect(SFX_EXPLOSION, mMasterNode);
 	  return true;
 	};
 	
 	bool Sphere::evtPortalSighted(Event* inEvt) {
 	  //Vector3 dest = Level::getSingletonPtr()->getTunnel()->getExitPortal()->getPosition();
-	  mMaxSpeed = 100.0f;
-	  mMoveSpeed = 50.0f;
+	  //mMaxSpeed = 100.0f;
+	  //mMoveSpeed = 50.0f;
 	  
-	  mDirection = Vector3(0, 8, 5) * mMoveSpeed;
+	  //mDirection = Vector3(0, 1, 5) * mMoveSpeed;
+	  mDirection.y = 0.5;
 	  return true;
 	};
 } // end of namespace
