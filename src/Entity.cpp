@@ -25,7 +25,7 @@ namespace Pixy
 		idObject = ++idCounter;
 		mName = "Unnamed";
 		mHP = 1;
-		mMoveSpeed = 0;
+		mMoveSpeed = mMaxSpeed = 0;
 		mDirection = Vector3::ZERO;
 		
 		fHasFx = Level::getSingleton().areFxEnabled();
@@ -116,7 +116,7 @@ namespace Pixy
 	Vector3& Entity::getDirection() {
 		return mDirection;
 	}
-	Real Entity::getMoveSpeed() {
+	Real Entity::getMoveSpeed() const {
 		return mMoveSpeed;
 	}
 	//btCollisionObject* Entity::getObject() { return mObject; };
@@ -136,4 +136,10 @@ namespace Pixy
 	}
 	
 	void Entity::setMoveSpeed(const Real inSpeed) { mMoveSpeed = inSpeed; };
+	
+	void Entity::setMaxSpeed(float inSpeed) {
+	  mMaxSpeed = inSpeed;
+	};
+	
+	float Entity::getMaxSpeed() const { return mMaxSpeed; };	
 } // end of namespace

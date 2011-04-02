@@ -95,6 +95,8 @@ namespace Pixy
 		lTimeCurrentFrame = 0;
 		lTimeSinceLastFrame = 0;
 
+    mRoot->getTimer()->reset();
+    
 		// main game loop
 		while( !fShutdown ) {
 			

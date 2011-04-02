@@ -69,7 +69,7 @@ namespace Pixy
 		btCollisionWorld* mCWorld;
 		
 		/*btCollisionObject *mFloor, *mCeiling, *mLWall, *mRWall, *mBWall;
-		btCollisionShape *mFloorShape, *mCeilingShape, *mLWallShape, *mRWallShape, *mBWallShape, *mObstacleShape;
+		btCollisionShape *mFloorShape, *mCeilingShape, *mLWallShape, *mRWallShape, *mBWallShape;
 		btDefaultMotionState *mFloorMS, *mCeilingMS, *mLWallMS, *mRWallMS, *mBWallMS;
 		btRigidBody *mFloorBody, *mCeilingBody, *mLWallBody, *mRWallBody, *mBWallBody;*/
 		Ogre::Entity *mTunnelEntity;

@@ -1,0 +1,85 @@
+//
+system Vertigo/FX/UI/FireShield
+{
+    /*category                                    Fire
+    //scale 0.1 0.1 0.1
+    technique 
+    {
+        material                                ParticleUniverse/Fire
+        default_particle_width                  4
+        default_particle_height                 4
+        
+        position -5 0 0
+        renderer                                Billboard
+        {
+            //render_queue_group                  80
+        }
+        emitter                                 Box 
+        {
+            emission_rate                       960
+            angle                               0
+            time_to_live                        dyn_random
+            {
+                min                             0.3
+                max                             0.8
+            }
+            velocity                            dyn_random
+            {
+                min                             0
+                max                             1
+            }
+            box_width                           25
+            box_height                          0
+            box_depth                           10            
+            all_particle_dimensions             dyn_random
+            {
+                min                             3
+                max                             6
+            }
+        }
+        affector                                Gravity 
+        {
+            position                            0 0 1000
+            gravity                             1000
+        }
+        affector                                Scale 
+        {
+            xyz_scale                           -5
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 1 1 1
+            time_colour                         1    0 0 0 1
+        }
+    }
+    technique 
+    {
+        material                                mp_smoke_04_flare
+        default_particle_width                  40
+        default_particle_height                 40
+        use_alias                               defaultBillboardRenderer
+        emitter                                 Point 
+        {
+            emission_rate                       20
+            time_to_live                        dyn_random
+            {
+                min                             5
+                max                             7
+            }
+            velocity                            dyn_random
+            {
+                min                             60
+                max                             80
+            }
+        }
+        affector                                Scale 
+        {
+            xyz_scale                           20
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 0.9 0 1
+            time_colour                         1    1 1 1 0
+        }
+    }*/
+}

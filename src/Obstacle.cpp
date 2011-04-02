@@ -18,13 +18,17 @@ namespace Pixy
 	  mType = OBSTACLE;
 	  mMesh = "ObstacleMesh";
 	  mMoveSpeed = 1.2f;
+	  mMaxSpeed = mMoveSpeed * 20;
 	  fDying = false;
+	  mClass = CHASE;
+	  
+
 
 	  int qualifier = rand();
 	  mShield = (qualifier % 2 == 0) ? ICE : FIRE;
 	  
 	  mSphere = Level::getSingleton().getSphere();
-	  mPosition = Vector3(0,0, -1000);
+	  mPosition = randomPosition(); //ector3(0,10, -1000);
 	  
 	  GfxEngine::getSingletonPtr()->attachToScene(this);
 	  
@@ -41,7 +45,7 @@ namespace Pixy
       
       mBlaze = fxMgr->createParticleSystem(
         Ogre::String("FxBlaze" + stringify(idObject)),
-        "Vertigo/FX/Blaze",
+        "Vertigo/FX/Sphere/FireTrail",
         GfxEngine::getSingletonPtr()->getSM());
       mBlaze->prepare();
       
@@ -50,12 +54,15 @@ namespace Pixy
         "Vertigo/FX/Steam",
         GfxEngine::getSingletonPtr()->getSM());
       mSteam->prepare();
+      
+      //mSteam->stop();
+      //mBlaze->stop();
          
       mMasterNode->attachObject(mBlaze);
       mMasterNode->attachObject(mSteam);      
     }
     
-	  render();
+	  //render();
 	 
 	  btTransform trans = btTransform(btQuaternion(0,0,0,1),
 	      btVector3(mPosition.x,mPosition.y,mPosition.z));
@@ -108,13 +115,23 @@ namespace Pixy
 	Vector3 Obstacle::randomPosition() {
 	  int qualifier = rand();
 	  int sign = (qualifier % 2 == 0) ? 1 : -1;
-	  float z = mSphere->getPosition().z + 1200;
+	  //float z = mSphere->getPosition().z + 1200;
+	  float z;
+	  /*Obstacle *tmpObs = Level::getSingletonPtr()->lastObstacleAlive();
+	  if (tmpObs)
+	    z = tmpObs->getMasterNode()->getPosition().z;
+	  else*/
+	    z = mSphere->getPosition().z;
+	  z += 1200;
+	  //float z = Level::getSingletonPtr()->lastObstacleAlive()->getPosition().z;
 	  float portalZ = Level::getSingletonPtr()->getTunnel()->getExitPortal()->getPosition().z;
 	  if (z > portalZ)
 	    z = portalZ;
 	  return Vector3(
-	    (qualifier % 20) * sign, 
 	    0,
+	    16, 
+	    //(qualifier % 50),
+	    //20,
 	    z); 
 	    //mSphere->getPosition().z + 1200);
 	    
@@ -123,19 +140,23 @@ namespace Pixy
 	  //if (!fDead)
 	  //  return;
 	  
+	  mDirection = Vector3::ZERO;
+	  
 	  int qualifier = rand();
 	  mShield = (qualifier % 2 == 0) ? ICE : FIRE;
     render();
 	  mSceneNode->setVisible(true);
 	  mPosition = randomPosition();
 	  mMasterNode->setPosition(mPosition); 
-    mPhyxBody->proceedToTransform(btTransform(btQuaternion(0,0,0,1),
-	      btVector3(mPosition.x,mPosition.y,mPosition.z)));
 	  
 	  PhyxEngine::getSingletonPtr()->attachToWorld(this);
 	  
 	  mPhyxBody->activate(true);
-	  mPhyxBody->setLinearVelocity(btVector3(0,0,-mMoveSpeed));
+	  mPhyxBody->clearForces();
+    mPhyxBody->proceedToTransform(btTransform(btQuaternion(0,0,0,1),
+	      btVector3(mPosition.x,mPosition.y,mPosition.z)));
+	  //mPhyxBody->setLinearVelocity(btVector3(0,0,0));
+	  //mPhyxBody->setLinearVelocity(btVector3(0,0,-mMoveSpeed));
 
     if (fHasSfx) {
       if (!fSfxCreated) {
@@ -162,9 +183,28 @@ namespace Pixy
         mSfx = &mSfxShatter;
 
     }
-       
-	  fDead = false;
-	  
+    
+    //mClass = (qualifier % 2 == 0) ? CHASE : DUMB;// : STATIONARY;
+    mClass = CHASE;
+	  switch (mClass) {
+	    case CHASE:
+	      mUpdater = &Obstacle::updateChase;
+	      //mMasterNode->setScale(1.0f, 1.0f, 1.0f);
+	      break;
+	    case DUMB:
+	      mUpdater = &Obstacle::updateDumb;
+	      //mMoveSpeed;
+	      //mMasterNode->setScale(0.5f, 0.5f, 0.5f);
+	      break;
+	    /*case STATIONARY:
+	      mDirection.x = 0;
+        mUpdater = &Obstacle::updateStationary;
+        break;*/
+	  };    
+
+
+           
+	  fDead = false;	  
 	  //mLog->debugStream() << mName << idObject << " is alive";
 	};
 	void Obstacle::die() {
@@ -173,7 +213,9 @@ namespace Pixy
 	  
 	  //mLog->debugStream() << mName << idObject << " is dead";
 	  
-	  
+	  mPhyxBody->activate(true);
+	  mPhyxBody->clearForces();
+	  mPhyxBody->setLinearVelocity(btVector3(0,0,0));
 	  
 	  if (fHasFx) {
 	    if (mShield == FIRE) {
@@ -223,19 +265,15 @@ namespace Pixy
 	  
 	};
 	
-	
-  void Obstacle::update(unsigned long lTimeElapsed) {
-    /*if (fDying && mTimer.getMilliseconds() > mDeathDuration) {
-      die();
-    }*/
-    
+	void Obstacle::update(unsigned long lTimeElapsed) {
+
     if (fDead || fDying)
       return;
     
-    /*if (mSphere->getPosition().z > mMasterNode->getPosition().z + 100) {
+    if (mSphere->getPosition().z > mMasterNode->getPosition().z + 100) {
       die();
       return;
-    }*/
+    }
     if (fHasSfx)
       (*mSfx)->update(lTimeElapsed);
     
@@ -257,24 +295,54 @@ namespace Pixy
       //mSoundMgr = NULL;
       return die();
     }
-	  
+
+	  (this->*mUpdater)(lTimeElapsed);
+	};
+	
+  void Obstacle::updateChase(unsigned long lTimeElapsed) {
+
     mDirection = mSphere->getPosition() - mMasterNode->getPosition();
     mDirection.normalise();
     
 		mPhyxBody->activate(true);
-		/*mPhyxBody->setLinearVelocity(btVector3(
+		mPhyxBody->setLinearVelocity(btVector3(
 		  mDirection.x * mMoveSpeed * lTimeElapsed * 10, 
-		  mDirection.y * mMoveSpeed * lTimeElapsed * 10, 
+		  -1 * mMoveSpeed * lTimeElapsed, 
 		  mDirection.z * mMoveSpeed * lTimeElapsed * 10
-		  ));*/
+		  ));
+		/*
 		mPhyxBody->applyCentralForce(btVector3(
 		  mDirection.x * mMoveSpeed * lTimeElapsed, 
 		  mDirection.y * mMoveSpeed * lTimeElapsed, 
 		  mDirection.z * mMoveSpeed * lTimeElapsed
 		  )
-		);
+		);*/
 
 	};
+	
+	void Obstacle::updateDumb(unsigned long lTimeElapsed) {
+	  mPhyxBody->activate(true);
+	  mDirection = Vector3(0,-1,-1) * lTimeElapsed * mMoveSpeed;
+	  /*mPhyxBody->setLinearVelocity(btVector3(
+	  mDirection.x, mDirection.y, mDirection.z
+		  ));*/
+		mPhyxBody->applyCentralForce(btVector3(
+		  mDirection.x, mDirection.y, mDirection.z * 2
+		));
+		
+	};
+
+	void Obstacle::updateStationary(unsigned long lTimeElapsed) {
+	  mPhyxBody->activate(true);
+	  mDirection = Vector3(mDirection.x * -1,0,0);// * lTimeElapsed * mMoveSpeed;
+	  /*mPhyxBody->setLinearVelocity(btVector3(
+	  mDirection.x, mDirection.y, mDirection.z
+		  ));*/
+		mPhyxBody->applyCentralForce(btVector3(
+		  mDirection.x, mDirection.y, mDirection.z
+		));
+		
+	};	
 	/*
 	bool Obstacle::evtObstacleCollided(Event* inEvt) {
 	  die();

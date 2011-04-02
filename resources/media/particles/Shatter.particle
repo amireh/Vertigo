@@ -29,8 +29,8 @@ system Vertigo/FX/Shatter
             }
             velocity                            dyn_random
             {
-                min                             200
-                max                             500
+                min                             400
+                max                             800
             }
             duration                            0.3
             particle_width                      dyn_random

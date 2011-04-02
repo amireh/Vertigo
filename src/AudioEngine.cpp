@@ -172,7 +172,7 @@ namespace Pixy {
 	
 	bool AudioEngine::evtPortalEntered(Event* inEvt) {
 	
-	  playEffect(SFX_SHATTER, Level::getSingletonPtr()->getTunnel()->getEntrancePortal());
+	  //playEffect(SFX_SHATTER, Level::getSingletonPtr()->getTunnel()->getEntrancePortal());
 	  
 	  return true;
 	};

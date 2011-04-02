@@ -94,19 +94,24 @@ namespace Pixy {
 		 setupTerrain();
 		 setupLights();
 		
-        setupNodes();
+    setupNodes();
 		
-    Geometry::createSphere("ObstacleMesh", 10, 16, 16);
+		mOverlayMgr->getByName("Vertigo/UI/Loading")->show();
+		
+    Geometry::createSphere("ObstacleMesh", 12, 16, 16);
 
 		
 		mTrayMgr = new OgreBites::SdkTrayManager("AOFTrayMgr", mRenderWindow, InputManager::getSingletonPtr()->getMouse(), 0);
 		mTrayMgr->hideCursor();
-    mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
+    mTrayMgr->showFrameStats(OgreBites::TL_TOPLEFT);
     mTrayMgr->hideTrays();
     
     mCameraMan = new OgreBites::SdkCameraMan(mCamera);
     //mRenderWindow->setActive(true);
-    
+
+    bindToName("GameStarted", this, &GfxEngine::evtGameStarted);
+    bindToName("PlayerWon", this, &GfxEngine::evtPlayerWon);
+    bindToName("SphereDied", this, &GfxEngine::evtSphereDied);    
     bindToName("ObstacleAlive", this, &GfxEngine::evtObstacleAlive);
     bindToName("ObstacleCollided", this, &GfxEngine::evtObstacleCollided);
     bindToName("PortalEntered", this, &GfxEngine::evtPortalEntered);
@@ -124,11 +129,65 @@ namespace Pixy {
 		//mCamera->lookAt(mSphere->getSceneNode()->getPosition());
 		//mCamera->lookAt(mSphere->getSceneNode()->getPosition());
 		
-		mOverlay = mOverlayMgr->getByName("Vertigo/Overlays/Level");
-		mOverlay->show();
+		
+		
 		
 		setupParticles();
+		
+		mUISheet = mOverlayMgr->getByName("Vertigo/UI");
+		mUISheet->show();
+		
+		mUISheetLoss = mOverlayMgr->getByName("Vertigo/UI/Loss");
+		mUISheetWin = mOverlayMgr->getByName("Vertigo/UI/Win");
+		mUISheetPrepare = mOverlayMgr->getByName("Vertigo/UI/Prepare");
+		
+		mOverlayMgr->getByName("Vertigo/UI/Loading")->hide();
+		mUISheetLoss->hide();
+		mUISheetWin->hide();
+		mUISheetPrepare->show();		
+		
+		//mUIBarWidth = mUISheet->getChild("UI/FireShieldContainer")->getChild("UI/FireShield")->getWidth();
+		mUIBarWidth = mViewport->getActualWidth() / 3;
+		mUISheet->getChild("UI/FireShieldContainer")->setWidth(mUIBarWidth);
+		mUISheet->getChild("UI/FireShieldContainer")->getChild("UI/FireShield")->setWidth(mUIBarWidth);
+		
+		float aspect_ratio = mViewport->getActualWidth() / mViewport->getActualHeight();
+		/*mUISheet->getChild("UI/FireShieldContainer")->setHeight(64.0f / aspect_ratio);
+		mUISheet->getChild("UI/FireShieldContainer")->getChild("UI/FireShield")->setHeight(64.0f / aspect_ratio);*/
+		
+		mUISheet->getChild("UI/IceShieldContainer")->setWidth(mUIBarWidth);
+		mUISheet->getChild("UI/IceShieldContainer")->setLeft(-1*mUIBarWidth);
+		mUISheet->getChild("UI/IceShieldContainer")->getChild("UI/IceShield")->setWidth(mUIBarWidth);
+		mUISheet->getChild("UI/IceShieldContainer")->getChild("UI/IceShield")->setLeft(-1*mUIBarWidth);
 		//mSphere->getSceneNode()->attachObject(mSceneMgr->getLight("Light2"));
+		
+		mUITimer.reset();
+
+    // scale overlays' font size
+    using Ogre::TextAreaOverlayElement;
+    TextAreaOverlayElement* mTOverlay;
+    float font_size = 32 / aspect_ratio;
+    static_cast<TextAreaOverlayElement*>(
+      mOverlayMgr->getByName("Vertigo/UI/Prepare")->
+                   getChild("UI/Containers/Prepare")->
+                   getChild("UI/Text/Prepare"))->setCharHeight(font_size);
+    static_cast<TextAreaOverlayElement*>(
+      mOverlayMgr->getByName("Vertigo/UI/Loading")->
+                   getChild("UI/Containers/Loading")->
+                   getChild("UI/Text/Loading"))->setCharHeight(font_size);
+    static_cast<TextAreaOverlayElement*>(
+      mOverlayMgr->getByName("Vertigo/UI/Loss")->
+                   getChild("UI/Containers/Loss")->
+                   getChild("UI/Text/Loss"))->setCharHeight(font_size);
+    static_cast<TextAreaOverlayElement*>(
+      mOverlayMgr->getByName("Vertigo/UI/Win")->
+                   getChild("UI/Containers/Win")->
+                   getChild("UI/Text/Win"))->setCharHeight(font_size);
+    
+    
+		mCamera->setPosition(Vector3(0,75, -200));
+		mCamera->lookAt(Vector3(0,75, 100));
+    		
 		return true;
 	}
 	
@@ -249,33 +308,40 @@ namespace Pixy {
 		 light->setDirection(Vector3(0,0,-1));
 		 light->setDiffuseColour(0.9f, 0.9f, 0.9f);
 		 light->setSpecularColour(0.9f, 0.9f, 0.9f);
+
+     light = mSceneMgr->createLight("Light3");
+		 light->setType(Ogre::Light::LT_DIRECTIONAL);
+		 //light->setPosition(Vector3(0, 0, 1000));
+		 light->setDirection(Vector3(0,-0.5f,1));
+		 light->setDiffuseColour(0.9f, 0.9f, 0.9f);
+		 light->setSpecularColour(0.6f, 0.6f, 0.6f);
 		 
 
       /* now let's setup our light so we can see the shizzle */
 
       mSpotLight = mSceneMgr->createLight("TunnelLight0");
       mSpotLight->setType(Ogre::Light::LT_POINT);
-      mSpotLight->setPosition(Vector3(0, 0, 0));
-      mSpotLight->setDiffuseColour(0.8f, 0.8f, 0.8f);
-      mSpotLight->setSpecularColour(0.8f, 0.8f, 0.8f);
+      mSpotLight->setPosition(Vector3(0, 60, 30));
+      mSpotLight->setDiffuseColour(0.3f, 0.3f, 0.3f);
+      mSpotLight->setSpecularColour(0.3f, 0.3f, 0.3f);
       
       mSpotLight = mSceneMgr->createLight("TunnelLight1");
       mSpotLight->setType(Ogre::Light::LT_POINT);
       mSpotLight->setPosition(Vector3(0, 20, 500));
-      mSpotLight->setDiffuseColour(0.2f, 0.2f, 0.2f);
-      mSpotLight->setSpecularColour(0.2f, 0.2f, 0.2f);
+      mSpotLight->setDiffuseColour(0.5f, 0.5f, 0.5f);
+      mSpotLight->setSpecularColour(0.5f, 0.5f, 0.5f);
 		  
 		  mSpotLight = mSceneMgr->createLight("TunnelLight2");
       mSpotLight->setType(Ogre::Light::LT_POINT);
       mSpotLight->setPosition(Vector3(30, 0, 2500));
-      mSpotLight->setDiffuseColour(0.2f, 0.2f, 0.2f);
-      mSpotLight->setSpecularColour(0.2f, 0.2f, 0.2f);
+      mSpotLight->setDiffuseColour(0.3f, 0.3f, 0.3f);
+      mSpotLight->setSpecularColour(0.3f, 0.3f, 0.3f);
       
       mSpotLight = mSceneMgr->createLight("TunnelLight3");
       mSpotLight->setType(Ogre::Light::LT_POINT);
       mSpotLight->setPosition(Vector3(0, 30, 4500));
-      mSpotLight->setDiffuseColour(0.8f, 0.2f, 0.2f);
-      mSpotLight->setSpecularColour(0.8f, 0.2f, 0.2f);
+      mSpotLight->setDiffuseColour(0.1f, 0.1f, 0.1f);
+      mSpotLight->setSpecularColour(0.1f, 0.1f, 0.1f);
       
       /* now let's setup our light so we can see the shizzle */
       /*mSpotLight = mSceneMgr->createLight("PlayerLight2");
@@ -366,7 +432,7 @@ namespace Pixy {
 		    mTmpNode->detachObject(inEntity->getSceneObject());
 		
 		    mSceneMgr->destroyEntity((Ogre::Entity*)inEntity->getSceneObject());
-		
+	
     }
 
 	
@@ -452,9 +518,12 @@ namespace Pixy {
 
 	void GfxEngine::update(unsigned long lTimeElapsed) {
 		processEvents();
+		
+		if (Level::getSingletonPtr()->isGameOver())
+		  return;
+		
+		mUISheet->getChild("UI/TimerContainer")->getChild("UI/Timer")->setCaption(String(stringify(mUITimer.getMilliseconds() / 1000.0f)));
 
-	  //if (shakingScreen)
-	    //applyScreenShake(lTimeElapsed);
 		if (fPortalReached)
 		  return;
 		
@@ -538,7 +607,14 @@ namespace Pixy {
       mSceneMgr);
     effect->prepare();
     effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("Despawn", effect));  
-        
+
+    effect = fxMgr->createParticleSystem(
+      "FxSphereExplosion",
+      "Vertigo/FX/SphereExplosion", 
+      mSceneMgr);
+    effect->prepare();
+    effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("SphereExplosion", effect));
+          
     effectMap::iterator itr;
     for (itr = effects.begin(); itr != effects.end(); ++itr) {
       effect = itr->second;
@@ -546,6 +622,8 @@ namespace Pixy {
       effect->setScaleVelocity(0.2f);
     }
     
+    effects["SphereExplosion"]->setScale(Ogre::Vector3(1.0f, 1.0f, 1.0f));
+    effects["SphereExplosion"]->setScaleVelocity(1.0f);
     effect = NULL;
     //mSphere->getMasterNode()->attachObject(effectExplosion);
     //effectExplosion->start();
@@ -601,20 +679,37 @@ namespace Pixy {
 	  Obstacle* mObs = static_cast<Obstacle*>(inEvt->getAny());
 	  if (mObs->shield() == FIRE) {
 	    playEffect("Explosion", mSphere);
-	    if (mSphere->shield() == FIRE)
-	      applyMotionBlur(0.5f);
 	  } else {
-	    playEffect("Shatter", mSphere);
-	    if (mSphere->shield() == ICE)
+	    playEffect("Shatter", mSphere);    
+	  }
+
+    if (mSphere->shield() != mObs->shield()) {
 	      applyMotionBlur(0.5f);
-	    
+	      
+
+
 	  }
 	  
 	  return true;
 	};
 	
+	void GfxEngine::updateUIShields() {
+    using namespace Ogre;
+    OverlayElement* mElement = (mSphere->shield() == FIRE) 
+      ? mUISheet->getChild("UI/FireShieldContainer")->getChild("UI/FireShield")
+      : mUISheet->getChild("UI/IceShieldContainer")->getChild("UI/IceShield");
+    
+    mElement->setWidth(mUIBarWidth * (mSphere->getShieldState() / 1000.0f));
+    
+    if (mElement->getHorizontalAlignment() == Ogre::GHA_RIGHT)
+      mElement->setLeft(-1 * mElement->getWidth());
+    
+    //mLog->debugStream() << "updating UI, element's new width: " << mElement->getWidth();  
+    //mElement->setCaption(String(stringify(mSphere->getShieldState())));	
+	};
+	
 	bool GfxEngine::evtPortalEntered(Event* inEvt) {
-	  mSphere->getSceneNode()->setVisible(true);
+	  mSphere->getMasterNode()->setVisible(true);
 	  
 	  fPortalReached = false;
 	  
@@ -624,7 +719,7 @@ namespace Pixy {
 	bool GfxEngine::evtPortalReached(Event* inEvt) {
 	  //mSphere->die();
 	  //mSpawnPoint->setVisible(false);
-		mSphere->getSceneNode()->setVisible(false);
+		mSphere->getMasterNode()->setVisible(false);
 		fPortalReached = true;
 		//playEffect("Despawn", mSphere);
 		
@@ -636,5 +731,26 @@ namespace Pixy {
 		return true;	  
 	};
 	
+	bool GfxEngine::evtSphereDied(Event* inEvt) {
+	  
+	  playEffect("SphereExplosion", mSphere);
+	  mUISheetLoss->show();
+	  
+	  return true;
+	};
+	
 	SceneNode* GfxEngine::getPortal() { return mPortal; };
+	
+	bool GfxEngine::evtPlayerWon(Event* inEvt) {
+	  
+	  mUISheetWin->show();
+	  
+	  return true;
+	};
+	
+	bool GfxEngine::evtGameStarted(Event* inEvt) {
+	  mUISheetPrepare->hide();
+	  mUITimer.reset();
+	  return true;
+	};
 }

@@ -34,6 +34,11 @@ namespace OgreOggSound {
 namespace Pixy
 {
   
+  typedef enum {
+    CHASE,
+    DUMB,
+    STATIONARY
+  } OBSTACLE_CLASS;
   class Sphere;
     /*! \class Obstacle Obstacle.h "src/Obstacle.h"
      *  \brief 
@@ -58,6 +63,12 @@ namespace Pixy
 			
 	protected:		
 		
+		void updateChase(unsigned long lTimeElapsed);
+		void updateDumb(unsigned long lTimeElapsed);
+		void updateStationary(unsigned long lTimeElapsed);
+		
+		void (Obstacle::*mUpdater)(unsigned long);
+		
 		//! helper method for copy ctor and assignment operator
 		virtual void copyFrom(const Obstacle& src);
     SHIELD mShield;
@@ -65,6 +76,8 @@ namespace Pixy
     
     Vector3 randomPosition();
 
+    OBSTACLE_CLASS mClass;
+    
     bool fDying;
     //bool fHasFX;
     bool fSfxCreated;

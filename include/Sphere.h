@@ -62,8 +62,10 @@ namespace Pixy
 		SHIELD shield();
 		void flipShields();
 		
-		void setMaxSpeed(float inSpeed);
-		float getMaxSpeed() const;
+		int getShieldState();
+		
+		
+		//float getMaxSpeed() const;
 		
 		//virtual void collide(Obstacle* inObj);
 		
@@ -87,7 +89,7 @@ namespace Pixy
 		
 		Ogre::Real mDistance;
 		Ogre::Real move;
-		float mMaxSpeed;
+		//float mMaxSpeed;
 		float step;
 		float currentStep;
 		//Ogre::Vector3 mDirection;
@@ -96,6 +98,7 @@ namespace Pixy
 		ParticleUniverse::ParticleSystem *mFireEffect, *mIceEffect;
 		
 		bool fDamped;
+		bool fPortalSighted;
 	};
 } // end of namespace
 #endif

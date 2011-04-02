@@ -18,7 +18,10 @@ namespace Pixy
 	}
 	
 	void StatePause::keyReleased( const OIS::KeyEvent &e ) {
-		switch (e.key) {	  
+		switch (e.key) {	 
+ 			case OIS::KC_ESCAPE:
+				this->requestShutdown();
+				break;
 			case OIS::KC_P:
 				  GameManager::getSingleton().popState();
 				break;

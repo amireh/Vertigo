@@ -9,7 +9,7 @@
 system Vertigo/FX/Blaze
 {
     scale_velocity                              0.1
-    scale                                       0.1 0.1 0.1
+    scale                                       0.4 0.4 0.4
     technique TrailTechnique
     {
         visual_particle_quota                   700
@@ -47,7 +47,7 @@ system Vertigo/FX/Blaze
         }
         emitter                                 Box BaseEmitter
         {
-            emission_rate                       50
+            emission_rate                       25
             angle                               30
             time_to_live                        dyn_random
             {
@@ -111,7 +111,7 @@ system Vertigo/FX/Blaze
             {
             }
             since_start_system                  true
-            on_time                             greater_than 4
+            on_time                             greater_than 3
         }
     }
     technique BlackSmokeTechnique

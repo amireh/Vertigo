@@ -61,14 +61,19 @@ namespace Pixy
 
 		Sphere* getSphere();
     Tunnel* getTunnel();
+    const std::list<Obstacle*>& getObstacles();
     
     bool areFxEnabled();
     bool areSfxEnabled();
+    bool isGameOver();
+    
     
     void dontUpdateMe(Engine* inEngine);
+    Obstacle* lastObstacleAlive();
     
 	protected:
 
+    bool evtSphereDied(Event* inEvt);
 		bool evtPortalEntered(Event* inEvt);
 		bool evtPortalReached(Event* inEvt);
 		bool evtPortalSighted(Event* inEvt);
@@ -98,11 +103,18 @@ namespace Pixy
 		
 		
 		long nrObstacles;
+		int nrMaxAliveObstacles;
 		int nrTunnels;
 		
 		static Level    *mLevel;
 		Ogre::Timer mTimer;
+		
+		bool fGameStarted;
+		bool fGameOver;
 		bool fSpawning; // are we spawning obstacles?
+		int mSpawnTimer; // how often?
+		int mSpawningThreshold; // spawn rate can't drop below this, original rate / 2
+		
 		void spawnObstacle();
 		void releaseObstacle(Obstacle* inObs);
 	};

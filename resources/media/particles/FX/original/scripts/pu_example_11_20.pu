@@ -1,0 +1,453 @@
+// ---------------------------------------------------------------------------------------------------------------
+// example_011:
+// - This is a simple particle system that demonstrates the dynamic behaviour of emission rate and velocity.
+//   Adding control points, the emission rate and velocity are defined as a curve within the interval of 0..8 seconds.
+// ---------------------------------------------------------------------------------------------------------------
+system example_011
+{
+    category                                    Examples_11_20
+    technique 
+    {
+        material                                ParticleUniverse/GreenBall
+        default_particle_width                  2
+        default_particle_height                 2
+        renderer                                Billboard
+        {
+            billboard_type                      oriented_shape
+            billboard_origin                    bottom_center
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       dyn_curved_spline
+            {
+                control_point                   0 5
+                control_point                   2 20
+                control_point                   4 200
+                control_point                   6 30
+                control_point                   8 0
+            }
+            angle                               25
+            time_to_live                        dyn_random
+            {
+                min                             2
+                max                             6
+            }
+            velocity                            dyn_curved_spline
+            {
+                control_point                   0 100
+                control_point                   2 200
+                control_point                   4 400
+                control_point                   6 100
+                control_point                   8 0
+            }
+        }
+        affector                                LinearForce 
+        {
+            force_vector                        0 -100 0
+        }
+        affector                                Align 
+        {
+            resize                              true
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// example_012:
+// - With the use of the Jet affector, it possible to give the velocity another non-linear boost.
+// ---------------------------------------------------------------------------------------------------------------
+system example_012
+{
+    category                                    Examples_11_20
+    technique 
+    {
+        visual_particle_quota                   2000
+        material                                ParticleUniverse/BurstFlare
+        default_particle_width                  10
+        default_particle_height                 10
+        use_alias                               defaultBillboardRenderer
+        emitter                                 SphereSurface 
+        {
+            emission_rate                       100
+            time_to_live                        4
+            velocity                            0
+            duration                            2
+            direction                           0 0 0
+            auto_direction                      true
+            radius                              100
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 0 0 1
+            time_colour                         0.6  0 1 1 1
+            time_colour                         1    0 0 1 1
+        }
+        affector                                Scale 
+        {
+            xyz_scale                           10
+        }
+        affector                                Jet myJet
+        {
+            enabled                             false
+            acceleration                        dyn_random
+            {
+                min                             1
+                max                             20
+            }
+        }
+        observer                                OnTime 
+        {
+            handler                             DoEnableComponent 
+            {
+                enable_component                affector_component myJet true
+            }
+            since_start_system                  true
+            on_time                             greater_than 2
+        }
+    }
+}
+
+
+// ---------------------------------------------------------------------------------------------------------------
+// example_013:
+// - The Particle Follower makes sure that emitted particle always be kept in the neighbourhood of their
+//   predecessors.
+// ---------------------------------------------------------------------------------------------------------------
+system example_013
+{
+    category                                    Examples_11_20
+    scale_velocity                              0.5
+    scale                                       0.5 0.5 0.5
+    technique 
+    {
+        visual_particle_quota                   1000
+        material                                ParticleUniverse/GreenBall
+        default_particle_width                  30
+        default_particle_height                 30
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Box 
+        {
+            emission_rate                       20
+            angle                               90
+            time_to_live                        7
+            velocity                            400
+        }
+        affector                                LinearForce 
+        {
+            force_vector                        0 -80 0
+        }
+        affector                                ParticleFollower 
+        {
+            min_distance                        60
+            max_distance                        300
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// example_014:
+// - The Mesh Surface Emitter emits particles on the surface of a mesh.
+// ---------------------------------------------------------------------------------------------------------------
+system example_014
+{
+    category                                    Examples_11_20
+    keep_local                                  true
+    scale                                       4 4 4
+    technique 
+    {
+        position                                0 0 100
+        visual_particle_quota                   5000
+        material                                PUMediaPack/Flare_01
+        default_particle_width                  1
+        default_particle_height                 1
+        default_particle_depth                  1
+        renderer                                Billboard
+        {
+        }
+        emitter                                 MeshSurface 
+        {
+            emission_rate                       5000
+            angle                               360
+            time_to_live                        dyn_random
+            {
+                min                             1
+                max                             3
+            }
+            velocity                            2
+            direction                           0 0 0
+            start_colour_range                  0.52549 0.52549 0.52549 1
+            mesh_name                           fxpression.mesh
+            mesh_surface_scale                  25 25 25
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// example_015:
+// - Particles collide with the SphereCollider and bounce, while their velocity and rotation speed decrease.
+// ---------------------------------------------------------------------------------------------------------------
+system example_015
+{
+    category                                    Examples_11_20
+    technique 
+    {
+        visual_particle_quota                   3000
+        material                                ParticleUniverse/Star
+        use_alias                               defaultBillboardRenderer
+        emitter                                 Box 
+        {
+            emission_rate                       20
+            angle                               10
+            time_to_live                        7
+            velocity                            200
+            box_width                           300
+            box_height                          10
+            box_depth                           300
+        }
+        affector                                SphereCollider 
+        {
+            position                            0 400 0
+            collision_type                      flow
+            radius                              300
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// example_016:
+// - Scale Affector, using separate scaling for x and y in combination with control points, to simulate an
+//   explosion type of effect (fast scaling at the start).
+// ---------------------------------------------------------------------------------------------------------------
+system example_016
+{
+    category                                    Examples_11_20
+    technique 
+    {
+        visual_particle_quota                   3000
+        material                                ParticleUniverse/Dirt
+        default_particle_width                  1
+        default_particle_height                 6
+        renderer                                Billboard
+        {
+            billboard_type                      oriented_self
+            billboard_origin                    bottom_center
+        }
+        emitter                                 Point 
+        {
+            angle                               60
+            time_to_live                        4
+            velocity                            dyn_random
+            {
+                min                             10
+                max                             30
+            }
+            force_emission                      true
+        }
+        affector                                Scale 
+        {
+            x_scale                             dyn_curved_linear
+            {
+                control_point                   0 400
+                control_point                   0.05 200
+                control_point                   0.1 100
+                control_point                   0.15 50
+                control_point                   1 0
+            }
+            y_scale                             dyn_curved_linear
+            {
+                control_point                   0 1000
+                control_point                   0.05 500
+                control_point                   0.1 200
+                control_point                   0.15 100
+                control_point                   1 0
+            }
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 1 1 1
+            time_colour                         0.4  1 1 1 1
+            time_colour                         0.5  1 1 1 0
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// example_017:
+// - PlaneCollider and interparticle collision
+// ---------------------------------------------------------------------------------------------------------------
+system example_017
+{
+    category                                    Examples_11_20
+    technique 
+    {
+        visual_particle_quota                   4000
+        material                                ParticleUniverse/Star
+        default_particle_width                  120
+        default_particle_height                 120
+        spatial_hashtable_size                  100
+        spatial_hashing_update_interval         0.01
+        use_alias                               defaultBillboardRenderer
+        emitter                                 Box 
+        {
+            emission_rate                       30
+            angle                               60
+            time_to_live                        10
+            velocity                            dyn_random
+            {
+                min                             40
+                max                             100
+            }
+            position                            0 1200 0
+            direction                           1 -1 0
+            box_width                           800
+            box_height                          800
+            box_depth                           800
+        }
+        affector                                PlaneCollider 
+        {
+            position                            0 -200 0
+            friction                            0.5
+            bouncyness                          0.5
+            normal                              0 1 0
+        }
+        affector                                TextureRotator 
+        {
+            use_own_rotation                    true
+        }
+        affector                                LinearForce 
+        {
+            force_vector                        0 -1200 0
+        }
+        affector                                InterParticleCollider 
+        {
+            adjustment                          0.8
+            collision_response                  angle_based_velocity
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// example_018:
+// - With the OnCount observer the number of emitted particles are managed precisely.
+// ---------------------------------------------------------------------------------------------------------------
+system example_018
+{
+    category                                    Examples_11_20
+    technique 
+    {
+        material                                ParticleUniverse/Hart
+        use_alias                               defaultBillboardRenderer
+        emitter                                 Point 
+        {
+            emission_rate                       50
+            angle                               360
+            time_to_live                        5
+            velocity                            400
+        }
+        observer                                OnCount 
+        {
+            handler                             DoStopSystem 
+            {
+            }
+            count_threshold                     greater_than 200
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// example_019:
+// - BoxCollider.
+// ---------------------------------------------------------------------------------------------------------------
+system example_019
+{
+    category                                    Examples_11_20
+    technique 
+    {
+        visual_particle_quota                   5000
+        material                                ParticleUniverse/Star
+        default_particle_width                  10
+        default_particle_height                 10
+        use_alias                               defaultBillboardRenderer
+        emitter                                 Box 
+        {
+            emission_rate                       1000
+            angle                               50
+            time_to_live                        15
+            velocity                            200
+            position                            100 300 100
+            direction                           -1 -2 -1
+            box_width                           300
+            box_height                          10
+            box_depth                           300
+        }
+        affector                                BoxCollider 
+        {
+            position                            0 100 0
+            bouncyness                          0.2
+            intersection                        box
+            box_width                           150
+            box_height                          150
+            box_depth                           150
+        }
+        affector                                Colour colourReset
+        {
+            enabled                             false
+            time_colour                         0    1 1 1 1
+        }
+        affector                                Colour colourCollision
+        {
+            enabled                             false
+            time_colour                         0    1 0 0 1
+        }
+        affector                                LinearForce 
+        {
+            force_vector                        0 -100 0
+        }
+        observer                                OnEmission 
+        {
+            handler                             DoAffector 
+            {
+                force_affector                  colourReset
+            }
+        }
+        observer                                OnCollision 
+        {
+            handler                             DoAffector 
+            {
+                force_affector                  colourCollision
+            }
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// example_020:
+// - Randomiser (affector)
+// ---------------------------------------------------------------------------------------------------------------
+system example_020
+{
+    category                                    Examples_11_20
+    technique 
+    {
+        material                                ParticleUniverse/Star
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       2
+            angle                               360
+            time_to_live                        10
+            velocity                            1
+        }
+        affector                                Randomiser 
+        {
+            max_deviation_x                     100
+            max_deviation_y                     100
+            max_deviation_z                     100
+            time_step                           0.2
+        }
+    }
+}

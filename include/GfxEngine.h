@@ -129,8 +129,13 @@ namespace Pixy {
     
     SceneNode* getPortal();
     
+    void updateUIShields();
+    
 	protected:
 	
+	  bool evtGameStarted(Event* inEvt);
+	  bool evtPlayerWon(Event* inEvt);
+	  bool evtSphereDied(Event* inEvt);
 	  bool evtObstacleAlive(Event* inEvt);
 	  bool evtObstacleCollided(Event* inEvt);
 	  bool evtPortalEntered(Event* inEvt);
@@ -146,7 +151,7 @@ namespace Pixy {
 		Ogre::Viewport       *mViewport;
 		Ogre::RenderWindow	 *mRenderWindow;
 		Ogre::OverlayManager *mOverlayMgr;
-		Ogre::Overlay        *mOverlay;
+		Ogre::Overlay        *mUISheet, *mUISheetLoss, *mUISheetWin, *mUISheetPrepare;
 		EventManager		 *mEvtMgr;
 		SdkCameraMan		 *mCameraMan;
 		//DotSceneLoader		 *mSceneLoader;
@@ -188,7 +193,7 @@ namespace Pixy {
 		SceneNode* mPortableEffect;
 		
 		Ogre::String mEffect;
-		Ogre::Timer mEffectTimer;
+		Ogre::Timer mEffectTimer, mUITimer;
 		float mEffectDuration;
 		bool mEffectEnabled;
 		bool mEffectStarted;
@@ -197,7 +202,9 @@ namespace Pixy {
 
     typedef std::map< std::string, ParticleUniverse::ParticleSystem* > effectMap;
     effectMap effects;
-    
+        
+    float mUIBarWidth;
+      
     vector<SceneNode*> mTubes;
     SceneNode *mSpawnPoint;
     SceneNode *mPortal;

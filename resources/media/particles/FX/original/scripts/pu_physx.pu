@@ -1,0 +1,168 @@
+// ---------------------------------------------- Begin: PhysXParticles ------------------------------------------
+// PhysX test with rigid body based particles.
+// ---------------------------------------------------------------------------------------------------------------
+system PhysXParticles
+{
+    category                                    PhysX
+    technique 
+    {
+        visual_particle_quota                   1000
+        position                                0 1000 0
+        material                                ParticleUniverse/Crate
+        renderer                                Box {}
+
+        emitter                                 Box
+        {
+            box_em_width                        400
+            box_em_height                       400
+            box_em_depth                        400
+            all_particle_dimensions             dyn_random
+            {
+                min                             10
+                max                             80
+            }
+            emission_rate                       10
+            time_to_live                        10
+            velocity                            100
+            angle                               40
+            direction                           0 -1 0
+            mass                                100
+            range_start_orientation             0.2 1 2 3
+            range_end_orientation               3 3 2 1
+        }
+
+        extern                                  PhysXActor
+        {
+            physx_actor_group                   100
+            physx_shape                         Box
+            {
+                physx_angular_velocity          0 10 0
+                physx_angular_damping           0.5
+	    }
+	}
+
+        observer                                OnCollision
+        {
+            handler                             DoPlacementParticle
+            {
+                force_emitter                   Sparks
+                number_of_particles             10
+            }
+        }
+
+    }
+
+
+    technique
+    {
+        visual_particle_quota                   2500
+        emitted_emitter_quota                   100
+        material                                ParticleUniverse/Star
+        default_particle_width                  20
+        default_particle_height                 20
+        renderer                                Billboard
+        {
+        }
+        emitter                                 Point    Sparks
+        {
+            // Set the emission_rate default to 0 to prevent auto-emission
+            emission_rate                       0
+            angle                               360
+            direction                           0 -1 0
+            velocity                            130
+            time_to_live                        0.4
+        }
+    }
+}
+// ---------------------------------------------- End: PhysXParticles -------------------------------------------
+
+
+// ---------------------------------------------- Begin: PhysXFluid ------------------------------------------
+// PhysX test with fluid.
+// ---------------------------------------------------------------------------------------------------------------
+system PhysXFluid
+{
+    category                                    PhysX
+    technique 
+    {
+        position                                0 200 0
+        visual_particle_quota                   5000
+        material                                ParticleUniverse/GreenBall
+        default_particle_width                  30
+        default_particle_height                 30
+        default_particle_depth                  30
+        renderer                                Billboard
+        {
+            sorting                             true
+        }
+        emitter                                 Box 
+        {
+            emission_rate                       300
+            angle                               140
+            time_to_live                        20
+            mass                                100
+            all_particle_dimensions             dyn_random
+            {
+                min                             10
+                max                             40
+            }
+            direction                           0 -1 0
+            box_width                           50
+            box_height                          50
+            box_depth                           50
+        }
+        extern                                  PhysXFluid 
+        {
+            rest_particles_per_meter            0.2
+            rest_density                        20
+            kernel_radius_multiplier            1.9
+            motion_limit_multiplier             2
+            collision_distance_multiplier       1.6
+            packet_size_multiplier              4
+            stiffness                           0.1
+            viscosity                           0.1
+            surface_tension                     0.1
+            damping                             1
+            external_acceleration               0 -5 0
+            restitution_for_static_shapes       0
+            dynamic_friction_for_static_shapes  0
+            restitution_for_dynamic_shapes      0
+            dynamic_friction_for_dynamic_shapes 0
+            collision_group                     2
+            flags
+            {
+                hardware                        false
+            }
+        }
+    }
+    technique 
+    {
+        position                                0 5000 0
+        visual_particle_quota                   1
+        material                                PUMediaPack/BBal
+        default_particle_width                  200
+        default_particle_height                 220
+        default_particle_depth                  200
+        renderer                                Sphere
+        {
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       1
+            time_to_live                        99999
+            velocity                            0
+            direction                           0 0 0
+            force_emission                      true
+        }
+        extern                                  PhysXActor 
+        {
+            actor_group                         100
+            physx_shape                         Sphere
+            {
+                angular_damping                 0
+            }
+        }
+    }
+}
+
+// ---------------------------------------------- End: PhysXFluid -------------------------------------------

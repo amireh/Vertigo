@@ -210,21 +210,25 @@ namespace Pixy {
     if (mPortalEffect->isAttached())
       mPortalEffect->getParentSceneNode()->detachObject(mPortalEffect);
     mEntrance->attachObject(mPortalEffect);
-    mPortalEffect->start();
-    //if (mSfxPortal->isAttached())
-    //  mSfxPortal->getParentSceneNode()->detachObject(mSfxPortal);
-    //mEntrance->attachObject(mSfxPortal);
+    mPortalEffect->startAndStopFade(1);
+    if (fHasSfx) {
+      if (!mSfxPortal->isAttached()) {
+        //mSfxPortal->getParentSceneNode()->detachObject(mSfxPortal);
+        
+        mSphereNode->attachObject(mSfxPortal);
+      }
+    }
     
     Event* evt = mEvtMgr->createEvt("PortalEntered");
     mEvtMgr->hook(evt);
 	    
     mLog->infoStream() << "Tunnel" << idObject << " is rendered";
     
-    mLog->debugStream() << "My length: " << mLength << ", sphere is at " 
+    /*mLog->debugStream() << "My length: " << mLength << ", sphere is at " 
       << mSphereNode->getPosition().x << ", "
       << mSphereNode->getPosition().y << ", "
       << mSphereNode->getPosition().z << 
-      ". Portal reached? " << (fPortalReached ? "yes" : "no");
+      ". Portal reached? " << (fPortalReached ? "yes" : "no");*/
       
     //mSfxPortal->play(true);
   };
@@ -288,6 +292,14 @@ namespace Pixy {
 	    
 	    Event* evt = mEvtMgr->createEvt("PortalReached");
 	    mEvtMgr->hook(evt);
+	    
+	    if (fHasSfx)
+	      mSfxPortal->play(true);
+	    
+	    //mPortalEffect->setFastForward(175, 2);
+	    mPortalEffect->stopFade();
+	    
+	    fPortalReached = true;
       //mSphereNode->setPosition(mExit->getPosition());
       
       return;		
@@ -306,10 +318,8 @@ namespace Pixy {
 	bool Tunnel::evtPortalReached(Event* inEvt) {
 	  //hide();
 	  
-	  if (fHasSfx)
-	    mSfxPortal->play(true);
 	  
-	  fPortalReached = true;
+	  
 	  return true;
 	};
 	

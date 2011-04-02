@@ -22,7 +22,7 @@ system Vertigo/FX/Portal
         emitter                                 Point 
         {
             angle                               0
-            time_to_live                        180
+            time_to_live                        3
             velocity                            0
             duration                            180
         }

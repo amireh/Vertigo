@@ -10,7 +10,7 @@ system Vertigo/FX/Explosion
  {
     technique 
     {
-        visual_particle_quota                   12
+        visual_particle_quota                   100
         material                                mp_explosion_04
         renderer                                Billboard
         {

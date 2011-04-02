@@ -1,0 +1,424 @@
+// ---------------------------------------------- Begin: Tornado system ------------------------------------------
+// The Tornado system demonstrates the Vortex affector.
+// ---------------------------------------------------------------------------------------------------------------
+system tornadoSystem
+{
+    category                                    Nature
+    technique 
+    {
+        visual_particle_quota                   3000
+        material                                ParticleUniverse/Tornado
+        default_particle_width                  250
+        default_particle_height                 250
+        renderer                                Billboard
+        {
+            sorting                             true
+        }
+        emitter                                 Circle 
+        {
+            emission_rate                       150
+            angle                               0
+            time_to_live                        4
+            velocity                            600
+            radius                              40
+        }
+        affector                                Vortex 
+        {
+            rotation_axis                       0 1 0
+            rotation_speed                      10
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 0.95 0.95 1
+            time_colour                         0.5  1 0.95 0.95 0
+        }
+        affector                                Scale 
+        {
+            xyz_scale                           dyn_random
+            {
+                min                             50
+                max                             350
+            }
+        }
+    }
+    technique 
+    {
+        visual_particle_quota                   20
+        material                                ParticleUniverse/Stone
+        renderer                                Entity
+        {
+            mesh_name                           pu_stone.mesh
+        }
+        emitter                                 Point 
+        {
+            angle                               50
+            time_to_live                        5
+            velocity                            dyn_random
+            {
+                min                             800
+                max                             1200
+            }
+            duration                            dyn_random
+            {
+                min                             0.5
+                max                             1.5
+            }
+            repeat_delay                        dyn_random
+            {
+                min                             0.5
+                max                             2
+            }
+            all_particle_dimensions             dyn_random
+            {
+                min                             20
+                max                             80
+            }
+        }
+        affector                                PlaneCollider 
+        {
+            position                            0 -200 0
+            friction                            0.5
+            bouncyness                          0.4
+            normal                              0 1 0
+        }
+        affector                                LinearForce 
+        {
+            force_vector                        0 -1200 0
+        }
+        affector                                GeometryRotator 
+        {
+            use_own_rotation                    true
+            rotation_speed                      dyn_random
+            {
+                min                             1
+                max                             30
+            }
+        }
+    }
+}
+// ---------------------------------------------- End: Tornado system ------------------------------------------
+
+
+
+
+// ---------------------------------------------- Begin: Flame system ----------------------------------------------
+// This particle system demonstrates the emission of affectors and the effect on the flames.
+// ---------------------------------------------------------------------------------------------------------------
+system flameSystem
+{
+    category                                    Fire
+    technique
+    {
+        material                              ParticleUniverse/Flame
+        default_particle_width                45
+        default_particle_height               60
+        visual_particle_quota                 2000
+        emitted_affector_quota                200
+
+        renderer Billboard
+        {
+            billboard_type                    oriented_self
+        }
+
+        // Emission of flame particles
+        emitter                               Box    flamesEmitter
+        {
+            emission_rate                     200
+            angle                             40
+            direction                         0 1 0
+            box_em_height                     1
+            velocity                          dyn_random
+            {
+                min                           60
+                max                           80
+            }
+            time_to_live                      dyn_random
+            {
+                min                           5
+                max                           9
+            }
+        }
+
+        // Emission of Gravity Affectors
+        emitter                               Box    gravityEmitter
+        {
+            emission_rate                    5
+            emits                            affector_particle    gravityAffector
+            angle                            80
+            direction                        0 1 0
+            position                         0 60 0
+            velocity                         dyn_random
+            {
+                min                          80
+                max                          120
+            }
+            
+            // Define the mass of the affectors (instead of defining it in the GravityAffector 
+            // itself (which is also possible))
+            mass                            dyn_random
+            {
+                min                         20
+                max                         40
+            }
+
+            time_to_live                    dyn_random
+            {
+                min                         2
+                max                         5
+            }
+        }
+        
+        // Affector to be emitted
+        affector                            Gravity    gravityAffector
+        {
+            gravity                         40
+        }
+        
+        // Affector that affects all (visual) particles in general
+        affector                            Scale
+        {
+            xyz_scale                       -10
+        }
+
+        // Affect with a random Sine force (also affects the Gravity affector particles)
+        affector                            SineForce
+        {
+            force_vector                    30 0 0
+            sinef_aff_frequency_min         1
+            sinef_aff_frequency_max         3
+        }
+
+        affector                            Colour
+        {
+            colour_aff_time_colour          0 1 1 1
+            colour_aff_time_colour          1 0 0 0
+        }
+    }
+}
+// ----------------------------------------------- End: Flame system ----------------------------------------------
+
+
+
+// ---------------------------------------------- Begin: Fire system ----------------------------------------------
+// This particle system demonstrates the combination of 2 combined particle techniques.
+// ---------------------------------------------------------------------------------------------------------------
+system fireSystem
+{
+    category                                    Fire
+    technique 
+    {
+        material                                ParticleUniverse/Fire
+        default_particle_width                  60
+        default_particle_height                 60
+        renderer                                Billboard
+        {
+            render_queue_group                  80
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       50
+            angle                               30
+            time_to_live                        dyn_random
+            {
+                min                             3
+                max                             6
+            }
+            velocity                            dyn_random
+            {
+                min                             60
+                max                             80
+            }
+        }
+        affector                                Gravity 
+        {
+            position                            0 200 0
+            gravity                             1000
+        }
+        affector                                Scale 
+        {
+            xyz_scale                           -5
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 1 1 1
+            time_colour                         1    0 0 0 1
+        }
+    }
+    technique 
+    {
+        material                                ParticleUniverse/Smoke
+        default_particle_width                  40
+        default_particle_height                 40
+        use_alias                               defaultBillboardRenderer
+        emitter                                 Point 
+        {
+            emission_rate                       20
+            time_to_live                        dyn_random
+            {
+                min                             5
+                max                             7
+            }
+            velocity                            dyn_random
+            {
+                min                             60
+                max                             80
+            }
+        }
+        affector                                Scale 
+        {
+            xyz_scale                           20
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 0.9 0 1
+            time_colour                         1    1 1 1 0
+        }
+    }
+}
+// ----------------------------------------------- End: Fire system ----------------------------------------------
+
+
+
+// ------------------------------------------ Begin: Windy Fire system -------------------------------------------
+// This particle system demonstrates a flip-flop mechanism with muliple observers
+// ---------------------------------------------------------------------------------------------------------------
+system windyFireSystem
+{
+    category                                    Fire
+    technique 
+    {
+        material                                ParticleUniverse/Fire
+        default_particle_width                  60
+        default_particle_height                 60
+        renderer                                Billboard
+        {
+            render_queue_group                  80
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       100
+            angle                               30
+            time_to_live                        dyn_random
+            {
+                min                             3
+                max                             6
+            }
+            velocity                            dyn_random
+            {
+                min                             100
+                max                             140
+            }
+        }
+        affector                                LinearForce LinearForceRight
+        {
+            enabled                             false
+            force_vector                        100 0 0
+        }
+        affector                                LinearForce LinearForceLeft
+        {
+            enabled                             false
+            force_vector                        -100 0 0
+        }
+        affector                                Scale 
+        {
+            xyz_scale                           -5
+        }
+        affector                                Colour 
+        {
+            time_colour                         0    1 1 1 1
+            time_colour                         1    0 0 0 1
+        }
+        observer                                OnRandom ObserverRight
+        {
+            observe_interval                    0.6
+            handler                             DoEnableComponent 
+            {
+                enable_component                affector_component LinearForceLeft false
+            }
+            handler                             DoEnableComponent 
+            {
+                enable_component                affector_component LinearForceRight true
+            }
+            handler                             DoEnableComponent 
+            {
+                enable_component                observer_component ObserverRight false
+            }
+            handler                             DoEnableComponent 
+            {
+                enable_component                observer_component ObserverLeft true
+            }
+            random_threshold                    0.4
+        }
+        observer                                OnRandom ObserverLeft
+        {
+            observe_interval                    0.6
+            handler                             DoEnableComponent 
+            {
+                enable_component                affector_component LinearForceLeft true
+            }
+            handler                             DoEnableComponent 
+            {
+                enable_component                affector_component LinearForceRight false
+            }
+            handler                             DoEnableComponent 
+            {
+                enable_component                observer_component ObserverRight true
+            }
+            handler                             DoEnableComponent 
+            {
+                enable_component                observer_component ObserverLeft false
+            }
+            random_threshold                    0.6
+        }
+    }
+}
+// ------------------------------------------- End: Windy Fire system --------------------------------------------
+
+
+// ------------------------------------------- Begin: Soft particles system --------------------------------------
+// Soft Particles.
+// ---------------------------------------------------------------------------------------------------------------
+system softParticlesSystem
+{
+    technique 
+    {
+        material                                ParticleUniverse/GreenBall
+        renderer                                Billboard
+        {
+            use_soft_particles                  true
+            soft_particles_contrast_power       3
+            soft_particles_scale                7
+            soft_particles_delta                0.06
+        }
+        emitter                                 Point 
+        {
+            emission_rate                       20
+            angle                               25
+            time_to_live                        6
+            velocity                            50
+            duration                            dyn_random
+            {
+                min                             0.1
+                max                             3
+            }
+            repeat_delay                        dyn_random
+            {
+                min                             0.1
+                max                             3
+            }
+            enabled                             false
+        }
+        affector                                LinearForce 
+        {
+            force_vector                        0 -60 0
+        }
+        extern                                  SceneDecorator 
+        {
+            mesh_name                           Barrel.mesh
+            material                            PUMediaPack/Metal_02
+            scene_node_scale                    100 10 100
+            scene_node_position                 0 -400 -100
+        }
+    }
+}
+// -------------------------------------------- End: Soft particles system --------------------------------------

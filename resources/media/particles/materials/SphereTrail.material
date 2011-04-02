@@ -71,3 +71,23 @@ material mp_smoke_04_add
         }
     }
 }
+
+material ParticleUniverse/Fire
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            scene_blend add
+            depth_write off
+            texture_unit
+            {
+                texture pu_flame.png
+                tex_address_mode clamp
+                wave_xform scroll_x sine 0 0.3 0 0.15
+            }
+        }
+    }
+}
+

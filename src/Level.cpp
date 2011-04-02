@@ -36,27 +36,38 @@ namespace Pixy
 		mEngines.push_back(mPhyxEngine);
 		mEngines.back()->setup();
 		
-		mEngines.push_back(mSfxEngine);
-		mEngines.back()->setup();
 		
+		mEngines.push_back(mSfxEngine);
+		mEngines.back()->setup();		
 		
 		// grab CEGUI handle
 		//mUISystem = &CEGUI::System::getSingleton();
  
 		mSphere = new Sphere();
 		mSphere->live();
-		
-		nrObstacles = 0;
+
+    mTunnels.push_back(new Tunnel("Vertigo/Tunnel/Rose"));
+    mTunnels.push_back(new Tunnel("Vertigo/Tunnel/Inferno",30));
+    mTunnels.push_back(new Tunnel("Vertigo/Tunnel/Lava/Translucent",40));
+    mTunnels.push_back(new Tunnel("Vertigo/Tunnel/Lava",20));
+
+    mTunnel = mTunnels.front();
+    mTunnel->show();
+        		
+		nrObstacles = 6;
+		nrMaxAliveObstacles = 3;
 		nrTunnels = 1;
+		mSpawnTimer = 900;
+		mSpawningThreshold = mSpawnTimer / 2;
 		//createObstacle();
 		
 		for (int i =0; i < nrObstacles; ++i)
 	    mObstaclePool.push_back(new Obstacle());
 		
 		fSpawning = true;
-		
+		fGameOver = fGameStarted = false;
 
-		
+		bindToName("SphereDied", this, &Level::evtSphereDied);
 		bindToName("PortalEntered", this, &Level::evtPortalEntered);
 		bindToName("PortalReached", this, &Level::evtPortalReached);
 		bindToName("PortalSighted", this, &Level::evtPortalSighted);
@@ -64,19 +75,18 @@ namespace Pixy
     //for (int i =0; i < nrTunnels; ++i) {
       
     //};
-    mTunnels.push_back(new Tunnel("Vertigo/Tunnel/Rose"));
-    mTunnels.push_back(new Tunnel("Vertigo/Tunnel/Inferno"));
-    mTunnels.push_back(new Tunnel("Vertigo/Tunnel/Lava/Translucent"));
-    mTunnels.push_back(new Tunnel("Vertigo/Tunnel/Lava"));
+
     
-    mTunnel = mTunnels.front();
-    mTunnel->show();
+
+
 
 		for (_itrEngines = mEngines.begin();
 		     _itrEngines != mEngines.end();
 		     ++_itrEngines)
 		    (*_itrEngines)->deferredSetup();
-		  		
+		
+		mTimer.reset();
+		
 		mLog->infoStream() << "Initialized successfully.";
 		
 	}
@@ -144,6 +154,13 @@ namespace Pixy
 	
 	void Level::keyReleased( const OIS::KeyEvent &e ) {
 		
+		// start the game when a key is released
+		if (!fGameStarted) {
+		  fGameStarted = true;
+		  mEvtMgr->hook(mEvtMgr->createEvt("GameStarted"));
+		  return;
+		}
+		
 		//mUISystem->injectKeyUp(e.key);
 		mGfxEngine->keyReleased(e);
 		mSphere->keyReleased(e);
@@ -202,10 +219,15 @@ namespace Pixy
 	Sphere* Level::getSphere() { return mSphere; };
 
 	void Level::update( unsigned long lTimeElapsed ) {
+	  //mLog->debugStream() << " LTE : " << lTimeElapsed;
+  
 		mEvtMgr->update();
 		
 		processEvents();
-		
+
+	  if (!fGameStarted)
+	    return;
+	    		
 		for (_itrEngines = mEngines.begin();
 		     _itrEngines != mEngines.end();
 		     ++_itrEngines)
@@ -215,9 +237,12 @@ namespace Pixy
 		//mGfxEngine->update(lTimeElapsed);
 		//mUIEngine->update(lTimeElapsed);
 		//mPhyxEngine->update(lTimeElapsed);
-		mSphere->update(lTimeElapsed);
-		mTunnel->update(lTimeElapsed);
 		
+		if (fGameOver)
+		  return;
+
+    mTunnel->update(lTimeElapsed);
+		mSphere->update(lTimeElapsed);
 		
 		//std::list<Obstacle*>::iterator _itr;
 		for (_itrObstacles = mObstacles.begin(); 
@@ -235,7 +260,7 @@ namespace Pixy
 		  ++_itrObstacles;
 		}
 		
-		if (fSpawning && mTimer.getMilliseconds() > 600) {
+		if (fSpawning && mTimer.getMilliseconds() > mSpawnTimer && mObstacles.size() <= nrMaxAliveObstacles) {
 		  spawnObstacle();
 		  mTimer.reset();
 		}
@@ -285,6 +310,12 @@ namespace Pixy
   };
   
   bool Level::evtPortalReached(Event* inEvt) {
+    
+    // increase the rate of obstacle spawning
+    mSpawnTimer -= mSpawningThreshold / mTunnels.size();
+    if (mSpawnTimer <= mSpawningThreshold)
+      mSpawnTimer = mSpawningThreshold; // shouldn't be faster than this, really
+    
     //fSpawning = false;
     //mSphere->getRigidBody()->clearForces();
     //mSphere->getRigidBody()->setLinearVelocity(btVector3(0,0,0));
@@ -302,13 +333,26 @@ namespace Pixy
       continue;
 		}
 		
+		// raise the speed of all obstacles
+		for (_itr = mObstaclePool.begin(); 
+		     _itr != mObstaclePool.end();
+		     ++_itr)
+		{ 
+		  (*_itr)->setMaxSpeed((*_itr)->getMaxSpeed() + (*_itr)->getMaxSpeed() * 0.25f);
+	  }
 		// teleport the player to the second tunnel after 5 secs from sighting the portal
 		//if (mTimer.getMilliseconds() > 5000) {
-		  mTunnel->hide();
 		  
-		  if (mTunnel == mTunnels.back())
-		    mTunnel = mTunnels.front();
+		  
+		  if (mTunnel == mTunnels.back()) {
+		    // the player has won
+		    mEvtMgr->hook(mEvtMgr->createEvt("PlayerWon"));
+		    fGameOver = true;
+		    return true;
+		    //mTunnel = mTunnels.front();
+		  }
 		  else {
+		    mTunnel->hide();
 		    for (std::list<Tunnel*>::iterator _itr = mTunnels.begin();
 		         _itr != mTunnels.end();
 		         ++_itr) {
@@ -320,7 +364,7 @@ namespace Pixy
 		  // relocate the sphere
 		  
 		  Vector3 pos = mTunnel->getNode()->getPosition();
-		  btTransform trans = btTransform(btQuaternion(0,0,0,1),btVector3(pos.x,pos.y,pos.z));
+		  btTransform trans = btTransform(btQuaternion(0,0,0,1),btVector3(pos.x,pos.y+35,pos.z));
 		  mSphere->getRigidBody()->proceedToTransform(trans);
 		  mSphere->getMasterNode()->setPosition(pos);
 		  mLog->debugStream() << "relocating sphere to " << pos.x << ", " << pos.y << ", " << pos.z;
@@ -349,9 +393,36 @@ namespace Pixy
   };
   
   bool Level::areFxEnabled() { return true; }
-  bool Level::areSfxEnabled() { return false; }
+  bool Level::areSfxEnabled() { return true; }
   
   void Level::dontUpdateMe(Engine* inEngine) {
     mEngines.remove(inEngine);
   };
+  
+  Obstacle* Level::lastObstacleAlive() {
+    
+    return (!mObstacles.empty()) ? mObstacles.back() : NULL;
+  };
+  
+  const std::list<Obstacle*>& Level::getObstacles() {
+    return mObstacles;
+  };
+  
+  bool Level::evtSphereDied(Event* inEvt) {
+    if (!fGameOver) {
+      mTimer.reset();
+      fGameOver = true;
+      
+    }
+    
+    if (mTimer.getMilliseconds() < 1000)
+      return false;
+    else {
+      mLog->debugStream() << "game is over!";
+      GameManager::getSingleton().pushState(StatePause::getSingletonPtr());
+      return true;
+    }
+  };
+ 
+  bool Level::isGameOver() { return fGameOver; };
 } // end of namespace

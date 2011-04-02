@@ -1,18 +1,225 @@
 // The name of the overlay comes first
-MyOverlays/ANewOverlay
+Vertigo/UI
 {
     zorder 200
 
-    container Panel(MyOverlayElements/TestPanel)
+    container Panel(UI/FireShieldContainer)
     {
-        // Center it horizontally, put it at the top
-        left 0
-        top 0
-        width 0
-        height 0
-        material Sphere/Ice
+      metrics_mode pixels
+      horz_align left
+      vert_align bottom
+      left 0
+      top -64
+      width 512
+      height 64
+      //transparent true
+      material Vertigo/Overlays/Materials/Shields/Filler
+      
+      element Panel(UI/FireShield)
+      {
+          // Center it horizontally, put it at the top
+          metrics_mode pixels
+          horz_align left
+          vert_align bottom
+          left 0
+          top -64
+          width 512
+          height 64
+          material Vertigo/Overlays/Materials/Shields/Fire
 
-
+      }
     }
+    
+    container Panel(UI/IceShieldContainer)
+    {
+      metrics_mode pixels
+      horz_align right
+      vert_align bottom
+      left -512
+      top -64
+      width 512
+      height 64
+      //transparent true
+      material Vertigo/Overlays/Materials/Shields/Filler
+      
+      element Panel(UI/IceShield)
+      {
+          // Center it horizontally, put it at the top
+          metrics_mode pixels
+          horz_align right
+          vert_align bottom
+          left -512
+          top -64
+          width 512
+          height 64
+          material Vertigo/Overlays/Materials/Shields/Ice
+
+      }
+    }
+    
+    container Panel(UI/TimerContainer)
+    {
+      metrics_mode pixels
+      
+      width 120
+      height 40
+      horz_align center
+      vert_align bottom
+      left -60
+      top -40
+      
+      element TextArea(UI/Timer)
+      {
+        metrics_mode pixels
+        
+        font_name StarWars
+        colour 1 1 1
+        colour_bottom 0.5 0.5 0.5
+        alignment center
+        char_height 24
+        space_width 4
+        
+        
+        
+        horz_align center
+        vert_align top
+        //top -20
+        //width 80
+        //height 80
+      }
+    }    
 
 }
+
+Vertigo/UI/Win
+{
+    container Panel(UI/Containers/Win)
+    {
+      metrics_mode pixels
+      
+      horz_align center
+      vert_align middle
+      width 320
+      height 120
+      left -160
+      top -60
+      
+      element TextArea(UI/Text/Win)
+      {
+        metrics_mode pixels
+        
+        font_name StarWars
+        colour 1 1 1
+        colour_bottom 0.5 0.5 0.5
+        alignment center
+        char_height 84
+        space_width 32
+        
+        
+        horz_align center
+        vert_align top
+        
+        caption You Won!
+      }
+    } 
+}
+
+Vertigo/UI/Loss
+{
+    container Panel(UI/Containers/Loss)
+    {
+      metrics_mode pixels
+      
+      horz_align center
+      vert_align middle
+      width 320
+      height 120
+      left -160
+      top -60
+      
+      element TextArea(UI/Text/Loss)
+      {
+        metrics_mode pixels
+        
+        font_name StarWars
+        colour 1 1 1
+        colour_bottom 0.5 0.5 0.5
+        alignment center
+        char_height 84
+        space_width 32
+        
+        
+        horz_align center
+        vert_align top
+        
+        caption You Lost!
+      }
+    }  
+}
+
+Vertigo/UI/Prepare
+{
+    container Panel(UI/Containers/Prepare)
+    {
+      metrics_mode pixels
+      
+      horz_align center
+      vert_align middle
+      width 320
+      height 120
+      left -160
+      top -60
+      
+      element TextArea(UI/Text/Prepare)
+      {
+        metrics_mode pixels
+        
+        font_name StarWars
+        colour 1 1 1
+        colour_bottom 0.5 0.5 0.5
+        alignment center
+        char_height 84
+        space_width 32
+        
+        
+        horz_align center
+        vert_align top
+        
+        caption press a key when ready
+      }
+    }  
+}
+
+Vertigo/UI/Loading
+{
+    container Panel(UI/Containers/Loading)
+    {
+      metrics_mode pixels
+      
+      horz_align center
+      vert_align middle
+      width 320
+      height 120
+      left -160
+      top -60
+      
+      element TextArea(UI/Text/Loading)
+      {
+        metrics_mode pixels
+        
+        font_name StarWars
+        colour 1 1 1
+        colour_bottom 0.5 0.5 0.5
+        alignment center
+        char_height 84
+        space_width 32
+        
+        
+        horz_align center
+        vert_align top
+        
+        caption loading...
+      }
+    }  
+}
+

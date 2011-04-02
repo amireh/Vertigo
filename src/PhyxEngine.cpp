@@ -53,7 +53,18 @@ namespace Pixy {
         velocity *= _myPhyxEngine->getMaxSpeed()/speed;
         mShipBody->setLinearVelocity(velocity);
     }
-
+    
+    // regulate the velocity of all obstacles
+    /*std::list<Obstacle*> mObstacles = Level::getSingletonPtr()->getObstacles();
+    std::list<Obstacle*>::const_iterator _itr;
+    for (_itr = mObstacles.begin(); _itr != mObstacles.end(); ++_itr) {
+      velocity = (*_itr)->getRigidBody()->getLinearVelocity();
+      if(velocity.length() > _myPhyxEngine->getMaxSpeed()) {
+          velocity *= (*_itr)->getMaxSpeed()/velocity.length();
+          (*_itr)->getRigidBody()->setLinearVelocity(velocity);
+      }
+      
+    }*/
   }
   
 	bool PhyxEngine::setup() {
@@ -73,51 +84,52 @@ namespace Pixy {
     
     mWorld->setInternalTickCallback(PhyxEngine::myTickCallback);
 
-    mWorld->setGravity(btVector3(0,-2,0));
+    mWorld->setGravity(btVector3(0,-10,0));
 
     Ogre::SceneManager* mSceneMgr = GfxEngine::getSingletonPtr()->getSM();
     
-    mDbgdraw = new BtOgre::DebugDrawer(mSceneMgr->getRootSceneNode(), mWorld);
+    /*mDbgdraw = new BtOgre::DebugDrawer(mSceneMgr->getRootSceneNode(), mWorld);
     mWorld->setDebugDrawer(mDbgdraw);
     mDbgdraw->setDebugMode(true);
-
+    */
     int wallsCollideWith = COL_SPHERE | COL_OBSTACLES;
     
-    mObstacleShape = new btSphereShape(8);
+    mObstacleShape = new btSphereShape(12);
     /*
     mFloorShape = new btStaticPlaneShape(btVector3(0,1,0),0);
-    mFloorMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)));
+    mFloorMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,-100,0)));
     btRigidBody::btRigidBodyConstructionInfo
       mFloorRBCI(0,mFloorMS,mFloorShape,btVector3(0,0,0));
     mFloorRBCI.m_friction = 1.0f;
     
     mFloorBody = new btRigidBody(mFloorRBCI);
-    mWorld->addRigidBody(mFloorBody);
+    //mWorld->addRigidBody(mFloorBody);
+    
     
     mCeilingShape = new btStaticPlaneShape(btVector3(0,-1,0),0);
-    mCeilingMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,75,0)));
+    mCeilingMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,100,0)));
     btRigidBody::btRigidBodyConstructionInfo
       mCeilingRBCI(0,mCeilingMS,mCeilingShape,btVector3(0,0,0));
     mCeilingBody = new btRigidBody(mCeilingRBCI);
-    mWorld->addRigidBody(mCeilingBody);    
-
+    //mWorld->addRigidBody(mCeilingBody);    
+    
 
     mLWallShape = new btStaticPlaneShape(btVector3(1,0.5f,0),0);
-    mLWallMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(-15,0,0)));
+    mLWallMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(-35,0,0)));
     btRigidBody::btRigidBodyConstructionInfo
       mLWallRBCI(0,mLWallMS,mLWallShape,btVector3(0,0,0));
 
     mLWallBody = new btRigidBody(mLWallRBCI);
-    mWorld->addRigidBody(mLWallBody);
+    //mWorld->addRigidBody(mLWallBody);
     
     // right wall
     mRWallShape = new btStaticPlaneShape(btVector3(-1,0.5f,0),0);
-    mRWallMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(15,0,0)));
+    mRWallMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(30,0,0)));
     btRigidBody::btRigidBodyConstructionInfo
       mRWallRBCI(0,mRWallMS,mRWallShape,btVector3(0,0,0));
 
     mRWallBody = new btRigidBody(mRWallRBCI);
-    mWorld->addRigidBody(mRWallBody);
+    //mWorld->addRigidBody(mRWallBody);
     
     mBWallShape = new btStaticPlaneShape(btVector3(0,0,1),0);
     mBWallMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,-100)));
@@ -125,9 +137,9 @@ namespace Pixy {
       mBWallRBCI(0,mBWallMS,mBWallShape,btVector3(0,0,0));
 
     mBWallBody = new btRigidBody(mBWallRBCI);
-    mWorld->addRigidBody(mBWallBody);    
-    */
+    //mWorld->addRigidBody(mBWallBody);    
     
+    */
     //----------------------------------------------------------
     // Ground!
     //----------------------------------------------------------
@@ -165,7 +177,7 @@ namespace Pixy {
     //Create the Body.
     btRigidBody::btRigidBodyConstructionInfo
       mTunnelRBCI(0,tunnelState,mTunnelShape,btVector3(0,0,0));
-    mTunnelRBCI.m_friction = 30.0f;    
+    mTunnelRBCI.m_friction = 1000.0f;    
     mTunnelBody = new btRigidBody(mTunnelRBCI);
     
     mWorld->addRigidBody(mTunnelBody);	    
@@ -212,6 +224,10 @@ namespace Pixy {
 	}
 	bool PhyxEngine::cleanup() {
 		
+		mWorld->removeRigidBody(mTunnelBody);
+		delete mTunnelBody->getMotionState();
+		delete mTunnelBody;
+		delete mTunnelShape;
     /*mWorld->removeRigidBody(mFloorBody);
     mWorld->removeRigidBody(mCeilingBody);
     mWorld->removeRigidBody(mLWallBody);

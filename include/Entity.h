@@ -125,8 +125,10 @@ namespace Pixy
 		virtual std::string getMesh();
 		
 		Vector3& getDirection();
-		Real getMoveSpeed();
+		Real getMoveSpeed() const;
 		void setMoveSpeed(const Real inSpeed);
+		void setMaxSpeed(const float inSpeed);
+		float getMaxSpeed() const;
 		
 		//virtual btCollisionObject* getObject();
 		virtual btRigidBody* getRigidBody();
@@ -160,6 +162,7 @@ namespace Pixy
 		btRigidBody				*mPhyxBody;
 		
 		Real mMoveSpeed;
+		float mMaxSpeed;
 		Vector3 mDirection;
 		Vector3 mPosition;
 		
