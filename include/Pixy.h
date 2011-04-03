@@ -42,9 +42,9 @@
 #define PROJECT_RESOURCES "\\resources"
 #define PROJECT_SCRIPTS "\\resources\\scripts"
 #elif OGRE_PLATFORM == OGRE_PLATFORM_APPLE
-#define PROJECT_LOG_DIR "../Resources/log"
-#define PROJECT_RESOURCES "../Resources"
-#define PROJECT_SCRIPTS "../Resources/scripts"
+#define PROJECT_RESOURCES "/Resources"
+#define PROJECT_LOG_DIR "/Resources/log"
+#define PROJECT_SCRIPTS "/Resources/scripts"
 #else
 #define PROJECT_LOG_DIR "../log"
 #define PROJECT_RESOURCES "/resources"

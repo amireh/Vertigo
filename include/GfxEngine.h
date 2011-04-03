@@ -20,7 +20,7 @@
 #include <OgreOverlayElement.h>
 #include <OgreOverlayManager.h>
 #include <OgreParticle.h>
-#include "UIEngine.h"
+//#include "UIEngine.h"
 #include "SdkCameraMan.h"
 #include "InputManager.h"
 #include "Sphere.h"

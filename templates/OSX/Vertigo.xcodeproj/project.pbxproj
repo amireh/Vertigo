@@ -7,99 +7,94 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3783DF6C13310F77009D23B6 /* ProceduralBoxGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF5913310F77009D23B6 /* ProceduralBoxGenerator.cpp */; };
-		3783DF6D13310F77009D23B6 /* ProceduralCapsuleGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF5A13310F77009D23B6 /* ProceduralCapsuleGenerator.cpp */; };
-		3783DF6E13310F77009D23B6 /* ProceduralConeGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF5B13310F77009D23B6 /* ProceduralConeGenerator.cpp */; };
-		3783DF6F13310F77009D23B6 /* ProceduralCylinderGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF5C13310F77009D23B6 /* ProceduralCylinderGenerator.cpp */; };
-		3783DF7013310F77009D23B6 /* ProceduralExtruder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF5D13310F77009D23B6 /* ProceduralExtruder.cpp */; };
-		3783DF7113310F77009D23B6 /* ProceduralGeometryHelpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF5E13310F77009D23B6 /* ProceduralGeometryHelpers.cpp */; };
-		3783DF7213310F77009D23B6 /* ProceduralIcoSphereGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF5F13310F77009D23B6 /* ProceduralIcoSphereGenerator.cpp */; };
-		3783DF7313310F77009D23B6 /* ProceduralLathe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF6013310F77009D23B6 /* ProceduralLathe.cpp */; };
-		3783DF7413310F77009D23B6 /* ProceduralMultiShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF6113310F77009D23B6 /* ProceduralMultiShape.cpp */; };
-		3783DF7513310F77009D23B6 /* ProceduralPlaneGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF6213310F77009D23B6 /* ProceduralPlaneGenerator.cpp */; };
-		3783DF7613310F77009D23B6 /* ProceduralPrecompiledHeaders.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF6313310F77009D23B6 /* ProceduralPrecompiledHeaders.cpp */; };
-		3783DF7713310F77009D23B6 /* ProceduralRoot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF6413310F77009D23B6 /* ProceduralRoot.cpp */; };
-		3783DF7813310F77009D23B6 /* ProceduralRoundedBoxGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF6513310F77009D23B6 /* ProceduralRoundedBoxGenerator.cpp */; };
-		3783DF7913310F77009D23B6 /* ProceduralShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF6613310F77009D23B6 /* ProceduralShape.cpp */; };
-		3783DF7A13310F77009D23B6 /* ProceduralSphereGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF6713310F77009D23B6 /* ProceduralSphereGenerator.cpp */; };
-		3783DF7B13310F77009D23B6 /* ProceduralTorusGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF6813310F77009D23B6 /* ProceduralTorusGenerator.cpp */; };
-		3783DF7C13310F77009D23B6 /* ProceduralTorusKnotGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF6913310F77009D23B6 /* ProceduralTorusKnotGenerator.cpp */; };
-		3783DF7D13310F77009D23B6 /* ProceduralTriangulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF6A13310F77009D23B6 /* ProceduralTriangulator.cpp */; };
-		3783DF7E13310F77009D23B6 /* ProceduralTubeGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3783DF6B13310F77009D23B6 /* ProceduralTubeGenerator.cpp */; };
-		37B5D0F013277E5200BFC358 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* main.cpp */; };
-		37B5D0F113277E5200BFC358 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37B282BA1325176100BACB27 /* Sphere.cpp */; };
-		37B5D0F213277E5200BFC358 /* PixyLogLayout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37B282CA132519C800BACB27 /* PixyLogLayout.cpp */; };
-		37B5D0F313277E5200BFC358 /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37B2834B132522D200BACB27 /* Entity.cpp */; };
-		37B5D0F413277E5200BFC358 /* PhyxEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37B2856613254B9100BACB27 /* PhyxEngine.cpp */; };
-		37B5D0F513277E5200BFC358 /* GfxEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C978A513255E4300F10762 /* GfxEngine.cpp */; };
-		37B5D0F613277E5200BFC358 /* GameManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C97A5A13255F6800F10762 /* GameManager.cpp */; };
-		37B5D0F713277E5200BFC358 /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C97A5B13255F6800F10762 /* GameState.cpp */; };
-		37B5D0F813277E5200BFC358 /* InputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C97A5C13255F6800F10762 /* InputManager.cpp */; };
-		37B5D0F913277E5200BFC358 /* Intro.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C97A5D13255F6800F10762 /* Intro.cpp */; };
-		37B5D0FA13277E5200BFC358 /* Event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C97B48132563C100F10762 /* Event.cpp */; };
-		37B5D0FB13277E5200BFC358 /* EventListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C97B49132563C100F10762 /* EventListener.cpp */; };
-		37B5D0FC13277E5200BFC358 /* EventManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37C97B4A132563C100F10762 /* EventManager.cpp */; };
-		37B5D0FD13277E5200BFC358 /* UIEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37BF05B41326DB93008DBF9F /* UIEngine.cpp */; };
+		377C32FD1348815C0026E68E /* libOgreRTShaderSystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 377C32FC1348815C0026E68E /* libOgreRTShaderSystem.dylib */; };
+		377C32FF1348815C0026E68E /* Plugin_CgProgramManager.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 377C32FE1348815C0026E68E /* Plugin_CgProgramManager.dylib */; };
+		377C3300134881720026E68E /* libOgreRTShaderSystem.dylib in Copy Components */ = {isa = PBXBuildFile; fileRef = 377C32FC1348815C0026E68E /* libOgreRTShaderSystem.dylib */; };
+		377C3301134881720026E68E /* Plugin_CgProgramManager.dylib in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 377C32FE1348815C0026E68E /* Plugin_CgProgramManager.dylib */; };
+		377C363C134882D00026E68E /* libOIS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 377C363B134882CF0026E68E /* libOIS.a */; };
+		377C36A9134883BC0026E68E /* libfreeimage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 377C36A8134883BC0026E68E /* libfreeimage.a */; };
+		377C36AB134883BC0026E68E /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 377C36AA134883BC0026E68E /* libfreetype.a */; };
+		377C36AD134883BC0026E68E /* libzzip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 377C36AC134883BC0026E68E /* libzzip.a */; };
+		377C371C13488BBF0026E68E /* Plugin_OgreProcedural.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 377C371B13488BBF0026E68E /* Plugin_OgreProcedural.dylib */; };
+		377C371E13488BC70026E68E /* Plugin_OgreProcedural.dylib in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 377C371B13488BBF0026E68E /* Plugin_OgreProcedural.dylib */; };
+		377C373113488C4F0026E68E /* Plugin_ParticleUniverse.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 377C373013488C4F0026E68E /* Plugin_ParticleUniverse.dylib */; };
+		377C373213488C520026E68E /* Plugin_ParticleUniverse.dylib in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 377C373013488C4F0026E68E /* Plugin_ParticleUniverse.dylib */; };
+		377C49FF13488DAB0026E68E /* config in Resources */ = {isa = PBXBuildFile; fileRef = 377C451213488DAA0026E68E /* config */; };
+		377C4A0013488DAB0026E68E /* media in Resources */ = {isa = PBXBuildFile; fileRef = 377C451A13488DAA0026E68E /* media */; };
+		377CC98A1347A09300A7AE73 /* PixyLogLayout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9891347A09300A7AE73 /* PixyLogLayout.cpp */; };
+		377CC9EC1347A0E400A7AE73 /* AudioEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9DA1347A0E400A7AE73 /* AudioEngine.cpp */; };
+		377CC9ED1347A0E400A7AE73 /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9DB1347A0E400A7AE73 /* Entity.cpp */; };
+		377CC9EE1347A0E400A7AE73 /* Event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9DC1347A0E400A7AE73 /* Event.cpp */; };
+		377CC9EF1347A0E400A7AE73 /* EventListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9DD1347A0E400A7AE73 /* EventListener.cpp */; };
+		377CC9F01347A0E400A7AE73 /* EventManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9DE1347A0E400A7AE73 /* EventManager.cpp */; };
+		377CC9F11347A0E400A7AE73 /* GameManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9DF1347A0E400A7AE73 /* GameManager.cpp */; };
+		377CC9F21347A0E400A7AE73 /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9E01347A0E400A7AE73 /* GameState.cpp */; };
+		377CC9F31347A0E400A7AE73 /* Geometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9E11347A0E400A7AE73 /* Geometry.cpp */; };
+		377CC9F41347A0E400A7AE73 /* GfxEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9E21347A0E400A7AE73 /* GfxEngine.cpp */; };
+		377CC9F51347A0E400A7AE73 /* InputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9E31347A0E400A7AE73 /* InputManager.cpp */; };
+		377CC9F61347A0E400A7AE73 /* Level.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9E41347A0E400A7AE73 /* Level.cpp */; };
+		377CC9F71347A0E400A7AE73 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9E51347A0E400A7AE73 /* main.cpp */; };
+		377CC9F81347A0E400A7AE73 /* Obstacle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9E61347A0E400A7AE73 /* Obstacle.cpp */; };
+		377CC9F91347A0E400A7AE73 /* PhyxEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9E71347A0E400A7AE73 /* PhyxEngine.cpp */; };
+		377CC9FA1347A0E400A7AE73 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9E81347A0E400A7AE73 /* Sphere.cpp */; };
+		377CC9FB1347A0E400A7AE73 /* StatePause.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9E91347A0E400A7AE73 /* StatePause.cpp */; };
+		377CC9FC1347A0E400A7AE73 /* Tunnel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9EA1347A0E400A7AE73 /* Tunnel.cpp */; };
+		377CCA001347A10E00A7AE73 /* BtOgre.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9FF1347A10E00A7AE73 /* BtOgre.cpp */; };
+		377CCAA81347B48400A7AE73 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 377CCAA71347B48400A7AE73 /* OpenAL.framework */; };
+		379BCDCE13489E5000A76237 /* Pixy.log in Resources */ = {isa = PBXBuildFile; fileRef = 379BCDCD13489E5000A76237 /* Pixy.log */; };
+		379BCDE613489E9400A76237 /* Pixy.log in Logs */ = {isa = PBXBuildFile; fileRef = 379BCDCD13489E5000A76237 /* Pixy.log */; };
+		379BCE3B1348A5B700A76237 /* Plugin_OgreOggSound.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 379BCE3A1348A5B700A76237 /* Plugin_OgreOggSound.dylib */; };
+		379BCE3C1348A5C300A76237 /* Plugin_OgreOggSound.dylib in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 379BCE3A1348A5B700A76237 /* Plugin_OgreOggSound.dylib */; };
+		379BCE5D1348A68000A76237 /* Ogg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 379BCE5C1348A68000A76237 /* Ogg.framework */; };
+		379BCE5F1348A68000A76237 /* Vorbis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 379BCE5E1348A68000A76237 /* Vorbis.framework */; };
+		379BCE6B1348A68800A76237 /* Ogg.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 379BCE5C1348A68000A76237 /* Ogg.framework */; };
+		379BCE6C1348A68800A76237 /* Vorbis.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 379BCE5E1348A68000A76237 /* Vorbis.framework */; };
+		379BD1E41348AEF600A76237 /* Ogre.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 379BD1E31348AEF600A76237 /* Ogre.framework */; };
+		379BD1E71348AEFA00A76237 /* Ogre.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 379BD1E31348AEF600A76237 /* Ogre.framework */; };
 		37B5D67D13277E5900BFC358 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3739F9461326D5D800FA5092 /* IOKit.framework */; };
 		37B5D67E13277E5900BFC358 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3739F94D1326D60000FA5092 /* Carbon.framework */; };
 		37B5D67F13277E5900BFC358 /* BulletCollision.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B285AD1325521C00BACB27 /* BulletCollision.framework */; };
 		37B5D68013277E5900BFC358 /* BulletDynamics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B285AF1325521C00BACB27 /* BulletDynamics.framework */; };
 		37B5D68113277E5900BFC358 /* BulletSoftBody.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B285B11325521C00BACB27 /* BulletSoftBody.framework */; };
 		37B5D68213277E5900BFC358 /* LinearMath.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B285B31325521C00BACB27 /* LinearMath.framework */; };
-		37B5D68313277E5900BFC358 /* CEGUIOgreRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C97B3E1325633D00F10762 /* CEGUIOgreRenderer.framework */; };
-		37B5D68413277E5900BFC358 /* CEGUIBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C97B3C1325633D00F10762 /* CEGUIBase.framework */; };
 		37B5D68513277E5900BFC358 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B282471323EB5B00BACB27 /* OpenGL.framework */; };
 		37B5D68613277E5900BFC358 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37B2824B1323EB6800BACB27 /* GLUT.framework */; };
-		37B5D68713277E5900BFC358 /* libOgreTerrain.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C97A4513255ECE00F10762 /* libOgreTerrain.dylib */; };
-		37B5D68813277E5900BFC358 /* Plugin_OctreeSceneManager.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C97A4713255ECE00F10762 /* Plugin_OctreeSceneManager.dylib */; };
 		37B5D68913277E5900BFC358 /* Plugin_ParticleFX.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C97A4913255ECE00F10762 /* Plugin_ParticleFX.dylib */; };
 		37B5D68A13277E5900BFC358 /* RenderSystem_GL.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C97A4B13255ECE00F10762 /* RenderSystem_GL.dylib */; };
-		37B5D68B13277E5900BFC358 /* Ogre.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3739F9111326D30C00FA5092 /* Ogre.framework */; };
-		37B5D68C13277E5900BFC358 /* libOIS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3739F91E1326D38900FA5092 /* libOIS.a */; };
 		37B5D68D13277E5900BFC358 /* liblog4cpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3739FA621326D96C00FA5092 /* liblog4cpp.a */; };
-		37B5D68E13277E5900BFC358 /* freetype2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37BF05CB1326DC72008DBF9F /* freetype2.framework */; };
-		37B5D68F13277E5900BFC358 /* FreeImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37BF07371326DD10008DBF9F /* FreeImage.framework */; };
-		37B5D69013277E5900BFC358 /* PCRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37BF07391326DD10008DBF9F /* PCRE.framework */; };
-		37B5D69113277E5900BFC358 /* libOgrePaging.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37BF074A1326DD4D008DBF9F /* libOgrePaging.dylib */; };
-		37B5D69213277E6100BFC358 /* FreeImage.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 37BF07371326DD10008DBF9F /* FreeImage.framework */; };
-		37B5D69313277E6100BFC358 /* PCRE.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 37BF07391326DD10008DBF9F /* PCRE.framework */; };
-		37B5D69413277E6100BFC358 /* freetype2.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 37BF05CB1326DC72008DBF9F /* freetype2.framework */; };
-		37B5D69513277E6100BFC358 /* libOIS.a in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 3739F91E1326D38900FA5092 /* libOIS.a */; };
-		37B5D69613277E6100BFC358 /* Ogre.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 3739F9111326D30C00FA5092 /* Ogre.framework */; };
 		37B5D69713277E6100BFC358 /* BulletCollision.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 37B285AD1325521C00BACB27 /* BulletCollision.framework */; };
 		37B5D69813277E6100BFC358 /* BulletDynamics.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 37B285AF1325521C00BACB27 /* BulletDynamics.framework */; };
 		37B5D69913277E6100BFC358 /* BulletSoftBody.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 37B285B11325521C00BACB27 /* BulletSoftBody.framework */; };
 		37B5D69A13277E6100BFC358 /* LinearMath.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 37B285B31325521C00BACB27 /* LinearMath.framework */; };
-		37B5D69B13277E6100BFC358 /* CEGUIOgreRenderer.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 37C97B3E1325633D00F10762 /* CEGUIOgreRenderer.framework */; };
-		37B5D69C13277E6100BFC358 /* CEGUIBase.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 37C97B3C1325633D00F10762 /* CEGUIBase.framework */; };
-		37B5D69D13277E6600BFC358 /* CEGUIFalagardWRBase.bundle in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 37B5D0D313277DB800BFC358 /* CEGUIFalagardWRBase.bundle */; };
-		37B5D69E13277E6600BFC358 /* CEGUIExpatParser.bundle in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 37B5D08E13277CF100BFC358 /* CEGUIExpatParser.bundle */; };
-		37B5D69F13277E6600BFC358 /* CEGUIFreeImageImageCodec.bundle in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 37B5D09013277CF100BFC358 /* CEGUIFreeImageImageCodec.bundle */; };
-		37B5D6A013277E6600BFC358 /* libOgrePaging.dylib in Copy Components */ = {isa = PBXBuildFile; fileRef = 37BF074A1326DD4D008DBF9F /* libOgrePaging.dylib */; };
-		37B5D6A113277E6600BFC358 /* libOgreTerrain.dylib in Copy Components */ = {isa = PBXBuildFile; fileRef = 37C97A4513255ECE00F10762 /* libOgreTerrain.dylib */; };
-		37B5D6A213277E6600BFC358 /* Plugin_OctreeSceneManager.dylib in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 37C97A4713255ECE00F10762 /* Plugin_OctreeSceneManager.dylib */; };
 		37B5D6A313277E6600BFC358 /* Plugin_ParticleFX.dylib in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 37C97A4913255ECE00F10762 /* Plugin_ParticleFX.dylib */; };
 		37B5D6A413277E6600BFC358 /* RenderSystem_GL.dylib in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 37C97A4B13255ECE00F10762 /* RenderSystem_GL.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		379BCD801348953600A76237 /* Logs */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = ../Logs;
+			dstSubfolderSpec = 7;
+			files = (
+				379BCDE613489E9400A76237 /* Pixy.log in Logs */,
+			);
+			name = Logs;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		37B5D6AE13277EA800BFC358 /* Copy Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				37B5D69213277E6100BFC358 /* FreeImage.framework in Copy Frameworks */,
-				37B5D69313277E6100BFC358 /* PCRE.framework in Copy Frameworks */,
-				37B5D69413277E6100BFC358 /* freetype2.framework in Copy Frameworks */,
-				37B5D69513277E6100BFC358 /* libOIS.a in Copy Frameworks */,
-				37B5D69613277E6100BFC358 /* Ogre.framework in Copy Frameworks */,
+				379BD1E71348AEFA00A76237 /* Ogre.framework in Copy Frameworks */,
+				379BCE6B1348A68800A76237 /* Ogg.framework in Copy Frameworks */,
+				379BCE6C1348A68800A76237 /* Vorbis.framework in Copy Frameworks */,
 				37B5D69713277E6100BFC358 /* BulletCollision.framework in Copy Frameworks */,
 				37B5D69813277E6100BFC358 /* BulletDynamics.framework in Copy Frameworks */,
 				37B5D69913277E6100BFC358 /* BulletSoftBody.framework in Copy Frameworks */,
 				37B5D69A13277E6100BFC358 /* LinearMath.framework in Copy Frameworks */,
-				37B5D69B13277E6100BFC358 /* CEGUIOgreRenderer.framework in Copy Frameworks */,
-				37B5D69C13277E6100BFC358 /* CEGUIBase.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -110,10 +105,10 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				37B5D69D13277E6600BFC358 /* CEGUIFalagardWRBase.bundle in Copy Plugins */,
-				37B5D69E13277E6600BFC358 /* CEGUIExpatParser.bundle in Copy Plugins */,
-				37B5D69F13277E6600BFC358 /* CEGUIFreeImageImageCodec.bundle in Copy Plugins */,
-				37B5D6A213277E6600BFC358 /* Plugin_OctreeSceneManager.dylib in Copy Plugins */,
+				379BCE3C1348A5C300A76237 /* Plugin_OgreOggSound.dylib in Copy Plugins */,
+				377C373213488C520026E68E /* Plugin_ParticleUniverse.dylib in Copy Plugins */,
+				377C371E13488BC70026E68E /* Plugin_OgreProcedural.dylib in Copy Plugins */,
+				377C3301134881720026E68E /* Plugin_CgProgramManager.dylib in Copy Plugins */,
 				37B5D6A313277E6600BFC358 /* Plugin_ParticleFX.dylib in Copy Plugins */,
 				37B5D6A413277E6600BFC358 /* RenderSystem_GL.dylib in Copy Plugins */,
 			);
@@ -126,8 +121,7 @@
 			dstPath = Contents/Components;
 			dstSubfolderSpec = 1;
 			files = (
-				37B5D6A013277E6600BFC358 /* libOgrePaging.dylib in Copy Components */,
-				37B5D6A113277E6600BFC358 /* libOgreTerrain.dylib in Copy Components */,
+				377C3300134881720026E68E /* libOgreRTShaderSystem.dylib in Copy Components */,
 			);
 			name = "Copy Components";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -135,112 +129,79 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		08FB7796FE84155DC02AAC07 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = "<group>"; };
-		3739F9111326D30C00FA5092 /* Ogre.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Ogre.framework; path = "/Volumes/kandie/Workspace/Build/Ogre-1.7.2/lib/Debug/Ogre.framework"; sourceTree = "<absolute>"; };
-		3739F91E1326D38900FA5092 /* libOIS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOIS.a; path = "/Volumes/kandie/Downloads/Development/Game/Ogre/ogre_src_v1-7-2/Dependencies/lib/Debug/libOIS.a"; sourceTree = "<absolute>"; };
 		3739F9461326D5D800FA5092 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		3739F94D1326D60000FA5092 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		3739FA621326D96C00FA5092 /* liblog4cpp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblog4cpp.a; path = /usr/local/lib/liblog4cpp.a; sourceTree = "<absolute>"; };
-		37599FA61330C8E800D26FB8 /* MotionState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MotionState.h; path = include/MotionState.h; sourceTree = "<group>"; };
-		3783DF3F13310F77009D23B6 /* Procedural.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Procedural.h; sourceTree = "<group>"; };
-		3783DF4013310F77009D23B6 /* ProceduralBoxGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralBoxGenerator.h; sourceTree = "<group>"; };
-		3783DF4113310F77009D23B6 /* ProceduralCapsuleGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralCapsuleGenerator.h; sourceTree = "<group>"; };
-		3783DF4213310F77009D23B6 /* ProceduralConeGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralConeGenerator.h; sourceTree = "<group>"; };
-		3783DF4313310F77009D23B6 /* ProceduralCylinderGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralCylinderGenerator.h; sourceTree = "<group>"; };
-		3783DF4413310F77009D23B6 /* ProceduralExtruder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralExtruder.h; sourceTree = "<group>"; };
-		3783DF4513310F77009D23B6 /* ProceduralGeometryHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralGeometryHelpers.h; sourceTree = "<group>"; };
-		3783DF4613310F77009D23B6 /* ProceduralIcoSphereGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralIcoSphereGenerator.h; sourceTree = "<group>"; };
-		3783DF4713310F77009D23B6 /* ProceduralLathe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralLathe.h; sourceTree = "<group>"; };
-		3783DF4813310F77009D23B6 /* ProceduralMeshGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralMeshGenerator.h; sourceTree = "<group>"; };
-		3783DF4913310F77009D23B6 /* ProceduralMultiShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralMultiShape.h; sourceTree = "<group>"; };
-		3783DF4A13310F77009D23B6 /* ProceduralPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralPath.h; sourceTree = "<group>"; };
-		3783DF4B13310F77009D23B6 /* ProceduralPlaneGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralPlaneGenerator.h; sourceTree = "<group>"; };
-		3783DF4C13310F77009D23B6 /* ProceduralPlatform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralPlatform.h; sourceTree = "<group>"; };
-		3783DF4D13310F77009D23B6 /* ProceduralRoot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralRoot.h; sourceTree = "<group>"; };
-		3783DF4E13310F77009D23B6 /* ProceduralRoundedBoxGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralRoundedBoxGenerator.h; sourceTree = "<group>"; };
-		3783DF4F13310F77009D23B6 /* ProceduralShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralShape.h; sourceTree = "<group>"; };
-		3783DF5013310F77009D23B6 /* ProceduralSphereGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralSphereGenerator.h; sourceTree = "<group>"; };
-		3783DF5113310F77009D23B6 /* ProceduralStableHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralStableHeaders.h; sourceTree = "<group>"; };
-		3783DF5213310F77009D23B6 /* ProceduralTorusGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralTorusGenerator.h; sourceTree = "<group>"; };
-		3783DF5313310F77009D23B6 /* ProceduralTorusKnotGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralTorusKnotGenerator.h; sourceTree = "<group>"; };
-		3783DF5413310F77009D23B6 /* ProceduralTriangleBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralTriangleBuffer.h; sourceTree = "<group>"; };
-		3783DF5513310F77009D23B6 /* ProceduralTriangulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralTriangulator.h; sourceTree = "<group>"; };
-		3783DF5613310F77009D23B6 /* ProceduralTubeGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralTubeGenerator.h; sourceTree = "<group>"; };
-		3783DF5713310F77009D23B6 /* ProceduralUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralUtils.h; sourceTree = "<group>"; };
-		3783DF5913310F77009D23B6 /* ProceduralBoxGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralBoxGenerator.cpp; sourceTree = "<group>"; };
-		3783DF5A13310F77009D23B6 /* ProceduralCapsuleGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralCapsuleGenerator.cpp; sourceTree = "<group>"; };
-		3783DF5B13310F77009D23B6 /* ProceduralConeGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralConeGenerator.cpp; sourceTree = "<group>"; };
-		3783DF5C13310F77009D23B6 /* ProceduralCylinderGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralCylinderGenerator.cpp; sourceTree = "<group>"; };
-		3783DF5D13310F77009D23B6 /* ProceduralExtruder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralExtruder.cpp; sourceTree = "<group>"; };
-		3783DF5E13310F77009D23B6 /* ProceduralGeometryHelpers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralGeometryHelpers.cpp; sourceTree = "<group>"; };
-		3783DF5F13310F77009D23B6 /* ProceduralIcoSphereGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralIcoSphereGenerator.cpp; sourceTree = "<group>"; };
-		3783DF6013310F77009D23B6 /* ProceduralLathe.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralLathe.cpp; sourceTree = "<group>"; };
-		3783DF6113310F77009D23B6 /* ProceduralMultiShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralMultiShape.cpp; sourceTree = "<group>"; };
-		3783DF6213310F77009D23B6 /* ProceduralPlaneGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralPlaneGenerator.cpp; sourceTree = "<group>"; };
-		3783DF6313310F77009D23B6 /* ProceduralPrecompiledHeaders.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralPrecompiledHeaders.cpp; sourceTree = "<group>"; };
-		3783DF6413310F77009D23B6 /* ProceduralRoot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralRoot.cpp; sourceTree = "<group>"; };
-		3783DF6513310F77009D23B6 /* ProceduralRoundedBoxGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralRoundedBoxGenerator.cpp; sourceTree = "<group>"; };
-		3783DF6613310F77009D23B6 /* ProceduralShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralShape.cpp; sourceTree = "<group>"; };
-		3783DF6713310F77009D23B6 /* ProceduralSphereGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralSphereGenerator.cpp; sourceTree = "<group>"; };
-		3783DF6813310F77009D23B6 /* ProceduralTorusGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralTorusGenerator.cpp; sourceTree = "<group>"; };
-		3783DF6913310F77009D23B6 /* ProceduralTorusKnotGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralTorusKnotGenerator.cpp; sourceTree = "<group>"; };
-		3783DF6A13310F77009D23B6 /* ProceduralTriangulator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralTriangulator.cpp; sourceTree = "<group>"; };
-		3783DF6B13310F77009D23B6 /* ProceduralTubeGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProceduralTubeGenerator.cpp; sourceTree = "<group>"; };
+		377C32FC1348815C0026E68E /* libOgreRTShaderSystem.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libOgreRTShaderSystem.dylib; path = "/Volumes/kandie/Workspace/Build/Ogre-1.7.2/lib/Debug/libOgreRTShaderSystem.dylib"; sourceTree = "<absolute>"; };
+		377C32FE1348815C0026E68E /* Plugin_CgProgramManager.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Plugin_CgProgramManager.dylib; path = "/Volumes/kandie/Workspace/Build/Ogre-1.7.2/lib/Debug/Plugin_CgProgramManager.dylib"; sourceTree = "<absolute>"; };
+		377C363B134882CF0026E68E /* libOIS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOIS.a; path = "/Volumes/kandie/Downloads/Development/Game/Ogre/ogre_src_v1-7-2/Dependencies/lib/Debug/libOIS.a"; sourceTree = "<absolute>"; };
+		377C36A8134883BC0026E68E /* libfreeimage.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreeimage.a; path = "/Volumes/kandie/Downloads/Development/Game/Ogre/ogre_src_v1-7-2/Dependencies/lib/Debug/libfreeimage.a"; sourceTree = "<absolute>"; };
+		377C36AA134883BC0026E68E /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = "/Volumes/kandie/Downloads/Development/Game/Ogre/ogre_src_v1-7-2/Dependencies/lib/Debug/libfreetype.a"; sourceTree = "<absolute>"; };
+		377C36AC134883BC0026E68E /* libzzip.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzzip.a; path = "/Volumes/kandie/Downloads/Development/Game/Ogre/ogre_src_v1-7-2/Dependencies/lib/Debug/libzzip.a"; sourceTree = "<absolute>"; };
+		377C371B13488BBF0026E68E /* Plugin_OgreProcedural.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Plugin_OgreProcedural.dylib; path = "/Volumes/kandie/Workspace/Build/ogre-procedural/build/Plugin_OgreProcedural.dylib"; sourceTree = "<absolute>"; };
+		377C373013488C4F0026E68E /* Plugin_ParticleUniverse.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Plugin_ParticleUniverse.dylib; path = /Volumes/kandie/Workspace/Build/ParticleUniverse/build/Plugin_ParticleUniverse.dylib; sourceTree = "<absolute>"; };
+		377C451213488DAA0026E68E /* config */ = {isa = PBXFileReference; lastKnownFileType = folder; name = config; path = ../../resources/config; sourceTree = SOURCE_ROOT; };
+		377C451A13488DAA0026E68E /* media */ = {isa = PBXFileReference; lastKnownFileType = folder; name = media; path = ../../resources/media; sourceTree = SOURCE_ROOT; };
+		377CC9891347A09300A7AE73 /* PixyLogLayout.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PixyLogLayout.cpp; path = ../../modules/src/log4cpp/PixyLogLayout.cpp; sourceTree = SOURCE_ROOT; };
+		377CC9DA1347A0E400A7AE73 /* AudioEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AudioEngine.cpp; path = ../../src/AudioEngine.cpp; sourceTree = SOURCE_ROOT; };
+		377CC9DB1347A0E400A7AE73 /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Entity.cpp; path = ../../src/Entity.cpp; sourceTree = SOURCE_ROOT; };
+		377CC9DC1347A0E400A7AE73 /* Event.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Event.cpp; path = ../../src/Event.cpp; sourceTree = SOURCE_ROOT; };
+		377CC9DD1347A0E400A7AE73 /* EventListener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EventListener.cpp; path = ../../src/EventListener.cpp; sourceTree = SOURCE_ROOT; };
+		377CC9DE1347A0E400A7AE73 /* EventManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EventManager.cpp; path = ../../src/EventManager.cpp; sourceTree = SOURCE_ROOT; };
+		377CC9DF1347A0E400A7AE73 /* GameManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameManager.cpp; path = ../../src/GameManager.cpp; sourceTree = SOURCE_ROOT; };
+		377CC9E01347A0E400A7AE73 /* GameState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameState.cpp; path = ../../src/GameState.cpp; sourceTree = SOURCE_ROOT; };
+		377CC9E11347A0E400A7AE73 /* Geometry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Geometry.cpp; path = ../../src/Geometry.cpp; sourceTree = SOURCE_ROOT; };
+		377CC9E21347A0E400A7AE73 /* GfxEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GfxEngine.cpp; path = ../../src/GfxEngine.cpp; sourceTree = SOURCE_ROOT; };
+		377CC9E31347A0E400A7AE73 /* InputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InputManager.cpp; path = ../../src/InputManager.cpp; sourceTree = SOURCE_ROOT; };
+		377CC9E41347A0E400A7AE73 /* Level.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Level.cpp; path = ../../src/Level.cpp; sourceTree = SOURCE_ROOT; };
+		377CC9E51347A0E400A7AE73 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../src/main.cpp; sourceTree = SOURCE_ROOT; };
+		377CC9E61347A0E400A7AE73 /* Obstacle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Obstacle.cpp; path = ../../src/Obstacle.cpp; sourceTree = SOURCE_ROOT; };
+		377CC9E71347A0E400A7AE73 /* PhyxEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PhyxEngine.cpp; path = ../../src/PhyxEngine.cpp; sourceTree = SOURCE_ROOT; };
+		377CC9E81347A0E400A7AE73 /* Sphere.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Sphere.cpp; path = ../../src/Sphere.cpp; sourceTree = SOURCE_ROOT; };
+		377CC9E91347A0E400A7AE73 /* StatePause.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StatePause.cpp; path = ../../src/StatePause.cpp; sourceTree = SOURCE_ROOT; };
+		377CC9EA1347A0E400A7AE73 /* Tunnel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Tunnel.cpp; path = ../../src/Tunnel.cpp; sourceTree = SOURCE_ROOT; };
+		377CC9FF1347A10E00A7AE73 /* BtOgre.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BtOgre.cpp; path = ../../modules/src/btogre/BtOgre.cpp; sourceTree = SOURCE_ROOT; };
+		377CCA011347A11A00A7AE73 /* AudioEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioEngine.h; path = ../../include/AudioEngine.h; sourceTree = SOURCE_ROOT; };
+		377CCA021347A11A00A7AE73 /* Engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Engine.h; path = ../../include/Engine.h; sourceTree = SOURCE_ROOT; };
+		377CCA031347A11A00A7AE73 /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Entity.h; path = ../../include/Entity.h; sourceTree = SOURCE_ROOT; };
+		377CCA041347A11A00A7AE73 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Event.h; path = ../../include/Event.h; sourceTree = SOURCE_ROOT; };
+		377CCA051347A11A00A7AE73 /* EventHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventHandler.h; path = ../../include/EventHandler.h; sourceTree = SOURCE_ROOT; };
+		377CCA061347A11A00A7AE73 /* EventListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventListener.h; path = ../../include/EventListener.h; sourceTree = SOURCE_ROOT; };
+		377CCA071347A11A00A7AE73 /* EventManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventManager.h; path = ../../include/EventManager.h; sourceTree = SOURCE_ROOT; };
+		377CCA081347A11A00A7AE73 /* GameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameManager.h; path = ../../include/GameManager.h; sourceTree = SOURCE_ROOT; };
+		377CCA091347A11A00A7AE73 /* GameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameState.h; path = ../../include/GameState.h; sourceTree = SOURCE_ROOT; };
+		377CCA0A1347A11A00A7AE73 /* Geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Geometry.h; path = ../../include/Geometry.h; sourceTree = SOURCE_ROOT; };
+		377CCA0B1347A11A00A7AE73 /* GfxEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GfxEngine.h; path = ../../include/GfxEngine.h; sourceTree = SOURCE_ROOT; };
+		377CCA0C1347A11A00A7AE73 /* Handler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Handler.h; path = ../../include/Handler.h; sourceTree = SOURCE_ROOT; };
+		377CCA0D1347A11A00A7AE73 /* InputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InputManager.h; path = ../../include/InputManager.h; sourceTree = SOURCE_ROOT; };
+		377CCA0E1347A11A00A7AE73 /* Level.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Level.h; path = ../../include/Level.h; sourceTree = SOURCE_ROOT; };
+		377CCA0F1347A11A00A7AE73 /* Listener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Listener.h; path = ../../include/Listener.h; sourceTree = SOURCE_ROOT; };
+		377CCA101347A11A00A7AE73 /* MotionState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MotionState.h; path = ../../include/MotionState.h; sourceTree = SOURCE_ROOT; };
+		377CCA111347A11A00A7AE73 /* Obstacle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Obstacle.h; path = ../../include/Obstacle.h; sourceTree = SOURCE_ROOT; };
+		377CCA121347A11A00A7AE73 /* PhyxEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhyxEngine.h; path = ../../include/PhyxEngine.h; sourceTree = SOURCE_ROOT; };
+		377CCA131347A11A00A7AE73 /* Pixy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Pixy.h; path = ../../include/Pixy.h; sourceTree = SOURCE_ROOT; };
+		377CCA141347A11A00A7AE73 /* PixyLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PixyLog.h; path = ../../include/PixyLog.h; sourceTree = SOURCE_ROOT; };
+		377CCA151347A11A00A7AE73 /* SdkCameraMan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SdkCameraMan.h; path = ../../include/SdkCameraMan.h; sourceTree = SOURCE_ROOT; };
+		377CCA161347A11A00A7AE73 /* Sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sphere.h; path = ../../include/Sphere.h; sourceTree = SOURCE_ROOT; };
+		377CCA171347A11A00A7AE73 /* StatePause.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StatePause.h; path = ../../include/StatePause.h; sourceTree = SOURCE_ROOT; };
+		377CCA181347A11A00A7AE73 /* Tunnel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Tunnel.h; path = ../../include/Tunnel.h; sourceTree = SOURCE_ROOT; };
+		377CCA1A1347A11A00A7AE73 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utility.h; path = ../../include/Utility.h; sourceTree = SOURCE_ROOT; };
+		377CCAA71347B48400A7AE73 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
+		377CCABB1347B4D000A7AE73 /* Debug-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Debug-Info.plist"; sourceTree = "<group>"; };
+		379BCDCD13489E5000A76237 /* Pixy.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Pixy.log; path = ../../log/Pixy.log; sourceTree = SOURCE_ROOT; };
+		379BCE3A1348A5B700A76237 /* Plugin_OgreOggSound.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Plugin_OgreOggSound.dylib; path = /Volumes/kandie/Workspace/Build/ogreoggsound/build/Plugin_OgreOggSound.dylib; sourceTree = "<absolute>"; };
+		379BCE5C1348A68000A76237 /* Ogg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Ogg.framework; path = /Library/Frameworks/Ogg.framework; sourceTree = "<absolute>"; };
+		379BCE5E1348A68000A76237 /* Vorbis.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Vorbis.framework; path = /Library/Frameworks/Vorbis.framework; sourceTree = "<absolute>"; };
+		379BD1E31348AEF600A76237 /* Ogre.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Ogre.framework; path = "/Volumes/kandie/Workspace/Build/Ogre-1.7.2/lib/Release/Ogre.framework"; sourceTree = "<absolute>"; };
 		37B282471323EB5B00BACB27 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		37B2824B1323EB6800BACB27 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
-		37B282AF1325175300BACB27 /* Sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sphere.h; path = include/Sphere.h; sourceTree = "<group>"; };
-		37B282BA1325176100BACB27 /* Sphere.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Sphere.cpp; path = src/Sphere.cpp; sourceTree = "<group>"; };
-		37B282CA132519C800BACB27 /* PixyLogLayout.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PixyLogLayout.cpp; sourceTree = "<group>"; };
-		37B282CB132519C800BACB27 /* PixyLogLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PixyLogLayout.h; sourceTree = "<group>"; };
-		37B28342132522B300BACB27 /* Pixy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Pixy.h; path = include/Pixy.h; sourceTree = "<group>"; };
-		37B28343132522B300BACB27 /* PixyLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PixyLog.h; path = include/PixyLog.h; sourceTree = "<group>"; };
-		37B28344132522B300BACB27 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utility.h; path = include/Utility.h; sourceTree = "<group>"; };
-		37B2834B132522D200BACB27 /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Entity.cpp; path = src/Entity.cpp; sourceTree = "<group>"; };
-		37B2856213254B5E00BACB27 /* Engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Engine.h; path = include/Engine.h; sourceTree = "<group>"; };
-		37B2856313254B5F00BACB27 /* PhyxEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhyxEngine.h; path = include/PhyxEngine.h; sourceTree = "<group>"; };
-		37B2856613254B9100BACB27 /* PhyxEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PhyxEngine.cpp; path = src/PhyxEngine.cpp; sourceTree = "<group>"; };
-		37B2859413254FB000BACB27 /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Entity.h; path = include/Entity.h; sourceTree = "<group>"; };
 		37B285AD1325521C00BACB27 /* BulletCollision.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BulletCollision.framework; path = Library/Frameworks/BulletCollision.framework; sourceTree = SDKROOT; };
 		37B285AF1325521C00BACB27 /* BulletDynamics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BulletDynamics.framework; path = Library/Frameworks/BulletDynamics.framework; sourceTree = SDKROOT; };
 		37B285B11325521C00BACB27 /* BulletSoftBody.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BulletSoftBody.framework; path = Library/Frameworks/BulletSoftBody.framework; sourceTree = SDKROOT; };
 		37B285B31325521C00BACB27 /* LinearMath.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LinearMath.framework; path = Library/Frameworks/LinearMath.framework; sourceTree = SDKROOT; };
-		37B5D08E13277CF100BFC358 /* CEGUIExpatParser.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = CEGUIExpatParser.bundle; path = "/Volumes/kandie/Workspace/Build/CEGUI-SDK-0.7.5-mac/PlugInBundles/Debug/CEGUIExpatParser.bundle"; sourceTree = "<absolute>"; };
-		37B5D09013277CF100BFC358 /* CEGUIFreeImageImageCodec.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = CEGUIFreeImageImageCodec.bundle; path = "/Volumes/kandie/Workspace/Build/CEGUI-SDK-0.7.5-mac/PlugInBundles/Debug/CEGUIFreeImageImageCodec.bundle"; sourceTree = "<absolute>"; };
-		37B5D0D313277DB800BFC358 /* CEGUIFalagardWRBase.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = CEGUIFalagardWRBase.bundle; path = "/Volumes/kandie/Workspace/Build/CEGUI-SDK-0.7.5-mac/PlugInBundles/Debug/CEGUIFalagardWRBase.bundle"; sourceTree = "<absolute>"; };
-		37B5D0EA13277E0600BFC358 /* Debug-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Debug-Info.plist"; sourceTree = "<group>"; };
-		37B5D6C013277FE900BFC358 /* Debug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Debug.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		37BF05B41326DB93008DBF9F /* UIEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UIEngine.cpp; path = src/UIEngine.cpp; sourceTree = "<group>"; };
-		37BF05B61326DB9B008DBF9F /* UIEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIEngine.h; path = include/UIEngine.h; sourceTree = "<group>"; };
-		37BF05CB1326DC72008DBF9F /* freetype2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = freetype2.framework; path = "/Volumes/kandie/Downloads/Development/Game/CEGUI/CEGUI-0.7.5/dependencies/freetype2.framework"; sourceTree = "<absolute>"; };
-		37BF07371326DD10008DBF9F /* FreeImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FreeImage.framework; path = "/Volumes/kandie/Downloads/Development/Game/CEGUI/CEGUI-0.7.5/dependencies/FreeImage.framework"; sourceTree = "<absolute>"; };
-		37BF07391326DD10008DBF9F /* PCRE.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PCRE.framework; path = "/Volumes/kandie/Downloads/Development/Game/CEGUI/CEGUI-0.7.5/dependencies/PCRE.framework"; sourceTree = "<absolute>"; };
-		37BF074A1326DD4D008DBF9F /* libOgrePaging.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libOgrePaging.dylib; path = "/Volumes/kandie/Workspace/Build/Ogre-1.7.2/lib/Debug/libOgrePaging.dylib"; sourceTree = "<absolute>"; };
-		37C978A413255E3B00F10762 /* GfxEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GfxEngine.h; path = include/GfxEngine.h; sourceTree = "<group>"; };
-		37C978A513255E4300F10762 /* GfxEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GfxEngine.cpp; path = src/GfxEngine.cpp; sourceTree = "<group>"; };
-		37C97A4513255ECE00F10762 /* libOgreTerrain.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libOgreTerrain.dylib; path = "/Volumes/kandie/Workspace/Build/Ogre-1.7.2/lib/Debug/libOgreTerrain.dylib"; sourceTree = "<absolute>"; };
-		37C97A4713255ECE00F10762 /* Plugin_OctreeSceneManager.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Plugin_OctreeSceneManager.dylib; path = "/Volumes/kandie/Workspace/Build/Ogre-1.7.2/lib/Debug/Plugin_OctreeSceneManager.dylib"; sourceTree = "<absolute>"; };
+		37B5D6C013277FE900BFC358 /* Vertigo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vertigo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37C97A4913255ECE00F10762 /* Plugin_ParticleFX.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Plugin_ParticleFX.dylib; path = "/Volumes/kandie/Workspace/Build/Ogre-1.7.2/lib/Debug/Plugin_ParticleFX.dylib"; sourceTree = "<absolute>"; };
 		37C97A4B13255ECE00F10762 /* RenderSystem_GL.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = RenderSystem_GL.dylib; path = "/Volumes/kandie/Workspace/Build/Ogre-1.7.2/lib/Debug/RenderSystem_GL.dylib"; sourceTree = "<absolute>"; };
-		37C97A5513255F4E00F10762 /* GameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameManager.h; path = include/GameManager.h; sourceTree = "<group>"; };
-		37C97A5613255F4E00F10762 /* GameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameState.h; path = include/GameState.h; sourceTree = "<group>"; };
-		37C97A5713255F4E00F10762 /* InputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InputManager.h; path = include/InputManager.h; sourceTree = "<group>"; };
-		37C97A5813255F4E00F10762 /* Intro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Intro.h; path = include/Intro.h; sourceTree = "<group>"; };
-		37C97A5913255F4E00F10762 /* SdkCameraMan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SdkCameraMan.h; path = include/SdkCameraMan.h; sourceTree = "<group>"; };
-		37C97A5A13255F6800F10762 /* GameManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameManager.cpp; path = src/GameManager.cpp; sourceTree = "<group>"; };
-		37C97A5B13255F6800F10762 /* GameState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameState.cpp; path = src/GameState.cpp; sourceTree = "<group>"; };
-		37C97A5C13255F6800F10762 /* InputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InputManager.cpp; path = src/InputManager.cpp; sourceTree = "<group>"; };
-		37C97A5D13255F6800F10762 /* Intro.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Intro.cpp; path = src/Intro.cpp; sourceTree = "<group>"; };
-		37C97B3C1325633D00F10762 /* CEGUIBase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CEGUIBase.framework; path = "/Volumes/kandie/Workspace/Build/CEGUI-SDK-0.7.5-mac/Frameworks/Debug/CEGUIBase.framework"; sourceTree = "<absolute>"; };
-		37C97B3E1325633D00F10762 /* CEGUIOgreRenderer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CEGUIOgreRenderer.framework; path = "/Volumes/kandie/Workspace/Build/CEGUI-SDK-0.7.5-mac/Frameworks/Debug/CEGUIOgreRenderer.framework"; sourceTree = "<absolute>"; };
-		37C97B42132563B400F10762 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Event.h; path = include/Event.h; sourceTree = "<group>"; };
-		37C97B43132563B400F10762 /* EventHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventHandler.h; path = include/EventHandler.h; sourceTree = "<group>"; };
-		37C97B44132563B400F10762 /* EventListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventListener.h; path = include/EventListener.h; sourceTree = "<group>"; };
-		37C97B45132563B400F10762 /* EventManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventManager.h; path = include/EventManager.h; sourceTree = "<group>"; };
-		37C97B46132563B400F10762 /* Handler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Handler.h; path = include/Handler.h; sourceTree = "<group>"; };
-		37C97B47132563B400F10762 /* Listener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Listener.h; path = include/Listener.h; sourceTree = "<group>"; };
-		37C97B48132563C100F10762 /* Event.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Event.cpp; path = src/Event.cpp; sourceTree = "<group>"; };
-		37C97B49132563C100F10762 /* EventListener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EventListener.cpp; path = src/EventListener.cpp; sourceTree = "<group>"; };
-		37C97B4A132563C100F10762 /* EventManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EventManager.cpp; path = src/EventManager.cpp; sourceTree = "<group>"; };
 		C6859E8B029090EE04C91782 /* Vertigo.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Vertigo.1; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -249,27 +210,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				377C36A9134883BC0026E68E /* libfreeimage.a in Frameworks */,
+				377C36AB134883BC0026E68E /* libfreetype.a in Frameworks */,
+				377C36AD134883BC0026E68E /* libzzip.a in Frameworks */,
+				377C363C134882D00026E68E /* libOIS.a in Frameworks */,
 				37B5D67D13277E5900BFC358 /* IOKit.framework in Frameworks */,
 				37B5D67E13277E5900BFC358 /* Carbon.framework in Frameworks */,
 				37B5D67F13277E5900BFC358 /* BulletCollision.framework in Frameworks */,
 				37B5D68013277E5900BFC358 /* BulletDynamics.framework in Frameworks */,
 				37B5D68113277E5900BFC358 /* BulletSoftBody.framework in Frameworks */,
 				37B5D68213277E5900BFC358 /* LinearMath.framework in Frameworks */,
-				37B5D68313277E5900BFC358 /* CEGUIOgreRenderer.framework in Frameworks */,
-				37B5D68413277E5900BFC358 /* CEGUIBase.framework in Frameworks */,
 				37B5D68513277E5900BFC358 /* OpenGL.framework in Frameworks */,
 				37B5D68613277E5900BFC358 /* GLUT.framework in Frameworks */,
-				37B5D68713277E5900BFC358 /* libOgreTerrain.dylib in Frameworks */,
-				37B5D68813277E5900BFC358 /* Plugin_OctreeSceneManager.dylib in Frameworks */,
 				37B5D68913277E5900BFC358 /* Plugin_ParticleFX.dylib in Frameworks */,
 				37B5D68A13277E5900BFC358 /* RenderSystem_GL.dylib in Frameworks */,
-				37B5D68B13277E5900BFC358 /* Ogre.framework in Frameworks */,
-				37B5D68C13277E5900BFC358 /* libOIS.a in Frameworks */,
 				37B5D68D13277E5900BFC358 /* liblog4cpp.a in Frameworks */,
-				37B5D68E13277E5900BFC358 /* freetype2.framework in Frameworks */,
-				37B5D68F13277E5900BFC358 /* FreeImage.framework in Frameworks */,
-				37B5D69013277E5900BFC358 /* PCRE.framework in Frameworks */,
-				37B5D69113277E5900BFC358 /* libOgrePaging.dylib in Frameworks */,
+				377CCAA81347B48400A7AE73 /* OpenAL.framework in Frameworks */,
+				377C32FD1348815C0026E68E /* libOgreRTShaderSystem.dylib in Frameworks */,
+				377C32FF1348815C0026E68E /* Plugin_CgProgramManager.dylib in Frameworks */,
+				377C371C13488BBF0026E68E /* Plugin_OgreProcedural.dylib in Frameworks */,
+				377C373113488C4F0026E68E /* Plugin_ParticleUniverse.dylib in Frameworks */,
+				379BCE3B1348A5B700A76237 /* Plugin_OgreOggSound.dylib in Frameworks */,
+				379BCE5D1348A68000A76237 /* Ogg.framework in Frameworks */,
+				379BCE5F1348A68000A76237 /* Vorbis.framework in Frameworks */,
+				379BD1E41348AEF600A76237 /* Ogre.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,6 +243,8 @@
 		08FB7794FE84155DC02AAC07 /* Vertigo */ = {
 			isa = PBXGroup;
 			children = (
+				379BCDCD13489E5000A76237 /* Pixy.log */,
+				377C373B13488CC50026E68E /* Resources */,
 				37B282C8132519B200BACB27 /* External Modules */,
 				37B2829D1325167400BACB27 /* Headers */,
 				08FB7795FE84155DC02AAC07 /* Source */,
@@ -286,7 +252,7 @@
 				37B282461323EB4500BACB27 /* External Frameworks */,
 				37C97A4413255EAA00F10762 /* Plugins */,
 				1AB674ADFE9D54B511CA2CBB /* Products */,
-				37B5D0EA13277E0600BFC358 /* Debug-Info.plist */,
+				377CCABB1347B4D000A7AE73 /* Debug-Info.plist */,
 			);
 			name = Vertigo;
 			sourceTree = "<group>";
@@ -294,19 +260,23 @@
 		08FB7795FE84155DC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				37BF05B41326DB93008DBF9F /* UIEngine.cpp */,
-				37C97B48132563C100F10762 /* Event.cpp */,
-				37C97B49132563C100F10762 /* EventListener.cpp */,
-				37C97B4A132563C100F10762 /* EventManager.cpp */,
-				37C97A5A13255F6800F10762 /* GameManager.cpp */,
-				37C97A5B13255F6800F10762 /* GameState.cpp */,
-				37C97A5C13255F6800F10762 /* InputManager.cpp */,
-				37C97A5D13255F6800F10762 /* Intro.cpp */,
-				37C978A513255E4300F10762 /* GfxEngine.cpp */,
-				37B2834B132522D200BACB27 /* Entity.cpp */,
-				37B282BA1325176100BACB27 /* Sphere.cpp */,
-				08FB7796FE84155DC02AAC07 /* main.cpp */,
-				37B2856613254B9100BACB27 /* PhyxEngine.cpp */,
+				377CC9DA1347A0E400A7AE73 /* AudioEngine.cpp */,
+				377CC9DB1347A0E400A7AE73 /* Entity.cpp */,
+				377CC9DC1347A0E400A7AE73 /* Event.cpp */,
+				377CC9DD1347A0E400A7AE73 /* EventListener.cpp */,
+				377CC9DE1347A0E400A7AE73 /* EventManager.cpp */,
+				377CC9DF1347A0E400A7AE73 /* GameManager.cpp */,
+				377CC9E01347A0E400A7AE73 /* GameState.cpp */,
+				377CC9E11347A0E400A7AE73 /* Geometry.cpp */,
+				377CC9E21347A0E400A7AE73 /* GfxEngine.cpp */,
+				377CC9E31347A0E400A7AE73 /* InputManager.cpp */,
+				377CC9E41347A0E400A7AE73 /* Level.cpp */,
+				377CC9E51347A0E400A7AE73 /* main.cpp */,
+				377CC9E61347A0E400A7AE73 /* Obstacle.cpp */,
+				377CC9E71347A0E400A7AE73 /* PhyxEngine.cpp */,
+				377CC9E81347A0E400A7AE73 /* Sphere.cpp */,
+				377CC9E91347A0E400A7AE73 /* StatePause.cpp */,
+				377CC9EA1347A0E400A7AE73 /* Tunnel.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -314,7 +284,7 @@
 		1AB674ADFE9D54B511CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				37B5D6C013277FE900BFC358 /* Debug.app */,
+				37B5D6C013277FE900BFC358 /* Vertigo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -322,70 +292,33 @@
 		3759A0211330D12400D26FB8 /* Ogre Procedural */ = {
 			isa = PBXGroup;
 			children = (
-				3783DF3E13310F77009D23B6 /* include */,
-				3783DF5813310F77009D23B6 /* src */,
 			);
 			name = "Ogre Procedural";
 			sourceTree = "<group>";
 		};
-		3783DF3E13310F77009D23B6 /* include */ = {
+		377C373B13488CC50026E68E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				3783DF3F13310F77009D23B6 /* Procedural.h */,
-				3783DF4013310F77009D23B6 /* ProceduralBoxGenerator.h */,
-				3783DF4113310F77009D23B6 /* ProceduralCapsuleGenerator.h */,
-				3783DF4213310F77009D23B6 /* ProceduralConeGenerator.h */,
-				3783DF4313310F77009D23B6 /* ProceduralCylinderGenerator.h */,
-				3783DF4413310F77009D23B6 /* ProceduralExtruder.h */,
-				3783DF4513310F77009D23B6 /* ProceduralGeometryHelpers.h */,
-				3783DF4613310F77009D23B6 /* ProceduralIcoSphereGenerator.h */,
-				3783DF4713310F77009D23B6 /* ProceduralLathe.h */,
-				3783DF4813310F77009D23B6 /* ProceduralMeshGenerator.h */,
-				3783DF4913310F77009D23B6 /* ProceduralMultiShape.h */,
-				3783DF4A13310F77009D23B6 /* ProceduralPath.h */,
-				3783DF4B13310F77009D23B6 /* ProceduralPlaneGenerator.h */,
-				3783DF4C13310F77009D23B6 /* ProceduralPlatform.h */,
-				3783DF4D13310F77009D23B6 /* ProceduralRoot.h */,
-				3783DF4E13310F77009D23B6 /* ProceduralRoundedBoxGenerator.h */,
-				3783DF4F13310F77009D23B6 /* ProceduralShape.h */,
-				3783DF5013310F77009D23B6 /* ProceduralSphereGenerator.h */,
-				3783DF5113310F77009D23B6 /* ProceduralStableHeaders.h */,
-				3783DF5213310F77009D23B6 /* ProceduralTorusGenerator.h */,
-				3783DF5313310F77009D23B6 /* ProceduralTorusKnotGenerator.h */,
-				3783DF5413310F77009D23B6 /* ProceduralTriangleBuffer.h */,
-				3783DF5513310F77009D23B6 /* ProceduralTriangulator.h */,
-				3783DF5613310F77009D23B6 /* ProceduralTubeGenerator.h */,
-				3783DF5713310F77009D23B6 /* ProceduralUtils.h */,
+				377C451213488DAA0026E68E /* config */,
+				377C451A13488DAA0026E68E /* media */,
 			);
-			name = include;
-			path = "modules/ogre-procedural/include";
+			name = Resources;
 			sourceTree = "<group>";
 		};
-		3783DF5813310F77009D23B6 /* src */ = {
+		377CC9881347A08700A7AE73 /* log4cpp */ = {
 			isa = PBXGroup;
 			children = (
-				3783DF5913310F77009D23B6 /* ProceduralBoxGenerator.cpp */,
-				3783DF5A13310F77009D23B6 /* ProceduralCapsuleGenerator.cpp */,
-				3783DF5B13310F77009D23B6 /* ProceduralConeGenerator.cpp */,
-				3783DF5C13310F77009D23B6 /* ProceduralCylinderGenerator.cpp */,
-				3783DF5D13310F77009D23B6 /* ProceduralExtruder.cpp */,
-				3783DF5E13310F77009D23B6 /* ProceduralGeometryHelpers.cpp */,
-				3783DF5F13310F77009D23B6 /* ProceduralIcoSphereGenerator.cpp */,
-				3783DF6013310F77009D23B6 /* ProceduralLathe.cpp */,
-				3783DF6113310F77009D23B6 /* ProceduralMultiShape.cpp */,
-				3783DF6213310F77009D23B6 /* ProceduralPlaneGenerator.cpp */,
-				3783DF6313310F77009D23B6 /* ProceduralPrecompiledHeaders.cpp */,
-				3783DF6413310F77009D23B6 /* ProceduralRoot.cpp */,
-				3783DF6513310F77009D23B6 /* ProceduralRoundedBoxGenerator.cpp */,
-				3783DF6613310F77009D23B6 /* ProceduralShape.cpp */,
-				3783DF6713310F77009D23B6 /* ProceduralSphereGenerator.cpp */,
-				3783DF6813310F77009D23B6 /* ProceduralTorusGenerator.cpp */,
-				3783DF6913310F77009D23B6 /* ProceduralTorusKnotGenerator.cpp */,
-				3783DF6A13310F77009D23B6 /* ProceduralTriangulator.cpp */,
-				3783DF6B13310F77009D23B6 /* ProceduralTubeGenerator.cpp */,
+				377CC9891347A09300A7AE73 /* PixyLogLayout.cpp */,
 			);
-			name = src;
-			path = "modules/ogre-procedural/src";
+			name = log4cpp;
+			sourceTree = "<group>";
+		};
+		377CC9FE1347A0FB00A7AE73 /* BtOgre */ = {
+			isa = PBXGroup;
+			children = (
+				377CC9FF1347A10E00A7AE73 /* BtOgre.cpp */,
+			);
+			name = BtOgre;
 			sourceTree = "<group>";
 		};
 		37B282461323EB4500BACB27 /* External Frameworks */ = {
@@ -393,11 +326,6 @@
 			children = (
 				3739FA621326D96C00FA5092 /* liblog4cpp.a */,
 				3739F94D1326D60000FA5092 /* Carbon.framework */,
-				37BF05CB1326DC72008DBF9F /* freetype2.framework */,
-				3739F9111326D30C00FA5092 /* Ogre.framework */,
-				3739F91E1326D38900FA5092 /* libOIS.a */,
-				37C97B3C1325633D00F10762 /* CEGUIBase.framework */,
-				37C97B3E1325633D00F10762 /* CEGUIOgreRenderer.framework */,
 				37B282471323EB5B00BACB27 /* OpenGL.framework */,
 				37B2824B1323EB6800BACB27 /* GLUT.framework */,
 				37B285AD1325521C00BACB27 /* BulletCollision.framework */,
@@ -405,8 +333,14 @@
 				37B285B11325521C00BACB27 /* BulletSoftBody.framework */,
 				37B285B31325521C00BACB27 /* LinearMath.framework */,
 				3739F9461326D5D800FA5092 /* IOKit.framework */,
-				37BF07371326DD10008DBF9F /* FreeImage.framework */,
-				37BF07391326DD10008DBF9F /* PCRE.framework */,
+				377CCAA71347B48400A7AE73 /* OpenAL.framework */,
+				377C363B134882CF0026E68E /* libOIS.a */,
+				377C36A8134883BC0026E68E /* libfreeimage.a */,
+				377C36AA134883BC0026E68E /* libfreetype.a */,
+				377C36AC134883BC0026E68E /* libzzip.a */,
+				379BCE5C1348A68000A76237 /* Ogg.framework */,
+				379BCE5E1348A68000A76237 /* Vorbis.framework */,
+				379BD1E31348AEF600A76237 /* Ogre.framework */,
 			);
 			name = "External Frameworks";
 			sourceTree = "<group>";
@@ -414,13 +348,16 @@
 		37B2829D1325167400BACB27 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				377CCA1A1347A11A00A7AE73 /* Utility.h */,
+				377CCA0A1347A11A00A7AE73 /* Geometry.h */,
+				377CCA131347A11A00A7AE73 /* Pixy.h */,
+				377CCA141347A11A00A7AE73 /* PixyLog.h */,
+				377CCA151347A11A00A7AE73 /* SdkCameraMan.h */,
 				37B5D78C13278B1700BFC358 /* Managers */,
 				37B5D78B13278B0D00BFC358 /* GameStates */,
 				37B5D78A13278B0100BFC358 /* Entities */,
 				37B5D78913278AF700BFC358 /* Events */,
 				37B5D78813278AF200BFC358 /* Engines */,
-				37B28342132522B300BACB27 /* Pixy.h */,
-				37B28343132522B300BACB27 /* PixyLog.h */,
 			);
 			name = Headers;
 			sourceTree = "<group>";
@@ -428,30 +365,16 @@
 		37B282C8132519B200BACB27 /* External Modules */ = {
 			isa = PBXGroup;
 			children = (
+				377CC9FE1347A0FB00A7AE73 /* BtOgre */,
+				377CC9881347A08700A7AE73 /* log4cpp */,
 				3759A0211330D12400D26FB8 /* Ogre Procedural */,
-				37B28344132522B300BACB27 /* Utility.h */,
-				37C97A5913255F4E00F10762 /* SdkCameraMan.h */,
-				37B282C9132519C800BACB27 /* log4cpp */,
 			);
 			name = "External Modules";
-			sourceTree = "<group>";
-		};
-		37B282C9132519C800BACB27 /* log4cpp */ = {
-			isa = PBXGroup;
-			children = (
-				37B282CA132519C800BACB27 /* PixyLogLayout.cpp */,
-				37B282CB132519C800BACB27 /* PixyLogLayout.h */,
-			);
-			name = log4cpp;
-			path = modules/log4cpp;
 			sourceTree = "<group>";
 		};
 		37B5D0D113277D9600BFC358 /* CEGUI */ = {
 			isa = PBXGroup;
 			children = (
-				37B5D08E13277CF100BFC358 /* CEGUIExpatParser.bundle */,
-				37B5D09013277CF100BFC358 /* CEGUIFreeImageImageCodec.bundle */,
-				37B5D0D313277DB800BFC358 /* CEGUIFalagardWRBase.bundle */,
 			);
 			name = CEGUI;
 			sourceTree = "<group>";
@@ -459,11 +382,13 @@
 		37B5D0D213277D9B00BFC358 /* Ogre */ = {
 			isa = PBXGroup;
 			children = (
-				37C97A4513255ECE00F10762 /* libOgreTerrain.dylib */,
-				37C97A4713255ECE00F10762 /* Plugin_OctreeSceneManager.dylib */,
+				379BCE3A1348A5B700A76237 /* Plugin_OgreOggSound.dylib */,
+				377C32FC1348815C0026E68E /* libOgreRTShaderSystem.dylib */,
+				377C32FE1348815C0026E68E /* Plugin_CgProgramManager.dylib */,
 				37C97A4913255ECE00F10762 /* Plugin_ParticleFX.dylib */,
 				37C97A4B13255ECE00F10762 /* RenderSystem_GL.dylib */,
-				37BF074A1326DD4D008DBF9F /* libOgrePaging.dylib */,
+				377C371B13488BBF0026E68E /* Plugin_OgreProcedural.dylib */,
+				377C373013488C4F0026E68E /* Plugin_ParticleUniverse.dylib */,
 			);
 			name = Ogre;
 			sourceTree = "<group>";
@@ -471,10 +396,10 @@
 		37B5D78813278AF200BFC358 /* Engines */ = {
 			isa = PBXGroup;
 			children = (
-				37BF05B61326DB9B008DBF9F /* UIEngine.h */,
-				37C978A413255E3B00F10762 /* GfxEngine.h */,
-				37B2856213254B5E00BACB27 /* Engine.h */,
-				37B2856313254B5F00BACB27 /* PhyxEngine.h */,
+				377CCA011347A11A00A7AE73 /* AudioEngine.h */,
+				377CCA021347A11A00A7AE73 /* Engine.h */,
+				377CCA0B1347A11A00A7AE73 /* GfxEngine.h */,
+				377CCA121347A11A00A7AE73 /* PhyxEngine.h */,
 			);
 			name = Engines;
 			sourceTree = "<group>";
@@ -482,12 +407,12 @@
 		37B5D78913278AF700BFC358 /* Events */ = {
 			isa = PBXGroup;
 			children = (
-				37C97B42132563B400F10762 /* Event.h */,
-				37C97B43132563B400F10762 /* EventHandler.h */,
-				37C97B44132563B400F10762 /* EventListener.h */,
-				37C97B45132563B400F10762 /* EventManager.h */,
-				37C97B46132563B400F10762 /* Handler.h */,
-				37C97B47132563B400F10762 /* Listener.h */,
+				377CCA041347A11A00A7AE73 /* Event.h */,
+				377CCA051347A11A00A7AE73 /* EventHandler.h */,
+				377CCA061347A11A00A7AE73 /* EventListener.h */,
+				377CCA071347A11A00A7AE73 /* EventManager.h */,
+				377CCA0C1347A11A00A7AE73 /* Handler.h */,
+				377CCA0F1347A11A00A7AE73 /* Listener.h */,
 			);
 			name = Events;
 			sourceTree = "<group>";
@@ -495,9 +420,11 @@
 		37B5D78A13278B0100BFC358 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
-				37B2859413254FB000BACB27 /* Entity.h */,
-				37B282AF1325175300BACB27 /* Sphere.h */,
-				37599FA61330C8E800D26FB8 /* MotionState.h */,
+				377CCA101347A11A00A7AE73 /* MotionState.h */,
+				377CCA031347A11A00A7AE73 /* Entity.h */,
+				377CCA111347A11A00A7AE73 /* Obstacle.h */,
+				377CCA161347A11A00A7AE73 /* Sphere.h */,
+				377CCA181347A11A00A7AE73 /* Tunnel.h */,
 			);
 			name = Entities;
 			sourceTree = "<group>";
@@ -505,8 +432,9 @@
 		37B5D78B13278B0D00BFC358 /* GameStates */ = {
 			isa = PBXGroup;
 			children = (
-				37C97A5613255F4E00F10762 /* GameState.h */,
-				37C97A5813255F4E00F10762 /* Intro.h */,
+				377CCA091347A11A00A7AE73 /* GameState.h */,
+				377CCA0E1347A11A00A7AE73 /* Level.h */,
+				377CCA171347A11A00A7AE73 /* StatePause.h */,
 			);
 			name = GameStates;
 			sourceTree = "<group>";
@@ -514,8 +442,8 @@
 		37B5D78C13278B1700BFC358 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				37C97A5713255F4E00F10762 /* InputManager.h */,
-				37C97A5513255F4E00F10762 /* GameManager.h */,
+				377CCA081347A11A00A7AE73 /* GameManager.h */,
+				377CCA0D1347A11A00A7AE73 /* InputManager.h */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -550,6 +478,7 @@
 				37B5D6AE13277EA800BFC358 /* Copy Frameworks */,
 				37B5D6AF13277EA800BFC358 /* Copy Plugins */,
 				37B5D6DB1327811C00BFC358 /* Copy Components */,
+				379BCD801348953600A76237 /* Logs */,
 			);
 			buildRules = (
 			);
@@ -557,7 +486,7 @@
 			);
 			name = Vertigo;
 			productName = Debug;
-			productReference = 37B5D6C013277FE900BFC358 /* Debug.app */;
+			productReference = 37B5D6C013277FE900BFC358 /* Vertigo.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -582,6 +511,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				377C49FF13488DAB0026E68E /* config in Resources */,
+				377C4A0013488DAB0026E68E /* media in Resources */,
+				379BCDCE13489E5000A76237 /* Pixy.log in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -592,39 +524,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				37B5D0F013277E5200BFC358 /* main.cpp in Sources */,
-				37B5D0F113277E5200BFC358 /* Sphere.cpp in Sources */,
-				37B5D0F213277E5200BFC358 /* PixyLogLayout.cpp in Sources */,
-				37B5D0F313277E5200BFC358 /* Entity.cpp in Sources */,
-				37B5D0F413277E5200BFC358 /* PhyxEngine.cpp in Sources */,
-				37B5D0F513277E5200BFC358 /* GfxEngine.cpp in Sources */,
-				37B5D0F613277E5200BFC358 /* GameManager.cpp in Sources */,
-				37B5D0F713277E5200BFC358 /* GameState.cpp in Sources */,
-				37B5D0F813277E5200BFC358 /* InputManager.cpp in Sources */,
-				37B5D0F913277E5200BFC358 /* Intro.cpp in Sources */,
-				37B5D0FA13277E5200BFC358 /* Event.cpp in Sources */,
-				37B5D0FB13277E5200BFC358 /* EventListener.cpp in Sources */,
-				37B5D0FC13277E5200BFC358 /* EventManager.cpp in Sources */,
-				37B5D0FD13277E5200BFC358 /* UIEngine.cpp in Sources */,
-				3783DF6C13310F77009D23B6 /* ProceduralBoxGenerator.cpp in Sources */,
-				3783DF6D13310F77009D23B6 /* ProceduralCapsuleGenerator.cpp in Sources */,
-				3783DF6E13310F77009D23B6 /* ProceduralConeGenerator.cpp in Sources */,
-				3783DF6F13310F77009D23B6 /* ProceduralCylinderGenerator.cpp in Sources */,
-				3783DF7013310F77009D23B6 /* ProceduralExtruder.cpp in Sources */,
-				3783DF7113310F77009D23B6 /* ProceduralGeometryHelpers.cpp in Sources */,
-				3783DF7213310F77009D23B6 /* ProceduralIcoSphereGenerator.cpp in Sources */,
-				3783DF7313310F77009D23B6 /* ProceduralLathe.cpp in Sources */,
-				3783DF7413310F77009D23B6 /* ProceduralMultiShape.cpp in Sources */,
-				3783DF7513310F77009D23B6 /* ProceduralPlaneGenerator.cpp in Sources */,
-				3783DF7613310F77009D23B6 /* ProceduralPrecompiledHeaders.cpp in Sources */,
-				3783DF7713310F77009D23B6 /* ProceduralRoot.cpp in Sources */,
-				3783DF7813310F77009D23B6 /* ProceduralRoundedBoxGenerator.cpp in Sources */,
-				3783DF7913310F77009D23B6 /* ProceduralShape.cpp in Sources */,
-				3783DF7A13310F77009D23B6 /* ProceduralSphereGenerator.cpp in Sources */,
-				3783DF7B13310F77009D23B6 /* ProceduralTorusGenerator.cpp in Sources */,
-				3783DF7C13310F77009D23B6 /* ProceduralTorusKnotGenerator.cpp in Sources */,
-				3783DF7D13310F77009D23B6 /* ProceduralTriangulator.cpp in Sources */,
-				3783DF7E13310F77009D23B6 /* ProceduralTubeGenerator.cpp in Sources */,
+				377CC98A1347A09300A7AE73 /* PixyLogLayout.cpp in Sources */,
+				377CC9EC1347A0E400A7AE73 /* AudioEngine.cpp in Sources */,
+				377CC9ED1347A0E400A7AE73 /* Entity.cpp in Sources */,
+				377CC9EE1347A0E400A7AE73 /* Event.cpp in Sources */,
+				377CC9EF1347A0E400A7AE73 /* EventListener.cpp in Sources */,
+				377CC9F01347A0E400A7AE73 /* EventManager.cpp in Sources */,
+				377CC9F11347A0E400A7AE73 /* GameManager.cpp in Sources */,
+				377CC9F21347A0E400A7AE73 /* GameState.cpp in Sources */,
+				377CC9F31347A0E400A7AE73 /* Geometry.cpp in Sources */,
+				377CC9F41347A0E400A7AE73 /* GfxEngine.cpp in Sources */,
+				377CC9F51347A0E400A7AE73 /* InputManager.cpp in Sources */,
+				377CC9F61347A0E400A7AE73 /* Level.cpp in Sources */,
+				377CC9F71347A0E400A7AE73 /* main.cpp in Sources */,
+				377CC9F81347A0E400A7AE73 /* Obstacle.cpp in Sources */,
+				377CC9F91347A0E400A7AE73 /* PhyxEngine.cpp in Sources */,
+				377CC9FA1347A0E400A7AE73 /* Sphere.cpp in Sources */,
+				377CC9FB1347A0E400A7AE73 /* StatePause.cpp in Sources */,
+				377CC9FC1347A0E400A7AE73 /* Tunnel.cpp in Sources */,
+				377CCA001347A10E00A7AE73 /* BtOgre.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -635,21 +553,37 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "*.nib *.lproj *.framework *.gch *.xcode* (*) CVS .svn .git";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Library/Frameworks,
+					"/Volumes/kandie/Workspace/Build/Ogre-1.7.2/lib/Debug/Ogre.framework",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_FAST_OBJC_DISPATCH = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
+					/Volumes/kandie/Workspace/Build/ParticleUniverse/include,
+					"\"/System/Library/Frameworks/OpenAL.framework/Headers\"",
 					/usr/local/include,
 					/opt/local/include,
 					/usr/local/include/bullet,
-					"./**",
-					"\"$(SRCROOT)/../../Build/Ogre-1.7.2/lib/Debug/Ogre.framework/Headers\"",
-					"\"$(SRCROOT)/../../../Downloads/Development/Game/Ogre/ogre_src_v1-7-2/Dependencies/include/OIS\"",
+					"\"/Volumes/kandie/Workspace/Build/Ogre-1.7.2/lib/Debug/Ogre.framework/Headers\"",
+					"\"/Volumes/kandie/Downloads/Development/Game/Ogre/ogre_src_v1-7-2/Dependencies/include/OIS\"",
+					"\"$(SRCROOT)/../../include\"",
+					"\"$(SRCROOT)/../../modules/include/ogre\"",
+					"\"$(SRCROOT)/../../modules/include/ogre-procedural\"",
+					"\"$(SRCROOT)/../../modules/include/btogre\"",
+					"\"$(SRCROOT)/../../modules/include\"",
+					"\"$(SRCROOT)/../../modules/include/log4cpp\"",
+					/Volumes/kandie/Workspace/Build/ogreoggsound/include,
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
 				SDKROOT = macosx10.6;
+				ZERO_LINK = TRUE;
 			};
 			name = Debug;
 		};
@@ -668,13 +602,17 @@
 		37B5D0EB13277E0600BFC358 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../Build/CEGUI-SDK-0.7.5-mac/Frameworks/Debug\"",
 					"\"$(SRCROOT)/../../Build/Ogre-1.7.2/lib/Debug\"",
-					"\"$(SRCROOT)/../../../Downloads/Development/Game/CEGUI/CEGUI-0.7.5/dependencies\"",
+					/Library/Frameworks,
+					/System/Library/Frameworks/OpenAL.framework/Headers,
+					/Library/Frameworks/Ogg.framework/Headers,
+					/Library/Frameworks/Vorbis.framework/Headers,
+					"\"$(SRCROOT)/../../../../Build/Ogre-1.7.2/lib/Debug\"",
+					"\"$(SRCROOT)/../../../../Build/Ogre-1.7.2/lib/Release\"",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -688,6 +626,12 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Build/Ogre-1.7.2/lib/Debug\"",
 					"\"$(SRCROOT)/../../../Downloads/Development/Game/Ogre/ogre_src_v1-7-2/Dependencies/lib/Debug\"",
+					"\"$(SRCROOT)/../../../../Build/ParticleUniverse/build\"",
+					"\"$(SRCROOT)/../../../../Build/Ogre-1.7.2/lib/Debug\"",
+					"\"$(SRCROOT)/../../../../../Downloads/Development/Game/Ogre/ogre_src_v1-7-2/Dependencies/lib/Debug\"",
+					"\"$(SRCROOT)/../../../../Build/ogreoggsound\"",
+					"\"$(SRCROOT)/../../../../Build/ogre-procedural/build\"",
+					"\"$(SRCROOT)/../../../../Build/ogreoggsound/build\"",
 				);
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -703,34 +647,56 @@
 		37B5D0EC13277E0600BFC358 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../Build/CEGUI-SDK-0.7.5-mac/Frameworks/Debug\"",
-					"\"$(SRCROOT)/../../Build/Ogre-1.7.2/lib/Debug\"",
-					"\"$(SRCROOT)/../../../Downloads/Development/Game/CEGUI/CEGUI-0.7.5/dependencies\"",
+					"\"/Volumes/kandie/Workspace/Build/Ogre-1.7.2/lib/Release/Ogre.framework\"",
+					"\"$(SRCROOT)/../../../../Build/Ogre-1.7.2/lib/Release\"",
 				);
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
+				GCC_FAST_OBJC_DISPATCH = NO;
 				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INFOPLIST_FILE = "Debug-Info.plist";
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				HEADER_SEARCH_PATHS = (
+					"\"$(SRCROOT)/../../include\"",
+					"\"$(SRCROOT)/../../modules/include\"/**",
+					/opt/local/include,
+					/usr/local/include,
+					/usr/local/include/bullet,
+					/Volumes/kandie/Workspace/Build/ParticleUniverse/include,
+					"/Volumes/kandie/Downloads/Development/Game/Ogre/ogre_src_v1-7-2/Dependencies/include/OIS",
+					/Volumes/kandie/Workspace/Build/ogreoggsound/include,
+					"\"/Volumes/kandie/Workspace/Build/Ogre-1.7.2/lib/Release/Ogre.framework/Headers\"",
+					"\"/System/Library/Frameworks/OpenAL.framework/Headers\"",
+				);
+				INFOPLIST_EXPAND_BUILD_SETTINGS = NO;
+				INFOPLIST_FILE = "";
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../Build/Ogre-1.7.2/lib/Debug\"",
-					"\"$(SRCROOT)/../../Libraries/gamedev/ois/lib\"",
+					"\"/Volumes/kandie/Workspace/Build/Ogre-1.7.2/lib/Release\"",
+					"\"/Volumes/kandie/Downloads/Development/Game/Ogre/ogre_src_v1-7-2/Dependencies/lib/Release\"",
+					"\"$(SRCROOT)/../../../../Build/ParticleUniverse/build\"",
+					"\"$(SRCROOT)/../../../../Build/ogre-procedural/build\"",
+					"\"$(SRCROOT)/../../../../Build/ogreoggsound/build\"",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
 					"-framework",
 					AppKit,
+					"-framework",
+					OpenAL,
+					"-framework",
+					Ogre,
 				);
 				PREBINDING = NO;
-				PRODUCT_NAME = Debug;
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
+				PRODUCT_NAME = Vertigo;
 				ZERO_LINK = NO;
 			};
 			name = Release;

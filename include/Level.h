@@ -19,7 +19,7 @@
 #include "EventManager.h"
 #include "EventListener.h"
 
-#include "UIEngine.h"
+//#include "UIEngine.h"
 #include "GfxEngine.h"
 #include "PhyxEngine.h"
 #include "AudioEngine.h"
@@ -91,10 +91,10 @@ namespace Pixy
 		
 		EventManager *mEvtMgr;
 		GfxEngine		*mGfxEngine;
-		UIEngine		*mUIEngine;
+		//UIEngine		*mUIEngine;
 		PhyxEngine		*mPhyxEngine;
 		AudioEngine *mSfxEngine;
-		CEGUI::System	*mUISystem;
+		//CEGUI::System	*mUISystem;
 		Sphere			  *mSphere;
 		std::list<Obstacle*> mObstacles;
 		std::list<Obstacle*> mObstaclePool;

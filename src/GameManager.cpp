@@ -33,6 +33,33 @@ namespace Pixy
 		log4cpp::Category::shutdown();
 		mRoot = NULL; mInputMgr = NULL;
 	}
+
+#if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
+#include <CoreFoundation/CoreFoundation.h>
+	
+	// This function will locate the path to our application on OS X,
+	// unlike windows you cannot rely on the current working directory
+	// for locating your configuration files and resources.
+	std::string macBundlePath()
+	{
+		char path[1024];
+		CFBundleRef mainBundle = CFBundleGetMainBundle();
+		assert(mainBundle);
+		
+		CFURLRef mainBundleURL = CFBundleCopyBundleURL(mainBundle);
+		assert(mainBundleURL);
+		
+		CFStringRef cfStringRef = CFURLCopyFileSystemPath( mainBundleURL, kCFURLPOSIXPathStyle);
+		assert(cfStringRef);
+		
+		CFStringGetCString(cfStringRef, path, 1024, kCFStringEncodingASCII);
+		
+		CFRelease(mainBundleURL);
+		CFRelease(cfStringRef);
+		
+		return std::string(path);
+	}
+#endif
 	
 	void GameManager::startGame() {
 		// init logger
@@ -44,11 +71,11 @@ namespace Pixy
     lPathPlugins << PROJECT_ROOT << PROJECT_RESOURCES << "\\config\\plugins.cfg";
 		lPathOgreCfg << PROJECT_ROOT << PROJECT_RESOURCES << "\\config\\ogre.cfg";	
 		lPathLog << PROJECT_LOG_DIR << "\\Ogre.log";	
-#elsif OGRE_PLATFORM == OGRE_PLATFORM_APPLE
-		lPathResources << PROJECT_ROOT << PROJECT_RESOURCES << "/config/resources_osx.cfg";
-    lPathPlugins << PROJECT_ROOT << PROJECT_RESOURCES << "/config/plugins.cfg";
-		lPathOgreCfg << PROJECT_ROOT << PROJECT_RESOURCES << "/config/ogre.cfg";	
-		lPathLog << PROJECT_LOG_DIR << "/Ogre.log";    
+#elif OGRE_PLATFORM == OGRE_PLATFORM_APPLE
+		lPathResources << macBundlePath() << "/Contents/Resources/config/resources_osx.cfg";
+		lPathPlugins << macBundlePath() << "/Contents/Resources/config/plugins.cfg";
+		lPathOgreCfg << macBundlePath() << "/Contents/Resources/config/ogre.cfg";	
+		lPathLog << macBundlePath() << "/Contents/Logs/Ogre.log";    
 #else
 		lPathResources << PROJECT_ROOT << PROJECT_RESOURCES << "/config/resources_linux.cfg";
     lPathPlugins << PROJECT_ROOT << PROJECT_RESOURCES << "/config/plugins.cfg";
@@ -161,8 +188,11 @@ namespace Pixy
 		    while( itSetting != mapSettings->end() ) {
 		        sType = itSetting->first;
 		        sArch = itSetting->second;
-				
-		        ResourceGroupManager::getSingleton().addResourceLocation( sArch, sType, sSection );
+#if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
+				ResourceGroupManager::getSingleton().addResourceLocation( String(macBundlePath() + "/" + sArch), sType, sSection);
+#else
+				ResourceGroupManager::getSingleton().addResourceLocation( sArch, sType, sSection);
+#endif				
 				
 		        ++itSetting;
 		    }
@@ -270,10 +300,12 @@ namespace Pixy
 		std::string lLogPath = PROJECT_LOG_DIR;
 #if OGRE_PLATFORM == OGRE_PLATFORM_WINDOWS || defined(_WIN32)
 		lLogPath += "\\Pixy.log";
+#elif OGRE_PLATFORM == OGRE_PLATFORM_APPLE
+		lLogPath = macBundlePath() + "/Contents/Logs/Pixy.log";
 #else
-		lLogPath += "/Pixy.log";
+		lLogPath += "/Pixy.log";		
 #endif	
-		//std::cout << "| Initting log4cpp logger @ " << lLogPath << "!\n";
+		std::cout << "| Initting log4cpp logger @ " << lLogPath << "!\n";
 		
 		log4cpp::Appender* lApp = new 
 		log4cpp::FileAppender("FileAppender",
