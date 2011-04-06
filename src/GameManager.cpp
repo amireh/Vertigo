@@ -1,7 +1,7 @@
 #include "GameManager.h"
 #include "GameState.h"
+#include "Intro.h"
 #include "Level.h"
-//#include "Combat.h"
 #include "log4cpp/PixyLogLayout.h"
 using namespace Ogre;
 
@@ -22,7 +22,7 @@ namespace Pixy
 		    mStates.back()->exit();
 		    mStates.pop_back();
 		}
-		
+
 		if( mInputMgr )
 		    delete mInputMgr;
 		
@@ -30,6 +30,9 @@ namespace Pixy
 		if( mRoot )
 		    delete mRoot;
 		
+		if (mLog)
+		  delete mLog;
+		  
 		log4cpp::Category::shutdown();
 		mRoot = NULL; mInputMgr = NULL;
 	}
@@ -60,7 +63,61 @@ namespace Pixy
 		return std::string(path);
 	}
 #endif
-	
+
+  void GameManager::loadRenderSystems() 
+  { 
+    //Root* ogreRoot = Root::getSingletonPtr(); 
+    bool rendererInstalled = false;
+#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32 
+    HRESULT hr; 
+    DWORD dwDirectXVersion = 0; 
+    TCHAR strDirectXVersion[10]; 
+
+    hr = GetDXVersion( &dwDirectXVersion, strDirectXVersion, 10 ); 
+    if( SUCCEEDED(hr) ) { 
+      ostringstream dxinfoStream; 
+      dxinfoStream << "DirectX version: " << strDirectXVersion; 
+      //LogManager::getSingleton().logMessage(dxinfoStream.str());
+      mLog->infoStream() << dxinfoStream.str();  
+
+      if(dwDirectXVersion >= 0x00090000) { 
+        try { 
+          mRoot->loadPlugin("RenderSystem_Direct3D9"); 
+          mRoot->setRenderSystem(mRoot->getRenderSystemByName("Direct3D9 Rendering Subsystem"));
+          rendererInstalled = true;
+        } 
+        catch(Exception& e) { 
+          mLog->errorStream() << "Unable to create D3D9 RenderSystem: " << e.getFullDescription(); 
+        } 
+      } 
+    } 
+#endif
+    try {
+      std::string lPluginsPath;
+#if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
+      lPluginsPath = macBundlePath() + "Contents/Plugins/";
+#elif OGRE_PLATFORM == OGRE_PLATFORM_WIN32
+      lPluginsPath = ".\\";
+#else
+      lPluginsPath = "./";
+#endif
+      mRoot->loadPlugin(lPluginsPath + "RenderSystem_GL");
+      if (!rendererInstalled) {
+        mRoot->setRenderSystem(mRoot->getRenderSystemByName("OpenGL Rendering Subsystem"));
+        rendererInstalled = true;
+      }
+    } 
+    catch(Ogre::Exception& e) { 
+      mLog->errorStream() << "Unable to create OpenGL RenderSystem: " << e.getFullDescription(); 
+    } 
+
+    try { 
+      mRoot->loadPlugin("./Plugin_CgProgramManager");  
+    } 
+    catch(Ogre::Exception& e) { 
+      mLog->errorStream() << "Unable to create CG Program manager RenderSystem: " << e.getFullDescription(); 
+    } 
+  }
 	void GameManager::startGame() {
 		// init logger
 		initLogger();
@@ -82,14 +139,14 @@ namespace Pixy
 		lPathOgreCfg << PROJECT_ROOT << PROJECT_RESOURCES << "/config/ogre.cfg";	
 		lPathLog << PROJECT_LOG_DIR << "/Ogre.log";
 #endif
-
+    
 		mRoot = OGRE_NEW Root(lPathPlugins.str(), lPathOgreCfg.str(), lPathLog.str());
 		if (!mRoot) {
 			throw Ogre::Exception( Ogre::Exception::ERR_INTERNAL_ERROR, 
 								  "Error - Couldn't initalize OGRE!", 
 								  "Vertigo - Error");
 		}
-		
+		loadRenderSystems();
 	
 		// Setup and configure game
 		this->setupResources(lPathResources.str());
@@ -109,7 +166,6 @@ namespace Pixy
 		
 		mInputMgr->addKeyListener( this, "GameManager" );
 		mInputMgr->addMouseListener( this, "GameManager" );
-		
 		
 		// Change to first state
 		this->changeState( Level::getSingletonPtr() );
@@ -145,6 +201,7 @@ namespace Pixy
 
 		}
 		
+		
 	}
 	
 	
@@ -153,9 +210,9 @@ namespace Pixy
 		// Load config settings from ogre.cfg
 		if( !mRoot->restoreConfig() ) {
 		    // If there is no config file, show the configuration dialog
-		    if( !mRoot->showConfigDialog() ) {
-		        return false;
-		    }
+		    //if( !mRoot->showConfigDialog() ) {
+		    //    return false;
+		    //}
 		}
 		
 		// Initialise and create a default rendering window
@@ -165,7 +222,7 @@ namespace Pixy
 		ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 		
 		// Create needed scenemanagers
-		mRoot->createSceneManager( ST_EXTERIOR_CLOSE, "ST_EXTERIOR_CLOSE" );
+		//mRoot->createSceneManager( ST_EXTERIOR_CLOSE, "ST_EXTERIOR_CLOSE" );
 		
 		return true;
 	}
@@ -192,11 +249,13 @@ namespace Pixy
 				ResourceGroupManager::getSingleton().addResourceLocation( String(macBundlePath() + "/" + sArch), sType, sSection);
 #else
 				ResourceGroupManager::getSingleton().addResourceLocation( sArch, sType, sSection);
-#endif				
+#endif
 				
 		        ++itSetting;
 		    }
 		}
+		// Initialise resources
+		//ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 	}
 	
 	void GameManager::changeState( GameState *inState ) {
@@ -208,10 +267,13 @@ namespace Pixy
 		    mStates.pop_back();
 		}
 
-		mCurrentState = inState->getId();
 		// Store and init the new state
+		mCurrentState = inState;
 		mStates.push_back( inState );
 		mStates.back()->enter();
+		
+		// reset our frame timer to eliminate any burst glitches
+		//mRoot->getTimer()->reset();
 	}
 	
 	void GameManager::pushState( GameState *inState ) {
@@ -220,6 +282,8 @@ namespace Pixy
 		if( !mStates.empty() ) {
 		    mStates.back()->pause();
 		}
+		
+		mCurrentState = inState;
 		
 		// Store and init the new state
 		mStates.push_back( inState );
@@ -235,6 +299,7 @@ namespace Pixy
 		
 		// Resume previous state
 		if( !mStates.empty() ) {
+		    mCurrentState = mStates.back();
 		    mStates.back()->resume();
 		}
 	}
@@ -290,7 +355,7 @@ namespace Pixy
 		return *getSingletonPtr();
 	}
 	
-	GAME_STATE GameManager::gameState() const {
+	GameState* GameManager::currentState() {
 		return mCurrentState;
 	}
 	
@@ -335,6 +400,9 @@ namespace Pixy
 		lCat = 0;
 		lLayout = 0;
 		lHeaderLayout = 0;
+		
+		mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "GameManager");
 	}
 	
+	bool GameManager::shuttingDown() { return fShutdown; };
 } // end of namespace Pixy
