@@ -18,15 +18,15 @@ namespace Pixy
 		
 		mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "Intro");
 		
-		mEvtMgr = EventManager::getSingletonPtr();
+		//mEvtMgr = EventManager::getSingletonPtr();
 		
-		mEngines.clear();
+		//mEngines.clear();
 		
 		// init engines
-		mGfxEngine = GfxEngine::getSingletonPtr();
+		//mGfxEngine = GfxEngine::getSingletonPtr();
 		//mPhyxEngine = PhyxEngine::getSingletonPtr();
 		//mSfxEngine = SfxEngine::getSingletonPtr();
-		mUIEngine = UIEngine::getSingletonPtr();
+		//mUIEngine = UIEngine::getSingletonPtr();
 		
 		//mEngines.push_back(mGfxEngine);
 		//mEngines.back()->setup();
@@ -43,11 +43,11 @@ namespace Pixy
     // prepare our sphere
 		//mSphere = new Sphere();
 		//mSphere->live();
-
+    /*
 		for (_itrEngines = mEngines.begin();
 		     _itrEngines != mEngines.end();
 		     ++_itrEngines)
-		    (*_itrEngines)->deferredSetup();
+		    (*_itrEngines)->deferredSetup();*/
 		
 		    		
 		mLog->infoStream() << "Initialized successfully.";
@@ -64,9 +64,9 @@ namespace Pixy
 		
 		//delete mSphere;
 		
-		mEngines.clear();
+		//mEngines.clear();
 		
-		bool fShuttingDown = GameManager::getSingleton().shuttingDown();
+		//bool fShuttingDown = GameManager::getSingleton().shuttingDown();
 		
 		//mUIEngine->cleanup();
 		//if (fShuttingDown)
@@ -103,28 +103,29 @@ namespace Pixy
 		
 		//mUIEngine->keyReleased( e );
 
-		if (e.key == OIS::KC_ESCAPE)
+		if (e.key == OIS::KC_Q) {
 		  return this->requestShutdown();
-		else if (e.key == OIS::KC_RETURN)
-		  GameManager::getSingleton().changeState(Level::getSingletonPtr());
+		} else if (e.key == OIS::KC_RETURN || e.key == OIS::KC_ESCAPE)
+		  //GameManager::getSingleton().changeState(Level::getSingletonPtr());
+		  GameManager::getSingleton().popState();
 
 		
 	}
 	
 	void Intro::mouseMoved( const OIS::MouseEvent &e )
 	{
-		mUIEngine->mouseMoved(e);
+		//mUIEngine->mouseMoved(e);
 		//mSphere->mouseMoved(e);
 		//mGfxEngine->mouseMoved(e);
 	}
 	
 	void Intro::mousePressed( const OIS::MouseEvent &e, OIS::MouseButtonID id ) {
-    mUIEngine->mousePressed(e, id);
+    //mUIEngine->mousePressed(e, id);
 		//mGfxEngine->mousePressed(e, id);
 	}
 	
 	void Intro::mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id ) {
-		mUIEngine->mouseReleased(e, id);
+		//mUIEngine->mouseReleased(e, id);
 		//mGfxEngine->mouseReleased(e, id);
 	}
 	
@@ -148,13 +149,13 @@ namespace Pixy
   
 	void Intro::update( unsigned long lTimeElapsed ) {
 	  //mLog->debugStream() << " LTE : " << lTimeElapsed;
-		mEvtMgr->update();
-		processEvents();
+		//mEvtMgr->update();
+		//processEvents();
 		
-		for (_itrEngines = mEngines.begin();
+		/*for (_itrEngines = mEngines.begin();
 		     _itrEngines != mEngines.end();
 		     ++_itrEngines)
-		    (*_itrEngines)->update(lTimeElapsed);
+		    (*_itrEngines)->update(lTimeElapsed);*/
     
 	}
 

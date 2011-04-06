@@ -71,8 +71,8 @@ namespace Pixy
 	    mObstaclePool.push_back(new Obstacle());
 		
 		fSpawning = true;
-		fGameOver = fGameStarted = false;
-    fGameStarted = true;
+		fGameOver = false;
+    fGameStarted = false;
     
     // event handlers
     bindToName("PlayerWon", this, &Level::evtPlayerWon);
@@ -88,7 +88,7 @@ namespace Pixy
 		
 		mTimer.reset();
 
-    mUpdater = &Level::updateGame;
+    mUpdater = &Level::updatePreparation;
     		
 		mLog->infoStream() << "Initialized successfully.";
 		
@@ -168,17 +168,18 @@ namespace Pixy
 		
 		//mUIEngine->keyReleased( e );
 		// start the game when a key is released
-		/*if (!fGameStarted) {
-		  fGameStarted = true;
-		  mEvtMgr->hook(mEvtMgr->createEvt("GameStarted"));
+		if (!fGameStarted) {
+		  if ( e.key == OIS::KC_RETURN) {
+		    fGameStarted = true;
+		    mEvtMgr->hook(mEvtMgr->createEvt("GameStarted"));
+		  }
 		  return;
-		}*/
+		}
+		
 		if (e.key == OIS::KC_ESCAPE) {
 		  //return this->requestShutdown();
-		  return GameManager::getSingleton().changeState(Intro::getSingletonPtr());
+		  return GameManager::getSingleton().pushState(Intro::getSingletonPtr());
 		}
-		if (!fGameStarted)
-		  return;
 		
 		//mUISystem->injectKeyUp(e.key);
 		mGfxEngine->keyReleased(e);
@@ -302,8 +303,8 @@ namespace Pixy
 		mEvtMgr->update();
 		processEvents();
 		
-		updateGame(lTimeElapsed);
-    //(this->*mUpdater)(lTimeElapsed);
+		//updateGame(lTimeElapsed);
+    (this->*mUpdater)(lTimeElapsed);
     
 	}
 	

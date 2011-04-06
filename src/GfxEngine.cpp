@@ -67,11 +67,7 @@ namespace Pixy {
 	}
 	
 	void GfxEngine::loadResources() {
-	  //Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup("Bootstrap");
-		mTrayMgr = new OgreBites::SdkTrayManager("Vertigo/UI/Trays", mRenderWindow, InputManager::getSingletonPtr()->getMouse(), 0);
-		mTrayMgr->hideCursor(); 
-		/*mTrayMgr->showLoadingBar(1,0);
-	  Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup("General");*/
+
 	  
 	};
 	bool GfxEngine::setup() {
@@ -103,7 +99,7 @@ namespace Pixy {
 		setupSceneManager();
     setupViewports();
         
-		loadResources();
+		
 		
 		
         
@@ -120,7 +116,8 @@ namespace Pixy {
 
     setupParticles();
 		
-
+    mTrayMgr = new OgreBites::SdkTrayManager("Vertigo/UI/Trays", mRenderWindow, InputManager::getSingletonPtr()->getMouse(), 0);
+		mTrayMgr->hideCursor(); 
     mTrayMgr->showFrameStats(OgreBites::TL_TOPLEFT);
     mTrayMgr->hideTrays();
     
