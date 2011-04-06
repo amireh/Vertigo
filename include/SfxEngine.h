@@ -1,5 +1,5 @@
 /*
- *  AudioEngine.h
+ *  SfxEngine.h
  *  Elementum
  *
  *  Created by Ahmad Amireh on 2/15/10.
@@ -8,8 +8,8 @@
  */
 
 
-#ifndef H_AudioEngine_H
-#define H_AudioEngine_H
+#ifndef H_SfxEngine_H
+#define H_SfxEngine_H
 
 #include "Pixy.h"
 #include "Engine.h"
@@ -23,20 +23,16 @@ using namespace OgreOggSound;
 namespace Pixy
 {
 	
-	typedef enum {
-	  SFX_EXPLOSION,
-	  SFX_SHATTER,
-	} SOUND_EFFECT;
-	
-	/*! \class AudioEngine
+
+	/*! \class SfxEngine
 	 *	\brief
 	 */
-  class AudioEngine : public Engine, public EventListener
+  class SfxEngine : public Engine, public EventListener
 	{
 	public:
 		
-		virtual ~AudioEngine();
-		static AudioEngine* getSingletonPtr();
+		virtual ~SfxEngine();
+		static SfxEngine* getSingletonPtr();
 		
 		virtual bool setup();
 		virtual bool deferredSetup();
@@ -49,12 +45,18 @@ namespace Pixy
     void toggleAudioState();
     
     void attachListener(Entity* inEntity);
-		
-		void playEffect(SOUND_EFFECT inEffect, SceneNode* inEmitter);
-		
+				
 		OgreOggSound::OgreOggSoundManager *getSoundMgr();
 	protected:
-
+    void (SfxEngine::*mUpdater)(unsigned long);
+    bool (SfxEngine::*mSetup)();
+    
+    bool setupIntro();
+    bool setupGame();
+    
+    void updateIntro(unsigned long lTimeElapsed);
+    void updateGame(unsigned long lTimeElapsed);
+    
     bool evtObstacleCollided(Event* inEvt);
     bool evtPortalEntered(Event* inEvt);
   
@@ -65,15 +67,13 @@ namespace Pixy
 		Sphere* mSphere;
 		Entity* mListener;
 		OgreOggSound::OgreOggSoundManager *mSoundMgr;
-		typedef std::map<SOUND_EFFECT, unsigned long> t_sounds;
-		t_sounds mSounds;
     
     bool fAudioStopped;		
 	private:
-		static AudioEngine* _myAudioEngine;
-		AudioEngine();
-		AudioEngine(const AudioEngine& src);
-		AudioEngine& operator=(const AudioEngine& rhs);		
+		static SfxEngine* _mySfxEngine;
+		SfxEngine();
+		SfxEngine(const SfxEngine& src);
+		SfxEngine& operator=(const SfxEngine& rhs);		
     };
 };
 
