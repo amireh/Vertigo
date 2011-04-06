@@ -118,10 +118,10 @@ namespace Pixy
   
 	void Intro::update( unsigned long lTimeElapsed ) {
 	  //mLog->debugStream() << " LTE : " << lTimeElapsed;
-		//mEvtMgr->update();
-		//processEvents();
+		mEvtMgr->update();
+		processEvents();
 		
-    //mUIEngine->update(lTimeElapsed);
+    mUIEngine->update(lTimeElapsed);
 	}
 
   

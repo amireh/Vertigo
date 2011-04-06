@@ -27,6 +27,10 @@ namespace Pixy {
 		mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "UIEngine");
 		mLog->infoStream() << "firing up";
 		fSetup = false;
+		mZoneMenu = 0;
+    mTitleLabel = 0;
+    mCarouselPlace = 0.0f;
+    mRendererMenu = 0;
 	}
 	
 	UIEngine::~UIEngine() {
@@ -59,7 +63,7 @@ namespace Pixy {
 		return true;
 	}
 	
-
+	
 	bool UIEngine::setup() {
 		if (fSetup)
 			return true;
@@ -87,6 +91,7 @@ namespace Pixy {
 		mTrayMgr->getTrayContainer(TL_NONE)->hide();
 	  mTrayMgr->setTrayPadding(10);
 	  
+	  loadZones();
 	  setupWidgets();
 	  
 	  mHelpMsg = "The sphere you're controlling is equipped with 2 shields: ";
@@ -98,12 +103,41 @@ namespace Pixy {
 
     assignHandles();
 
+    mLog->debugStream() << "binding handlers";
+    
     bindToName("GameStarted", this, &UIEngine::evtGameStarted);
     bindToName("PlayerWon", this, &UIEngine::evtPlayerWon);
     bindToName("SphereDied", this, &UIEngine::evtSphereDied);
         
     mLog->debugStream() << "set up!";
 		fSetup = true;
+		return true;
+	}
+	
+	bool UIEngine::loadZones() { 
+		
+		UIZone* mUIZone = new UIZone();
+		mUIZone->getInfo()["Thumbnail"] = "Lava_Cracks.jpg";
+		mUIZone->getInfo()["Title"] = "Inferno";
+		mUIZones.push_back(mUIZone);
+		
+		mUIZone = new UIZone();
+		mUIZone->getInfo()["Thumbnail"] = "Volcanic_Rose_Glass.jpg";
+		mUIZone->getInfo()["Title"] = "Twilight Meadow";
+		mUIZones.push_back(mUIZone);
+		
+		mUIZone = new UIZone();
+		mUIZone->getInfo()["Thumbnail"] = "Slime.jpg";
+		mUIZone->getInfo()["Title"] = "Toxicity";
+		mUIZones.push_back(mUIZone);
+
+    //for (int i =0; i < 6; ++i) {
+		mUIZone = new UIZone();
+    mUIZone->getInfo()["Thumbnail"] = "Dante_Afterlife.jpg";
+		mUIZone->getInfo()["Title"] = "Dante's Afterlife";
+		mUIZones.push_back(mUIZone);
+		//}
+		
 		return true;
 	}
 	
@@ -132,11 +166,62 @@ namespace Pixy {
 	void UIEngine::update( unsigned long lTimeElapsed ) {
 		processEvents();
 		
-		
-    
-    // update our good tray manager
+		// update our good tray manager
     evt.timeSinceLastFrame = evt.timeSinceLastEvent = lTimeElapsed;		
     mTrayMgr->frameRenderingQueued(evt);
+    
+    Ogre::OverlayContainer* selected;
+    // don't do all these calculations when sample's running or when in configuration screen or when no samples loaded
+    if (mTitleLabel->getTrayLocation() != TL_NONE)
+    {
+	    // makes the carousel spin smoothly toward its right position
+	    Ogre::Real carouselOffset = mZoneMenu->getSelectionIndex() - mCarouselPlace;
+	    if ((carouselOffset <= 0.001) && (carouselOffset >= -0.001)) mCarouselPlace = mZoneMenu->getSelectionIndex();
+	    else mCarouselPlace += carouselOffset * Ogre::Math::Clamp<Ogre::Real>(evt.timeSinceLastFrame * 1.0, -1.0, 1.0);
+
+	    // update the thumbnail positions based on carousel state
+	    for (int i = 0; i < (int)mThumbs.size(); i++)
+	    {
+		    Ogre::Real thumbOffset = mCarouselPlace - i;
+		    Ogre::Real phase = (thumbOffset / 2.0) - 2.8;
+
+		    if (thumbOffset < -2 || thumbOffset > 4)    // prevent thumbnails from wrapping around in a circle
+		    {
+			    mThumbs[i]->hide();
+			    continue;
+		    }
+		    else mThumbs[i]->show();
+
+		    Ogre::Real scale = 1.0 / Ogre::Math::Pow((Ogre::Math::Abs(thumbOffset) + 1.0), 0.75);
+		    Ogre::Real left = Ogre::Math::Cos(phase) * 200.0;
+		    Ogre::Real top = Ogre::Math::Sin(phase) * 200.0;
+		
+
+		    Ogre::BorderPanelOverlayElement* frame =
+			    (Ogre::BorderPanelOverlayElement*)mThumbs[i]->getChildIterator().getNext();
+
+		    mThumbs[i]->setDimensions(256.0 * scale, 192.0 * scale);
+		    frame->setDimensions(mThumbs[i]->getWidth() + 16.0, mThumbs[i]->getHeight() + 16.0);
+		    mThumbs[i]->setPosition((int)(left - 80.0 - (mThumbs[i]->getWidth() / 2.0)),
+			    (int)(top - 5.0 - (mThumbs[i]->getHeight() / 2.0)));
+
+		    if (i == mZoneMenu->getSelectionIndex()) {
+		      frame->setBorderMaterialName("SdkTrays/Frame/Over");
+		      //frame->hide();
+		      selected = mThumbs[i];
+		      //frame->getParent()->setZOrder(1000);
+		    }
+		    else {
+		      //frame->getParent()->setZOrder(10);
+		      frame->setBorderMaterialName("SdkTrays/Frame");
+		    }
+	    }
+	    //mThumbs[mZoneMenu->getSelectionIndex()]->hide();
+	    // move the selected thumb to the front
+	    mTrayMgr->getTraysLayer()->remove2D(selected);
+	    mTrayMgr->getTraysLayer()->add2D(selected);
+	    //mThumbs[mZoneMenu->getSelectionIndex()]->show();
+    }    
 	}
 	
 	void UIEngine::mouseMoved( const OIS::MouseEvent &e )
@@ -144,6 +229,16 @@ namespace Pixy {
 		OIS::MouseState state = e.state;
     OIS::MouseEvent orientedEvt((OIS::Object*)e.device, state);
 		if (mTrayMgr->injectMouseMove(orientedEvt)) return;
+		
+		if (_currentState->getId() != STATE_INTRO)
+		  return;
+		 
+		if (mTitleLabel->getTrayLocation() != TL_NONE &&
+			  orientedEvt.state.Z.rel != 0 && mZoneMenu->getNumItems() != 0)
+		{
+			int newIndex = mZoneMenu->getSelectionIndex() - orientedEvt.state.Z.rel / Ogre::Math::Abs(orientedEvt.state.Z.rel);
+			mZoneMenu->selectItem(Ogre::Math::Clamp<int>(newIndex, 0, mZoneMenu->getNumItems() - 1));
+		}   	
 	}
 	
 	void UIEngine::mousePressed( const OIS::MouseEvent &e, OIS::MouseButtonID id ) {
@@ -151,6 +246,18 @@ namespace Pixy {
 	  OIS::MouseEvent orientedEvt((OIS::Object*)e.device, state);
 	  if (mTrayMgr->injectMouseDown(orientedEvt, id)) return;
 	  
+	  if (_currentState->getId() != STATE_INTRO)
+		  return;
+		  
+		if (mTitleLabel->getTrayLocation() != TL_NONE)
+			for (unsigned int i = 0; i < mThumbs.size(); i++)
+				if (mThumbs[i]->isVisible() && Widget::isCursorOver(mThumbs[i],
+                          Ogre::Vector2(mTrayMgr->getCursorContainer()->getLeft(),
+                                        mTrayMgr->getCursorContainer()->getTop()), 0))
+				{
+					mZoneMenu->selectItem(i);
+					break;
+				}
 	}
 	
 	void UIEngine::mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id ) {
@@ -163,8 +270,16 @@ namespace Pixy {
 	
   void UIEngine::setupWidgets()
 	{
+	
+	  Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
+		Ogre::MaterialPtr thumbMat = Ogre::MaterialManager::getSingleton().create("ZoneThumbnail", "Bootstrap");
+		thumbMat->getTechnique(0)->getPass(0)->createTextureUnitState();
+			
 		mTrayMgr->destroyAllWidgets();
 
+    mTitleLabel = mTrayMgr->createLabel(TL_CENTER, "ZoneTitle", "", 200);
+    mZoneMenu = mTrayMgr->createThickSelectMenu(TL_NONE, "ZoneMenu", "Choose Zone", 250, 10);
+    
 		// create main navigation tray
 		mTrayMgr->showLogo(TL_BOTTOM);
 		mTrayMgr->createSeparator(TL_BOTTOM, "LogoSep");
@@ -191,8 +306,62 @@ namespace Pixy {
 		}
 		mRendererMenu->setItems(rsNames);
 
-		//populateSampleMenus();
+		populateZoneMenu();
 	}
+	
+	void UIEngine::populateZoneMenu() {
+	  
+		for (unsigned int i = 0; i < mThumbs.size(); i++)    // destroy all thumbnails in carousel
+		{
+			Ogre::MaterialManager::getSingleton().remove(mThumbs[i]->getName());
+			Widget::nukeOverlayElement(mThumbs[i]);
+		}
+		mThumbs.clear();
+
+		Ogre::OverlayManager& om = Ogre::OverlayManager::getSingleton();
+		Ogre::StringVector zoneTitles;
+		Ogre::MaterialPtr templateMat = Ogre::MaterialManager::getSingleton().getByName("ZoneThumbnail");
+		
+		// populate the sample menu and carousel with filtered samples
+		for (int i=0; i<mUIZones.size(); ++i)
+		{
+			
+			UIZone* mUIZone = mUIZones[i];
+			_tInfo info = mUIZone->getInfo();
+			
+			Ogre::String name = "ZoneThumb" + Ogre::StringConverter::toString(i);
+
+			// clone a new material for sample thumbnail
+			Ogre::MaterialPtr newMat = templateMat->clone(name);
+
+			Ogre::TextureUnitState* tus = newMat->getTechnique(0)->getPass(0)->getTextureUnitState(0);
+			if (Ogre::ResourceGroupManager::getSingleton().resourceExists("General", info["Thumbnail"]))
+				tus->setTextureName(info["Thumbnail"]);
+			else 
+        tus->setTextureName("thumb_error.png");
+
+			// create sample thumbnail overlay
+			Ogre::BorderPanelOverlayElement* bp = (Ogre::BorderPanelOverlayElement*)
+				mOverlayMgr->createOverlayElementFromTemplate("SdkTrays/Picture", "BorderPanel", name);
+			bp->setHorizontalAlignment(Ogre::GHA_CENTER);
+			bp->setVerticalAlignment(Ogre::GVA_CENTER);
+			bp->setMaterialName(name);
+			bp->setUserAny(Ogre::Any(mUIZone));
+			mTrayMgr->getTraysLayer()->add2D(bp);
+
+			// add sample thumbnail and title
+			mThumbs.push_back(bp);
+			zoneTitles.push_back(info["Title"]);
+		}
+
+	  mCarouselPlace = 0;  // reset carousel
+
+	  mZoneMenu->setItems(zoneTitles);
+	  if (mZoneMenu->getNumItems() != 0) 
+	    itemSelected(mZoneMenu);
+    
+    //mZoneMenu->selectItem(mZoneMenu->getNumItems()-1); // select the last one
+	};
 		
   void UIEngine::buttonHit(Button* b) {
 		if (b->getName() == "Configure")   // enter configuration screen
@@ -204,12 +373,12 @@ namespace Pixy {
 			mTrayMgr->moveWidgetToTray("Apply", TL_BOTTOM);
 			mTrayMgr->moveWidgetToTray("Back", TL_BOTTOM);
 
-			/*for (unsigned int i = 0; i < mThumbs.size(); i++)
+			for (unsigned int i = 0; i < mThumbs.size(); i++)
 			{
 				mThumbs[i]->hide();
-			}*/
+			}
 
-			/*while (mTrayMgr->getTrayContainer(TL_CENTER)->isVisible())
+			while (mTrayMgr->getTrayContainer(TL_CENTER)->isVisible())
 			{
 				mTrayMgr->removeWidgetFromTray(TL_CENTER, 0);
 			}
@@ -217,7 +386,7 @@ namespace Pixy {
 			while (mTrayMgr->getTrayContainer(TL_LEFT)->isVisible())
 			{
 				mTrayMgr->removeWidgetFromTray(TL_LEFT, 0);
-			}*/
+			}
 
 			mTrayMgr->moveWidgetToTray("ConfigLabel", TL_CENTER);
 			mTrayMgr->moveWidgetToTray(mRendererMenu, TL_CENTER);
@@ -234,11 +403,12 @@ namespace Pixy {
 				mTrayMgr->destroyWidget(mRendererMenu->getTrayLocation(), 3);
 			}
 
-			/*while (mTrayMgr->getNumWidgets(TL_NONE) != 0)
+			while (mTrayMgr->getNumWidgets(TL_NONE) != 0)
 			{
-				mTrayMgr->moveWidgetToTray(TL_NONE, 0, TL_LEFT);
-			}*/
+				mTrayMgr->moveWidgetToTray(TL_NONE, 0, TL_CENTER);
+			}
 
+      mTrayMgr->removeWidgetFromTray("ZoneMenu");
 			mTrayMgr->removeWidgetFromTray("Apply");
 			mTrayMgr->removeWidgetFromTray("Back");
 			mTrayMgr->removeWidgetFromTray("ConfigLabel");
@@ -324,7 +494,12 @@ namespace Pixy {
 	    }
 
 	    //windowResized(mWindow);
-    } 
+    } else if (menu == mZoneMenu)    // sample changed, so update slider, label and description
+		{
+
+			UIZone* s = Ogre::any_cast<UIZone*>(mThumbs[menu->getSelectionIndex()]->getUserAny());
+			mTitleLabel->setCaption(menu->getSelectedItem()); 
+		} 
   }
   
 	/*-----------------------------------------------------------------------------
@@ -472,6 +647,8 @@ namespace Pixy {
 	    _hideMenu();
 	    _showHUDs();
 	  }
+	  
+	  _currentState = inState;
 	};
 	
 }

@@ -1,9 +1,6 @@
 /*
  *  UIEngine.h
- *  Elementum
- *
- *  Created by Ahmad Amireh on 2/11/10.
- *  Copyright 2010 JU. All rights reserved.
+ *  Vertigo
  *
  */
 
@@ -21,31 +18,23 @@
 #include <Ogre.h>
 #include "OgreSdkTrays.h"
 
-// CEGUI
-/*#ifdef _WIN32
-#include <CEGUI.h>
-#include <CEGUISystem.h>
-#include <CEGUISchemeManager.h>
-#include "RendererModules/Ogre/CEGUIOgreRenderer.h"
-#else
-#include <CEGUI/CEGUI.h>
-#include <CEGUI/CEGUISystem.h>
-#include <CEGUI/CEGUISchemeManager.h>
 
-//#include "CEGUI/ScriptingModules/LuaScriptModule/CEGUILua.h"
-#include "CEGUI/RendererModules/Ogre/CEGUIOgreRenderer.h"
-#endif
-*/
 using namespace OgreBites;
 namespace Pixy {
 	
+	typedef std::map<Ogre::String, Ogre::String> _tInfo;
+	class UIZone {
+	  public:
+	    _tInfo& getInfo() { return mInfo; };
+	  
+	  protected:
+	    _tInfo mInfo;
+	};
+	
 	/*	\class UIEngine
 	 *	\brief
-	 *	Loads and unloads UISheets, manages CEGUI system, and handles UI related operations
-	 *
-	 *	\remark
-	 *	At the moment, the UIEngine acts as a manager for UISheets, however,
-	 *	the sheets are ought to be handled from within the LUA subsystem.
+	 *	Manages all GUI and HUD elements of the game, primarily the Menu screen
+	 *  and the game interface.
 	 */
 	class UIEngine : public Engine, public EventListener, public SdkTrayListener {
 		
@@ -87,7 +76,7 @@ namespace Pixy {
 		void _updateShields();
 		
 		/* \brief
-		 *  displays a small label with the current FPS in the top section
+		 *  TODO: displays/removes a small label with the current FPS in the top section
 		 */
 		void toggleFPS();
 		
@@ -125,6 +114,8 @@ namespace Pixy {
 	  
 	  // creates widgets for our menu
 	  virtual void setupWidgets();
+	  virtual void populateZoneMenu();
+	  bool loadZones();
 	  
 		EventManager *mEvtMgr;
 
@@ -139,7 +130,12 @@ namespace Pixy {
     
     // holds all of OGRE's video settings 
     SelectMenu* mRendererMenu;
-
+    SelectMenu* mZoneMenu;
+		Label* mTitleLabel;                            // zone title label
+		std::vector<Ogre::OverlayContainer*> mThumbs;  // zone thumbnails
+		Ogre::Real mCarouselPlace;                     // current state of carousel
+    std::vector<UIZone*> mUIZones;
+    
     // these make for a shading effect over the game scene when the menu is open
 		Ogre::OverlayContainer *mDialogShade;
 		Ogre::Overlay *mShadeLayer;
@@ -149,6 +145,7 @@ namespace Pixy {
 		Ogre::Overlay *mUISheetLoss; // shows a label when the player loses
 		Ogre::Overlay *mUISheetWin; // shows a label when the player wins
 		Ogre::Overlay *mUISheetPrepare; // this is a prompt, shown prior to starting the game
+		
 		// HUDs here
 		Ogre::OverlayElement *mUIScore;
 		Ogre::OverlayElement *mFireShield, *mIceShield;
@@ -158,9 +155,11 @@ namespace Pixy {
 		
 		GameState *_currentState;    
     
-    
+    // menu event handlers
     virtual void itemSelected(SelectMenu* menu);
     virtual void buttonHit(Button* b);
+    
+    // saves the contents of mRendererMenu into Ogre's config file
     virtual void reconfigure(const Ogre::String& renderer, Ogre::NameValuePairList& options);
     	
 	private:
