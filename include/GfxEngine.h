@@ -110,6 +110,9 @@ namespace Pixy {
         
     void updateUIShields();
     
+    void hideUI();
+    void showUI();
+    
 	protected:
 	  void (GfxEngine::*mUpdate)(unsigned long);
 	  

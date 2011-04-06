@@ -781,4 +781,12 @@ namespace Pixy {
 	  mUITimer.reset();
 	  return true;
 	};
+	
+	void GfxEngine::hideUI() {
+	  mUISheet->hide();
+	};
+	
+	void GfxEngine::showUI() {
+	  mUISheet->show();
+	};
 }

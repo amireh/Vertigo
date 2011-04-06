@@ -28,7 +28,10 @@
 #include "Obstacle.h"
 #include "Tunnel.h"
 
+#include "OgreSdkTrays.h"
+
 using std::list;
+using namespace OgreBites;
 namespace Pixy
 {
     /*! \class Intro
@@ -37,7 +40,7 @@ namespace Pixy
      */
 	
 	
-	class Intro : public GameState, public EventListener {
+	class Intro : public GameState, public EventListener, public SdkTrayListener {
 	public:
 		
 		void enter( void );
@@ -64,7 +67,17 @@ namespace Pixy
     virtual void dontUpdateMe(Engine* inEngine);
     
 	protected:
-
+    virtual void setupWidgets();
+    //virtual bool keyPressed(const OIS::KeyEvent& evt);
+    virtual void itemSelected(SelectMenu* menu);
+    virtual void buttonHit(Button* b);
+    virtual void reconfigure(const Ogre::String& renderer, Ogre::NameValuePairList& options);
+    
+    SelectMenu* mRendererMenu;                     // render system selection menu
+    Ogre::Root *mRoot;
+    Ogre::RenderWindow *mWindow;
+    SdkTrayManager *mTrayMgr;
+    
 		std::list<Engine*> mEngines;
 		
 		std::list<Engine*>::iterator _itrEngines;
@@ -80,6 +93,10 @@ namespace Pixy
 		SfxEngine *mSfxEngine;
 		Sphere			  *mSphere;
 		std::list<Obstacle*> mObstacles;
+		Ogre::OverlayContainer *mDialogShade;
+		Ogre::OverlayManager *mOverlayMgr;
+		Ogre::Overlay *mShadeLayer;
+		
 		
 		static Intro   *mIntro;
 		
