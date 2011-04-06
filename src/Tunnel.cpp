@@ -1,7 +1,7 @@
 #include "Tunnel.h"
 #include "GfxEngine.h"
 #include "Level.h"
-#include "AudioEngine.h"
+#include "SfxEngine.h"
 
 namespace Pixy {
 
@@ -56,7 +56,7 @@ namespace Pixy {
     // prepare sound effect
     if (fHasSfx && !mSfxPortal) {
       OgreOggSound::OgreOggSoundManager *mSoundMgr;
-      mSoundMgr = AudioEngine::getSingletonPtr()->getSoundMgr();
+      mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
       mSfxPortal = mSoundMgr->createSound("Teleport", "teleport.wav", false, false, true) ;
       mSfxPortal->setRolloffFactor(2.f);
       mSfxPortal->setReferenceDistance(1000.f);
@@ -70,14 +70,15 @@ namespace Pixy {
   
   Tunnel::~Tunnel() {
     if (mPortalEffect) {
-      //mFxMgr->destroyParticleSystem(mPortalEffect);
       mPortalEffect->stop();
+      mFxMgr->destroyParticleSystem(mPortalEffect, mSceneMgr);
       mPortalEffect = NULL;
+      fEffectPrepared = false;
     }
     
     if (fHasSfx && mSfxPortal) {
       OgreOggSound::OgreOggSoundManager *mSoundMgr;
-      mSoundMgr = AudioEngine::getSingletonPtr()->getSoundMgr();
+      mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
       mSoundMgr->destroySound(mSfxPortal);
       mSoundMgr = NULL;
       mSfxPortal = NULL;

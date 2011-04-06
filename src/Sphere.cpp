@@ -6,7 +6,7 @@
 #include "PhyxEngine.h"
 #include "Obstacle.h"
 #include "Geometry.h"
-#include "AudioEngine.h"
+#include "SfxEngine.h"
 
 namespace Pixy
 {
@@ -14,8 +14,7 @@ namespace Pixy
     Sphere::Sphere()
     {
 		
-		  //if (!mLog)
-		    mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "Sphere");
+	    mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "Sphere");
 		  
 		  mLog->infoStream() << "creating";
 		  
@@ -24,35 +23,43 @@ namespace Pixy
 		  mMesh = "SphereMesh";
 		  mMoveSpeed = 0; // speed is set in evtPortalEntered
 		  mMaxSpeed = 0;
-		  move = 0;
-		  mDistance = 0;
+      mScore = 0;
+      
 		  mCurrentShield = FIRE;
 		  mShields[FIRE] = 1000;
 		  mShields[ICE] = 1000;
+		  
+		  // a default direction
 		  mDirection = Vector3(0,-1,1);
 		  
-      mLog->infoStream() << "created";
+      fDead = true;
 
       bindToName("ObstacleCollided", this, &Sphere::evtObstacleCollided);
       bindToName("PortalEntered", this, &Sphere::evtPortalEntered);
       bindToName("PortalSighted", this, &Sphere::evtPortalSighted);
+      
+      mLog->infoStream() << "created";
     };
 
 	Sphere::~Sphere()
 	{
 	  mLog->infoStream() <<"destructed";
 		
-		mFireTrailNode = NULL;
-		mIceSteamNode = NULL;
 		mMasterNode = NULL;
 		
 		if (fHasFx) {
+		  ParticleUniverse::ParticleSystemManager* fxMgr = 
+      ParticleUniverse::ParticleSystemManager::getSingletonPtr();
+      
+      fxMgr->destroyParticleSystem(mFireEffect,GfxEngine::getSingletonPtr()->getSM());
+      fxMgr->destroyParticleSystem(mIceEffect,GfxEngine::getSingletonPtr()->getSM());
+      
 		  mFireEffect = NULL;
 		  mIceEffect = NULL;
 		};
 		if (fHasSfx) {
       OgreOggSound::OgreOggSoundManager *mSoundMgr;
-      mSoundMgr = AudioEngine::getSingletonPtr()->getSoundMgr();
+      mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
       
       mSoundMgr->destroySound(mSfxBeep);
       
@@ -83,14 +90,13 @@ namespace Pixy
     mMasterNode = GfxEngine::getSingletonPtr()->getSM()->getRootSceneNode()->createChildSceneNode();
     mSceneNode->getParent()->removeChild(mSceneNode);
     mMasterNode->addChild(mSceneNode);
-    mMasterNode->setVisible(false);
+    //mMasterNode->setVisible(false);
 
     // preload our materials
     static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Sphere/Ice");
     static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Sphere/Fire");
     
 
-				
 		btTransform trans = btTransform(btQuaternion(0,0,0,1),btVector3(0,35,30));
 		
     mPhyxShape = new btSphereShape(14);
@@ -108,9 +114,10 @@ namespace Pixy
 		PhyxEngine::getSingletonPtr()->attachToWorld(this);
 		mPhyxBody->proceedToTransform(trans);
 		
+		// prepare our sound effects
     if (fHasSfx) {
       OgreOggSound::OgreOggSoundManager *mSoundMgr;
-      mSoundMgr = AudioEngine::getSingletonPtr()->getSoundMgr();
+      mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
       mSfxBeep = mSoundMgr->createSound("SphereBeep", "beep.wav", false, false, true) ;
       mMasterNode->attachObject(mSfxBeep);
       
@@ -120,6 +127,7 @@ namespace Pixy
       mLog->debugStream() << "created sound effect";
     }
     
+    // prepare our visual effects
     if (fHasFx) {
 	    ParticleUniverse::ParticleSystemManager* fxMgr = 
       ParticleUniverse::ParticleSystemManager::getSingletonPtr();
@@ -138,46 +146,22 @@ namespace Pixy
          
       mMasterNode->attachObject(mFireEffect);
       mMasterNode->attachObject(mIceEffect);
-            
-      //mFireTrail->start();
     }
     
-		mLog->debugStream() << "sphere rendered";
+    mScore = 0;
+    fDead = false;
+    
 		render();
-		
-		mLog->debugStream() << "sphere started at " << getPosition().x << ", " << getPosition().y << ", " << getPosition().z;
-	/*
-	  mPath = new Ogre::SimpleSpline();
-	  mPath->setAutoCalculate(false);
-	  
-	  mWaypoints.push_back(Vector3(0,0,0));
-	  
-	  mWaypoints.push_back(Vector3(0,0,-500));
-	  mWaypoints.push_back(Vector3(-100,-300,-500));
-	  mWaypoints.push_back(Vector3(-600,-300,-500));
-	  
-    //mWaypoints.push_back(Vector3(0,0,0));
-    
-    std::list<Vector3>::iterator itr;
-    for (itr = mWaypoints.begin(); itr != mWaypoints.end(); ++itr) {
-      mPath->addPoint(*itr);
-    }
-    mPath->recalcTangents();
-    
-    mWaypoints.clear();
-    for (currentStep = 0.0f; currentStep <= 1.0f; currentStep += step) {
-      mWaypoints.push_back(mPath->interpolate(currentStep));
-    }
-    
-    mDirection = Ogre::Vector3::ZERO;
-    mNextWaypoint = &mWaypoints.front();*/
+		mLog->debugStream() << "sphere alive & rendered";
 	};
+	
 	void Sphere::die() {
 	  PhyxEngine::getSingletonPtr()->detachFromWorld(this);
 	  GfxEngine::getSingletonPtr()->detachFromScene(this);
 	  mIceEffect->stop();
 	  mFireEffect->stop();
 	  mMasterNode->setVisible(false);
+	  fDead = true;
 	};
 	
 	void Sphere::render() {
@@ -208,7 +192,7 @@ namespace Pixy
 		  
 		}
 	};
-	
+		
 	void Sphere::copyFrom(const Sphere& src) {
 	};
 	
@@ -216,7 +200,7 @@ namespace Pixy
 	void Sphere::keyPressed( const OIS::KeyEvent &e )
 	{
 	
-	  if (fPortalSighted)
+	  if (fPortalSighted || fDead)
 	    return;
 		
 		switch (e.key) {
@@ -252,7 +236,7 @@ namespace Pixy
 	
 	void Sphere::keyReleased( const OIS::KeyEvent &e ) {
 
-	  if (fPortalSighted)
+	  if (fPortalSighted || fDead)
 	    return;
 		
 		switch (e.key) {
@@ -295,46 +279,8 @@ namespace Pixy
 	  if (fHasSfx)
 	    mSfxBeep->update(lTimeElapsed);
 	    
-	  /*mLog->debugStream() << "sphere is at " << getPosition().x << ", " << getPosition().y << ", " << getPosition().z << " and LTE was " << lTimeElapsed;*/
 		//mPhyxBody->applyCentralForce(btVector3(mDirection.x *lTimeElapsed, mDirection.y *lTimeElapsed, mDirection.z * mMoveSpeed * lTimeElapsed));
 		
-		
-		//Ogre::Quaternion rot = mMasterNode->getPosition().getRotationTo(*mNextWaypoint);
-		//mMasterNode->setOrientation( rot );
-		//mMasterNode->translate(Vector3(rot.x + mMoveSpeed, 0, rot.z + mMoveSpeed));
-		
-		
-		//mLog->debugStream() << "distance to next waypoint is " << mMasterNode->getPosition().distance( *mNextWaypoint );
-    /*
-		if (mDirection == Ogre::Vector3::ZERO ) {
-		  locateNextWaypoint();
-      mDirection = *mNextWaypoint - mMasterNode->getPosition();
-      mDistance = mDirection.normalise();
-      
-      //mLog->debugStream() << "moving now to new waypoint: " << mNextWaypoint->x << ","<<mNextWaypoint->y << ","<<mNextWaypoint->z;
-		} else {
-       move = mMoveSpeed * lTimeElapsed;
-       mDistance -= move;
-       if (mDistance <= 0.0f)
-       {
-         mMasterNode->setPosition(*mNextWaypoint);
-         mDirection = Ogre::Vector3::ZERO;
-         
-        Ogre::Vector3 src = mMasterNode->getOrientation() * Ogre::Vector3::UNIT_X;
-        if ((1.0f + src.dotProduct(mDirection)) < 0.0001f) 
-        {
-            mMasterNode->yaw(Ogre::Degree(180));
-        }
-        else
-        {
-            Ogre::Quaternion quat = src.getRotationTo(mDirection);
-            mMasterNode->rotate(quat);
-        } // else
-       } else {
-         mMasterNode->translate(mDirection * move);
-         mMasterNode->rotate(Vector3(1,0,0), Ogre::Degree(0.1f * lTimeElapsed));
-       }
-    }*/
 	};
 	
 	void Sphere::flipShields() {
@@ -347,27 +293,7 @@ namespace Pixy
 	};
 	
 	SHIELD Sphere::shield() { return mCurrentShield; };
-	/*
-	void Sphere::locateNextWaypoint() {
-	  if (mNextWaypoint == &mWaypoints.back()) {
-	    mNextWaypoint = &mWaypoints.front();
-	    return;
-	  }
-	  //currentStep += step;
-	  
-	  //if (currentStep > 1.0f)
-	  //  currentStep = 0.0f;
-	    
-	  //mNextWaypoint = &mPath->interpolate(currentStep);
-	  
-	  list<Vector3>::iterator itr;
-	  for (itr = mWaypoints.begin(); itr != mWaypoints.end(); ++itr) {
-	    if (&(*itr) == mNextWaypoint) {
-	      mNextWaypoint = &(*(++itr));
-	      break;
-	    } 
-	  }
-	};*/
+
 	
 	bool Sphere::evtObstacleCollided(Event* inEvt) {
 	  //mLog->debugStream() << "collided with object at " << getPosition().z;
@@ -376,45 +302,48 @@ namespace Pixy
 	  
 	  Obstacle* mObs = static_cast<Obstacle*>(inEvt->getAny());
 	  
-	  // hit our shields
-	  if (mCurrentShield == mObs->shield()) {
-	    if (mShields[mCurrentShield] < 100)
-	      mShields[mCurrentShield] += 5;
-	    
-	    mPhyxBody->activate(true);
-	    mPhyxBody->clearForces();
-	    
-	    float step = mMoveSpeed / 2;
-      setMaxSpeed(mMaxSpeed+step);
-	    
-	    // push the player forward a little
-	    mPhyxBody->applyCentralForce(btVector3(mDirection.x * mMoveSpeed,mDirection.y * mMoveSpeed, mDirection.z * mMoveSpeed));
-	  } else {
-	    // deteriorate the shield
-	    mShields[mCurrentShield] -= 100;
-	    // push the player back
-	    float step = mMoveSpeed / 3;
-      setMaxSpeed(mMaxSpeed-step);	    
-	    //mPhyxBody->activate(true);
-	    //mPhyxBody->clearForces();
-	    //mPhyxBody->applyCentralForce(btVector3(mDirection.x * mMoveSpeed,mDirection.y * mMoveSpeed,-mMoveSpeed * 1000));
-	    
-	    if (fHasSfx) {
-	      // play beep sound
-	      mSfxBeep->stop();
-	      mSfxBeep->play(true);
+	    // hit our shields and calculate our new score
+	    if (mCurrentShield == mObs->shield()) {
+	      if (mShields[mCurrentShield] < 1000)
+	        mShields[mCurrentShield] += 5;
+	      
+	        mPhyxBody->activate(true);
+	        mPhyxBody->clearForces();
+	        
+	        mScore += mPhyxBody->getLinearVelocity().length() / 3;
+	        
+	        // speed the player up a bit
+	        float step = mMoveSpeed / 2;
+          setMaxSpeed(mMaxSpeed+step);
+	        
+	    } else {
+	      // deteriorate the shield
+	      mShields[mCurrentShield] -= 100;
+	      // slow the player down
+	      float step = mMoveSpeed / 3;
+        setMaxSpeed(mMaxSpeed-step);
+        
+        mScore -= mPhyxBody->getLinearVelocity().length() / 2;
+	      
+	      if (fHasSfx) {
+	        // play beep sound
+	        mSfxBeep->stop();
+	        mSfxBeep->play(true);
+	      }
 	    }
-	  }
-	  
-	  GfxEngine::getSingletonPtr()->updateUIShields();
-	  
-	  if (mShields[mCurrentShield] <= 0) {
-	    Event* mEvt = EventManager::getSingletonPtr()->createEvt("SphereDied");
-	    EventManager::getSingletonPtr()->hook(mEvt);
-	    mEvt = NULL;
-	    die();
-	    mLog->debugStream() << "oops! i'm dead";
-	  };
+	    
+	    if (mScore <= 0)
+	      mScore = 0;
+	    
+	    GfxEngine::getSingletonPtr()->updateUIShields();
+	    
+	    if (mShields[mCurrentShield] <= 0) {
+	      Event* mEvt = EventManager::getSingletonPtr()->createEvt("SphereDied");
+	      EventManager::getSingletonPtr()->hook(mEvt);
+	      mEvt = NULL;
+	      die();
+	      mLog->debugStream() << "oops! i'm dead";
+	    };
 	  
 	  return true;
 	};
@@ -446,9 +375,7 @@ namespace Pixy
     
     mDirection = Vector3(0, -1, 1);
     mPhyxBody->activate(true);
-    //mPhyxBody->applyCentralForce(btVector3(0,-100,100));
-		//mPhyxBody->setLinearVelocity(btVector3(0,0,0));
-	  //AudioEngine::getSingletonPtr()->playEffect(SFX_EXPLOSION, mMasterNode);
+    
 	  return true;
 	};
 	
@@ -469,5 +396,9 @@ namespace Pixy
 	
 	int Sphere::getShieldState() {
 	  return mShields[mCurrentShield];
+	};
+	
+	const int Sphere::score() {
+	  return mScore;
 	};
 } // end of namespace

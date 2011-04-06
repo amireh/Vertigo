@@ -5,11 +5,15 @@
 #include "Level.h"
 #include "PhyxEngine.h"
 #include <cstdlib>
-#include "AudioEngine.h"
+#include "SfxEngine.h"
+#include "Geometry.h"
 
 namespace Pixy
 {
 	
+	bool Obstacle::ourMeshCreated = false;
+	btCollisionShape* Obstacle::ourShape = NULL;
+	 
   Obstacle::Obstacle() {
 	  mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "Obstacle");
     //mLog->infoStream() << "created";
@@ -22,7 +26,10 @@ namespace Pixy
 	  fDying = false;
 	  mClass = CHASE;
 	  
-
+	  if (!ourMeshCreated)
+	    Geometry::createSphere("ObstacleMesh", 12, 16, 16);
+    if (!ourShape)
+      ourShape = new btSphereShape(12);
 
 	  int qualifier = rand();
 	  mShield = (qualifier % 2 == 0) ? ICE : FIRE;
@@ -67,7 +74,7 @@ namespace Pixy
 	  btTransform trans = btTransform(btQuaternion(0,0,0,1),
 	      btVector3(mPosition.x,mPosition.y,mPosition.z));
 	      
-    mPhyxShape = PhyxEngine::getSingletonPtr()->obstaclesShape();
+    mPhyxShape = ourShape;
 	  mPhyxMS = new MotionState(trans, mMasterNode);
     btScalar mass = 1;
     btVector3 fallInertia(0,0,1);
@@ -82,6 +89,9 @@ namespace Pixy
 	      
     mSceneNode->setVisible(false);
     fSfxCreated = false;
+    
+    setClass(CHASE);
+    
 	  fDead = true;
   };
 
@@ -98,13 +108,17 @@ namespace Pixy
     
     if (fHasSfx && fSfxCreated) {
       OgreOggSound::OgreOggSoundManager *mSoundMgr;
-      mSoundMgr = AudioEngine::getSingletonPtr()->getSoundMgr();
+      mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
       mSoundMgr->destroySound(mSfxExplosion);
       mSoundMgr->destroySound(mSfxShatter);
       mSoundMgr = NULL;
       mSfxExplosion = mSfxShatter = NULL;
     }
-		//delete mPhyxShape;
+		if (ourShape) {
+		  mLog->debugStream() << "deleted our physics shape";
+		  delete ourShape;
+		  ourShape = NULL;
+		}
     
 		if (mLog) {
 			delete mLog;
@@ -161,7 +175,7 @@ namespace Pixy
     if (fHasSfx) {
       if (!fSfxCreated) {
         OgreOggSound::OgreOggSoundManager *mSoundMgr;
-        mSoundMgr = AudioEngine::getSingletonPtr()->getSoundMgr();
+        mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
         mSfxExplosion = mSoundMgr->createSound(Ogre::String("Explosion" + stringify(idObject)), "explosion.wav", false, false, true) ;
         mSfxShatter = mSoundMgr->createSound(Ogre::String("Shatter" + stringify(idObject)), "shatter3.wav", false, false, true) ;
         mMasterNode->attachObject(mSfxExplosion);
@@ -185,28 +199,11 @@ namespace Pixy
     }
     
     //mClass = (qualifier % 2 == 0) ? CHASE : DUMB;// : STATIONARY;
-    mClass = CHASE;
-	  switch (mClass) {
-	    case CHASE:
-	      mUpdater = &Obstacle::updateChase;
-	      //mMasterNode->setScale(1.0f, 1.0f, 1.0f);
-	      break;
-	    case DUMB:
-	      mUpdater = &Obstacle::updateDumb;
-	      //mMoveSpeed;
-	      //mMasterNode->setScale(0.5f, 0.5f, 0.5f);
-	      break;
-	    /*case STATIONARY:
-	      mDirection.x = 0;
-        mUpdater = &Obstacle::updateStationary;
-        break;*/
-	  };    
-
-
-           
+    
 	  fDead = false;	  
 	  //mLog->debugStream() << mName << idObject << " is alive";
 	};
+	
 	void Obstacle::die() {
 	  //if (fDead)
 	  //  return;
@@ -285,7 +282,7 @@ namespace Pixy
       evt = NULL;
       
       //OgreOggSound::OgreOggSoundManager *mSoundMgr;
-      //mSoundMgr = AudioEngine::getSingletonPtr()->getSoundMgr();
+      //mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
       //mSoundMgr->getSound(Ogre::String("Explosion" + stringify(idObject)))->play();
       //mSfxExplosion->setPosition(mMasterNode->getPosition());
       if (fHasSfx) {
@@ -306,10 +303,10 @@ namespace Pixy
     
 		mPhyxBody->activate(true);
 		mPhyxBody->setLinearVelocity(btVector3(
-		  mDirection.x * mMoveSpeed * lTimeElapsed * 10, 
-		  -1 * mMoveSpeed * lTimeElapsed, 
-		  mDirection.z * mMoveSpeed * lTimeElapsed * 10
-		  ));
+		  mDirection.x * 10, 
+		  -1, 
+		  mDirection.z * 5
+		  ) * mMoveSpeed * lTimeElapsed);
 		/*
 		mPhyxBody->applyCentralForce(btVector3(
 		  mDirection.x * mMoveSpeed * lTimeElapsed, 
@@ -322,25 +319,25 @@ namespace Pixy
 	
 	void Obstacle::updateDumb(unsigned long lTimeElapsed) {
 	  mPhyxBody->activate(true);
-	  mDirection = Vector3(0,-1,-1) * lTimeElapsed * mMoveSpeed;
-	  /*mPhyxBody->setLinearVelocity(btVector3(
-	  mDirection.x, mDirection.y, mDirection.z
-		  ));*/
-		mPhyxBody->applyCentralForce(btVector3(
-		  mDirection.x, mDirection.y, mDirection.z * 2
-		));
+	  //mDirection = Vector3(0,-1,-1) * lTimeElapsed * mMoveSpeed;
+	  mPhyxBody->setLinearVelocity(btVector3(
+	    mDirection.x, mDirection.y, mDirection.z
+		) * mMoveSpeed * lTimeElapsed * 7);
+		/*mPhyxBody->applyCentralForce(btVector3(
+		  mDirection.x, mDirection.y, mDirection.z
+		) * lTimeElapsed * mMoveSpeed);*/
 		
 	};
 
 	void Obstacle::updateStationary(unsigned long lTimeElapsed) {
 	  mPhyxBody->activate(true);
-	  mDirection = Vector3(mDirection.x * -1,0,0);// * lTimeElapsed * mMoveSpeed;
+	  //mDirection = Vector3(mDirection.x * -1,0,0);// * lTimeElapsed * mMoveSpeed;
 	  /*mPhyxBody->setLinearVelocity(btVector3(
 	  mDirection.x, mDirection.y, mDirection.z
 		  ));*/
 		mPhyxBody->applyCentralForce(btVector3(
 		  mDirection.x, mDirection.y, mDirection.z
-		));
+		) * lTimeElapsed * mMoveSpeed);
 		
 	};	
 	/*
@@ -350,6 +347,30 @@ namespace Pixy
 	  return true;
 	};*/
 	
-  SHIELD Obstacle::shield() { return mShield; }
+	void Obstacle::setClass(OBSTACLE_CLASS inClass) {
+	  mClass = inClass;
+	  switch (mClass) {
+	    case CHASE:
+	      mUpdater = &Obstacle::updateChase;
+	      //mMasterNode->setScale(1.0f, 1.0f, 1.0f);
+	      break;
+	    case DUMB:
+	      mUpdater = &Obstacle::updateDumb;
+	      //mMasterNode->setScale(0.5f, 0.5f, 0.5f);
+	      break;
+	    case STATIONARY:
+        mUpdater = &Obstacle::updateStationary;
+        // push me into a whirl
+        if (!fDead)
+          mPhyxBody->applyCentralForce(btVector3((rand() % 2 == 0) ? 700 : -700,0,0));
+        break;
+	  };
+	  mDirection = Vector3(0,0,-1); // set some default direction
+	};
 	
+	void Obstacle::setDirection(Vector3 inDirection) {
+	  mDirection = inDirection;
+	};
+  SHIELD Obstacle::shield() { return mShield; }
+	void Obstacle::setShield(const SHIELD inShield) { mShield = inShield; render(); };
 } // end of namespace
