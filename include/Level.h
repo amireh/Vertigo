@@ -96,7 +96,7 @@ namespace Pixy
 		std::list<Obstacle*>::iterator _itrObstacles;
 		std::list<Engine*>::iterator _itrEngines;
 	private:
-		Level( void ) { }
+		Level( void ) { fRunning = false; }
 		Level( const Level& ) { }
 		Level & operator = ( const Level& );
 		

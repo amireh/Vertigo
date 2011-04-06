@@ -15,19 +15,21 @@ namespace Pixy
 	
 	void Level::enter( void ) {
 		
+		fRunning = true;
+		
 		srand((unsigned)time(0));
 		
 		mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "Level");
 		
 		mEvtMgr = EventManager::getSingletonPtr();
 		
-		mEngines.clear();
+		//mEngines.clear();
 		
 		// init engines
 		mGfxEngine = GfxEngine::getSingletonPtr();
 		mPhyxEngine = PhyxEngine::getSingletonPtr();
 		mSfxEngine = SfxEngine::getSingletonPtr();
-		//mUIEngine = UIEngine::getSingletonPtr();
+		mUIEngine = UIEngine::getSingletonPtr();
 		
 		mLog->debugStream() << "igniting engines";
 		
@@ -39,6 +41,9 @@ namespace Pixy
 		
 		mEngines.push_back(mSfxEngine);
 		mEngines.back()->setup();		
+		
+		mUIEngine->setup();
+		//mUIEngine->hide();
 		
 		/*mEngines.push_back(mUIEngine);
 		mEngines.back()->setup();*/
@@ -124,23 +129,30 @@ namespace Pixy
 		
 		bool fShuttingDown = GameManager::getSingleton().shuttingDown();
 		
-		/*mUIEngine->cleanup();
+		mUIEngine->cleanup();
 		//if (fShuttingDown)
-		  delete mUIEngine;*/
+		//  delete mUIEngine;
 				     
 		mSfxEngine->cleanup();
 		//if (fShuttingDown)
-		  delete mSfxEngine;
+		//  delete mSfxEngine;
 		
 		mPhyxEngine->cleanup();
 		//if (fShuttingDown)
-  		delete mPhyxEngine;
+  	//	delete mPhyxEngine;
 		
 		mGfxEngine->cleanup();
 		//if (fShuttingDown)
-  		delete mGfxEngine;
+  	//	delete mGfxEngine;
 		
 		//EventManager::shutdown();
+		
+		mGfxEngine = 0;
+		mPhyxEngine = 0;
+		mSfxEngine = 0;
+		mUIEngine = 0;
+		
+		fRunning = false;
 		
 		mLog->infoStream() << "---- Exiting Level State ----";
 		delete mLog;
@@ -244,10 +256,12 @@ namespace Pixy
   };
 
   void Level::updateGameOver(unsigned long lTimeElapsed) {
-		for (_itrEngines = mEngines.begin();
+		/*for (_itrEngines = mEngines.begin();
 		     _itrEngines != mEngines.end();
 		     ++_itrEngines)
-		    (*_itrEngines)->update(lTimeElapsed);  
+		    (*_itrEngines)->update(lTimeElapsed);  */
+		mSfxEngine->update(lTimeElapsed);
+		mGfxEngine->update(lTimeElapsed);
   };
   
   void Level::updateGame(unsigned long lTimeElapsed) {
@@ -469,10 +483,10 @@ namespace Pixy
   };
   
   bool Level::evtSphereDied(Event* inEvt) {
-    mUpdater = &Level::updateGameOver;
     //if (!fGameOver) {
     //  mTimer.reset();
-      fGameOver = true;
+    fGameOver = true;
+    mUpdater = &Level::updateGameOver;
     return true;     
     //}
     /*
@@ -487,6 +501,7 @@ namespace Pixy
   };
   
   bool Level::evtPlayerWon(Event* inEvt) {
+    mUpdater = &Level::updateGameOver;
     fGameOver = true;
     return true;
   };

@@ -62,12 +62,14 @@ namespace Pixy
     virtual bool areSfxEnabled()=0;
 		virtual GAME_STATE getId() const=0;
 		virtual void dontUpdateMe(Engine* inEngine)=0;
+		virtual bool running();
 	protected:
 		GameState(){ };
 		log4cpp::Category* mLog;
+		bool fRunning;
 	private:
 		
-		GameState(const GameState&) { }
+		GameState(const GameState&) { fRunning = false; mLog = 0; }
 		GameState& operator=(const GameState&);
     };
 } // end of namespace

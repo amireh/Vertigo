@@ -74,7 +74,6 @@ namespace Pixy {
 		if (fSetup)
 			return true;
 		
-		
 		mBroadphase = new btDbvtBroadphase();
 		
     mCollisionConfig = new btDefaultCollisionConfiguration();
@@ -224,7 +223,10 @@ namespace Pixy {
 		mWorld->removeRigidBody(inEntity->getRigidBody());
 	}
 	bool PhyxEngine::cleanup() {
+		if (!fSetup)
+		  return true;
 		
+		mWorld->setInternalTickCallback(0);
 		mWorld->removeRigidBody(mTunnelBody);
 		delete mTunnelBody->getMotionState();
 		delete mTunnelBody;
@@ -259,6 +261,8 @@ namespace Pixy {
     delete mDispatcher;
     delete mCollisionConfig;
     delete mBroadphase;
+    
+    fSetup = false;
     
 		return true;
 	}

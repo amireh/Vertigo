@@ -10,6 +10,7 @@
 #ifndef H_UIEngine_H
 #define H_UIEngine_H
 
+#include "GameState.h"
 #include "Engine.h"
 #include "Event.h"
 #include "EventManager.h"
@@ -17,9 +18,10 @@
 
 #include "InputManager.h"
 #include <Ogre.h>
+#include "OgreSdkTrays.h"
 
 // CEGUI
-#ifdef _WIN32
+/*#ifdef _WIN32
 #include <CEGUI.h>
 #include <CEGUISystem.h>
 #include <CEGUISchemeManager.h>
@@ -32,6 +34,8 @@
 //#include "CEGUI/ScriptingModules/LuaScriptModule/CEGUILua.h"
 #include "CEGUI/RendererModules/Ogre/CEGUIOgreRenderer.h"
 #endif
+*/
+using namespace OgreBites;
 namespace Pixy {
 	
 	/*	\class UIEngine
@@ -42,7 +46,7 @@ namespace Pixy {
 	 *	At the moment, the UIEngine acts as a manager for UISheets, however,
 	 *	the sheets are ought to be handled from within the LUA subsystem.
 	 */
-	class UIEngine : public Engine, public EventListener {
+	class UIEngine : public Engine, public EventListener, public SdkTrayListener {
 		
 	public:
 		virtual ~UIEngine();
@@ -53,22 +57,36 @@ namespace Pixy {
 		virtual void update(unsigned long lTimeElapsed);
 		virtual bool cleanup();
 		
+		void hide();
+		void show();
+
+		void keyPressed( const OIS::KeyEvent &e );
+		void keyReleased( const OIS::KeyEvent &e );		
 		void mouseMoved( const OIS::MouseEvent &e );
 		void mousePressed( const OIS::MouseEvent &e, OIS::MouseButtonID id );
 		void mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id );
 		
-		CEGUI::MouseButton convertButton(OIS::MouseButtonID buttonID);
+		//CEGUI::MouseButton convertButton(OIS::MouseButtonID buttonID);
 		
 	protected:
-		const char*
-		getDataPathPrefix() const;
-		
-		bool loadResources();
+		EventManager *mEvtMgr;
 
-		CEGUI::OgreRenderer		*mOgreRenderer;
-		CEGUI::System			*mUISystem;
-		EventManager			*mEvtMgr;
-		CEGUI::Window *mLayout;
+    Ogre::String mHelpMsg;
+    SelectMenu* mRendererMenu;
+    Ogre::Root *mRoot;
+    Ogre::RenderWindow *mWindow;
+    SdkTrayManager *mTrayMgr;
+		Ogre::OverlayContainer *mDialogShade;
+		Ogre::OverlayManager *mOverlayMgr;
+		Ogre::Overlay *mShadeLayer;
+		
+		GameState *_currentState;    
+    	
+    virtual void setupWidgets();
+    virtual void itemSelected(SelectMenu* menu);
+    virtual void buttonHit(Button* b);
+    virtual void reconfigure(const Ogre::String& renderer, Ogre::NameValuePairList& options);
+    	
 	private:
 		static UIEngine* _myUIEngine;
 		UIEngine();

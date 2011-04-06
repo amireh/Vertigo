@@ -36,4 +36,6 @@ namespace Pixy
 		GameManager::getSingletonPtr()->requestShutdown();
 	}
 	
+	bool GameState::running() { return fRunning; };
+	
 } // end of namespace Pixy

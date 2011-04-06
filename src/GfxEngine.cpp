@@ -1,4 +1,4 @@
-/* mTrayMgr->hideTrays();
+/* 
  *  GfxEngine.cpp
  *  Elementum
  *
@@ -33,6 +33,7 @@ namespace Pixy {
 		fSetup = false;
 		//mPlayers.clear();
 		mCameraMan = 0;
+		mTrayMgr = 0;
 		//mFallVelocity = 0;
 		//mSceneLoader = 0;
 		//mMoveSpeed = 0.1;
@@ -44,16 +45,10 @@ namespace Pixy {
 	GfxEngine::~GfxEngine() {
 		mLog->infoStream() << "shutting down";
 		if (fSetup) {
-		  ParticleUniverse::ParticleSystemManager::getSingletonPtr()->destroyAllParticleSystems(mSceneMgr);
-		  
-		  if (mTrayMgr)
-		    delete mTrayMgr;
-		    
-			mRoot = 0;
-			mSceneMgr = 0;
-			mCamera = mCamera2 = mCamera3 = mCamera4 = 0;
-			mViewport = 0;
-			mRenderWindow = 0;
+
+	    if (mTrayMgr)
+	      delete mTrayMgr;
+
 			delete mLog;
 			mLog = 0;
 
@@ -116,11 +111,11 @@ namespace Pixy {
 
     setupParticles();
 		
-    mTrayMgr = new OgreBites::SdkTrayManager("Vertigo/UI/Trays", mRenderWindow, InputManager::getSingletonPtr()->getMouse(), 0);
+    /*mTrayMgr = new OgreBites::SdkTrayManager("Vertigo/UI/Trays", mRenderWindow, InputManager::getSingletonPtr()->getMouse(), 0);
 		mTrayMgr->hideCursor(); 
     mTrayMgr->showFrameStats(OgreBites::TL_TOPLEFT);
     mTrayMgr->hideTrays();
-    
+    */
     mCameraMan = new OgreBites::SdkCameraMan(mCamera);
     //mRenderWindow->setActive(true);
 
@@ -237,8 +232,20 @@ namespace Pixy {
 	}
 	
 	bool GfxEngine::cleanup() {		
+    if (!fSetup)
+      return true;
+    
+	  ParticleUniverse::ParticleSystemManager::getSingletonPtr()->destroyAllParticleSystems(mSceneMgr);
 	  
-	  
+	    
+		mRoot = 0;
+		mSceneMgr = 0;
+		mCamera  = 0;
+		mViewport = 0;
+		mRenderWindow = 0;	  
+  
+    fSetup = false;
+    
 		return true;
 	}
 	
@@ -513,10 +520,10 @@ namespace Pixy {
 		    break;		    
 		  case OIS::KC_F:
 		    //playEffect("Despawn", mSphere);
-		    if (mTrayMgr->areTraysVisible())
+		    /*if (mTrayMgr->areTraysVisible())
 		      mTrayMgr->hideTrays();
 		    else
-		      mTrayMgr->showTrays();
+		      mTrayMgr->showTrays();*/
 		    break;		    
 			
 		  case OIS::KC_P:
@@ -581,7 +588,7 @@ namespace Pixy {
 		evt.timeSinceLastEvent = lTimeElapsed;
 		evt.timeSinceLastFrame = lTimeElapsed;
 		
-		mTrayMgr->frameRenderingQueued(evt);
+		//mTrayMgr->frameRenderingQueued(evt);
 		//mCameraMan->update(lTimeElapsed);
 		//using namespace Ogre;
 		

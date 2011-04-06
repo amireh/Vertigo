@@ -53,7 +53,7 @@ namespace Pixy {
       }
             
       fAudioStopped = false;
-      //toggleAudioState();
+      toggleAudioState();
       
       fSetup = true;
     }
@@ -154,7 +154,9 @@ namespace Pixy {
         mMusicTrack = NULL;
       }
     }
-        
+    
+    fSetup = false;
+    
 		return true;
 	}
 	

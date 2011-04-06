@@ -3,6 +3,11 @@
 #include "Intro.h"
 #include "Level.h"
 #include "log4cpp/PixyLogLayout.h"
+
+#include "UIEngine.h"
+#include "GfxEngine.h"
+#include "SfxEngine.h"
+#include "PhyxEngine.h"
 using namespace Ogre;
 
 namespace Pixy
@@ -23,6 +28,13 @@ namespace Pixy
 		    mStates.pop_back();
 		}
 
+    mLog->infoStream() << "tearing down all engines";
+    
+    delete GfxEngine::getSingletonPtr();
+    delete SfxEngine::getSingletonPtr();
+    delete PhyxEngine::getSingletonPtr();
+    delete UIEngine::getSingletonPtr();
+    
 		if( mInputMgr )
 		    delete mInputMgr;
 		
@@ -172,7 +184,7 @@ namespace Pixy
 		mInputMgr->addMouseListener( this, "GameManager" );
 		
 		// Change to first state
-		this->changeState( Level::getSingletonPtr() );
+		this->changeState( Intro::getSingletonPtr() );
 		
 		// lTimeLastFrame remembers the last time that it was checked
 		// we use it to calculate the time since last frame
@@ -271,9 +283,9 @@ namespace Pixy
 		mTrayMgr->hideLoadingBar();
 		delete mTrayMgr;
 		
-		mRenderWindow->removeViewport(-1);
-		mRoot->getSceneManager("LoadingScene")->destroyCamera("LoadingCamera");
-		mRoot->destroySceneManager(mRoot->getSceneManager("LoadingScene"));
+		//mRenderWindow->removeViewport(-1);
+		//mRoot->getSceneManager("LoadingScene")->destroyCamera("LoadingCamera");
+		//mRoot->destroySceneManager(mRoot->getSceneManager("LoadingScene"));
 
 	}
 	
