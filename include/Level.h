@@ -19,14 +19,14 @@
 #include "EventManager.h"
 #include "EventListener.h"
 
-//#include "UIEngine.h"
+#include "UIEngine.h"
 #include "GfxEngine.h"
 #include "PhyxEngine.h"
-#include "AudioEngine.h"
+#include "SfxEngine.h"
 
 #include "Sphere.h"
 #include "Obstacle.h"
-#include "Tunnel.h"
+#include "Zone.h"
 
 using std::list;
 namespace Pixy
@@ -63,23 +63,34 @@ namespace Pixy
     Tunnel* getTunnel();
     const std::list<Obstacle*>& getObstacles();
     
-    bool areFxEnabled();
-    bool areSfxEnabled();
+    virtual bool areFxEnabled();
+    virtual bool areSfxEnabled();
     bool isGameOver();
     
+    // spawn rate will be increased by (mSpawnThreshold / inFactor) milliseconds
+    // NOTE: called internally by Zone each time the player enters a portal
+    void increaseSpawnRate(const int inFactor);
+    int currentSpawnRate() const;
     
     void dontUpdateMe(Engine* inEngine);
     Obstacle* lastObstacleAlive();
     
 	protected:
-
+    void (Level::*mUpdater)(unsigned long);
+    
+    void updatePreparation(unsigned long lTimeElapsed);
+    void updateGame(unsigned long lTimeElapsed);
+    void updateGameOver(unsigned long lTimeElapsed);
+    
+    bool evtPlayerWon(Event* inEvt);
     bool evtSphereDied(Event* inEvt);
 		bool evtPortalEntered(Event* inEvt);
 		bool evtPortalReached(Event* inEvt);
 		bool evtPortalSighted(Event* inEvt);
 		
-		Tunnel *mTunnel;
-		std::list<Tunnel*> mTunnels;
+		//Tunnel *mTunnel;
+		//std::list<Tunnel*> mTunnels;
+		Zone* mZone;
 		std::list<Engine*> mEngines;
 		
 		std::list<Obstacle*>::iterator _itrObstacles;
@@ -91,9 +102,9 @@ namespace Pixy
 		
 		EventManager *mEvtMgr;
 		GfxEngine		*mGfxEngine;
-		//UIEngine		*mUIEngine;
+		UIEngine		*mUIEngine;
 		PhyxEngine		*mPhyxEngine;
-		AudioEngine *mSfxEngine;
+		SfxEngine *mSfxEngine;
 		//CEGUI::System	*mUISystem;
 		Sphere			  *mSphere;
 		std::list<Obstacle*> mObstacles;
@@ -104,7 +115,7 @@ namespace Pixy
 		
 		long nrObstacles;
 		int nrMaxAliveObstacles;
-		int nrTunnels;
+		//int nrTunnels;
 		
 		static Level    *mLevel;
 		Ogre::Timer mTimer;
@@ -115,7 +126,8 @@ namespace Pixy
 		int mSpawnTimer; // how often?
 		int mSpawningThreshold; // spawn rate can't drop below this, original rate / 2
 		
-		void spawnObstacle();
+		Obstacle* spawnObstacle(OBSTACLE_CLASS inClass);
+		void spawnDuette();
 		void releaseObstacle(Obstacle* inObs);
 	};
 } // end of namespace

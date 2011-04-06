@@ -3,6 +3,7 @@
 #include "StatePause.h"
 #include <cstdlib>
 #include <ctime> 
+#include "Intro.h"
 
 using namespace Ogre;
 namespace Pixy
@@ -25,60 +26,60 @@ namespace Pixy
 		// init engines
 		mGfxEngine = GfxEngine::getSingletonPtr();
 		mPhyxEngine = PhyxEngine::getSingletonPtr();
-		mSfxEngine = AudioEngine::getSingletonPtr();
+		mSfxEngine = SfxEngine::getSingletonPtr();
+		//mUIEngine = UIEngine::getSingletonPtr();
+		
+		mLog->debugStream() << "igniting engines";
 		
 		mEngines.push_back(mGfxEngine);
 		mEngines.back()->setup();
-				
-		//mUIEngine = UIEngine::getSingletonPtr();
-		//mUIEngine->setup();
 		
 		mEngines.push_back(mPhyxEngine);
 		mEngines.back()->setup();
 		
-		
 		mEngines.push_back(mSfxEngine);
 		mEngines.back()->setup();		
 		
-		// grab CEGUI handle
-		//mUISystem = &CEGUI::System::getSingleton();
- 
+		/*mEngines.push_back(mUIEngine);
+		mEngines.back()->setup();*/
+
+    mLog->debugStream() << "creating sphere";
+    // prepare our sphere
 		mSphere = new Sphere();
 		mSphere->live();
 
+    // create our level
+    mZone = new Zone("dante_afterlife.vzs");
+    mZone->engage();
+    /*nrTunnels = 4;
     mTunnels.push_back(new Tunnel("Vertigo/Tunnel/Rose"));
     mTunnels.push_back(new Tunnel("Vertigo/Tunnel/Inferno",30));
     mTunnels.push_back(new Tunnel("Vertigo/Tunnel/Lava/Translucent",40));
-    mTunnels.push_back(new Tunnel("Vertigo/Tunnel/Lava",20));
+    mTunnels.push_back(new Tunnel("Vertigo/Tunnel/Lava",20));*/
 
-    mTunnel = mTunnels.front();
-    mTunnel->show();
-        		
-		nrObstacles = 6;
+    //mTunnel = mTunnels.front();
+    //mTunnel->show();
+  
+    // now prepare our obstacles
+		nrObstacles = 12;
 		nrMaxAliveObstacles = 3;
-		nrTunnels = 1;
+		
 		mSpawnTimer = 900;
 		mSpawningThreshold = mSpawnTimer / 2;
-		//createObstacle();
 		
 		for (int i =0; i < nrObstacles; ++i)
 	    mObstaclePool.push_back(new Obstacle());
 		
 		fSpawning = true;
 		fGameOver = fGameStarted = false;
-
+    fGameStarted = true;
+    
+    // event handlers
+    bindToName("PlayerWon", this, &Level::evtPlayerWon);
 		bindToName("SphereDied", this, &Level::evtSphereDied);
 		bindToName("PortalEntered", this, &Level::evtPortalEntered);
 		bindToName("PortalReached", this, &Level::evtPortalReached);
 		bindToName("PortalSighted", this, &Level::evtPortalSighted);
-
-    //for (int i =0; i < nrTunnels; ++i) {
-      
-    //};
-
-    
-
-
 
 		for (_itrEngines = mEngines.begin();
 		     _itrEngines != mEngines.end();
@@ -86,7 +87,9 @@ namespace Pixy
 		    (*_itrEngines)->deferredSetup();
 		
 		mTimer.reset();
-		
+
+    mUpdater = &Level::updateGame;
+    		
 		mLog->infoStream() << "Initialized successfully.";
 		
 	}
@@ -104,35 +107,40 @@ namespace Pixy
 		  delete *_itr;
 		}
 
-		for (std::list<Tunnel*>::iterator _itr = mTunnels.begin(); 
+		/*for (std::list<Tunnel*>::iterator _itr = mTunnels.begin(); 
 		     _itr != mTunnels.end();
 		     ++_itr) {
 		    //mLog->debugStream() << "updating objects";
 		  delete *_itr;
-		}
+		}*/
 				
 		mObstacles.clear();
-		mTunnels.clear();
+		//mTunnels.clear();
 		
+		delete mZone;
 		delete mSphere;
 		
 		mEngines.clear();
 		
+		bool fShuttingDown = GameManager::getSingleton().shuttingDown();
 		
-		     
+		/*mUIEngine->cleanup();
+		//if (fShuttingDown)
+		  delete mUIEngine;*/
+				     
 		mSfxEngine->cleanup();
-		delete mSfxEngine;
+		//if (fShuttingDown)
+		  delete mSfxEngine;
 		
 		mPhyxEngine->cleanup();
-		delete mPhyxEngine;
+		//if (fShuttingDown)
+  		delete mPhyxEngine;
 		
-		//mUIEngine->cleanup();
-		//delete mUIEngine;
 		mGfxEngine->cleanup();
-		delete mGfxEngine;
+		//if (fShuttingDown)
+  		delete mGfxEngine;
 		
-		
-		EventManager::shutdown();
+		//EventManager::shutdown();
 		
 		mLog->infoStream() << "---- Exiting Level State ----";
 		delete mLog;
@@ -143,6 +151,10 @@ namespace Pixy
 	void Level::keyPressed( const OIS::KeyEvent &e )
 	{
 	
+	  //mUIEngine->keyPressed( e );
+	
+		if (!fGameStarted)
+		  return;	
 		/*mUISystem->injectKeyDown(e.key);
 		mUISystem->injectChar(e.text);*/
 		mGfxEngine->keyPressed(e);
@@ -154,20 +166,24 @@ namespace Pixy
 	
 	void Level::keyReleased( const OIS::KeyEvent &e ) {
 		
+		//mUIEngine->keyReleased( e );
 		// start the game when a key is released
-		if (!fGameStarted) {
+		/*if (!fGameStarted) {
 		  fGameStarted = true;
 		  mEvtMgr->hook(mEvtMgr->createEvt("GameStarted"));
 		  return;
+		}*/
+		if (e.key == OIS::KC_ESCAPE) {
+		  //return this->requestShutdown();
+		  return GameManager::getSingleton().changeState(Intro::getSingletonPtr());
 		}
+		if (!fGameStarted)
+		  return;
 		
 		//mUISystem->injectKeyUp(e.key);
 		mGfxEngine->keyReleased(e);
 		mSphere->keyReleased(e);
 		switch (e.key) {
-			case OIS::KC_ESCAPE:
-				this->requestShutdown();
-				break;
 		  case OIS::KC_P:
 		    GameManager::getSingleton().pushState(StatePause::getSingletonPtr());
 		    break;
@@ -185,7 +201,7 @@ namespace Pixy
 	void Level::mouseMoved( const OIS::MouseEvent &e )
 	{
 		//mUIEngine->mouseMoved(e);
-		mSphere->mouseMoved(e);
+		//mSphere->mouseMoved(e);
 		mGfxEngine->mouseMoved(e);
 	}
 	
@@ -218,30 +234,38 @@ namespace Pixy
 	
 	Sphere* Level::getSphere() { return mSphere; };
 
-	void Level::update( unsigned long lTimeElapsed ) {
-	  //mLog->debugStream() << " LTE : " << lTimeElapsed;
-  
-		mEvtMgr->update();
-		
-		processEvents();
+  void Level::updatePreparation(unsigned long lTimeElapsed) {
+    if (fGameStarted) {
+      mUpdater = &Level::updateGame;
+    }
+    
+    //mUIEngine->update(lTimeElapsed);
+  };
 
-	  if (!fGameStarted)
-	    return;
-	    		
+  void Level::updateGameOver(unsigned long lTimeElapsed) {
 		for (_itrEngines = mEngines.begin();
 		     _itrEngines != mEngines.end();
 		     ++_itrEngines)
-		    (*_itrEngines)->update(lTimeElapsed);
-		    
-		//mSfxEngine->update(lTimeElapsed);
-		//mGfxEngine->update(lTimeElapsed);
-		//mUIEngine->update(lTimeElapsed);
-		//mPhyxEngine->update(lTimeElapsed);
-		
-		if (fGameOver)
-		  return;
+		    (*_itrEngines)->update(lTimeElapsed);  
+  };
+  
+  void Level::updateGame(unsigned long lTimeElapsed) {
 
-    mTunnel->update(lTimeElapsed);
+		/*for (_itrEngines = mEngines.begin();
+		     _itrEngines != mEngines.end();
+		     ++_itrEngines)
+		    (*_itrEngines)->update(lTimeElapsed);*/
+		
+		//mLog->debugStream() << "updating sfx";
+		mSfxEngine->update(lTimeElapsed);
+		//mLog->debugStream() << "updating gfx";
+		mGfxEngine->update(lTimeElapsed);
+		//mLog->debugStream() << "updating ui";
+		//mUIEngine->update(lTimeElapsed);
+		//mLog->debugStream() << "updating phyx";
+		mPhyxEngine->update(lTimeElapsed);
+
+    mZone->update(lTimeElapsed);
 		mSphere->update(lTimeElapsed);
 		
 		//std::list<Obstacle*>::iterator _itr;
@@ -249,24 +273,41 @@ namespace Pixy
 		     _itrObstacles != mObstacles.end();
 		     ) {
 		    //mLog->debugStream() << "updating objects";
+		    // release the dead obstacles
 		    if ((*_itrObstacles)->dead()) {
 		      
 		      Obstacle *mObs = *_itrObstacles;
 		      ++_itrObstacles;
 		      releaseObstacle(mObs);
 		      continue;
-		    };	  
+		    };
+		  // and update the living ones	  
 		  (*_itrObstacles)->update(lTimeElapsed);
 		  ++_itrObstacles;
 		}
 		
 		if (fSpawning && mTimer.getMilliseconds() > mSpawnTimer && mObstacles.size() <= nrMaxAliveObstacles) {
-		  spawnObstacle();
+		  //
+		  if (rand() % 3 == 0)
+		    spawnDuette();
+		  else
+		    spawnObstacle(CHASE);
+		    
 		  mTimer.reset();
-		}
+		}  
+  };
+  
+	void Level::update( unsigned long lTimeElapsed ) {
+	  //mLog->debugStream() << " LTE : " << lTimeElapsed;
+		mEvtMgr->update();
+		processEvents();
+		
+		updateGame(lTimeElapsed);
+    //(this->*mUpdater)(lTimeElapsed);
+    
 	}
 	
-  void Level::spawnObstacle() {
+  Obstacle* Level::spawnObstacle(OBSTACLE_CLASS inClass) {
     //mLog->debugStream() << "obstacle is pulled from the pool";
     
     Obstacle* mObs = NULL;// = mObstaclePool.front();
@@ -283,15 +324,35 @@ namespace Pixy
 		}
 		
 		if (!mObs)
-		  return;
+		  return NULL;
 		
-	  mObs->live();
+		mObs->live();
+		mObs->setClass(inClass);
 	  mObstacles.push_back(mObs);
 	  
 	  Event* evt = mEvtMgr->createEvt("ObstacleAlive");
 	  evt->setAny((void*)mObs);
-	  mEvtMgr->hook(evt);  
+	  mEvtMgr->hook(evt);
+	  
+	  return mObs;  
   }
+  
+  void Level::spawnDuette() {
+    Obstacle *mObs = NULL;
+    SHIELD lastShield = (rand() % 2 == 0) ? FIRE : ICE;
+    for (int i=0;i<2;++i) {
+      mObs = spawnObstacle(DUMB);
+      if (!mObs)
+        break;
+
+      // set one of them to go left and the other to the right
+      mObs->setDirection(Vector3((i == 0) ? 0.5f : -0.5f,-1,-1));
+      mObs->setShield(lastShield);
+      
+      // swap shields
+      lastShield = (lastShield == FIRE) ? ICE : FIRE;
+    }
+  };
   
   void Level::releaseObstacle(Obstacle* inObs) {
     //mLog->debugStream() << "obstacle is released into the pool";
@@ -311,10 +372,7 @@ namespace Pixy
   
   bool Level::evtPortalReached(Event* inEvt) {
     
-    // increase the rate of obstacle spawning
-    mSpawnTimer -= mSpawningThreshold / mTunnels.size();
-    if (mSpawnTimer <= mSpawningThreshold)
-      mSpawnTimer = mSpawningThreshold; // shouldn't be faster than this, really
+
     
     //fSpawning = false;
     //mSphere->getRigidBody()->clearForces();
@@ -344,7 +402,7 @@ namespace Pixy
 		//if (mTimer.getMilliseconds() > 5000) {
 		  
 		  
-		  if (mTunnel == mTunnels.back()) {
+/*		  if (mTunnel == mTunnels.back()) {
 		    // the player has won
 		    mEvtMgr->hook(mEvtMgr->createEvt("PlayerWon"));
 		    fGameOver = true;
@@ -369,7 +427,7 @@ namespace Pixy
 		  mSphere->getMasterNode()->setPosition(pos);
 		  mLog->debugStream() << "relocating sphere to " << pos.x << ", " << pos.y << ", " << pos.z;
 		  // and show the shizzle
-		  mTunnel->show();
+		  mTunnel->show();*/
 		  
 		  
 		  return true;
@@ -389,7 +447,8 @@ namespace Pixy
   };
   
   Tunnel* Level::getTunnel() {
-    return mTunnel;
+    //return mTunnel;
+    return mZone->currentTunnel();
   };
   
   bool Level::areFxEnabled() { return true; }
@@ -409,20 +468,36 @@ namespace Pixy
   };
   
   bool Level::evtSphereDied(Event* inEvt) {
-    if (!fGameOver) {
-      mTimer.reset();
+    mUpdater = &Level::updateGameOver;
+    //if (!fGameOver) {
+    //  mTimer.reset();
       fGameOver = true;
-      
-    }
-    
+    return true;     
+    //}
+    /*
     if (mTimer.getMilliseconds() < 1000)
       return false;
     else {
       mLog->debugStream() << "game is over!";
-      GameManager::getSingleton().pushState(StatePause::getSingletonPtr());
+      
+      //GameManager::getSingleton().pushState(StatePause::getSingletonPtr());
       return true;
-    }
+    }*/
+  };
+  
+  bool Level::evtPlayerWon(Event* inEvt) {
+    fGameOver = true;
+    return true;
   };
  
   bool Level::isGameOver() { return fGameOver; };
+  void Level::increaseSpawnRate(const int inFactor) {
+    // increase the rate of obstacle spawning
+    mSpawnTimer -= mSpawningThreshold / inFactor;
+    if (mSpawnTimer <= mSpawningThreshold)
+      mSpawnTimer = mSpawningThreshold; // shouldn't be faster than this, really  
+  };
+  int Level::currentSpawnRate() const {
+    return mSpawnTimer;
+  };
 } // end of namespace
