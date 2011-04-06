@@ -46,6 +46,9 @@ namespace Pixy {
 		if (fSetup) {
 		  ParticleUniverse::ParticleSystemManager::getSingletonPtr()->destroyAllParticleSystems(mSceneMgr);
 		  
+		  if (mTrayMgr)
+		    delete mTrayMgr;
+		    
 			mRoot = 0;
 			mSceneMgr = 0;
 			mCamera = mCamera2 = mCamera3 = mCamera4 = 0;
@@ -63,6 +66,14 @@ namespace Pixy {
 		_myGfxEngine = NULL;
 	}
 	
+	void GfxEngine::loadResources() {
+	  //Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup("Bootstrap");
+		mTrayMgr = new OgreBites::SdkTrayManager("Vertigo/UI/Trays", mRenderWindow, InputManager::getSingletonPtr()->getMouse(), 0);
+		mTrayMgr->hideCursor(); 
+		/*mTrayMgr->showLoadingBar(1,0);
+	  Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup("General");*/
+	  
+	};
 	bool GfxEngine::setup() {
 		if (fSetup)
 			return true;
@@ -72,7 +83,7 @@ namespace Pixy {
 		//if (mRoot->hasSceneManager(Ogre::ST_GENERIC))
 		//	mSceneMgr     = mRoot->getSceneManager( ST_GENERIC, "CombatScene" );
 		//else
-		mSceneMgr = mRoot->createSceneManager(Ogre::ST_GENERIC, "CombatScene");
+		mSceneMgr = mRoot->createSceneManager(Ogre::ST_GENERIC, "GameScene");
 		
 		
 		mCamera       = mSceneMgr->createCamera("Sphere_Camera");
@@ -89,9 +100,12 @@ namespace Pixy {
 		 if (GameManager::getSingleton().gameState() == STATE_COMBAT)
 			setupCombat();
 		*/
-		
 		setupSceneManager();
-        setupViewports();
+    setupViewports();
+        
+		loadResources();
+		
+		
         
 		 setupCamera();
         
@@ -106,8 +120,7 @@ namespace Pixy {
 
     setupParticles();
 		
-		mTrayMgr = new OgreBites::SdkTrayManager("AOFTrayMgr", mRenderWindow, InputManager::getSingletonPtr()->getMouse(), 0);
-		mTrayMgr->hideCursor();
+
     mTrayMgr->showFrameStats(OgreBites::TL_TOPLEFT);
     mTrayMgr->hideTrays();
     
@@ -197,7 +210,8 @@ namespace Pixy {
     bindToName("PortalEntered", this, &GfxEngine::evtPortalEntered);
     bindToName("PortalReached", this, &GfxEngine::evtPortalReached);
     bindToName("PortalSighted", this, &GfxEngine::evtPortalSighted);
-        
+    
+    //mTrayMgr->hideLoadingBar();
 		return true;
 	}
 	
@@ -757,7 +771,6 @@ namespace Pixy {
 	  return true;
 	};
 	
-	SceneNode* GfxEngine::getPortal() { return mPortal; };
 	
 	bool GfxEngine::evtPlayerWon(Event* inEvt) {
 	  

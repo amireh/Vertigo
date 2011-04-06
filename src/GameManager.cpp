@@ -147,9 +147,11 @@ namespace Pixy
 								  "Vertigo - Error");
 		}
 		loadRenderSystems();
-	
+	  
+
+		
 		// Setup and configure game
-		this->setupResources(lPathResources.str());
+		
 		if( !this->configureGame() ) {
 		    // If game can't be configured, throw exception and quit application
 		    throw Ogre::Exception( Ogre::Exception::ERR_INTERNAL_ERROR,
@@ -157,12 +159,14 @@ namespace Pixy
 								  "Vertigo - Error" );
 		    return;
 		}
-		
-		// Setup input & register as listener
+
+	  // Setup input & register as listener
 		mInputMgr = InputManager::getSingletonPtr();
 		mRenderWindow = mRoot->getAutoCreatedWindow();
 		mInputMgr->initialise( mRenderWindow );
 		WindowEventUtilities::addWindowEventListener( mRenderWindow, this );
+				
+		this->setupResources(lPathResources.str());
 		
 		mInputMgr->addKeyListener( this, "GameManager" );
 		mInputMgr->addMouseListener( this, "GameManager" );
@@ -219,10 +223,12 @@ namespace Pixy
 		mRenderWindow = mRoot->initialise( true, "Vertigo" );
 		
 		// Initialise resources
-		ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+		//ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 		
 		// Create needed scenemanagers
-		//mRoot->createSceneManager( ST_EXTERIOR_CLOSE, "ST_EXTERIOR_CLOSE" );
+		Ogre::SceneManager *mSceneMgr = mRoot->createSceneManager( ST_EXTERIOR_CLOSE, "LoadingScene" );
+		Ogre::Camera *mCamera = mSceneMgr->createCamera("LoadingCamera");
+		mRenderWindow->addViewport(mCamera, -1);
 		
 		return true;
 	}
@@ -255,7 +261,20 @@ namespace Pixy
 		    }
 		}
 		// Initialise resources
+		ResourceGroupManager::getSingleton().initialiseResourceGroup("Bootstrap");
+		OgreBites::SdkTrayManager *mTrayMgr = 
+		  new OgreBites::SdkTrayManager("Vertigo/UI/Loader", mRenderWindow, InputManager::getSingletonPtr()->getMouse(), 0);
+		//mTrayMgr->showAll();
+		mTrayMgr->showLoadingBar(1,1, 1);
 		//ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+		ResourceGroupManager::getSingleton().initialiseResourceGroup("General");
+		mTrayMgr->hideLoadingBar();
+		delete mTrayMgr;
+		
+		mRenderWindow->removeViewport(-1);
+		mRoot->getSceneManager("LoadingScene")->destroyCamera("LoadingCamera");
+		mRoot->destroySceneManager(mRoot->getSceneManager("LoadingScene"));
+
 	}
 	
 	void GameManager::changeState( GameState *inState ) {

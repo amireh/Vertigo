@@ -92,6 +92,41 @@ namespace Pixy {
 		Ogre::SceneManager* getSM();
 		Ogre::Viewport* getViewport();
 		
+
+		
+		
+		void mouseMoved( const OIS::MouseEvent &e );
+		void mousePressed( const OIS::MouseEvent &e, OIS::MouseButtonID id );
+		void mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id );
+		
+		void keyPressed( const OIS::KeyEvent &e );
+		void keyReleased( const OIS::KeyEvent &e );
+		
+		
+		void applyMotionBlur(float duration);
+    
+    void playEffect(std::string inEffect, Entity* inEntity);
+    void playEffect(std::string inEffect, const Vector3& pos);
+        
+    void updateUIShields();
+    
+	protected:
+	  void (GfxEngine::*mUpdate)(unsigned long);
+	  
+	  void updateIntro(unsigned long lTimeElapsed);
+	  void updateGame(unsigned long lTimeElapsed);
+	  
+	  bool evtGameStarted(Event* inEvt);
+	  bool evtPlayerWon(Event* inEvt);
+	  bool evtSphereDied(Event* inEvt);
+	  bool evtObstacleAlive(Event* inEvt);
+	  bool evtObstacleCollided(Event* inEvt);
+	  bool evtPortalEntered(Event* inEvt);
+	  bool evtPortalReached(Event* inEvt);
+	  bool evtPortalSighted(Event* inEvt);
+    
+    void loadResources();
+    	  
 		//! Sets up OGRE SceneManager
 		void setupSceneManager();
 		
@@ -109,42 +144,6 @@ namespace Pixy {
 		
 		void setupNodes();
 		void setupParticles();
-		
-		bool setupCombat(std::string inPlayer1, std::string inPlayer2);
-		
-		void mouseMoved( const OIS::MouseEvent &e );
-		void mousePressed( const OIS::MouseEvent &e, OIS::MouseButtonID id );
-		void mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id );
-		
-		void keyPressed( const OIS::KeyEvent &e );
-		void keyReleased( const OIS::KeyEvent &e );
-		
-		void createSphere(const std::string& strName, const float r, const int nRings = 16, const int nSegments = 16);
-		
-		void applyMotionBlur(float duration);
-    void applyScreenShake(unsigned long lTimeElapsed);
-    
-    void playEffect(std::string inEffect, Entity* inEntity);
-    void playEffect(std::string inEffect, const Vector3& pos);
-    
-    SceneNode* getPortal();
-    
-    void updateUIShields();
-    
-	protected:
-	  void (GfxEngine::*mUpdate)(unsigned long);
-	  
-	  void updateIntro(unsigned long lTimeElapsed);
-	  void updateGame(unsigned long lTimeElapsed);
-	  
-	  bool evtGameStarted(Event* inEvt);
-	  bool evtPlayerWon(Event* inEvt);
-	  bool evtSphereDied(Event* inEvt);
-	  bool evtObstacleAlive(Event* inEvt);
-	  bool evtObstacleCollided(Event* inEvt);
-	  bool evtPortalEntered(Event* inEvt);
-	  bool evtPortalReached(Event* inEvt);
-	  bool evtPortalSighted(Event* inEvt);
 	  
 	  bool fPortalReached;
 	  bool fPortalSighted;
