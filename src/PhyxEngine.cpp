@@ -150,27 +150,33 @@ namespace Pixy {
     //MeshManager::getSingleton().createPlane("groundPlane", "General", Plane(Vector3::UNIT_Y, 0), 100, 100,
     //10, 10, true, 1, 5, 5, Vector3::UNIT_Z);
 
-    Procedural::Root::getInstance()->sceneManager = mSceneMgr;
-    
-    Procedural::TubeGenerator()
-    .setOuterRadius(80)
-    .setInnerRadius(78.0f)
-    .setHeight(500)
-    .setNumSegBase(32)
-    .setNumSegHeight(1)
-    .realizeMesh("PhysicsTunnelMesh");
-    
-    //Create the ground shape.
-    mTunnelEntity = mSceneMgr->createEntity("PhysicsTunnelEntity", "PhysicsTunnelMesh");
-    Ogre::SceneNode *tmpNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("PhysicsTunnelNode");
-    tmpNode->attachObject(mTunnelEntity);
-    tmpNode->pitch(Ogre::Degree(90));
-	  tmpNode->setPosition(Vector3(0, 70, 0 ));    
+    if (!mSceneMgr->hasSceneNode("PhysicsTunnelNode")) {
+      
+      Procedural::Root::getInstance()->sceneManager = mSceneMgr;
+      
+      Procedural::TubeGenerator()
+      .setOuterRadius(80)
+      .setInnerRadius(78.0f)
+      .setHeight(500)
+      .setNumSegBase(32)
+      .setNumSegHeight(1)
+      .realizeMesh("PhysicsTunnelMesh");
+      
+      //Create the ground shape.
+      mTunnelEntity = mSceneMgr->createEntity("PhysicsTunnelEntity", "PhysicsTunnelMesh");
+      Ogre::SceneNode *tmpNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("PhysicsTunnelNode");
+      tmpNode->attachObject(mTunnelEntity);
+      tmpNode->pitch(Ogre::Degree(90));
+	    tmpNode->setPosition(Vector3(0, 70, 0 ));  
+	    tmpNode->setVisible(false);  
+	  } else {
+	    mTunnelEntity = mSceneMgr->getEntity("PhysicsTunnelEntity");
+	  }
 	  
     BtOgre::StaticMeshToShapeConverter converter(mTunnelEntity);
     mTunnelShape = converter.createTrimesh();
     mTunnelShape->setLocalScaling(BtOgre::Convert::toBullet(Vector3(1.0f,100.0f,1.0f)));
-    tmpNode->setVisible(false);
+    
     
     //Create MotionState (no need for BtOgre here, you can use it if you want to though).
     btDefaultMotionState* tunnelState = new btDefaultMotionState(

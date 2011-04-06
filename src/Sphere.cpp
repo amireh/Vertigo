@@ -33,10 +33,14 @@ namespace Pixy
 		  mDirection = Vector3(0,-1,1);
 		  
       fDead = true;
-
+  
+      bindToName("GameStarted", this, &Sphere::evtGameStarted);
+      bindToName("ZoneEntered", this, &Sphere::evtZoneEntered);
       bindToName("ObstacleCollided", this, &Sphere::evtObstacleCollided);
       bindToName("PortalEntered", this, &Sphere::evtPortalEntered);
       bindToName("PortalSighted", this, &Sphere::evtPortalSighted);
+      
+      mUpdate = &Sphere::updatePreparation;
       
       mLog->infoStream() << "created";
     };
@@ -44,9 +48,7 @@ namespace Pixy
 	Sphere::~Sphere()
 	{
 	  mLog->infoStream() <<"destructed";
-		
-		mMasterNode = NULL;
-		
+			
 		if (fHasFx) {
 		  ParticleUniverse::ParticleSystemManager* fxMgr = 
       ParticleUniverse::ParticleSystemManager::getSingletonPtr();
@@ -72,6 +74,16 @@ namespace Pixy
 
 		delete mPhyxShape;
 
+    mPhyxShape = 0;
+    mPhyxBody = 0;
+    // these r handled by ogre
+    mMasterNode = 0;
+    mSceneNode = 0;
+    mSceneObject = 0;
+    //GfxEngine::getSingletonPtr()->getSM()->destroyMovableObject(mSceneObject);
+    //GfxEngine::getSingletonPtr()->getSM()->destroySceneNode(mSceneNode);
+    //GfxEngine::getSingletonPtr()->getSM()->destroySceneNode(mMasterNode);
+    
 		if (mLog) {
 			delete mLog;
 			mLog = 0;
@@ -151,7 +163,7 @@ namespace Pixy
     mScore = 0;
     fDead = false;
     
-		render();
+		reset();
 		mLog->debugStream() << "sphere alive & rendered";
 	};
 	
@@ -262,10 +274,11 @@ namespace Pixy
     }*/
 	};
 	
-
-	void Sphere::update(unsigned long lTimeElapsed) {
-	  processEvents();
-	   
+  void Sphere::updatePreparation(unsigned long lTimeElapsed) {
+    
+  };
+  
+  void Sphere::updateGame(unsigned long lTimeElapsed) {
 	  //mDirection.z += mMoveSpeed;
 	  if (mMoveSpeed >= mMaxSpeed)
 	    mMoveSpeed = mMaxSpeed;
@@ -279,7 +292,13 @@ namespace Pixy
 	  if (fHasSfx)
 	    mSfxBeep->update(lTimeElapsed);
 	    
-		//mPhyxBody->applyCentralForce(btVector3(mDirection.x *lTimeElapsed, mDirection.y *lTimeElapsed, mDirection.z * mMoveSpeed * lTimeElapsed));
+		//mPhyxBody->applyCentralForce(btVector3(mDirection.x *lTimeElapsed, mDirection.y *lTimeElapsed, mDirection.z * mMoveSpeed * lTimeElapsed));  
+  };
+  
+	void Sphere::update(unsigned long lTimeElapsed) {
+	  processEvents();
+	  
+    (this->*mUpdate)(lTimeElapsed);
 		
 	};
 	
@@ -383,14 +402,12 @@ namespace Pixy
 	  Vector3 dest = Level::getSingletonPtr()->getTunnel()->getExitPortal()->getPosition();
 	  Vector3 dir = dest - mMasterNode->getPosition();
 	  dir.normalise();
-	  //mMaxSpeed = 100.0f;
-	  //mMoveSpeed = 50.0f;
 	  
 	  //mDirection = Vector3(0, 1, 5) * mMoveSpeed;
 	  mDirection = dir;
 	  
 	  fPortalSighted = true;
-
+	  
 	  return true;
 	};
 	
@@ -400,5 +417,67 @@ namespace Pixy
 	
 	const int Sphere::score() {
 	  return mScore;
+	};
+	
+	bool Sphere::evtGameStarted(Event* inEvt) {
+    mUpdate = &Sphere::updateGame;	
+    
+    // set default speed
+	  //if (mMoveSpeed == 0)
+	    mMoveSpeed = 6;
+	  
+	  setMoveSpeed(mMoveSpeed / 2);
+	  
+	  // default max speed
+	  //if (mMaxSpeed == 0)
+	    mMaxSpeed = mMoveSpeed * 2;
+	        
+    return true;
+	};
+	
+	bool Sphere::evtZoneEntered(Event* inEvt) {
+	  reset();
+	  mUpdate = &Sphere::updatePreparation;
+	  return true;
+	};
+	void Sphere::reset() {
+	  mScore = 0;
+
+	  if (fDead) {
+	    // TODO: make live() reset exactly what die() does
+	    fDead = false;
+	    GfxEngine::getSingletonPtr()->attachToScene(this);
+	    PhyxEngine::getSingletonPtr()->attachToWorld(this);
+	    mMasterNode->setVisible(true);
+	  }
+	  
+	  mCurrentShield = FIRE;
+	  render();
+	  
+	  mShields[FIRE] = 1000;
+	  mShields[ICE] = 1000;
+	  
+	  fPortalSighted = false;
+	  
+	  // reset our position and clear forces
+	  //PhyxEngine::getSingletonPtr()->detachFromWorld(this);
+	  //PhyxEngine::getSingletonPtr()->attachToWorld(this);
+	  
+	  
+
+	  
+	  // reset our speed
+	  mMoveSpeed = 1;
+	  mMaxSpeed = 4;
+
+
+	  
+	  // a default direction
+	  mDirection = Vector3(0,-1,1);
+	  mPhyxBody->activate(true);
+	  mPhyxBody->setLinearVelocity(btVector3(0,-1,1));
+	  btTransform trans = btTransform(btQuaternion(0,0,0,1),btVector3(0,70,30));
+	  mPhyxBody->proceedToTransform(trans);
+	  mMasterNode->setPosition(Vector3(0,70,30));
 	};
 } // end of namespace

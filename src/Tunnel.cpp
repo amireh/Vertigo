@@ -69,13 +69,14 @@ namespace Pixy {
   };
   
   Tunnel::~Tunnel() {
-    if (mPortalEffect) {
+    /*if (mPortalEffect) {
       mPortalEffect->stop();
       mFxMgr->destroyParticleSystem(mPortalEffect, mSceneMgr);
       mPortalEffect = NULL;
       fEffectPrepared = false;
-    }
-    
+    }*/
+
+        
     if (fHasSfx && mSfxPortal) {
       OgreOggSound::OgreOggSoundManager *mSoundMgr;
       mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
@@ -95,6 +96,7 @@ namespace Pixy {
     mGfxEngine = NULL;
     mFxMgr = NULL;
     mSceneMgr = NULL;
+    mEntrance = mExit = NULL;
   };
   
   void Tunnel::generateSegments() {
@@ -150,7 +152,9 @@ namespace Pixy {
   
     mLog->debugStream() << "generating portals";
     
-    if (!fEffectPrepared) {
+    mPortalEffect = mFxMgr->getParticleSystem("FxPortal");
+    
+    if (!mPortalEffect) {
       mPortalEffect = mFxMgr->createParticleSystem(
         "FxPortal",
         "Vertigo/FX/Portal", 
@@ -197,8 +201,8 @@ namespace Pixy {
   
     mNode->setVisible(true);
     
-    bindToName("PortalSighted", this, &Tunnel::evtPortalSighted);
-    bindToName("PortalReached", this, &Tunnel::evtPortalReached);
+    //bindToName("PortalSighted", this, &Tunnel::evtPortalSighted);
+    //bindToName("PortalReached", this, &Tunnel::evtPortalReached);
     
     fPassedEntrance = false;
     fPortalReached = false;
@@ -237,8 +241,8 @@ namespace Pixy {
   
     mNode->setVisible(false);
     
-    unbind("PortalSighted");
-    unbind("PortalReached");
+    //unbind("PortalSighted");
+    //unbind("PortalReached");
     
     fPassedEntrance = false;
     fPortalReached = false;
@@ -278,8 +282,8 @@ namespace Pixy {
 	  if (!fPortalSighted && mSphereNode->getPosition().z >= mSegments.back()->getPosition().z) {
 	    mLog->debugStream() << "exit portal is sighted";
 	    
-	    Event* evt = mEvtMgr->createEvt("PortalSighted");
-	    mEvtMgr->hook(evt);
+	    Event* evt = EventManager::getSingleton().createEvt("PortalSighted");
+	    EventManager::getSingleton().hook(evt);
 	    
 	    mLog->debugStream() << "Portal reached? " << (fPortalReached ? "yes" : "no")
 	      << ", node position z : " << mSphereNode->getPosition().z;

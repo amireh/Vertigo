@@ -105,6 +105,7 @@ namespace Pixy {
 
     mLog->debugStream() << "binding handlers";
     
+    bindToName("ZoneEntered", this, &UIEngine::evtZoneEntered);
     bindToName("GameStarted", this, &UIEngine::evtGameStarted);
     bindToName("PlayerWon", this, &UIEngine::evtPlayerWon);
     bindToName("SphereDied", this, &UIEngine::evtSphereDied);
@@ -119,22 +120,26 @@ namespace Pixy {
 		UIZone* mUIZone = new UIZone();
 		mUIZone->getInfo()["Thumbnail"] = "Lava_Cracks.jpg";
 		mUIZone->getInfo()["Title"] = "Inferno";
+		mUIZone->getInfo()["Path"] = "inferno.vzs";
 		mUIZones.push_back(mUIZone);
 		
 		mUIZone = new UIZone();
 		mUIZone->getInfo()["Thumbnail"] = "Volcanic_Rose_Glass.jpg";
 		mUIZone->getInfo()["Title"] = "Twilight Meadow";
+		mUIZone->getInfo()["Path"] = "twilight_meadow.vzs";
 		mUIZones.push_back(mUIZone);
 		
 		mUIZone = new UIZone();
 		mUIZone->getInfo()["Thumbnail"] = "Slime.jpg";
 		mUIZone->getInfo()["Title"] = "Toxicity";
+		mUIZone->getInfo()["Path"] = "toxicity.vzs";
 		mUIZones.push_back(mUIZone);
 
     //for (int i =0; i < 6; ++i) {
 		mUIZone = new UIZone();
     mUIZone->getInfo()["Thumbnail"] = "Dante_Afterlife.jpg";
 		mUIZone->getInfo()["Title"] = "Dante's Afterlife";
+		mUIZone->getInfo()["Path"] = "dante_afterlife.vzs";
 		mUIZones.push_back(mUIZone);
 		//}
 		
@@ -448,11 +453,35 @@ namespace Pixy {
 		else if (b->getName() == "PlayResume") {
 		  // if the Level state is running, then we resume it
 		  // if it's not, then we're launching a new game
-		  if (Level::getSingleton().running()) {
-		    _hideMenu();
-		    return GameManager::getSingleton().popState();
-		  } else {
+		  UIZone* zone = Ogre::any_cast<UIZone*>(mThumbs[mZoneMenu->getSelectionIndex()]->getUserAny());
+		  
+		  // if this is the first zone the player wants to play, just switch to it
+		  if (!Level::getSingleton().running()) {
+		    Intro::getSingleton().setSelectedZone(zone->getInfo()["Path"]);
 		    return GameManager::getSingleton().changeState(Level::getSingletonPtr());
+		  } else {
+		    // if we're engaged in a zone, and the selected zone in menu is not the same
+		    // then we have to reload the game
+		    if (Intro::getSingleton().getSelectedZone() != zone->getInfo()["Path"]) {
+		      // reset and load new level
+		      Intro::getSingleton().setSelectedZone(zone->getInfo()["Path"]);
+		      Level::getSingleton().reset();
+		      Event* mEvt = mEvtMgr->createEvt("ZoneEntered");
+		      mEvt->setProperty("Path", zone->getInfo()["Path"]);
+		      mEvtMgr->hook(mEvt);    
+		      
+		      return GameManager::getSingleton().popState();
+		    } else {
+		      // just resume the current level
+		      _hideMenu();
+		      return GameManager::getSingleton().popState();
+		    }
+			}
+			
+		  if (Level::getSingleton().running()) {
+		    
+		  } else {
+		    
 		  }
 		} else if (b->getName() == "Quit") {
 		  return GameManager::getSingleton().requestShutdown();
@@ -497,8 +526,9 @@ namespace Pixy {
     } else if (menu == mZoneMenu)    // sample changed, so update slider, label and description
 		{
 
-			UIZone* s = Ogre::any_cast<UIZone*>(mThumbs[menu->getSelectionIndex()]->getUserAny());
-			mTitleLabel->setCaption(menu->getSelectedItem()); 
+			UIZone* zone = Ogre::any_cast<UIZone*>(mThumbs[menu->getSelectionIndex()]->getUserAny());
+			mTitleLabel->setCaption(menu->getSelectedItem());
+			//Intro::getSingleton().setSelectedZone(zone->getInfo()["Path"]);
 		} 
   }
   
@@ -629,6 +659,15 @@ namespace Pixy {
 	
 	bool UIEngine::evtGameStarted(Event* inEvt) {  
 	  mUISheetPrepare->hide();
+	  mUISheetWin->hide();
+	  mUISheetLoss->hide();
+	  return true;
+	};
+	
+	bool UIEngine::evtZoneEntered(Event* inEvt) {
+	  mUISheetPrepare->show();
+	  mUISheetWin->hide();
+	  mUISheetLoss->hide();
 	  return true;
 	};
 	
@@ -650,5 +689,8 @@ namespace Pixy {
 	  
 	  _currentState = inState;
 	};
-	
+
+  void UIEngine::showDialog(const std::string& inCaption, const std::string& inMessage) {
+    mTrayMgr->showOkDialog(inCaption, inMessage, 450);
+  }	
 }

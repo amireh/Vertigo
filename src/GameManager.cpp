@@ -42,6 +42,7 @@ namespace Pixy
 		if( mRoot )
 		    delete mRoot;
 		
+		mLog->infoStream() << "++++++ Vertigo cleaned up successfully ++++++";
 		if (mLog)
 		  delete mLog;
 		  

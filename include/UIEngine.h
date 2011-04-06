@@ -89,9 +89,11 @@ namespace Pixy {
 		 */
 		void _refit(GameState *inState);
 
+		void showDialog(const std::string& inCaption, const std::string& inMessage);
 		
 	protected:
 
+    bool evtZoneEntered(Event* inEvt);
 	  bool evtGameStarted(Event* inEvt);
 	  bool evtPlayerWon(Event* inEvt);
 	  bool evtSphereDied(Event* inEvt);

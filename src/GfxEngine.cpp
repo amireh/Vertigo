@@ -68,13 +68,15 @@ namespace Pixy {
 		
 		mRoot         = Ogre::Root::getSingletonPtr();
 		mOverlayMgr   = Ogre::OverlayManager::getSingletonPtr();
-		//if (mRoot->hasSceneManager(Ogre::ST_GENERIC))
-		//	mSceneMgr     = mRoot->getSceneManager( ST_GENERIC, "CombatScene" );
-		//else
+		if (mRoot->hasSceneManager("GameScene"))
+			mSceneMgr     = mRoot->getSceneManager( "GameScene" );
+		else
 		mSceneMgr = mRoot->createSceneManager(Ogre::ST_GENERIC, "GameScene");
 		
-		
-		mCamera       = mSceneMgr->createCamera("Sphere_Camera");
+		if (mSceneMgr->hasCamera("Sphere_Camera"))
+		  mCamera = mSceneMgr->getCamera("Sphere_Camera");
+		else
+		  mCamera       = mSceneMgr->createCamera("Sphere_Camera");
 
 		mRenderWindow = mRoot->getAutoCreatedWindow();
 		
@@ -131,10 +133,10 @@ namespace Pixy {
 		
 		mUpdate = &GfxEngine::updateGame;
 				
-
 		mCamera->setPosition(Vector3(0,75, -200));
 		mCamera->lookAt(Vector3(0,75, 100));
-    
+
+    bindToName("ZoneEntered", this, &GfxEngine::evtZoneEntered);
     bindToName("GameStarted", this, &GfxEngine::evtGameStarted);
     bindToName("PlayerWon", this, &GfxEngine::evtPlayerWon);
     bindToName("SphereDied", this, &GfxEngine::evtSphereDied);    
@@ -147,7 +149,6 @@ namespace Pixy {
 		return true;
 	}
 	
-
 	void GfxEngine::setCamera(const Ogre::String& inCameraName) {
 		mCamera = mSceneMgr->createCamera(inCameraName);
 	}
@@ -176,8 +177,10 @@ namespace Pixy {
       return true;
     
 	  ParticleUniverse::ParticleSystemManager::getSingletonPtr()->destroyAllParticleSystems(mSceneMgr);
+	  Ogre::CompositorManager::getSingleton().removeCompositor(mViewport, "Radial Blur");
+	  mSceneMgr->destroyAllLights();
+	  mRenderWindow->removeViewport(0);
 	  
-	    
 		mRoot = 0;
 		mSceneMgr = 0;
 		mCamera  = 0;
@@ -195,7 +198,7 @@ namespace Pixy {
 		  mLog->debugStream() << "setting up SceneManager";
           //mSceneMgr->setAmbientLight(Ogre::ColourValue(1,1,1));
 
-		  mCamera = mSceneMgr->getCamera("Sphere_Camera");
+		  //mCamera = mSceneMgr->getCamera("Sphere_Camera");
 		
 		  //mViewport = mCamera->getViewport();
 		  mViewport = mRenderWindow->addViewport(mCamera);
@@ -375,6 +378,11 @@ namespace Pixy {
 	
     bool GfxEngine::attachToScene(Pixy::Entity* inEntity)
     {
+      /*if (inEntity->getSceneNode() && inEntity->getSceneObject()) {
+        inEntity->getSceneNode()->setVisible(true);
+        return true;
+      }*/
+      
 		  Ogre::String nodeName = "Node";
 		  nodeName += inEntity->getName();
 		  nodeName += stringify(inEntity->getObjectId());
@@ -390,17 +398,17 @@ namespace Pixy {
 	
     void GfxEngine::detachFromScene(Pixy::Entity* inEntity)
     {
-        //Ogre::String ownerName = inEntity->getOwner();// == ID_HOST) ? "host" : "client";
         Ogre::SceneNode* mTmpNode = NULL;
-		
+		    //inEntity->getSceneNode()->setVisible(false);
 		    mTmpNode = inEntity->getSceneNode();
 
 		    //mLog->debugStream() << "I'm detaching Entity '" << inEntity->getName() << "' from SceneNode : " + mTmpNode->getName();
-		    mTmpNode->showBoundingBox(false);
+		    //mTmpNode->showBoundingBox(false);
 		    mTmpNode->detachObject(inEntity->getSceneObject());
 		
 		    mSceneMgr->destroyEntity((Ogre::Entity*)inEntity->getSceneObject());
-	
+		    mSceneMgr->destroySceneNode(inEntity->getSceneNode());
+	      
     }
 
 	
@@ -488,13 +496,17 @@ namespace Pixy {
 	
 	};
 	
+	void GfxEngine::updateNothing(unsigned long lTimeElapsed) {
+	
+	};
+	
 	void GfxEngine::updateGame(unsigned long lTimeElapsed) {
 
-		if (Level::getSingletonPtr()->isGameOver())
+		/*if (Level::getSingletonPtr()->isGameOver())
 		  return;
 		
 		if (fPortalReached)
-		  return;
+		  return;*/
 		
 		if (mEffectEnabled && mEffectTimer.getMilliseconds() > mEffectDuration * 1000) {
 		  mEffectTimer.reset();
@@ -597,8 +609,8 @@ namespace Pixy {
     //effectExplosion->start();
 
     
-    mPortableEffect = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-    mSpawnPoint = mSceneMgr->getRootSceneNode()->createChildSceneNode("NodeSpawnPoint");
+    //mPortableEffect = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+    //mSpawnPoint = mSceneMgr->getRootSceneNode()->createChildSceneNode("NodeSpawnPoint");
     //mSpawnPoint->attachObject(effects["Despawn"]);
     
 	}
@@ -618,7 +630,7 @@ namespace Pixy {
 	};
 	
 	void GfxEngine::playEffect(std::string inEffect, const Vector3& inPos) {
-	  effectMap::iterator cursor = effects.find(inEffect);
+	  /*effectMap::iterator cursor = effects.find(inEffect);
 	  if (cursor != effects.end()) {
 	    ParticleUniverse::ParticleSystem* effect = cursor->second;
 	    if (effect->isAttached())
@@ -627,7 +639,7 @@ namespace Pixy {
 	    mPortableEffect->setPosition(inPos);
 	    mPortableEffect->attachObject(effect);
       effect->start();
-	  }	
+	  }	*/
 	};
 	
 	
@@ -659,6 +671,7 @@ namespace Pixy {
 		mSphere->getMasterNode()->setVisible(false);
 		fPortalReached = true;
 		
+	
 		return true;	  
 	};
 	
@@ -673,12 +686,22 @@ namespace Pixy {
 	
 	
 	bool GfxEngine::evtPlayerWon(Event* inEvt) {
+	  mUpdate = &GfxEngine::updateNothing;
+	  
 	  return true;
 	};
 	
 	bool GfxEngine::evtGameStarted(Event* inEvt) {
+	  mUpdate = &GfxEngine::updateGame;
 	  return true;
 	};
 	
-	
+	bool GfxEngine::evtZoneEntered(Event* inEvt) {
+		mCamera->setPosition(Vector3(0,75, -200));
+		mCamera->lookAt(Vector3(0,75, 100));
+		
+		mUpdate = &GfxEngine::updateNothing;
+		
+		return true;	
+	};	
 }

@@ -55,16 +55,8 @@ namespace Pixy
 		mSphere->live();
 
     // create our level
-    mZone = new Zone("dante_afterlife.vzs");
+    mZone = new Zone(Intro::getSingleton().getSelectedZone());
     mZone->engage();
-    /*nrTunnels = 4;
-    mTunnels.push_back(new Tunnel("Vertigo/Tunnel/Rose"));
-    mTunnels.push_back(new Tunnel("Vertigo/Tunnel/Inferno",30));
-    mTunnels.push_back(new Tunnel("Vertigo/Tunnel/Lava/Translucent",40));
-    mTunnels.push_back(new Tunnel("Vertigo/Tunnel/Lava",20));*/
-
-    //mTunnel = mTunnels.front();
-    //mTunnel->show();
   
     // now prepare our obstacles
 		nrObstacles = 12;
@@ -81,6 +73,7 @@ namespace Pixy
     fGameStarted = false;
     
     // event handlers
+    bindToName("ZoneEntered", this, &Level::evtZoneEntered);
     bindToName("PlayerWon", this, &Level::evtPlayerWon);
 		bindToName("SphereDied", this, &Level::evtSphereDied);
 		bindToName("PortalEntered", this, &Level::evtPortalEntered);
@@ -95,6 +88,11 @@ namespace Pixy
 		mTimer.reset();
 
     mUpdater = &Level::updatePreparation;
+
+    Event* mEvt = mEvtMgr->createEvt("ZoneEntered");
+    mEvt->setProperty("Path", Intro::getSingleton().getSelectedZone());
+    mEvt->setProperty("FirstZone", "True");
+    mEvtMgr->hook(mEvt);		      
     		
 		mLog->infoStream() << "Initialized successfully.";
 		
@@ -255,7 +253,10 @@ namespace Pixy
       mUpdater = &Level::updateGame;
     }
     
-    //mUIEngine->update(lTimeElapsed);
+    mUIEngine->update(lTimeElapsed);
+    mGfxEngine->update(lTimeElapsed);
+    mPhyxEngine->update(lTimeElapsed);
+    mSphere->update(lTimeElapsed);
   };
 
   void Level::updateGameOver(unsigned long lTimeElapsed) {
@@ -275,13 +276,9 @@ namespace Pixy
 		     ++_itrEngines)
 		    (*_itrEngines)->update(lTimeElapsed);*/
 		
-		//mLog->debugStream() << "updating sfx";
 		mSfxEngine->update(lTimeElapsed);
-		//mLog->debugStream() << "updating gfx";
 		mGfxEngine->update(lTimeElapsed);
-		//mLog->debugStream() << "updating ui";
 		mUIEngine->update(lTimeElapsed);
-		//mLog->debugStream() << "updating phyx";
 		mPhyxEngine->update(lTimeElapsed);
 
     mZone->update(lTimeElapsed);
@@ -321,7 +318,6 @@ namespace Pixy
 		mEvtMgr->update();
 		processEvents();
 		
-		//updateGame(lTimeElapsed);
     (this->*mUpdater)(lTimeElapsed);
     
 	}
@@ -391,8 +387,6 @@ namespace Pixy
   
   bool Level::evtPortalReached(Event* inEvt) {
     
-
-    
     //fSpawning = false;
     //mSphere->getRigidBody()->clearForces();
     //mSphere->getRigidBody()->setLinearVelocity(btVector3(0,0,0));
@@ -417,41 +411,9 @@ namespace Pixy
 		{ 
 		  (*_itr)->setMaxSpeed((*_itr)->getMaxSpeed() + (*_itr)->getMaxSpeed() * 0.25f);
 	  }
-		// teleport the player to the second tunnel after 5 secs from sighting the portal
-		//if (mTimer.getMilliseconds() > 5000) {
 		  
-		  
-/*		  if (mTunnel == mTunnels.back()) {
-		    // the player has won
-		    mEvtMgr->hook(mEvtMgr->createEvt("PlayerWon"));
-		    fGameOver = true;
-		    return true;
-		    //mTunnel = mTunnels.front();
-		  }
-		  else {
-		    mTunnel->hide();
-		    for (std::list<Tunnel*>::iterator _itr = mTunnels.begin();
-		         _itr != mTunnels.end();
-		         ++_itr) {
-		      if ((*_itr) == mTunnel)
-		        mTunnel = *(++_itr);   // this is our next tunnel  
-		    }
-		  }
-		  
-		  // relocate the sphere
-		  
-		  Vector3 pos = mTunnel->getNode()->getPosition();
-		  btTransform trans = btTransform(btQuaternion(0,0,0,1),btVector3(pos.x,pos.y+35,pos.z));
-		  mSphere->getRigidBody()->proceedToTransform(trans);
-		  mSphere->getMasterNode()->setPosition(pos);
-		  mLog->debugStream() << "relocating sphere to " << pos.x << ", " << pos.y << ", " << pos.z;
-		  // and show the shizzle
-		  mTunnel->show();*/
-		  
-		  
-		  return true;
-		//};
-    return false;
+		return true;
+
   };
   
   bool Level::evtPortalSighted(Event* inEvt) {
@@ -519,5 +481,47 @@ namespace Pixy
   };
   int Level::currentSpawnRate() const {
     return mSpawnTimer;
+  };
+  
+  bool Level::evtZoneEntered(Event* inEvt) {
+    
+    // this class is the one who emits the first "ZoneEntered" event and thus
+    // does not have to handle it
+    if (inEvt->propertyExists("FirstZone"))
+      return true;
+    
+    reset();
+    
+    return true;
+  };
+  void Level::reset() {
+    mLog->infoStream() << "loading a new zone, resetting the game";
+    
+    mUpdater = &Level::updatePreparation;
+    mSpawnTimer = 900;
+    fSpawning = fGameStarted = fGameOver = false;
+    
+    // destroy our current zone
+    mZone->disengage();
+    delete mZone;
+    
+    // kill our obstacles
+		std::list<Obstacle*>::iterator _itr;
+		for (_itr = mObstacles.begin(); 
+		     _itr != mObstacles.end();)
+		{      
+      Obstacle *mObs = *_itr;
+      ++_itr;
+      mObs->die();
+      releaseObstacle(mObs);
+      continue;
+		}
+		
+		// load the new zone
+    mZone = new Zone(Intro::getSingleton().getSelectedZone());
+    mZone->engage();
+    
+    mSphere->reset();
+
   };
 } // end of namespace

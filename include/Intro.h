@@ -59,7 +59,14 @@ namespace Pixy
     virtual bool areSfxEnabled();
     virtual void dontUpdateMe(Engine* inEngine);
     
+    std::string& getSelectedZone();
+    void setSelectedZone(const std::string &inPath);
+    
 	protected:
+	  
+	  // contains the path of the Zone sheet, this is set by the UIEngine
+	  // when a player chooses a zone thumb from the menu
+	  std::string mSelectedZone;
     /*
     virtual void setupWidgets();
     //virtual bool keyPressed(const OIS::KeyEvent& evt);

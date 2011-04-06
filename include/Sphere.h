@@ -64,7 +64,7 @@ namespace Pixy
 		
 		int getShieldState();
 		
-		
+		void reset();
 		//float getMaxSpeed() const;
 		
 		//virtual void collide(Obstacle* inObj);
@@ -72,12 +72,18 @@ namespace Pixy
 		const Vector3& getPosition();
 		const int score();
 	protected:		
+		void (Sphere::*mUpdate)(unsigned long);
 		
+		bool evtGameStarted(Event* inEvt);
+		bool evtZoneEntered(Event* inEvt);
 		bool evtPortalEntered(Event* inEvt);
 		bool evtPortalSighted(Event* inEvt);
 		bool evtObstacleCollided(Event* inEvt);
 		
 		void locateNextWaypoint();
+		
+		void updatePreparation(unsigned long lTimeElapsed);
+		void updateGame(unsigned long lTimeElapsed);
 		
 		//! helper method for copy ctor and assignment operator
 		virtual void copyFrom(const Sphere& src);

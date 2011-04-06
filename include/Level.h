@@ -75,6 +75,8 @@ namespace Pixy
     void dontUpdateMe(Engine* inEngine);
     Obstacle* lastObstacleAlive();
     
+    void reset();
+    
 	protected:
     void (Level::*mUpdater)(unsigned long);
     
@@ -82,6 +84,7 @@ namespace Pixy
     void updateGame(unsigned long lTimeElapsed);
     void updateGameOver(unsigned long lTimeElapsed);
     
+    bool evtZoneEntered(Event* inEvt);
     bool evtPlayerWon(Event* inEvt);
     bool evtSphereDied(Event* inEvt);
 		bool evtPortalEntered(Event* inEvt);

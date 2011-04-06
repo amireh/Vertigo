@@ -22,6 +22,8 @@ namespace Pixy {
     mTunnels.clear();
     mTunnel = 0;
     
+    fLoaded = false;
+    
     if (fAutoload)
       load();
       
@@ -42,7 +44,9 @@ namespace Pixy {
 		mLog->debugStream() << "destroyed";
 		if (mLog)
 		  delete mLog;
-		  
+		
+		fLoaded = false;
+		
 		mLog = 0;   
   };
   
@@ -69,24 +73,13 @@ namespace Pixy {
        return;
     }
     
-       
-    /*TiXmlDocument mDoc( mFilename.c_str() );
-
-    if(!mDoc.LoadFile())
-    {
-        mLog->errorStream() << "couldnt open zone sheet @ " << mFilename;
-        return;
-    }*/
-
-    //TiXmlElement* mRoot = mDoc.RootElement();
-    //TiXmlElement* mRoot = static_cast<TiXmlElement*>(mXMLFile->getXMLData());
     TiXmlDocument* mRoot = static_cast<TiXmlDocument*>(mXMLFile->getXMLData());
     TiXmlHandle mHandler(mRoot->RootElement());
-    //mLog->debugStream() << "assigned handler";
+
     // zone name
     mName = mRoot->RootElement()->Attribute("Name");
 
-    mLog->debugStream() << "zone name: " << mName;
+    mLog->debugStream() << "name: " << mName;
     // loop through the tunnel definitions
     //mHandler = mHandler.FirstChild("Zone");
     TiXmlNode* xTunnel = mHandler.FirstChild().ToNode();
@@ -124,10 +117,14 @@ namespace Pixy {
   };
   
   bool Zone::load() {
+    if (fLoaded)
+      return true;
+    
     try {
       parseFile();
     } catch (std::exception& e) {
       mLog->errorStream() << "could not parse zone from " << mFilename << "!!";
+      throw e;
       return false;
     }
     

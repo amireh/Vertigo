@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Zone Name="Dante's Afterlife">
+  <Tunnel>
+    <Property Name="Material"       Value="Vertigo/Tunnel/Rose" />
+    <Property Name="Segments"       Value="10" />
+    <Property Name="SegmentLength"  Value="500" />
+  </Tunnel>
+  <Tunnel>
+    <Property Name="Material"       Value="Vertigo/Tunnel/Inferno" />
+    <Property Name="Segments"       Value="30" />
+    <Property Name="SegmentLength"  Value="500" />
+  </Tunnel>
+  <Tunnel>
+    <Property Name="Material"       Value="Vertigo/Tunnel/Lava/Translucent" />
+    <Property Name="Segments"       Value="40" />
+    <Property Name="SegmentLength"  Value="500" />
+  </Tunnel>
+  <Tunnel>
+    <Property Name="Material"       Value="Vertigo/Tunnel/Lava" />
+    <Property Name="Segments"       Value="20" />
+    <Property Name="SegmentLength"  Value="500" />
+  </Tunnel>
+</Zone>

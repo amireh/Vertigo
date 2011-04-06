@@ -19,6 +19,8 @@ namespace Pixy
 		
 		mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "Intro");
 
+    mSelectedZone = "";
+    
     mEvtMgr = EventManager::getSingletonPtr();
     //GfxEngine::getSingletonPtr()->setup();
     //GfxEngine::getSingletonPtr()->hideUI();
@@ -26,6 +28,7 @@ namespace Pixy
     mUIEngine->setup();
     mUIEngine->deferredSetup();
 		//mUIEngine->show();
+		
 		
 		mLog->infoStream() << "Initialized successfully.";
 		
@@ -131,4 +134,7 @@ namespace Pixy
     mEngines.remove(inEngine);
   };
   
+  std::string& Intro::getSelectedZone() { return mSelectedZone; };
+  
+  void Intro::setSelectedZone(const std::string& inPath) { mSelectedZone = inPath; };
 } // end of namespace
