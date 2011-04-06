@@ -28,8 +28,8 @@ namespace Pixy
 		mMoveSpeed = mMaxSpeed = 0;
 		mDirection = Vector3::ZERO;
 		
-		fHasFx = Level::getSingleton().areFxEnabled();
-		fHasSfx = Level::getSingleton().areSfxEnabled();
+		fHasFx = GameManager::getSingleton().currentState()->areFxEnabled();
+		fHasSfx = GameManager::getSingleton().currentState()->areSfxEnabled();
 		
 	};
 
