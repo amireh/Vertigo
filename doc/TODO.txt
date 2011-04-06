@@ -2,11 +2,12 @@
 * sphere: flip shields (DONE)
 * sphere: track shield state (DONE)
 * obstacles: collision (DONE)
-* obstacles: stationary and suicidal
+* obstacles: stationary and suicidal (DONE)
+* obstacles: create duettes
 * obstacles: track player (done)
 * terrain: multi tunnels (revised)
 * add portals (done)
-* create UI...
+* create UI... (DONE)
 * implement events (done)
 * implement states:
   # intro
@@ -23,19 +24,20 @@
 * install shaders for the spheres (done)
 * bump map the material of the sphere (done)
 * add collision effects (done)
-* linear increase in sphere velocity 
+* linear increase in sphere velocity (done)
 
 -- compatibility --
-* proper logging for debug / release
+* proper logging for debug / release (done)
 * add some configuration:
   # slow down the game / speed up
   # toggle FPS frame (done)
-  # pause the game
+  # pause the game (done)
 
 -- maintenance --
-* strip away unused procedural geometry files
-* clean up unused media
+* strip away unused procedural geometry files (done)
+* clean up unused media (done)
 
 -- code --
 * create Level objects that encapsulate the creation of a tunnel and its portal (done)
 * refactor GfxEngine .. it's a bloody mess there (done)
+* THREAD IT

@@ -62,6 +62,8 @@ MY_CFLAGS = `pkg-config --cflags OGRE OIS CEGUI bullet` -Iinclude \
 	-Imodules/include/ogre \
 	-Imodules/include/ogre-procedural \
 	-Imodules/include/btogre \
+	-Imodules/include/tinyxml \
+	-Imodules/include/tinyxmlresource \
 	-I/usr/local/include/OGRE/Plugins/ParticleUniverse
 	#-I/usr/include/AL \
 	#-I/usr/include/vorbis \
@@ -78,7 +80,12 @@ LDFLAGS   =
 
 # The directories in which source files reside.
 # If not specified, only the current directory will be serached.
-SRCDIRS   = src modules/src/log4cpp modules/src/ogre-procedural modules/src/btogre
+SRCDIRS   = src \
+  modules/src/log4cpp \
+  modules/src/ogre-procedural \
+  modules/src/btogre \
+  modules/src/tinyxml \
+  modules/src/tinyxmlresource 
 
 # The executable file name.
 # If not specified, current directory name or `a.out' will be used.

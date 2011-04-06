@@ -70,6 +70,7 @@ namespace Pixy
 		//virtual void collide(Obstacle* inObj);
 		
 		const Vector3& getPosition();
+		const int score();
 	protected:		
 		
 		bool evtPortalEntered(Event* inEvt);
@@ -87,14 +88,9 @@ namespace Pixy
 		list<Vector3> mWaypoints;
 		Vector3* mNextWaypoint;
 		
-		Ogre::Real mDistance;
-		Ogre::Real move;
-		//float mMaxSpeed;
-		float step;
-		float currentStep;
+		int mScore;
 		//Ogre::Vector3 mDirection;
 		OgreOggSound::OgreOggISound *mSfxRumbling, *mSfxFlipShield, *mSfxBeep;
-		Ogre::SceneNode* mFireTrailNode, *mIceSteamNode;
 		ParticleUniverse::ParticleSystem *mFireEffect, *mIceEffect;
 		
 		bool fDamped;

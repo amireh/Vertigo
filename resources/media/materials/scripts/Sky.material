@@ -10,7 +10,40 @@ material Vertigo/Sky/Vortex
 			texture_unit
 			{
 				cubic_texture FLM_F.png FLM_B.png FLM_R.png FLM_L.png FLM_U.png FLM_D.png separateUV
+			}
+		}
+	}
+}
 
+material Vertigo/Sky/NBL
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			depth_write off
+
+			texture_unit
+			{
+				cubic_texture BLU_F.png BLU_B.png BLU_R.png BLU_L.png BLU_U.png BLU_D.png separateUV
+			}
+		}
+	}
+}
+
+material Vertigo/Sky/BLU
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			depth_write off
+
+			texture_unit
+			{
+				cubic_texture NBL_F.png NBL_B.png NBL_R.png NBL_L.png NBL_U.png NBL_D.png separateUV
 			}
 		}
 	}

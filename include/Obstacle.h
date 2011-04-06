@@ -58,8 +58,12 @@ namespace Pixy
 		
 		virtual void render();
 		virtual void update(unsigned long lTimeElapsed);
-				
+	  
+	  virtual void setDirection(Vector3 inDirection);
+	  virtual void setClass(OBSTACLE_CLASS inClass);
+	  
 		SHIELD shield();
+		void setShield(const SHIELD inShield);
 			
 	protected:		
 		
@@ -84,7 +88,8 @@ namespace Pixy
     OgreOggSound::OgreOggISound *mSfxExplosion, *mSfxShatter, **mSfx;
     
     ParticleUniverse::ParticleSystem *mBlaze, *mSteam;
-    
+    static bool ourMeshCreated;
+    static btCollisionShape* ourShape;
 	};
 } // end of namespace
 #endif

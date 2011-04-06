@@ -89,7 +89,9 @@ namespace Pixy
 		static GameManager* getSingletonPtr();
 		static GameManager& getSingleton();
 		
-		GAME_STATE gameState() const;
+		GameState* currentState();
+		
+		bool shuttingDown();
 	private:
 		GameManager();
 		GameManager(const GameManager&) {}
@@ -104,6 +106,8 @@ namespace Pixy
 		 *	are set up here.
 		 */
 		bool configureGame();
+		
+		void loadRenderSystems();
 		
 		//! Loads resources for use by the Ogre engine
 		/*! 
@@ -163,7 +167,7 @@ namespace Pixy
 		Ogre::RenderWindow	*mRenderWindow;
 		InputManager		*mInputMgr;
 		
-		GAME_STATE mCurrentState;
+		GameState* mCurrentState;
 		//GameState			*mStateGame;
 		//GameState			*mLobby;
 		//GameState			*mCombat;
@@ -172,6 +176,7 @@ namespace Pixy
 		bool fShutdown;
 		std::vector<GameState*> mStates;
 		static GameManager *mGameManager;
+		log4cpp::Category* mLog;
 	};
 } // end of namespace
 
