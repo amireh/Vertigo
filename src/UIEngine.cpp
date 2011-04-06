@@ -40,6 +40,8 @@ namespace Pixy {
 			delete mLog; mLog = 0;
 			fSetup = false;
 		}
+		
+		_myUIEngine = NULL;
 	}
 	
 	bool UIEngine::cleanup() {
@@ -138,9 +140,9 @@ namespace Pixy {
 		CEGUI::ImagesetManager::getSingleton().create( "Shields.imageset" );
 		
 		CEGUI::WindowManager& mWinMgr = CEGUI::WindowManager::getSingleton();
-		//mLayout = mWinMgr.loadWindowLayout("vertigo.layout");
-		//mLayout->show();
-		//mUISystem->setGUISheet(mLayout);
+		mLayout = mWinMgr.loadWindowLayout("vertigo.layout");
+		mLayout->show();
+		mUISystem->setGUISheet(mLayout);
 		
 		
 		//Combat::getSingletonPtr()->updateMe(getSingletonPtr());

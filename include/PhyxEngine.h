@@ -56,11 +56,10 @@ namespace Pixy
 		
 		static void myTickCallback(btDynamicsWorld *world, btScalar timeStep);
 		
-		btCollisionShape* obstaclesShape();
-		
 		float getMaxSpeed() const;
 		
 	protected:
+	  
 		btBroadphaseInterface* mBroadphase;
 		btDefaultCollisionConfiguration* mCollisionConfig;
 		btCollisionDispatcher* mDispatcher;

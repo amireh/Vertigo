@@ -44,6 +44,8 @@ namespace Pixy {
 	GfxEngine::~GfxEngine() {
 		mLog->infoStream() << "shutting down";
 		if (fSetup) {
+		  ParticleUniverse::ParticleSystemManager::getSingletonPtr()->destroyAllParticleSystems(mSceneMgr);
+		  
 			mRoot = 0;
 			mSceneMgr = 0;
 			mCamera = mCamera2 = mCamera3 = mCamera4 = 0;
@@ -57,6 +59,8 @@ namespace Pixy {
 
 			fSetup = false;
 		}
+		
+		_myGfxEngine = NULL;
 	}
 	
 	bool GfxEngine::setup() {
@@ -98,8 +102,9 @@ namespace Pixy {
 		
 		mOverlayMgr->getByName("Vertigo/UI/Loading")->show();
 		
-    Geometry::createSphere("ObstacleMesh", 12, 16, 16);
+    //Geometry::createSphere("ObstacleMesh", 12, 16, 16);
 
+    setupParticles();
 		
 		mTrayMgr = new OgreBites::SdkTrayManager("AOFTrayMgr", mRenderWindow, InputManager::getSingletonPtr()->getMouse(), 0);
 		mTrayMgr->hideCursor();
@@ -109,14 +114,7 @@ namespace Pixy {
     mCameraMan = new OgreBites::SdkCameraMan(mCamera);
     //mRenderWindow->setActive(true);
 
-    bindToName("GameStarted", this, &GfxEngine::evtGameStarted);
-    bindToName("PlayerWon", this, &GfxEngine::evtPlayerWon);
-    bindToName("SphereDied", this, &GfxEngine::evtSphereDied);    
-    bindToName("ObstacleAlive", this, &GfxEngine::evtObstacleAlive);
-    bindToName("ObstacleCollided", this, &GfxEngine::evtObstacleCollided);
-    bindToName("PortalEntered", this, &GfxEngine::evtPortalEntered);
-    bindToName("PortalReached", this, &GfxEngine::evtPortalReached);
-    bindToName("PortalSighted", this, &GfxEngine::evtPortalSighted);
+
     
 		fSetup = true;
 		return fSetup;
@@ -129,10 +127,13 @@ namespace Pixy {
 		//mCamera->lookAt(mSphere->getSceneNode()->getPosition());
 		//mCamera->lookAt(mSphere->getSceneNode()->getPosition());
 		
+		GameState *currentState = (GameManager::getSingleton().currentState());
+		if (currentState->getId() == STATE_INTRO) {
+		  mUpdate = &GfxEngine::updateIntro;
+		  return true;
+		}
 		
-		
-		
-		setupParticles();
+		mUpdate = &GfxEngine::updateGame;
 		
 		mUISheet = mOverlayMgr->getByName("Vertigo/UI");
 		mUISheet->show();
@@ -187,7 +188,16 @@ namespace Pixy {
     
 		mCamera->setPosition(Vector3(0,75, -200));
 		mCamera->lookAt(Vector3(0,75, 100));
-    		
+    
+    bindToName("GameStarted", this, &GfxEngine::evtGameStarted);
+    bindToName("PlayerWon", this, &GfxEngine::evtPlayerWon);
+    bindToName("SphereDied", this, &GfxEngine::evtSphereDied);    
+    bindToName("ObstacleAlive", this, &GfxEngine::evtObstacleAlive);
+    bindToName("ObstacleCollided", this, &GfxEngine::evtObstacleCollided);
+    bindToName("PortalEntered", this, &GfxEngine::evtPortalEntered);
+    bindToName("PortalReached", this, &GfxEngine::evtPortalReached);
+    bindToName("PortalSighted", this, &GfxEngine::evtPortalSighted);
+        
 		return true;
 	}
 	
@@ -216,7 +226,7 @@ namespace Pixy {
 	}
 	
 	bool GfxEngine::cleanup() {		
-	  ParticleUniverse::ParticleSystemManager::getSingletonPtr()->destroyAllParticleSystems(mSceneMgr);
+	  
 	  
 		return true;
 	}
@@ -515,10 +525,18 @@ namespace Pixy {
 	
 	
 
-
 	void GfxEngine::update(unsigned long lTimeElapsed) {
-		processEvents();
-		
+	  processEvents();
+	  
+	  (this->*mUpdate)(lTimeElapsed);
+	};
+	
+	void GfxEngine::updateIntro(unsigned long lTimeElapsed) {
+	
+	};
+	
+	void GfxEngine::updateGame(unsigned long lTimeElapsed) {
+
 		if (Level::getSingletonPtr()->isGameOver())
 		  return;
 		

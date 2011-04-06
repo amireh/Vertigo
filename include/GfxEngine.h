@@ -132,7 +132,11 @@ namespace Pixy {
     void updateUIShields();
     
 	protected:
-	
+	  void (GfxEngine::*mUpdate)(unsigned long);
+	  
+	  void updateIntro(unsigned long lTimeElapsed);
+	  void updateGame(unsigned long lTimeElapsed);
+	  
 	  bool evtGameStarted(Event* inEvt);
 	  bool evtPlayerWon(Event* inEvt);
 	  bool evtSphereDied(Event* inEvt);

@@ -29,7 +29,7 @@ namespace Pixy {
 	PhyxEngine::PhyxEngine() {
 		mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "PhyxEngine");
 		mLog->infoStream() << "firing up";
-		fSetup = false;		
+		fSetup = false;
 	}
 	
 	PhyxEngine::~PhyxEngine() {
@@ -40,6 +40,9 @@ namespace Pixy {
 			
 			fSetup = false;
 		}
+		
+		if (_myPhyxEngine)
+		  _myPhyxEngine = NULL;
 	}
 	
   void PhyxEngine::myTickCallback(btDynamicsWorld *world, btScalar timeStep) {
@@ -94,7 +97,7 @@ namespace Pixy {
     */
     int wallsCollideWith = COL_SPHERE | COL_OBSTACLES;
     
-    mObstacleShape = new btSphereShape(12);
+    //mObstacleShape = new btSphereShape(12);
     /*
     mFloorShape = new btStaticPlaneShape(btVector3(0,1,0),0);
     mFloorMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,-100,0)));
@@ -197,9 +200,7 @@ namespace Pixy {
     
     //mDbgdraw->step();
 	}
-	
-	btCollisionShape* PhyxEngine::obstaclesShape() { return mObstacleShape; };
-	 
+		 
 	bool PhyxEngine::deferredSetup() {
 		mSphere = Level::getSingleton().getSphere();
 		
@@ -258,6 +259,7 @@ namespace Pixy {
     delete mDispatcher;
     delete mCollisionConfig;
     delete mBroadphase;
+    
 		return true;
 	}
 	
