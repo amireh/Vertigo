@@ -19,11 +19,11 @@
 #ifndef H_InputManager_H
 #include "InputManager.h"
 #endif
-/*#ifdef _WIN32
+#ifdef _WIN32
 #include <CEGUI.h>
 #else
 #include <CEGUI/CEGUI.h>
-#endif*/
+#endif
 
 namespace Pixy
 {
@@ -31,6 +31,7 @@ namespace Pixy
      *  \brief
      *  Defines general behaviour of game states such as the Main Menu, and Combat.
      */
+  class Engine;
 	class GameState {
 		
 	public:
@@ -50,14 +51,17 @@ namespace Pixy
 		virtual void mousePressed( const OIS::MouseEvent &e, OIS::MouseButtonID id )  = 0;
 		virtual void mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id ) = 0;
 		
-		//virtual CEGUI::MouseButton convertButton(OIS::MouseButtonID buttonID);
+		virtual CEGUI::MouseButton convertButton(OIS::MouseButtonID buttonID);
 		
 		void changeState( GameState *state );
 		void pushState( GameState *state );
 		void popState( void );
 		void requestShutdown( void );
 		
+    virtual bool areFxEnabled()=0;
+    virtual bool areSfxEnabled()=0;
 		virtual GAME_STATE getId() const=0;
+		virtual void dontUpdateMe(Engine* inEngine)=0;
 	protected:
 		GameState(){ };
 		log4cpp::Category* mLog;

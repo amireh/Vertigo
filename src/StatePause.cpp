@@ -57,4 +57,8 @@ namespace Pixy
 	void StatePause::update( unsigned long lTimeElapsed ) {
 	}
 	
+	bool StatePause::areFxEnabled() { return true; }
+  bool StatePause::areSfxEnabled() { return true; }
+  
+  void StatePause::dontUpdateMe(Engine* inEngine) { };
 } // end of namespace

@@ -54,8 +54,10 @@ namespace Pixy
 		static StatePause* getSingletonPtr( void );
 		static StatePause& getSingleton();
 		
+    virtual bool areFxEnabled();
+    virtual bool areSfxEnabled();		
 		virtual GAME_STATE getId() const;
-
+    virtual void dontUpdateMe(Engine* inEngine);
 		Sphere* getSphere();
 
 	protected:

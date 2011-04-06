@@ -2,7 +2,7 @@
 
 namespace Pixy
 {
-	/*CEGUI::MouseButton GameState::convertButton(OIS::MouseButtonID buttonID)
+	CEGUI::MouseButton GameState::convertButton(OIS::MouseButtonID buttonID)
 	{
 		switch (buttonID)
 		{
@@ -18,7 +18,7 @@ namespace Pixy
 			default:
 				return CEGUI::LeftButton;
 		}
-	};*/
+	};
 
 	void GameState::changeState( GameState *state ) {
 		GameManager::getSingletonPtr()->changeState( state );
