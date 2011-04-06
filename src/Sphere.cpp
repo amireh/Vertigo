@@ -335,7 +335,7 @@ namespace Pixy
 	    if (mScore <= 0)
 	      mScore = 0;
 	    
-	    GfxEngine::getSingletonPtr()->updateUIShields();
+	    UIEngine::getSingletonPtr()->_updateShields();
 	    
 	    if (mShields[mCurrentShield] <= 0) {
 	      Event* mEvt = EventManager::getSingletonPtr()->createEvt("SphereDied");

@@ -2343,7 +2343,11 @@ namespace OgreBites
 		/*-----------------------------------------------------------------------------
 		| Pops up a message dialog with an OK button.
 		-----------------------------------------------------------------------------*/
-		void showOkDialog(const Ogre::DisplayString& caption, const Ogre::DisplayString& message)
+		void showOkDialog(
+		  const Ogre::DisplayString& caption, 
+		  const Ogre::DisplayString& message, 
+		  const Ogre::Real inWidth = 300, 
+		  const Ogre::Real inHeight = 208)
 		{
 			if (mLoadBar) hideLoadingBar();
 
@@ -2378,7 +2382,7 @@ namespace OgreBites
 
 				mDialogShade->show();
 
-				mDialog = new TextBox(mName + "/DialogBox", caption, 300, 208);
+				mDialog = new TextBox(mName + "/DialogBox", caption, inWidth, inHeight);
 				mDialog->setText(message);
 				e = mDialog->getOverlayElement();
 				mDialogShade->addChild(e);

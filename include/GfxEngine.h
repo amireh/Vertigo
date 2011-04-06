@@ -13,16 +13,16 @@
 #include "Engine.h"
 #include "EventListener.h"
 #include "Entity.h"
-#include <OgreSample.h>
-#include <OgreSdkTrays.h>
 #include <Ogre.h>
-#include <OgreOverlay.h>
+//#include <OgreSample.h>
+//#include <OgreSdkTrays.h>
+/*#include <OgreOverlay.h>
 #include <OgreOverlayElement.h>
 #include <OgreOverlayManager.h>
-#include <OgreParticle.h>
+#include <OgreParticle.h>*/
 //#include "UIEngine.h"
-#include "SdkCameraMan.h"
 #include "InputManager.h"
+#include "SdkCameraMan.h"
 #include "Sphere.h"
 #include "ParticleUniverseSystemManager.h"
 #include <map>
@@ -108,10 +108,10 @@ namespace Pixy {
     void playEffect(std::string inEffect, Entity* inEntity);
     void playEffect(std::string inEffect, const Vector3& pos);
         
-    void updateUIShields();
+    /*void updateUIShields();
     
     void hideUI();
-    void showUI();
+    void showUI();*/
     
 	protected:
 	  void (GfxEngine::*mUpdate)(unsigned long);
@@ -157,7 +157,7 @@ namespace Pixy {
 		Ogre::Viewport       *mViewport;
 		Ogre::RenderWindow	 *mRenderWindow;
 		Ogre::OverlayManager *mOverlayMgr;
-		Ogre::Overlay        *mUISheet, *mUISheetLoss, *mUISheetWin, *mUISheetPrepare;
+		//Ogre::Overlay        *mUISheet, *mUISheetLoss, *mUISheetWin, *mUISheetPrepare;
 		EventManager		 *mEvtMgr;
 		SdkCameraMan		 *mCameraMan;
 		//DotSceneLoader		 *mSceneLoader;
@@ -165,7 +165,7 @@ namespace Pixy {
 		Ogre::Entity* sphereEntity;
 		Ogre::SceneNode* sphereNode;
 		Ogre::Light *mSpotLight;
-		OgreBites::SdkTrayManager*	        mTrayMgr;
+		//OgreBites::SdkTrayManager*	        mTrayMgr;
 		
 		//! used for setting Objects' direction in Scene
 		Vector3 mDirection, mSpherePos;
@@ -194,22 +194,22 @@ namespace Pixy {
 							  const Vector3& inDirection, 
 							  SceneNode* inParent=NULL);
 	
-	  Ogre::FrameEvent evt;
+	  //Ogre::FrameEvent evt;
 		
 		SceneNode* mPortableEffect;
 		
 		Ogre::String mEffect;
-		Ogre::Timer mEffectTimer, mUITimer;
+		Ogre::Timer mEffectTimer;//, mUITimer;
 		float mEffectDuration;
 		bool mEffectEnabled;
 		bool mEffectStarted;
-		bool shakingScreen, reachedThreshold;
+		//bool shakingScreen, reachedThreshold;
 		Ogre::Quaternion mCameraOrientation;
 
     typedef std::map< std::string, ParticleUniverse::ParticleSystem* > effectMap;
     effectMap effects;
         
-    float mUIBarWidth;
+    //float mUIBarWidth;
       
     vector<SceneNode*> mTubes;
     SceneNode *mSpawnPoint;

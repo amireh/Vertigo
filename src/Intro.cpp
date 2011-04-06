@@ -24,7 +24,8 @@ namespace Pixy
     //GfxEngine::getSingletonPtr()->hideUI();
     mUIEngine = UIEngine::getSingletonPtr();
     mUIEngine->setup();
-		mUIEngine->show();
+    mUIEngine->deferredSetup();
+		//mUIEngine->show();
 		
 		mLog->infoStream() << "Initialized successfully.";
 		
@@ -40,12 +41,14 @@ namespace Pixy
 		bool fShuttingDown = GameManager::getSingleton().shuttingDown();
 		
 		//mUIEngine->cleanup();
-		mUIEngine->hide();
+		//mUIEngine->hide();
 		/*mSfxEngine->cleanup();
 		mPhyxEngine->cleanup();
 		mGfxEngine->cleanup();*/
 		
 		fRunning = false;
+		
+		mUIEngine->_refit(Level::getSingletonPtr());
 		
 		mLog->infoStream() << "---- Exiting Intro State ----";
 		delete mLog;
@@ -64,9 +67,9 @@ namespace Pixy
 		
 		//mUIEngine->keyReleased( e );
 
-		if (e.key == OIS::KC_Q) {
+		/*if (e.key == OIS::KC_Q) {
 		  return this->requestShutdown();
-		} else if (e.key == OIS::KC_RETURN || e.key == OIS::KC_ESCAPE) {
+		} else */if (e.key == OIS::KC_ESCAPE) {
 		  if (Level::getSingleton().running())
 		    return GameManager::getSingleton().popState();
 		  else

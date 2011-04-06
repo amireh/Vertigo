@@ -42,6 +42,7 @@ namespace Pixy
 		mEngines.push_back(mSfxEngine);
 		mEngines.back()->setup();		
 		
+		mEngines.push_back(mUIEngine);
 		mUIEngine->setup();
 		//mUIEngine->hide();
 		
@@ -147,12 +148,14 @@ namespace Pixy
 		
 		//EventManager::shutdown();
 		
+		fRunning = false;
+		
+		mUIEngine->_refit(Intro::getSingletonPtr());
+		
 		mGfxEngine = 0;
 		mPhyxEngine = 0;
 		mSfxEngine = 0;
 		mUIEngine = 0;
-		
-		fRunning = false;
 		
 		mLog->infoStream() << "---- Exiting Level State ----";
 		delete mLog;
@@ -260,6 +263,7 @@ namespace Pixy
 		     _itrEngines != mEngines.end();
 		     ++_itrEngines)
 		    (*_itrEngines)->update(lTimeElapsed);  */
+		mUIEngine->update(lTimeElapsed);
 		mSfxEngine->update(lTimeElapsed);
 		mGfxEngine->update(lTimeElapsed);
   };
@@ -276,7 +280,7 @@ namespace Pixy
 		//mLog->debugStream() << "updating gfx";
 		mGfxEngine->update(lTimeElapsed);
 		//mLog->debugStream() << "updating ui";
-		//mUIEngine->update(lTimeElapsed);
+		mUIEngine->update(lTimeElapsed);
 		//mLog->debugStream() << "updating phyx";
 		mPhyxEngine->update(lTimeElapsed);
 

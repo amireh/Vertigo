@@ -32,8 +32,7 @@ namespace Pixy {
 		mLog->infoStream() << "firing up";
 		fSetup = false;
 		//mPlayers.clear();
-		mCameraMan = 0;
-		mTrayMgr = 0;
+		//mCameraMan = 0;
 		//mFallVelocity = 0;
 		//mSceneLoader = 0;
 		//mMoveSpeed = 0.1;
@@ -46,8 +45,6 @@ namespace Pixy {
 		mLog->infoStream() << "shutting down";
 		if (fSetup) {
 
-	    if (mTrayMgr)
-	      delete mTrayMgr;
 
 			delete mLog;
 			mLog = 0;
@@ -105,18 +102,12 @@ namespace Pixy {
 		
     setupNodes();
 		
-		mOverlayMgr->getByName("Vertigo/UI/Loading")->show();
 		
     //Geometry::createSphere("ObstacleMesh", 12, 16, 16);
 
     setupParticles();
 		
-    /*mTrayMgr = new OgreBites::SdkTrayManager("Vertigo/UI/Trays", mRenderWindow, InputManager::getSingletonPtr()->getMouse(), 0);
-		mTrayMgr->hideCursor(); 
-    mTrayMgr->showFrameStats(OgreBites::TL_TOPLEFT);
-    mTrayMgr->hideTrays();
-    */
-    mCameraMan = new OgreBites::SdkCameraMan(mCamera);
+    //mCameraMan = new OgreBites::SdkCameraMan(mCamera);
     //mRenderWindow->setActive(true);
 
 
@@ -139,58 +130,8 @@ namespace Pixy {
 		}
 		
 		mUpdate = &GfxEngine::updateGame;
-		
-		mUISheet = mOverlayMgr->getByName("Vertigo/UI");
-		mUISheet->show();
-		
-		mUISheetLoss = mOverlayMgr->getByName("Vertigo/UI/Loss");
-		mUISheetWin = mOverlayMgr->getByName("Vertigo/UI/Win");
-		mUISheetPrepare = mOverlayMgr->getByName("Vertigo/UI/Prepare");
-		
-		mOverlayMgr->getByName("Vertigo/UI/Loading")->hide();
-		mUISheetLoss->hide();
-		mUISheetWin->hide();
-		mUISheetPrepare->show();		
-		
-		//mUIBarWidth = mUISheet->getChild("UI/FireShieldContainer")->getChild("UI/FireShield")->getWidth();
-		mUIBarWidth = mViewport->getActualWidth() / 3;
-		mUISheet->getChild("UI/FireShieldContainer")->setWidth(mUIBarWidth);
-		mUISheet->getChild("UI/FireShieldContainer")->getChild("UI/FireShield")->setWidth(mUIBarWidth);
-		
-		float aspect_ratio = mViewport->getActualWidth() / mViewport->getActualHeight();
-		/*mUISheet->getChild("UI/FireShieldContainer")->setHeight(64.0f / aspect_ratio);
-		mUISheet->getChild("UI/FireShieldContainer")->getChild("UI/FireShield")->setHeight(64.0f / aspect_ratio);*/
-		
-		mUISheet->getChild("UI/IceShieldContainer")->setWidth(mUIBarWidth);
-		mUISheet->getChild("UI/IceShieldContainer")->setLeft(-1*mUIBarWidth);
-		mUISheet->getChild("UI/IceShieldContainer")->getChild("UI/IceShield")->setWidth(mUIBarWidth);
-		mUISheet->getChild("UI/IceShieldContainer")->getChild("UI/IceShield")->setLeft(-1*mUIBarWidth);
-		//mSphere->getSceneNode()->attachObject(mSceneMgr->getLight("Light2"));
-		
-		mUITimer.reset();
+				
 
-    // scale overlays' font size
-    using Ogre::TextAreaOverlayElement;
-    TextAreaOverlayElement* mTOverlay;
-    float font_size = 32 / aspect_ratio;
-    static_cast<TextAreaOverlayElement*>(
-      mOverlayMgr->getByName("Vertigo/UI/Prepare")->
-                   getChild("UI/Containers/Prepare")->
-                   getChild("UI/Text/Prepare"))->setCharHeight(font_size);
-    static_cast<TextAreaOverlayElement*>(
-      mOverlayMgr->getByName("Vertigo/UI/Loading")->
-                   getChild("UI/Containers/Loading")->
-                   getChild("UI/Text/Loading"))->setCharHeight(font_size);
-    static_cast<TextAreaOverlayElement*>(
-      mOverlayMgr->getByName("Vertigo/UI/Loss")->
-                   getChild("UI/Containers/Loss")->
-                   getChild("UI/Text/Loss"))->setCharHeight(font_size);
-    static_cast<TextAreaOverlayElement*>(
-      mOverlayMgr->getByName("Vertigo/UI/Win")->
-                   getChild("UI/Containers/Win")->
-                   getChild("UI/Text/Win"))->setCharHeight(font_size);
-    
-    
 		mCamera->setPosition(Vector3(0,75, -200));
 		mCamera->lookAt(Vector3(0,75, 100));
     
@@ -203,7 +144,6 @@ namespace Pixy {
     bindToName("PortalReached", this, &GfxEngine::evtPortalReached);
     bindToName("PortalSighted", this, &GfxEngine::evtPortalSighted);
     
-    //mTrayMgr->hideLoadingBar();
 		return true;
 	}
 	
@@ -472,14 +412,14 @@ namespace Pixy {
 	
 	void GfxEngine::mousePressed( const OIS::MouseEvent &e, OIS::MouseButtonID id ) 
 	{
-		if (mCameraMan)
-			mCameraMan->injectMouseDown(e, id);
+		//if (mCameraMan)
+		//	mCameraMan->injectMouseDown(e, id);
 	}
 	
 	void GfxEngine::mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id ) 
 	{
-		if (mCameraMan)
-			mCameraMan->injectMouseUp(e, id);
+		//if (mCameraMan)
+		//	mCameraMan->injectMouseUp(e, id);
 	}
 	
 	
@@ -519,11 +459,6 @@ namespace Pixy {
 		    playEffect("Shatter", mSphere);
 		    break;		    
 		  case OIS::KC_F:
-		    //playEffect("Despawn", mSphere);
-		    /*if (mTrayMgr->areTraysVisible())
-		      mTrayMgr->hideTrays();
-		    else
-		      mTrayMgr->showTrays();*/
 		    break;		    
 			
 		  case OIS::KC_P:
@@ -558,8 +493,6 @@ namespace Pixy {
 		if (Level::getSingletonPtr()->isGameOver())
 		  return;
 		
-		mUISheet->getChild("UI/TimerContainer")->getChild("UI/Timer")->setCaption(String(stringify(mUITimer.getMilliseconds() / 1000.0f)));
-
 		if (fPortalReached)
 		  return;
 		
@@ -585,10 +518,9 @@ namespace Pixy {
 	    mSpherePos.z
 	  );
 							 
-		evt.timeSinceLastEvent = lTimeElapsed;
-		evt.timeSinceLastFrame = lTimeElapsed;
+		/*evt.timeSinceLastEvent = lTimeElapsed;
+		evt.timeSinceLastFrame = lTimeElapsed;*/
 		
-		//mTrayMgr->frameRenderingQueued(evt);
 		//mCameraMan->update(lTimeElapsed);
 		//using namespace Ogre;
 		
@@ -700,100 +632,53 @@ namespace Pixy {
 	
 	
 	bool GfxEngine::evtObstacleAlive(Event* inEvt) {
-	  //Obstacle* mObs = static_cast<Obstacle*>(inEvt->getAny());
-	  
-	  //Vector3 pos = mObs->getMasterNode()->getPosition();
-	  //pos.y += 30;
-	  //mSpawnPoint->setPosition(pos);
-	  //effects["Despawn"]->start();
-	  //playEffect("SpawnPoint", pos);
-	  
+
 	  return true;
 	};
 	
 	bool GfxEngine::evtObstacleCollided(Event* inEvt) {
 	  Obstacle* mObs = static_cast<Obstacle*>(inEvt->getAny());
-	  if (mObs->shield() == FIRE) {
-	    playEffect("Explosion", mSphere);
-	  } else {
-	    playEffect("Shatter", mSphere);    
-	  }
+	  playEffect( (mObs->shield() == FIRE) ? "Explosion" : "Shatter", mSphere); 
 
-    if (mSphere->shield() != mObs->shield()) {
+    if (mSphere->shield() != mObs->shield())
 	      applyMotionBlur(0.5f);
-	      
-
-
-	  }
 	  
 	  return true;
 	};
 	
-	void GfxEngine::updateUIShields() {
-    using namespace Ogre;
-    OverlayElement* mElement = (mSphere->shield() == FIRE) 
-      ? mUISheet->getChild("UI/FireShieldContainer")->getChild("UI/FireShield")
-      : mUISheet->getChild("UI/IceShieldContainer")->getChild("UI/IceShield");
-    
-    mElement->setWidth(mUIBarWidth * (mSphere->getShieldState() / 1000.0f));
-    
-    if (mElement->getHorizontalAlignment() == Ogre::GHA_RIGHT)
-      mElement->setLeft(-1 * mElement->getWidth());
-    
-    //mLog->debugStream() << "updating UI, element's new width: " << mElement->getWidth();  
-    //mElement->setCaption(String(stringify(mSphere->getShieldState())));	
-	};
+
 	
 	bool GfxEngine::evtPortalEntered(Event* inEvt) {
 	  mSphere->getMasterNode()->setVisible(true);
-	  
 	  fPortalReached = false;
 	  
 	  return true;
 	};
 	
 	bool GfxEngine::evtPortalReached(Event* inEvt) {
-	  //mSphere->die();
-	  //mSpawnPoint->setVisible(false);
 		mSphere->getMasterNode()->setVisible(false);
 		fPortalReached = true;
-		//playEffect("Despawn", mSphere);
 		
 		return true;	  
 	};
 	
 	bool GfxEngine::evtPortalSighted(Event* inEvt) {
-		
 		return true;	  
 	};
 	
 	bool GfxEngine::evtSphereDied(Event* inEvt) {
-	  
 	  playEffect("SphereExplosion", mSphere);
-	  mUISheetLoss->show();
-	  
 	  return true;
 	};
 	
 	
 	bool GfxEngine::evtPlayerWon(Event* inEvt) {
-	  
-	  mUISheetWin->show();
-	  
 	  return true;
 	};
 	
 	bool GfxEngine::evtGameStarted(Event* inEvt) {
-	  mUISheetPrepare->hide();
-	  mUITimer.reset();
 	  return true;
 	};
 	
-	void GfxEngine::hideUI() {
-	  mUISheet->hide();
-	};
 	
-	void GfxEngine::showUI() {
-	  mUISheet->show();
-	};
 }

@@ -51,10 +51,10 @@ namespace Pixy {
 	bool UIEngine::cleanup() {
 	  if (!fSetup)
 	    return true;
-	    
-	  mLog->debugStream() << "cleaning up";
-	  
-	  
+      
+    mLog->debugStream() << "cleaning up";	    
+    _hideMenu();
+    _hideHUDs();
 	  
 		return true;
 	}
@@ -96,6 +96,12 @@ namespace Pixy {
 	  mHelpMsg += "\nPress space to flip shields.";
 	  mHelpMsg += "\nYou may use the arrows or A and D buttons to steer your direction.";
 
+    assignHandles();
+
+    bindToName("GameStarted", this, &UIEngine::evtGameStarted);
+    bindToName("PlayerWon", this, &UIEngine::evtPlayerWon);
+    bindToName("SphereDied", this, &UIEngine::evtSphereDied);
+        
     mLog->debugStream() << "set up!";
 		fSetup = true;
 		return true;
@@ -103,12 +109,34 @@ namespace Pixy {
 	
 	bool UIEngine::deferredSetup() {
 		
+		
+		_currentState = GameManager::getSingleton().currentState();
+		
+		if (_currentState->getId() == STATE_GAME) {
+		  mSphere = Level::getSingletonPtr()->getSphere();
+		  
+		  _hideMenu();
+		  _showHUDs();
+		  setupOverlays();
+		  refitOverlays();
+		  
+		  mUISheetPrepare->show();
+		} else {
+		  _hideHUDs();
+		  _showMenu();
+		}
 		return true;
 	}
 	
 	
 	void UIEngine::update( unsigned long lTimeElapsed ) {
 		processEvents();
+		
+		
+    
+    // update our good tray manager
+    evt.timeSinceLastFrame = evt.timeSinceLastEvent = lTimeElapsed;		
+    mTrayMgr->frameRenderingQueued(evt);
 	}
 	
 	void UIEngine::mouseMoved( const OIS::MouseEvent &e )
@@ -250,10 +278,12 @@ namespace Pixy {
 		else if (b->getName() == "PlayResume") {
 		  // if the Level state is running, then we resume it
 		  // if it's not, then we're launching a new game
-		  if (Level::getSingleton().running())
+		  if (Level::getSingleton().running()) {
+		    _hideMenu();
 		    return GameManager::getSingleton().popState();
-		  else
+		  } else {
 		    return GameManager::getSingleton().changeState(Level::getSingletonPtr());
+		  }
 		} else if (b->getName() == "Quit") {
 		  return GameManager::getSingleton().requestShutdown();
 		} else if(b->getName() == "Help") {
@@ -316,13 +346,132 @@ namespace Pixy {
     mTrayMgr->showOkDialog("Notice!", "Your new settings will be applied the next time you run Vertigo.");
 	}
 	
-	void UIEngine::hide() {
+	void UIEngine::_hideMenu() {
 	  mTrayMgr->hideAll();
 	  mShadeLayer->hide();
 	};
 	
-	void UIEngine::show() {
+	void UIEngine::_showMenu() {
 	  mTrayMgr->showAll();
 	  mShadeLayer->show();
 	};
+	
+	void UIEngine::assignHandles() {
+		mUISheet = mOverlayMgr->getByName("Vertigo/UI");
+		mUIScore = mUISheet->getChild("UI/TimerContainer")->getChild("UI/Timer");
+		
+		mUISheetLoss = mOverlayMgr->getByName("Vertigo/UI/Loss");
+		mUISheetWin = mOverlayMgr->getByName("Vertigo/UI/Win");
+		mUISheetPrepare = mOverlayMgr->getByName("Vertigo/UI/Prepare");
+		
+		mFireShield = mUISheet->getChild("UI/FireShieldContainer")->getChild("UI/FireShield");
+		mIceShield = mUISheet->getChild("UI/IceShieldContainer")->getChild("UI/IceShield");
+	};
+	
+	void UIEngine::setupOverlays() {
+	  mUISheet->show();
+		mUISheetLoss->hide();
+		mUISheetWin->hide();
+		mUISheetPrepare->show();	
+	};
+	
+	void UIEngine::refitOverlays() {
+	  Ogre::Viewport* mViewport = mWindow->getViewport(0);
+		float aspect_ratio = mViewport->getActualWidth() / mViewport->getActualHeight();
+		
+		//mShieldBarWidth = mUISheet->getChild("UI/FireShieldContainer")->getChild("UI/FireShield")->getWidth();
+		mShieldBarWidth = mViewport->getActualWidth() / 3;
+		mUISheet->getChild("UI/FireShieldContainer")->setWidth(mShieldBarWidth);
+		mUISheet->getChild("UI/FireShieldContainer")->getChild("UI/FireShield")->setWidth(mShieldBarWidth);
+		
+		
+		/*mUISheet->getChild("UI/FireShieldContainer")->setHeight(64.0f / aspect_ratio);
+		mUISheet->getChild("UI/FireShieldContainer")->getChild("UI/FireShield")->setHeight(64.0f / aspect_ratio);*/
+		
+		mUISheet->getChild("UI/IceShieldContainer")->setWidth(mShieldBarWidth);
+		mUISheet->getChild("UI/IceShieldContainer")->setLeft(-1*mShieldBarWidth);
+		mUISheet->getChild("UI/IceShieldContainer")->getChild("UI/IceShield")->setWidth(mShieldBarWidth);
+		mUISheet->getChild("UI/IceShieldContainer")->getChild("UI/IceShield")->setLeft(-1*mShieldBarWidth);
+		
+    // scale overlays' font size
+    using Ogre::TextAreaOverlayElement;
+    TextAreaOverlayElement* mTOverlay;
+    float font_size = 32 / aspect_ratio;
+    static_cast<TextAreaOverlayElement*>(
+      mOverlayMgr->getByName("Vertigo/UI/Prepare")->
+                   getChild("UI/Containers/Prepare")->
+                   getChild("UI/Text/Prepare"))->setCharHeight(font_size);
+    static_cast<TextAreaOverlayElement*>(
+      mOverlayMgr->getByName("Vertigo/UI/Loading")->
+                   getChild("UI/Containers/Loading")->
+                   getChild("UI/Text/Loading"))->setCharHeight(font_size);
+    static_cast<TextAreaOverlayElement*>(
+      mOverlayMgr->getByName("Vertigo/UI/Loss")->
+                   getChild("UI/Containers/Loss")->
+                   getChild("UI/Text/Loss"))->setCharHeight(font_size);
+    static_cast<TextAreaOverlayElement*>(
+      mOverlayMgr->getByName("Vertigo/UI/Win")->
+                   getChild("UI/Containers/Win")->
+                   getChild("UI/Text/Win"))->setCharHeight(font_size);
+	};
+	
+	void UIEngine::_updateShields() {
+    using namespace Ogre;
+    OverlayElement* mElement = (mSphere->shield() == FIRE) 
+      ? mFireShield
+      : mIceShield;
+    
+    mElement->setWidth(mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
+    
+    if (mElement->getHorizontalAlignment() == Ogre::GHA_RIGHT)
+      mElement->setLeft(-1 * mElement->getWidth());
+    
+    // update the player's score
+    mUIScore->setCaption(stringify(mSphere->score()));
+    
+    //mLog->debugStream() << "updating UI, element's new width: " << mElement->getWidth();  
+    //mElement->setCaption(String(stringify(mSphere->getShieldState())));	
+	};
+	
+	void UIEngine::_hideHUDs() {
+	  mUISheet->hide();
+	};
+	
+	void UIEngine::_showHUDs() {
+	  mUISheet->show();
+	};
+	
+	bool UIEngine::evtSphereDied(Event* inEvt) {
+	  mUISheetLoss->show();
+	  return true;
+	};
+	
+	
+	bool UIEngine::evtPlayerWon(Event* inEvt) {
+	  mUISheetWin->show();
+	  return true;
+	};
+	
+	bool UIEngine::evtGameStarted(Event* inEvt) {  
+	  mUISheetPrepare->hide();
+	  return true;
+	};
+	
+	void UIEngine::toggleFPS() {
+	  if (mTrayMgr->areFrameStatsVisible())
+	    mTrayMgr->hideFrameStats();
+	  else
+	    mTrayMgr->showFrameStats(OgreBites::TL_TOPLEFT);
+	};
+	
+	void UIEngine::_refit(GameState* inState) {
+	  if (inState->getId() == STATE_INTRO) {
+	    _hideHUDs();
+	    _showMenu();
+	  } else {
+	    _hideMenu();
+	    _showHUDs();
+	  }
+	};
+	
 }
