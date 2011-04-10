@@ -18,6 +18,8 @@ namespace Pixy {
 		mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "SfxEngine");
 		mLog->infoStream() << "firing up";
 		
+
+    		
 		idSound = 0;
 		mMusicTrack = NULL;
 		mSoundMgr = NULL;
@@ -30,7 +32,11 @@ namespace Pixy {
 		if (fSetup) {
 			delete mLog;
 			mLog = 0;
-			
+
+		  if (mMusicTrack) {
+        mSoundMgr->destroySound(mMusicTrack);
+        mMusicTrack = NULL;
+      }			
 			//delete mSoundMgr;
 			fSetup = false;
 		}
@@ -51,7 +57,12 @@ namespace Pixy {
         mSoundMgr->init();
         mSoundMgr->setSceneManager(GfxEngine::getSingletonPtr()->getSM());
       }
-            
+ 
+   	  if (!mMusicTrack) {
+        mMusicTrack = mSoundMgr->createSound("MusicTrack", "music.ogg", false, false, true);
+        mMusicTrack->setVolume(0.5f);
+      }
+                 
       fAudioStopped = false;
       toggleAudioState();
       
@@ -76,15 +87,12 @@ namespace Pixy {
 
 	  mSphere = Level::getSingletonPtr()->getSphere();
 	  	  
-	  if (!mMusicTrack) {
-      mMusicTrack = mSoundMgr->createSound("MusicTrack", "music.ogg", false, false, true);
-      mMusicTrack->setVolume(0.5f);
-    }
+
  	  if (mMusicTrack)
 	    mMusicTrack->play();
 	           
-    bindToName("ObstacleCollided", this, &SfxEngine::evtObstacleCollided);
-    bindToName("PortalEntered", this, &SfxEngine::evtPortalEntered);
+    //bindToName("ObstacleCollided", this, &SfxEngine::evtObstacleCollided);
+    //bindToName("PortalEntered", this, &SfxEngine::evtPortalEntered);
     
     mUpdater = &SfxEngine::updateGame;
     
@@ -150,8 +158,7 @@ namespace Pixy {
     if (currentState->getId() == STATE_GAME) {
       if (mMusicTrack) {
         mMusicTrack->stop();
-        mSoundMgr->destroySound(mMusicTrack);
-        mMusicTrack = NULL;
+        
       }
     }
     

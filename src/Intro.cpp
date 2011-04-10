@@ -22,11 +22,15 @@ namespace Pixy
     mSelectedZone = "";
     
     mEvtMgr = EventManager::getSingletonPtr();
-    //GfxEngine::getSingletonPtr()->setup();
+    mGfxEngine = GfxEngine::getSingletonPtr();
+    mGfxEngine->setup();
     //GfxEngine::getSingletonPtr()->hideUI();
     mUIEngine = UIEngine::getSingletonPtr();
     mUIEngine->setup();
     mUIEngine->deferredSetup();
+    mSfxEngine = SfxEngine::getSingletonPtr();
+    mSfxEngine->setup();
+
 		//mUIEngine->show();
 		
 		

@@ -92,28 +92,21 @@ namespace Pixy {
 		*/
 		setupSceneManager();
     setupViewports();
-        
-		
-		
-		
-        
-		 setupCamera();
-        
-		 setupTerrain();
-		 setupLights();
-		
+    setupCamera();
+    // set up sky only in game state
+    if (GameManager::getSingleton().currentState()->getId() == STATE_GAME) {
+      setupTerrain();
+    } else if (GameManager::getSingleton().currentState()->getId() == STATE_INTRO) {
+      // set up a nice intro scene
+      
+    };
+    setupLights();
     setupNodes();
-		
-		
-    //Geometry::createSphere("ObstacleMesh", 12, 16, 16);
-
     setupParticles();
 		
     //mCameraMan = new OgreBites::SdkCameraMan(mCamera);
     //mRenderWindow->setActive(true);
 
-
-    
 		fSetup = true;
 		return fSetup;
 	}
@@ -212,7 +205,7 @@ namespace Pixy {
     void GfxEngine::setupViewports()
     {
 		  mLog->debugStream() << "setting up viewports";
-      mViewport->setBackgroundColour(Ogre::ColourValue(255,255,255));
+      mViewport->setBackgroundColour(Ogre::ColourValue(0,0,0));
       
       Ogre::CompositorManager::getSingleton().addCompositor(mViewport, "Radial Blur");
       

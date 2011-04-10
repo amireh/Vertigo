@@ -17,18 +17,18 @@ template container BorderPanel(SdkTrays/Tray)
 {
 	metrics_mode pixels
 	material SdkTrays/Tray
-	uv_coords 0.25 0.25 0.75 0.75
+	uv_coords 0 0 0 0
 	
 	border_material SdkTrays/Tray
 	border_size 16 16 16 16
-	border_topleft_uv     0.00 0.00 0.25 0.25
-	border_top_uv         0.25 0.00 0.75 0.25
-	border_topright_uv    0.75 0.00 1.00 0.25
-	border_left_uv        0.00 0.25 0.25 0.75
-	border_right_uv       0.75 0.25 1.00 0.75
-	border_bottomleft_uv  0.00 0.75 0.25 1.00
-	border_bottom_uv      0.25 0.75 0.75 1.00
-	border_bottomright_uv 0.75 0.75 1.00 1.00
+	border_topleft_uv     0 0 0 0
+	border_top_uv         0 0 0 0
+	border_topright_uv    0 0 0 0
+	border_left_uv        0 0 0 0
+	border_right_uv       0 0 0 0
+	border_bottomleft_uv  0 0 0 0
+	border_bottom_uv      0 0 0 0
+	border_bottomright_uv 0 0 0 0
 }
 
 template container BorderPanel(SdkTrays/Button)
@@ -36,11 +36,11 @@ template container BorderPanel(SdkTrays/Button)
 	metrics_mode pixels
 	material SdkTrays/Button/Up
 	horz_align center
-	height 32
+	height 64
 	uv_coords 0.145 0.000 0.855 1.000
 	
 	border_material SdkTrays/Button/Up
-	border_size 16 16 0 0
+	border_size 32 32 0 0
 	border_left_uv  0.000 0.000 0.125 1.000
 	border_right_uv 0.875 0.000 1.000 1.000
 
@@ -51,7 +51,7 @@ template container BorderPanel(SdkTrays/Button)
         vert_align center
         alignment center
         font_name SdkTrays/Caption
-        char_height 15
+        char_height 24
         space_width 7
         colour 0 0 0
 	}
@@ -526,7 +526,7 @@ template container Panel(SdkTrays/Logo)
 	material SdkTrays/Logo
 	horz_align center
 	width 128
-	height 53
+	height 128
 }
 
 template container Panel(SdkTrays/Picture)

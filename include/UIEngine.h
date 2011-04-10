@@ -98,6 +98,34 @@ namespace Pixy {
 	  bool evtPlayerWon(Event* inEvt);
 	  bool evtSphereDied(Event* inEvt);
 	  
+	  // shifts from main menu to zones screen
+	  void evtClickPlay();
+	  // shows the video settings panel
+	  void evtClickConfigure();
+	  // saves the video settings
+	  void evtClickApply();
+	  void evtClickBackFromConfig();
+	  // display a dialogue with some info on how to play the game
+	  void evtClickHelp();
+	  void evtClickQuit();
+	  // based on the selected zone, switches to Level state and starts the game
+	  void evtClickEngage();
+	  
+	  
+	  // show the zones screen
+	  void _showZones();
+	  // navigate to the next zone in the list, and preview it
+	  void _nextZone();
+	  // display a sheet with the Zone's info and a rendering context with
+	  // a live preview of it in action
+	  void _previewZone();
+	  // navigate to the previous zone in the list, and preview it
+	  void _prevZone();
+	  // hide zones screen
+	  void _hideZones();
+	  
+	  UIZone *mSelectedZone;
+	  
 	  // prompts Ogre::OverlayManager for the overlays we're gonna use
 	  // and assigns pointers to them
 	  void assignHandles();
@@ -147,6 +175,7 @@ namespace Pixy {
 		Ogre::Overlay *mUISheetLoss; // shows a label when the player loses
 		Ogre::Overlay *mUISheetWin; // shows a label when the player wins
 		Ogre::Overlay *mUISheetPrepare; // this is a prompt, shown prior to starting the game
+		Ogre::Overlay *mUILogo;
 		
 		// HUDs here
 		Ogre::OverlayElement *mUIScore;

@@ -3,18 +3,28 @@
 * sphere: track shield state (DONE)
 * obstacles: collision (DONE)
 * obstacles: stationary and suicidal (DONE)
-* obstacles: create duettes
+* obstacles: create duettes (done)
 * obstacles: track player (done)
 * terrain: multi tunnels (revised)
 * add portals (done)
+* implement adjustable difficulty
 * create UI... (DONE)
 * implement events (done)
 * implement states:
-  # intro
-  # transition
+  # intro (done)
+  # transition (done)
   # game (done)
   # score
 * install sound effects (DONE)
+* UI features:
+  # difficulty
+  # music on/off
+  
+-- Gameplay --
+* game modes:
+  # arcade: reach last portal with shields intact, type of obstacles: chase and duettes
+  # survival: survive for as long as possible, obstacles: chase and duettes and possibly spinners
+  # dodge: reach the last portal, type of obstacles: dumb, no flipping is allowed, sphere gets 2shotted, only movement is allowed
 
 -- Enhancements --
 * reimplement collision to use Ogre's Ray queries instead of Bullet (done)
@@ -38,6 +48,8 @@
 * clean up unused media (done)
 
 -- code --
-* create Level objects that encapsulate the creation of a tunnel and its portal (done)
+* create Tunnel objects that encapsulate the creation of a tunnel and its portal (done)
+* create zones that contain a nr of tunnels (done)
+* parse zones from external XML sheets (done)
 * refactor GfxEngine .. it's a bloody mess there (done)
 * THREAD IT

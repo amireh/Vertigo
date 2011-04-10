@@ -83,8 +83,8 @@ namespace Pixy {
 		mShadeLayer = mOverlayMgr->create("ShadeLayer");
 		mShadeLayer->setZOrder(100);
 		mShadeLayer->add2D(mDialogShade);
-		mDialogShade->show();
-		mShadeLayer->show();
+		mDialogShade->hide();
+		mShadeLayer->hide();
 		
 		mTrayMgr = new SdkTrayManager("BrowserControls", mWindow, InputManager::getSingletonPtr()->getMouse(), this);
 		//mTrayMgr->showBackdrop("SdkTrays/Bands");
@@ -276,6 +276,7 @@ namespace Pixy {
   void UIEngine::setupWidgets()
 	{
 	
+	  Ogre::Viewport* mViewport = mWindow->getViewport(0);
 	  Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
 		Ogre::MaterialPtr thumbMat = Ogre::MaterialManager::getSingleton().create("ZoneThumbnail", "Bootstrap");
 		thumbMat->getTechnique(0)->getPass(0)->createTextureUnitState();
@@ -285,17 +286,20 @@ namespace Pixy {
     mTitleLabel = mTrayMgr->createLabel(TL_CENTER, "ZoneTitle", "", 200);
     mZoneMenu = mTrayMgr->createThickSelectMenu(TL_NONE, "ZoneMenu", "Choose Zone", 250, 10);
     
+    
+		int button_width = mViewport->getActualWidth() / 5;
+		
 		// create main navigation tray
 		mTrayMgr->showLogo(TL_BOTTOM);
 		mTrayMgr->createSeparator(TL_BOTTOM, "LogoSep");
-		mTrayMgr->createButton(TL_BOTTOM, "PlayResume", Level::getSingleton().running() ? "Resume" : "Play");
-		mTrayMgr->createButton(TL_BOTTOM, "Configure", "Configure");
-		mTrayMgr->createButton(TL_BOTTOM, "Help", "Help");
-		mTrayMgr->createButton(TL_BOTTOM, "Quit", "Quit");
+		mTrayMgr->createButton(TL_BOTTOM, "PlayResume", Level::getSingleton().running() ? "Resume" : "Play", button_width);
+		mTrayMgr->createButton(TL_BOTTOM, "Configure", "Configure", button_width);
+		mTrayMgr->createButton(TL_BOTTOM, "Help", "Help", button_width);
+		mTrayMgr->createButton(TL_BOTTOM, "Quit", "Quit", button_width);
 
 		// create configuration screen button tray
-		mTrayMgr->createButton(TL_NONE, "Apply", "Apply Changes");
-		mTrayMgr->createButton(TL_NONE, "Back", "Go Back");
+		mTrayMgr->createButton(TL_NONE, "Apply", "Apply Changes", button_width);
+		mTrayMgr->createButton(TL_NONE, "Back", "Go Back", button_width);
 
 		// create configuration screen label and renderer menu
 		mTrayMgr->createLabel(TL_NONE, "ConfigLabel", "Configuration");
@@ -371,122 +375,26 @@ namespace Pixy {
   void UIEngine::buttonHit(Button* b) {
 		if (b->getName() == "Configure")   // enter configuration screen
 		{
-			mTrayMgr->removeWidgetFromTray("PlayResume");
-			mTrayMgr->removeWidgetFromTray("Configure");
-			mTrayMgr->removeWidgetFromTray("Help");
-			mTrayMgr->removeWidgetFromTray("Quit");
-			mTrayMgr->moveWidgetToTray("Apply", TL_BOTTOM);
-			mTrayMgr->moveWidgetToTray("Back", TL_BOTTOM);
-
-			for (unsigned int i = 0; i < mThumbs.size(); i++)
-			{
-				mThumbs[i]->hide();
-			}
-
-			while (mTrayMgr->getTrayContainer(TL_CENTER)->isVisible())
-			{
-				mTrayMgr->removeWidgetFromTray(TL_CENTER, 0);
-			}
-
-			while (mTrayMgr->getTrayContainer(TL_LEFT)->isVisible())
-			{
-				mTrayMgr->removeWidgetFromTray(TL_LEFT, 0);
-			}
-
-			mTrayMgr->moveWidgetToTray("ConfigLabel", TL_CENTER);
-			mTrayMgr->moveWidgetToTray(mRendererMenu, TL_CENTER);
-			mTrayMgr->moveWidgetToTray("ConfigSeparator", TL_CENTER);
-
-			mRendererMenu->selectItem(mRoot->getRenderSystem()->getName());
-
-			//windowResized(mWindow);
+		  evtClickConfigure();
 		}
 		else if (b->getName() == "Back")   // leave configuration screen
 		{
-			while (mTrayMgr->getNumWidgets(mRendererMenu->getTrayLocation()) > 3)
-			{
-				mTrayMgr->destroyWidget(mRendererMenu->getTrayLocation(), 3);
-			}
-
-			while (mTrayMgr->getNumWidgets(TL_NONE) != 0)
-			{
-				mTrayMgr->moveWidgetToTray(TL_NONE, 0, TL_CENTER);
-			}
-
-      mTrayMgr->removeWidgetFromTray("ZoneMenu");
-			mTrayMgr->removeWidgetFromTray("Apply");
-			mTrayMgr->removeWidgetFromTray("Back");
-			mTrayMgr->removeWidgetFromTray("ConfigLabel");
-			mTrayMgr->removeWidgetFromTray(mRendererMenu);
-			mTrayMgr->removeWidgetFromTray("ConfigSeparator");
-
-			mTrayMgr->moveWidgetToTray("PlayResume", TL_BOTTOM);
-			mTrayMgr->moveWidgetToTray("Configure", TL_BOTTOM);
-			mTrayMgr->moveWidgetToTray("Help", TL_BOTTOM);
-			mTrayMgr->moveWidgetToTray("Quit", TL_BOTTOM);
-
-			//windowResized(mWindow);
+		  evtClickBackFromConfig();
 		}
 		else if (b->getName() == "Apply")   // apply any changes made in the configuration screen
 		{
-			bool reset = false;
-
-			Ogre::ConfigOptionMap& options =
-				mRoot->getRenderSystemByName(mRendererMenu->getSelectedItem())->getConfigOptions();
-
-			Ogre::NameValuePairList newOptions;
-
-			// collect new settings and decide if a reset is needed
-
-			if (mRendererMenu->getSelectedItem() != mRoot->getRenderSystem()->getName()) reset = true;
-
-			for (unsigned int i = 3; i < mTrayMgr->getNumWidgets(mRendererMenu->getTrayLocation()); i++)
-			{
-				SelectMenu* menu = (SelectMenu*)mTrayMgr->getWidget(mRendererMenu->getTrayLocation(), i);
-				if (menu->getSelectedItem() != options[menu->getCaption()].currentValue) reset = true;
-				newOptions[menu->getCaption()] = menu->getSelectedItem();
-			}
-
-			// reset with new settings if necessary
-			if (reset) reconfigure(mRendererMenu->getSelectedItem(), newOptions);
+		  evtClickApply();
 		}
 		else if (b->getName() == "PlayResume") {
-		  // if the Level state is running, then we resume it
-		  // if it's not, then we're launching a new game
-		  UIZone* zone = Ogre::any_cast<UIZone*>(mThumbs[mZoneMenu->getSelectionIndex()]->getUserAny());
-		  
-		  // if this is the first zone the player wants to play, just switch to it
-		  if (!Level::getSingleton().running()) {
-		    Intro::getSingleton().setSelectedZone(zone->getInfo()["Path"]);
-		    return GameManager::getSingleton().changeState(Level::getSingletonPtr());
-		  } else {
-		    // if we're engaged in a zone, and the selected zone in menu is not the same
-		    // then we have to reload the game
-		    if (Intro::getSingleton().getSelectedZone() != zone->getInfo()["Path"]) {
-		      // reset and load new level
-		      Intro::getSingleton().setSelectedZone(zone->getInfo()["Path"]);
-		      Level::getSingleton().reset();
-		      Event* mEvt = mEvtMgr->createEvt("ZoneEntered");
-		      mEvt->setProperty("Path", zone->getInfo()["Path"]);
-		      mEvtMgr->hook(mEvt);    
-		      
-		      return GameManager::getSingleton().popState();
-		    } else {
-		      // just resume the current level
-		      _hideMenu();
-		      return GameManager::getSingleton().popState();
-		    }
-			}
-			
-		  if (Level::getSingleton().running()) {
-		    
-		  } else {
-		    
-		  }
+		  evtClickPlay();
 		} else if (b->getName() == "Quit") {
-		  return GameManager::getSingleton().requestShutdown();
+		  evtClickQuit();
+		  
 		} else if(b->getName() == "Help") {
-		  mTrayMgr->showOkDialog("How to play", mHelpMsg, 520);
+		  evtClickHelp();
+		  
+		} else if (b->getName() == "Engage") {
+		  evtClickEngage();
 		};
   };
   
@@ -554,11 +462,13 @@ namespace Pixy {
 	void UIEngine::_hideMenu() {
 	  mTrayMgr->hideAll();
 	  mShadeLayer->hide();
+	  mUILogo->hide();
 	};
 	
 	void UIEngine::_showMenu() {
 	  mTrayMgr->showAll();
 	  mShadeLayer->show();
+	  mUILogo->show();
 	};
 	
 	void UIEngine::assignHandles() {
@@ -571,13 +481,15 @@ namespace Pixy {
 		
 		mFireShield = mUISheet->getChild("UI/FireShieldContainer")->getChild("UI/FireShield");
 		mIceShield = mUISheet->getChild("UI/IceShieldContainer")->getChild("UI/IceShield");
+		
+		mUILogo = mOverlayMgr->getByName("Vertigo/UI/Intro/Logo");
 	};
 	
 	void UIEngine::setupOverlays() {
 	  mUISheet->show();
 		mUISheetLoss->hide();
 		mUISheetWin->hide();
-		mUISheetPrepare->show();	
+		mUISheetPrepare->show();
 	};
 	
 	void UIEngine::refitOverlays() {
@@ -692,5 +604,141 @@ namespace Pixy {
 
   void UIEngine::showDialog(const std::string& inCaption, const std::string& inMessage) {
     mTrayMgr->showOkDialog(inCaption, inMessage, 450);
-  }	
+  }
+  
+  // shifts from main menu to zones screen
+  void UIEngine::evtClickPlay() { };
+  // shows the video settings panel
+  void UIEngine::evtClickConfigure() {
+		mTrayMgr->removeWidgetFromTray("PlayResume");
+		mTrayMgr->removeWidgetFromTray("Configure");
+		mTrayMgr->removeWidgetFromTray("Help");
+		mTrayMgr->removeWidgetFromTray("Quit");
+		mTrayMgr->moveWidgetToTray("Apply", TL_BOTTOM);
+		mTrayMgr->moveWidgetToTray("Back", TL_BOTTOM);
+
+		for (unsigned int i = 0; i < mThumbs.size(); i++)
+		{
+			mThumbs[i]->hide();
+		}
+
+		while (mTrayMgr->getTrayContainer(TL_CENTER)->isVisible())
+		{
+			mTrayMgr->removeWidgetFromTray(TL_CENTER, 0);
+		}
+
+		while (mTrayMgr->getTrayContainer(TL_LEFT)->isVisible())
+		{
+			mTrayMgr->removeWidgetFromTray(TL_LEFT, 0);
+		}
+
+		mTrayMgr->moveWidgetToTray("ConfigLabel", TL_CENTER);
+		mTrayMgr->moveWidgetToTray(mRendererMenu, TL_CENTER);
+		mTrayMgr->moveWidgetToTray("ConfigSeparator", TL_CENTER);
+
+		mRendererMenu->selectItem(mRoot->getRenderSystem()->getName());
+
+		//windowResized(mWindow);  
+  };
+  void UIEngine::evtClickApply() {
+		bool reset = false;
+
+		Ogre::ConfigOptionMap& options =
+			mRoot->getRenderSystemByName(mRendererMenu->getSelectedItem())->getConfigOptions();
+
+		Ogre::NameValuePairList newOptions;
+
+		// collect new settings and decide if a reset is needed
+
+		if (mRendererMenu->getSelectedItem() != mRoot->getRenderSystem()->getName()) reset = true;
+
+		for (unsigned int i = 3; i < mTrayMgr->getNumWidgets(mRendererMenu->getTrayLocation()); i++)
+		{
+			SelectMenu* menu = (SelectMenu*)mTrayMgr->getWidget(mRendererMenu->getTrayLocation(), i);
+			if (menu->getSelectedItem() != options[menu->getCaption()].currentValue) reset = true;
+			newOptions[menu->getCaption()] = menu->getSelectedItem();
+		}
+
+		// reset with new settings if necessary
+		if (reset) reconfigure(mRendererMenu->getSelectedItem(), newOptions);  
+  };
+  void UIEngine::evtClickBackFromConfig() {
+		while (mTrayMgr->getNumWidgets(mRendererMenu->getTrayLocation()) > 3)
+		{
+			mTrayMgr->destroyWidget(mRendererMenu->getTrayLocation(), 3);
+		}
+
+		while (mTrayMgr->getNumWidgets(TL_NONE) != 0)
+		{
+			mTrayMgr->moveWidgetToTray(TL_NONE, 0, TL_CENTER);
+		}
+
+    mTrayMgr->removeWidgetFromTray("ZoneMenu");
+		mTrayMgr->removeWidgetFromTray("Apply");
+		mTrayMgr->removeWidgetFromTray("Back");
+		mTrayMgr->removeWidgetFromTray("ConfigLabel");
+		mTrayMgr->removeWidgetFromTray(mRendererMenu);
+		mTrayMgr->removeWidgetFromTray("ConfigSeparator");
+
+		mTrayMgr->moveWidgetToTray("PlayResume", TL_BOTTOM);
+		mTrayMgr->moveWidgetToTray("Configure", TL_BOTTOM);
+		mTrayMgr->moveWidgetToTray("Help", TL_BOTTOM);
+		mTrayMgr->moveWidgetToTray("Quit", TL_BOTTOM);
+
+		//windowResized(mWindow);  
+  };
+  // display a dialogue with some info on how to play the game
+  void UIEngine::evtClickHelp() { 
+    mTrayMgr->showOkDialog("How to play", mHelpMsg, 520);
+  };
+  void UIEngine::evtClickQuit() {
+    return GameManager::getSingleton().requestShutdown();
+  };
+  // based on the selected zone, switches to Level state and starts the game
+  void UIEngine::evtClickEngage() {
+	  // if the Level state is running, then we resume it
+	  // if it's not, then we're launching a new game
+	  UIZone* zone = Ogre::any_cast<UIZone*>(mThumbs[mZoneMenu->getSelectionIndex()]->getUserAny());
+	  
+	  // if this is the first zone the player wants to play, just switch to it
+	  if (!Level::getSingleton().running()) {
+	    Intro::getSingleton().setSelectedZone(zone->getInfo()["Path"]);
+	    return GameManager::getSingleton().changeState(Level::getSingletonPtr());
+	  } else {
+	    // if we're engaged in a zone, and the selected zone in menu is not the same
+	    // then we have to reload the game
+	    if (Intro::getSingleton().getSelectedZone() != zone->getInfo()["Path"]) {
+	      // reset and load new level
+	      Intro::getSingleton().setSelectedZone(zone->getInfo()["Path"]);
+	      Level::getSingleton().reset();
+	      Event* mEvt = mEvtMgr->createEvt("ZoneEntered");
+	      mEvt->setProperty("Path", zone->getInfo()["Path"]);
+	      mEvtMgr->hook(mEvt);    
+	      
+	      return GameManager::getSingleton().popState();
+	    } else {
+	      // just resume the current level
+	      _hideMenu();
+	      return GameManager::getSingleton().popState();
+	    }
+		}
+		
+	  if (Level::getSingleton().running()) {
+	    
+	  } else {
+	    
+	  }
+  };
+  
+  // show the zones screen
+  void UIEngine::_showZones() { };
+  // navigate to the next zone in the list, and preview it
+  void UIEngine::_nextZone() { };
+  // display a sheet with the Zone's info and a rendering context with
+  // a live preview of it in action
+  void UIEngine::_previewZone() { };
+  // navigate to the previous zone in the list, and preview it
+  void UIEngine::_prevZone() { };
+  // hide zones screen
+  void UIEngine::_hideZones() { };
 }

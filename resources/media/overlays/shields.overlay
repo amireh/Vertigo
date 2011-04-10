@@ -185,7 +185,7 @@ Vertigo/UI/Prepare
         horz_align center
         vert_align top
         
-        caption press a key when ready
+        caption press ENTER when ready
       }
     }  
 }
@@ -223,3 +223,14 @@ Vertigo/UI/Loading
     }  
 }
 
+Vertigo/UI/Intro/Logo
+{
+  container Panel(UI/Intro/Logo)
+  {
+	  metrics_mode pixels
+	  material Vertigo/Logo
+	  horz_align left
+	  width 640
+	  height 640
+  }
+}
