@@ -309,7 +309,7 @@ namespace Pixy {
 		 
 		 Ogre::ColourValue fadeColour(0.0f, 0.0f, 0.0f);
      //mViewport->setBackgroundColour(fadeColour);
-		 //mSceneMgr->setFog(Ogre::FOG_LINEAR, fadeColour, 0.0, 2000, 3000);
+		 //mSceneMgr->setFog(Ogre::FOG_LINEAR, fadeColour, 0.0, 300, 800);
     };
 	
     void GfxEngine::setupNodes()
@@ -455,11 +455,11 @@ namespace Pixy {
 		  case OIS::KC_F:
 		    break;		    
 			
-		  case OIS::KC_P:
+		  case OIS::KC_K:
 	      time_t seconds;
         seconds = time (NULL);
         std::string fileName = "Screenshot_";
-        fileName += seconds;
+        fileName += stringify(seconds);
         fileName += ".png";
 		    mRenderWindow->writeContentsToFile(fileName);
 		    break;

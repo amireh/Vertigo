@@ -61,7 +61,7 @@ namespace Pixy
     bool evtPortalEntered(Event* inEvt);
   
     
-		OgreOggISound *mMusicTrack;
+		OgreOggISound *mMusicTrack, *mIntroTrack;
 		unsigned int idSound;
 		
 		Sphere* mSphere;

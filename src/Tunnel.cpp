@@ -221,11 +221,11 @@ namespace Pixy {
     }
     
     
-    if (fHasFx) {
+    if (fHasFx && GameManager::getSingleton().currentState()->getId() == STATE_GAME) {
       if (mPortalEffect->isAttached())
         mPortalEffect->getParentSceneNode()->detachObject(mPortalEffect);
       mEntrance->attachObject(mPortalEffect);
-      mPortalEffect->startAndStopFade(1);
+      mPortalEffect->startAndStopFade(0.2f);
     }
 
     if (GameManager::getSingleton().currentState()->getId() == STATE_GAME) {

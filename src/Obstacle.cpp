@@ -141,21 +141,28 @@ namespace Pixy
 	  float portalZ = Level::getSingletonPtr()->getTunnel()->getExitPortal()->getPosition().z;
 	  if (z > portalZ)
 	    z = portalZ;
+	  
+	  if (Level::getSingleton().currentZone()->getSettings().fFixedSpawnPosition) {
+	    return Vector3(0,20,z);
+	  } else {
 	  return Vector3(
-	    0,
-	    16, 
-	    //(qualifier % 50),
+	    //0,
+	    //16, 
+	    (qualifier % 30) * sign,
 	    //20,
+	    (qualifier % 70),
 	    z); 
 	    //mSphere->getPosition().z + 1200);
-	    
+	  }
 	}
 	void Obstacle::live() {
 	  //if (!fDead)
 	  //  return;
+	  Zone* tZone = Level::getSingleton().currentZone();
 	  
-	  mMoveSpeed = Level::getSingleton().currentZone()->getSettings().mMoveSpeed;
-	  mMaxSpeed = mMoveSpeed * Level::getSingleton().currentZone()->getSettings().mMaxSpeedFactor;
+	  mMoveSpeed = tZone->getSettings().mOMoveSpeed;
+	  mMaxSpeed = mMoveSpeed * tZone->getSettings().mOMaxSpeedFactor;
+	  mMaxSpeed += mMaxSpeed * (tZone->currentTunnelNr() * tZone->getSettings().mOMaxSpeedStep);
 	  
 	  mDirection = Vector3::ZERO;
 	  
@@ -306,9 +313,9 @@ namespace Pixy
     
 		mPhyxBody->activate(true);
 		mPhyxBody->setLinearVelocity(btVector3(
-		  mDirection.x * 10, 
+		  mDirection.x * 2, 
 		  -1, 
-		  mDirection.z * 5
+		  mDirection.z * 2
 		  ) * mMoveSpeed * lTimeElapsed);
 		/*
 		mPhyxBody->applyCentralForce(btVector3(
@@ -324,8 +331,8 @@ namespace Pixy
 	  mPhyxBody->activate(true);
 	  //mDirection = Vector3(0,-1,-1) * lTimeElapsed * mMoveSpeed;
 	  mPhyxBody->setLinearVelocity(btVector3(
-	    mDirection.x, mDirection.y, mDirection.z
-		) * mMoveSpeed * lTimeElapsed * 7);
+	    mDirection.x, mDirection.y, mDirection.z * 2
+		) * mMoveSpeed * lTimeElapsed);
 		/*mPhyxBody->applyCentralForce(btVector3(
 		  mDirection.x, mDirection.y, mDirection.z
 		) * lTimeElapsed * mMoveSpeed);*/

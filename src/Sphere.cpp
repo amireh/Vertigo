@@ -26,9 +26,13 @@ namespace Pixy
       mScore = 0;
       mSpeedStep = 0;
       
-		  mCurrentShield = FIRE;
+		  mCurrentShield = (rand() % 2 == 0) ? FIRE : ICE;
 		  mShields[FIRE] = 1000;
 		  mShields[ICE] = 1000;
+		  
+		  if (Level::getSingleton().currentZone()->getSettings().mMode == DODGY) {
+		    mShields[mCurrentShield] = 2000;
+		  }
 		  
 		  // a default direction
 		  mDirection = Vector3(0,-1,1);
@@ -133,7 +137,7 @@ namespace Pixy
     if (fHasSfx) {
       OgreOggSound::OgreOggSoundManager *mSoundMgr;
       mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
-      mSfxBeep = mSoundMgr->createSound("SphereBeep", "beep.wav", false, false, true) ;
+      mSfxBeep = mSoundMgr->createSound("SphereBeep" + stringify(idObject), "beep.wav", false, false, true) ;
       mMasterNode->attachObject(mSfxBeep);
       
       mSfxBeep->setRolloffFactor(2.f);
@@ -148,13 +152,13 @@ namespace Pixy
       ParticleUniverse::ParticleSystemManager::getSingletonPtr();
       
       mFireEffect = fxMgr->createParticleSystem(
-        Ogre::String("FxSphereFireEffect"),
+        Ogre::String("FxSphereFireEffect" + stringify(idObject)),
         "Vertigo/FX/Sphere/FireTrail",
         GfxEngine::getSingletonPtr()->getSM());
       mFireEffect->prepare();
                
       mIceEffect = fxMgr->createParticleSystem(
-        Ogre::String("FxSphereIceEffect"),
+        Ogre::String("FxSphereIceEffect" + stringify(idObject)),
         "Vertigo/FX/Sphere/IceSteam",
         GfxEngine::getSingletonPtr()->getSM());
       mIceEffect->prepare();
@@ -306,6 +310,10 @@ namespace Pixy
 	};
 	
 	void Sphere::flipShields() {
+	  // no flipping shields in dodgy mode
+	  if (Level::getSingleton().currentZone()->getSettings().mMode == DODGY)
+	    return;
+	    
 	  mCurrentShield = (mCurrentShield == FIRE) ? ICE : FIRE;
 	  render();
 	};
@@ -463,11 +471,15 @@ namespace Pixy
 	    mMasterNode->setVisible(true);
 	  }
 	  
-	  mCurrentShield = FIRE;
+	  mCurrentShield = (rand() % 2 == 0) ? FIRE : ICE;
 	  render();
 	  
 	  mShields[FIRE] = 1000;
 	  mShields[ICE] = 1000;
+	  if (Level::getSingleton().currentZone()->getSettings().mMode == DODGY) {
+		    mShields[mCurrentShield] = 2000;
+		    mShields[(mCurrentShield == FIRE) ? ICE : FIRE] = 0;
+	  }
 	  
 	  fPortalSighted = false;
 	  

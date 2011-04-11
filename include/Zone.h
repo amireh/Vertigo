@@ -38,6 +38,10 @@ namespace Pixy {
     int mSpawnRate;
     bool fFixedSpawnRate;
     int mObstacleCap;
+    float mOMoveSpeed;
+    float mOMaxSpeedFactor;
+    float mOMaxSpeedStep;
+    bool fFixedSpawnPosition;
     
     std::vector<OBSTACLE_CLASS> mRegisteredObstacleClasses;
     OBSTACLE_CLASS mDominantObstacleClass;
@@ -74,6 +78,7 @@ namespace Pixy {
     void disengage();
     
     Tunnel *currentTunnel() const;
+    int currentTunnelNr() const;
     std::string &name();
     
     // DEBUG
@@ -90,6 +95,7 @@ namespace Pixy {
 	  
 	  bool fLoaded;
 	  bool fParsed;
+	  int mCurrentTunnelNr;
 	  
 	  //bool evtPortalSighted(Event* inEvt);
 	  bool evtPortalReached(Event* inEvt);

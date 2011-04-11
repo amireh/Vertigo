@@ -21,7 +21,7 @@ namespace Pixy {
 
     		
 		idSound = 0;
-		mMusicTrack = NULL;
+		mMusicTrack = mIntroTrack = NULL;
 		mSoundMgr = NULL;
 		
 		fSetup = false;		
@@ -36,7 +36,11 @@ namespace Pixy {
 		  if (mMusicTrack) {
         mSoundMgr->destroySound(mMusicTrack);
         mMusicTrack = NULL;
-      }			
+      }
+      if (mIntroTrack) {
+        mSoundMgr->destroySound(mIntroTrack);
+        mIntroTrack = NULL;
+      }		
 			//delete mSoundMgr;
 			fSetup = false;
 		}
@@ -59,8 +63,12 @@ namespace Pixy {
       }
  
    	  if (!mMusicTrack) {
-        mMusicTrack = mSoundMgr->createSound("MusicTrack", "music.ogg", false, false, true);
+        mMusicTrack = mSoundMgr->createSound("MusicTrack", "music.ogg", true, false, true);
         mMusicTrack->setVolume(0.5f);
+      }
+      if (!mIntroTrack) {
+        mIntroTrack = mSoundMgr->createSound("IntroTrack", "intro.ogg", true, false, true);
+        mIntroTrack->setVolume(0.5f);
       }
                  
       fAudioStopped = false;
@@ -79,6 +87,8 @@ namespace Pixy {
 	
 	  mUpdater = &SfxEngine::updateIntro;
 	  
+	  /*if (mIntroTrack)
+	    mIntroTrack->play();*/
 	  return true;
 	};
 	
@@ -87,7 +97,9 @@ namespace Pixy {
 
 	  mSphere = Level::getSingletonPtr()->getSphere();
 	  	  
-
+    /*if (mIntroTrack)
+      mIntroTrack->stop();*/
+      
  	  if (mMusicTrack)
 	    mMusicTrack->play();
 	           
@@ -123,7 +135,7 @@ namespace Pixy {
 	};
 	
 	void SfxEngine::updateIntro(unsigned long lTimeElapsed) {
-	
+	  mSoundMgr->update(lTimeElapsed);
 	};
 	
 	void SfxEngine::updateGame(unsigned long lTimeElapsed) {

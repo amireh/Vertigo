@@ -509,7 +509,6 @@ namespace Pixy {
 		  mUISheet->getChild("UI/FireShieldContainer")->setWidth(mShieldBarWidth);
 		  mUISheet->getChild("UI/FireShieldContainer")->getChild("UI/FireShield")->setWidth(mShieldBarWidth);
 		
-		
 		  /*mUISheet->getChild("UI/FireShieldContainer")->setHeight(64.0f / aspect_ratio);
 		  mUISheet->getChild("UI/FireShieldContainer")->getChild("UI/FireShield")->setHeight(64.0f / aspect_ratio);*/
 		
@@ -580,13 +579,70 @@ namespace Pixy {
 	};
 	
 	bool UIEngine::evtGameStarted(Event* inEvt) {  
+	  mDialogShade->hide();
+	  mShadeLayer->hide();
 	  mUISheetPrepare->hide();
 	  mUISheetWin->hide();
 	  mUISheetLoss->hide();
+	  
+	  // if it's dodgy mode, we have to hide one of the shield HUDs since
+	  // the player will be using only one of them
+	  if (Level::getSingleton().currentZone()->getSettings().mMode == DODGY) {
+	    if (mSphere->shield() == FIRE) {
+	      // hide the ice shield HUD
+	      mIceShield->hide();
+	      mUISheet->getChild("UI/IceShieldContainer")->hide();
+	      //mUISheet->getChild("UI/FireShieldContainer")->setWidth(mShieldBarWidth);
+	      
+	      // resize the background of the shield hud
+	      mUISheet->getChild("UI/FireShieldContainer")->setWidth(mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
+	      
+	      // and center them both
+	      //mFireShield->setHorizontalAlignment(Ogre::GHA_CENTER);
+	      //mUISheet->getChild("UI/FireShieldContainer")->setHorizontalAlignment(Ogre::GHA_CENTER);
+	      
+	    } else {
+	      // hide the fire one
+	      mFireShield->hide();
+	      mUISheet->getChild("UI/FireShieldContainer")->hide();
+	      mUISheet->getChild("UI/IceShieldContainer")->setWidth(mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
+	    }
+	  } else {
+	    mIceShield->show();
+	    mFireShield->show();
+	  }
+	  _updateShields();
 	  return true;
 	};
 	
 	bool UIEngine::evtZoneEntered(Event* inEvt) {
+	  std::ostringstream msg;
+	  msg << "Zone Mode: ";
+	  switch (mSelectedZone->getZone()->getSettings().mMode) {
+	    case ARCADE:
+	      msg << "Arcade\n"
+	          << "\nYour objective is to reach the last \nportal with both shields functional."
+	          << "\n\nControls:"
+	          << "\nFlip shields by pressing SPACE BAR."
+	          << "\nYou can also move to the left and right\nby pushing A and D.";
+	      break;
+	    case DODGY:
+	      msg << "Dodgy\n"
+	          << "\nOnly one of your shields is functional,\n you MUST dodge one kind of hazards."
+	          << "\n\nControls:"
+	          << "\nYou can move to the left and right\nby pushing A and D.";
+	      break;
+	  }
+	  msg << "\n\nPress ENTER when ready!";
+	  
+	  Ogre::OverlayElement* tText = static_cast<Ogre::OverlayElement*>(mUISheetPrepare->getChild("UI/Containers/Prepare")->getChild("UI/Text/Prepare"));
+	  tText->setCaption(msg.str());
+	  //tText->setMetricsMode(Ogre::GMM_PIXELS);
+	  /*Ogre::Viewport* mViewport = mWindow->getViewport(0);
+	  tText->setTop(mViewport->getActualHeight() / 2 - ((tText->getHeight() * mViewport->getActualHeight()) / 2));
+	  tText->setLeft(mViewport->getActualWidth() / 2 - (tText->getWidth() * mViewport->getActualWidth() / 2));*/
+	  mDialogShade->show();
+	  mShadeLayer->show();
 	  mUISheetPrepare->show();
 	  mUISheetWin->hide();
 	  mUISheetLoss->hide();

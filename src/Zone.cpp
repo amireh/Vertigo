@@ -20,6 +20,12 @@ namespace Pixy {
     mSettings.mSpawnRate = 900;
     mSettings.fFixedSpawnRate = false;
     mSettings.mObstacleCap = 4;
+    mSettings.mOMoveSpeed = 2;
+    mSettings.mOMaxSpeedFactor = 3;
+    mSettings.mOMaxSpeedStep = 0.25f;
+    mSettings.fFixedSpawnPosition = false;
+    
+    mCurrentTunnelNr = 0;
     
     mEvtMgr = EventManager::getSingletonPtr();
     mLevel = Level::getSingletonPtr();
@@ -244,13 +250,20 @@ namespace Pixy {
     std::string inName(inCName);
     std::string inValue(inCValue);
     
-    if (inName == "SpawnRate") {
+    if (inName == "SpawnRate")
       mSettings.mSpawnRate = convertTo<int>(inValue);
-    } else if (inName == "FixedSpawnRate") {
+    else if (inName == "FixedSpawnRate")
       mSettings.fFixedSpawnRate = (inValue == "Yes") ? true : false;
-    } else if (inName == "ObstacleCap") {
+    else if (inName == "ObstacleCap")
       mSettings.mObstacleCap = convertTo<int>(inValue);
-    }
+    else if (inName == "MoveSpeed")
+      mSettings.mOMoveSpeed = convertTo<float>(inValue);
+    else if (inName == "MaxSpeedFactor")
+      mSettings.mOMaxSpeedFactor = convertTo<float>(inValue);
+    else if (inName == "MaxSpeedStep")
+      mSettings.mOMaxSpeedStep = convertTo<float>(inValue);
+    else if (inName == "FixedSpawnPosition")
+      mSettings.fFixedSpawnPosition = (inValue == "Yes") ? true : false;
   };
   
   void Zone::_registerObstacleClass(const char* inCName, bool fDominant) {
@@ -308,6 +321,8 @@ namespace Pixy {
     mTunnel = mTunnels.front();
     mTunnel->show();
     
+    mCurrentTunnelNr = 0;
+    
     // change sky
     
     mLog->debugStream() << "engaged";
@@ -346,6 +361,8 @@ namespace Pixy {
 	      if ((*_itr) == mTunnel)
 	        mTunnel = *(++_itr);   // this is our next tunnel  
 	    }
+	    
+	    ++mCurrentTunnelNr;
 	  }
 	  
 	  // relocate the player
@@ -369,4 +386,5 @@ namespace Pixy {
   std::string& Zone::name() { return mName; };
   
   ZoneSettings& Zone::getSettings() { return mSettings; };
+  int Zone::currentTunnelNr() const { return mCurrentTunnelNr; };
 };

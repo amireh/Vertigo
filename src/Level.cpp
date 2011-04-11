@@ -24,7 +24,7 @@ namespace Pixy
 		mEvtMgr = EventManager::getSingletonPtr();
 		
 		//mEngines.clear();
-		
+		mZone = Intro::getSingleton().getSelectedZone();
 		// init engines
 		mGfxEngine = GfxEngine::getSingletonPtr();
 		mPhyxEngine = PhyxEngine::getSingletonPtr();
@@ -56,7 +56,7 @@ namespace Pixy
 
     // create our level
     //mZone = new Zone(Intro::getSingleton().getSelectedZone());
-    mZone = Intro::getSingleton().getSelectedZone();
+    
     mLog->infoStream() << "engaging zone " << mZone->name();
     mZone->engage();
   
@@ -261,6 +261,7 @@ namespace Pixy
     mUIEngine->update(lTimeElapsed);
     mGfxEngine->update(lTimeElapsed);
     mPhyxEngine->update(lTimeElapsed);
+    mSfxEngine->update(lTimeElapsed);
     mSphere->update(lTimeElapsed);
   };
 
@@ -508,7 +509,9 @@ namespace Pixy
     mLog->infoStream() << "loading a new zone, resetting the game";
     
     mUpdater = &Level::updatePreparation;
-    fSpawning = fGameStarted = fGameOver = false;
+    fSpawning = false;
+    fGameStarted = false;
+    fGameOver = false;
     
     // destroy our current zone
     mZone->disengage();

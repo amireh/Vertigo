@@ -96,7 +96,7 @@ namespace Pixy
 		UIEngine		*mUIEngine;
 		PhyxEngine		*mPhyxEngine;
 		SfxEngine *mSfxEngine;
-		Sphere			  *mSphere;
+		Sphere			  *mFireSphere, *mIceSphere;
 		std::list<Obstacle*> mObstacles;
 		Ogre::OverlayContainer *mDialogShade;
 		Ogre::OverlayManager *mOverlayMgr;

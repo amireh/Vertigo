@@ -31,7 +31,7 @@ namespace Pixy
     mUIEngine->setup();
     
     mUIEngine->deferredSetup();
-    
+    mSfxEngine->deferredSetup();
 
 		//mUIEngine->show();
 		
@@ -141,6 +141,7 @@ namespace Pixy
 		processEvents();
 		
     mUIEngine->update(lTimeElapsed);
+    mSfxEngine->update(lTimeElapsed);
 	}
 
   
