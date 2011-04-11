@@ -55,7 +55,9 @@ namespace Pixy
 		mSphere->live();
 
     // create our level
-    mZone = new Zone(Intro::getSingleton().getSelectedZone());
+    //mZone = new Zone(Intro::getSingleton().getSelectedZone());
+    mZone = Intro::getSingleton().getSelectedZone();
+    mLog->infoStream() << "engaging zone " << mZone->name();
     mZone->engage();
   
     // now prepare our obstacles
@@ -90,7 +92,7 @@ namespace Pixy
     mUpdater = &Level::updatePreparation;
 
     Event* mEvt = mEvtMgr->createEvt("ZoneEntered");
-    mEvt->setProperty("Path", Intro::getSingleton().getSelectedZone());
+    //mEvt->setProperty("Path", Intro::getSingleton().getSelectedZone());
     mEvt->setProperty("FirstZone", "True");
     mEvtMgr->hook(mEvt);		      
     		
@@ -103,6 +105,7 @@ namespace Pixy
 	void Level::exit( void ) {
 	  
 	  
+	  fRunning = false;
 	  
 		for (std::list<Obstacle*>::iterator _itr = mObstaclePool.begin(); 
 		     _itr != mObstaclePool.end();
@@ -121,7 +124,9 @@ namespace Pixy
 		mObstacles.clear();
 		//mTunnels.clear();
 		
-		delete mZone;
+		mLog->infoStream() << "---- Exiting Level State ----";
+		
+		//delete mZone;
 		delete mSphere;
 		
 		mEngines.clear();
@@ -146,7 +151,7 @@ namespace Pixy
 		
 		//EventManager::shutdown();
 		
-		fRunning = false;
+		
 		
 		mUIEngine->_refit(Intro::getSingletonPtr());
 		
@@ -503,9 +508,10 @@ namespace Pixy
     
     // destroy our current zone
     mZone->disengage();
-    delete mZone;
+    //delete mZone;
     
     // kill our obstacles
+    mLog->debugStream() << "I have " << mObstacles.size() << " obstacles alive, killng em";
 		std::list<Obstacle*>::iterator _itr;
 		for (_itr = mObstacles.begin(); 
 		     _itr != mObstacles.end();)
@@ -514,11 +520,11 @@ namespace Pixy
       ++_itr;
       mObs->die();
       releaseObstacle(mObs);
-      continue;
 		}
 		
 		// load the new zone
-    mZone = new Zone(Intro::getSingleton().getSelectedZone());
+    //mZone = new Zone(Intro::getSingleton().getSelectedZone());
+    mZone = Intro::getSingleton().getSelectedZone();
     mZone->engage();
     
     mSphere->reset();

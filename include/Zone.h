@@ -8,6 +8,7 @@
 #define H_Zone_H
 
 #include "Tunnel.h"
+#include "Obstacle.h"
 #include "Sphere.h"
 #include <list>
 #include "TinyXMLResource.h"
@@ -17,7 +18,31 @@
 
 using std::list;
 namespace Pixy {
+
+  typedef enum {
+    ARCADE,
+    SURVIVAL,
+    DODGY
+  } GAMEMODE;
   
+  struct ZoneSettings {
+    GAMEMODE mMode;
+    std::string mSkyboxMaterial;
+    float mMoveSpeed;
+    float mMaxSpeedFactor;
+    float mSpeedStep;
+    float mMaxSpeedStep;
+    bool fResetVelocity;
+    
+    // obstacle settings
+    int mSpawnRate;
+    bool fFixedSpawnRate;
+    int mObstacleCap;
+    
+    std::vector<OBSTACLE_CLASS> mRegisteredObstacleClasses;
+    OBSTACLE_CLASS mDominantObstacleClass;
+  };
+
 	/*! \class Zone
 	 *	\brief
 	 *  A zone is a collection of Tunnels joined by Portals in which the player
@@ -49,12 +74,20 @@ namespace Pixy {
     void disengage();
     
     Tunnel *currentTunnel() const;
-    std::string &name() const;
+    std::string &name();
+    
+    // DEBUG
+    void _dump();
     
 	protected:
 	  void parseFile();
+	  void _parseSetting(const char* inName, const char* inValue);
+	  void _parseObstacleSetting(const char* inName, const char* inValue);
+	  void _parseTunnel(const char* inName, const char* inValue);
+	  void _registerObstacleClass(const char* inName, bool fDominant);
 	  
 	  bool fLoaded;
+	  bool fParsed;
 	  
 	  //bool evtPortalSighted(Event* inEvt);
 	  bool evtPortalReached(Event* inEvt);
@@ -68,6 +101,7 @@ namespace Pixy {
     list<Tunnel*> mTunnels;
     std::string mFilename;
     std::string mName;
+    ZoneSettings mSettings;
     
     static ::TinyXMLResourceManager* _tinyXMLResourceManager;
 	private:

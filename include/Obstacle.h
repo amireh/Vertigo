@@ -37,7 +37,8 @@ namespace Pixy
   typedef enum {
     CHASE,
     DUMB,
-    STATIONARY
+    DUETTE,
+    SPINNER
   } OBSTACLE_CLASS;
   class Sphere;
     /*! \class Obstacle Obstacle.h "src/Obstacle.h"

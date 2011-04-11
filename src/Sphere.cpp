@@ -74,6 +74,8 @@ namespace Pixy
 
 		delete mPhyxShape;
 
+    GfxEngine::getSingletonPtr()->detachFromScene(this);
+    
     mPhyxShape = 0;
     mPhyxBody = 0;
     // these r handled by ogre
@@ -81,7 +83,7 @@ namespace Pixy
     mSceneNode = 0;
     mSceneObject = 0;
     //GfxEngine::getSingletonPtr()->getSM()->destroyMovableObject(mSceneObject);
-    //GfxEngine::getSingletonPtr()->getSM()->destroySceneNode(mSceneNode);
+    
     //GfxEngine::getSingletonPtr()->getSM()->destroySceneNode(mMasterNode);
     
 		if (mLog) {
@@ -169,7 +171,7 @@ namespace Pixy
 	
 	void Sphere::die() {
 	  PhyxEngine::getSingletonPtr()->detachFromWorld(this);
-	  GfxEngine::getSingletonPtr()->detachFromScene(this);
+	  //GfxEngine::getSingletonPtr()->detachFromScene(this);
 	  mIceEffect->stop();
 	  mFireEffect->stop();
 	  mMasterNode->setVisible(false);
@@ -446,7 +448,7 @@ namespace Pixy
 	  if (fDead) {
 	    // TODO: make live() reset exactly what die() does
 	    fDead = false;
-	    GfxEngine::getSingletonPtr()->attachToScene(this);
+	    //GfxEngine::getSingletonPtr()->attachToScene(this);
 	    PhyxEngine::getSingletonPtr()->attachToWorld(this);
 	    mMasterNode->setVisible(true);
 	  }

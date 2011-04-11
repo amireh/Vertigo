@@ -24,6 +24,8 @@
 #include "PhyxEngine.h"
 #include "SfxEngine.h"
 
+#include "Zone.h"
+
 using std::list;
 namespace Pixy
 {
@@ -59,14 +61,14 @@ namespace Pixy
     virtual bool areSfxEnabled();
     virtual void dontUpdateMe(Engine* inEngine);
     
-    std::string& getSelectedZone();
-    void setSelectedZone(const std::string &inPath);
+    Zone* getSelectedZone();
+    void setSelectedZone(Zone* inZone);
     
 	protected:
 	  
 	  // contains the path of the Zone sheet, this is set by the UIEngine
 	  // when a player chooses a zone thumb from the menu
-	  std::string mSelectedZone;
+	  Zone* mSelectedZone;
     /*
     virtual void setupWidgets();
     //virtual bool keyPressed(const OIS::KeyEvent& evt);

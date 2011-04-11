@@ -10,6 +10,17 @@ namespace Pixy {
     
     mFilename = inFilename;
 
+    // set some defaults
+    mSettings.mMode = ARCADE;
+    mSettings.mMoveSpeed = 6;
+    mSettings.mMaxSpeedFactor = 3;
+    mSettings.mSpeedStep = 0.01f;
+    mSettings.mMaxSpeedStep = 0.25f;
+    mSettings.fResetVelocity = false;
+    mSettings.mSpawnRate = 900;
+    mSettings.fFixedSpawnRate = false;
+    mSettings.mObstacleCap = 4;
+    
     mEvtMgr = EventManager::getSingletonPtr();
     mLevel = Level::getSingletonPtr();
     
@@ -18,7 +29,7 @@ namespace Pixy {
     
 		bindToName("PortalReached", this, &Zone::evtPortalReached);
 		//bindToName("PortalSighted", this, &Zone::evtPortalSighted);
-		    
+		
     mTunnels.clear();
     mTunnel = 0;
     
@@ -80,9 +91,38 @@ namespace Pixy {
     mName = mRoot->RootElement()->Attribute("Name");
 
     mLog->debugStream() << "name: " << mName;
+
+    // parse general settings
+    TiXmlElement* xSetting = mHandler.FirstChild("Settings").FirstChild().ToElement();
+    while (xSetting) {
+      _parseSetting(xSetting->Attribute("Name"), xSetting->Attribute("Value"));
+      xSetting = xSetting->NextSiblingElement();
+    }
+    
+    // parse obstacle settings
+    TiXmlElement* xObstacleSetting = mHandler.FirstChild("Obstacles").FirstChild().ToElement();
+    while (xObstacleSetting) {
+      if (std::string(xObstacleSetting->Value()) == "Class")
+        _registerObstacleClass(xObstacleSetting->Attribute("Name"), xObstacleSetting->Attribute("Dominant") != NULL);
+      else if (std::string(xObstacleSetting->Value()) == "Property")
+        _parseObstacleSetting(xObstacleSetting->Attribute("Name"), xObstacleSetting->Attribute("Value"));
+      else
+        mLog->errorStream() << "invalid obstacle setting!! " << 
+          "<" << xObstacleSetting->Value() <<
+          " " << xObstacleSetting->FirstAttribute()->Name() <<
+          "=\"" << xObstacleSetting->FirstAttribute()->Value() << "\">";
+      
+      xObstacleSetting = xObstacleSetting->NextSiblingElement();
+    }
+    
+    // if there were no obstacle classes registered, register a default dumb one
+    if (mSettings.mRegisteredObstacleClasses.empty()) {
+      mSettings.mRegisteredObstacleClasses.push_back(DUMB);
+      mSettings.mDominantObstacleClass = DUMB;
+    }
+     
     // loop through the tunnel definitions
-    //mHandler = mHandler.FirstChild("Zone");
-    TiXmlNode* xTunnel = mHandler.FirstChild().ToNode();
+    TiXmlNode* xTunnel = mHandler.FirstChild("Geometry").FirstChild().ToNode();
     while (xTunnel != NULL)
     {
 
@@ -113,8 +153,128 @@ namespace Pixy {
       xTunnel = xTunnel->NextSibling();
     }
     
-    mLog->debugStream() << "I have found " << mTunnels.size() << " tunnel definitions";
+    _dump();
+    //mLog->debugStream() << "I have found " << mTunnels.size() << " tunnel definitions";
   };
+  
+  void Zone::_dump() {
+    std::ostringstream msg;
+    msg << "-- Settings --\n";
+    msg << "Game Mode: " << 
+      ((mSettings.mMode == ARCADE) ? "Arcade" : (mSettings.mMode == SURVIVAL) ? "Survival" : "Dodgy")
+       << "\n";
+    msg << "Skybox: " << mSettings.mSkyboxMaterial << "\n";
+    msg << "MoveSpeed: " << mSettings.mMoveSpeed << "\n";
+    msg << "MaxSpeedFactor: " << mSettings.mMaxSpeedFactor << "\n";
+    msg << "SpeedStep: " << mSettings.mSpeedStep << "\n";
+    msg << "MaxSpeedStep: " << mSettings.mMaxSpeedStep << "\n";
+    msg << "Reset velocity? " << (mSettings.fResetVelocity ? "Yes" : "No") << "\n";
+    
+    msg << "-- Obstacle Settings --\n";
+    msg << "Spawn Rate: " << mSettings.mSpawnRate << "\n";
+    msg << "Fixed spawn rate?: " << (mSettings.fFixedSpawnRate ? "Yes" : "No") << "\n";
+    msg << "Obstacle cap: " << mSettings.mObstacleCap << "\n";
+    msg << "Registered obstacle classes:\n";
+    for (int i =0; i <mSettings.mRegisteredObstacleClasses.size(); ++i) {
+      std::string _oc;
+      switch (mSettings.mRegisteredObstacleClasses[i]) {
+        case CHASE:
+          _oc = "Chase";
+          break;
+        case DUMB:
+          _oc = "Dumb";
+          break;
+        case SPINNER:
+          _oc = "Spinner";
+          break;
+        case DUETTE:
+          _oc = "Duette";
+          break;
+      }
+      msg << "\t[" << i+1 << "] Obstacle class: " << _oc;
+      if (mSettings.mDominantObstacleClass == mSettings.mRegisteredObstacleClasses[i])
+        msg << " and is dominant";
+      
+      msg << "\n";
+    }
+    
+    msg << "-- Tunnels --\n";
+    msg << "There are " << mTunnels.size() << " tunnel definitions parsed.";
+    
+    mLog->debugStream() << msg.str();
+  };
+  
+  void Zone::_parseSetting(const char* inCName, const char* inCValue) {
+    
+    std::string inName(inCName);
+    std::string inValue(inCValue);
+    
+    // parse game mode
+    if (inName == "Mode") {
+      GAMEMODE _mode;
+      if (inValue == "Arcade")
+        _mode = ARCADE;
+      else if (inValue == "Survival")
+        _mode = SURVIVAL;
+      else if (inValue == "Dodgy")
+        _mode = DODGY;
+      else {
+        mLog->errorStream() << "Invalid game mode " << inValue << ", resetting to Arcade";
+        _mode = ARCADE;
+      }
+      mSettings.mMode = _mode;
+      
+    } else if (inName == "Skybox") {
+      mSettings.mSkyboxMaterial = inValue;
+      // TODO: validate whether material exists and respond accordingly
+    } else if (inName == "MoveSpeed") {
+      mSettings.mMoveSpeed = convertTo<float>(inValue);
+    } else if (inName == "MaxSpeedFactor") {
+      mSettings.mMaxSpeedFactor = convertTo<float>(inValue);
+    } else if (inName == "SpeedStep") {
+      mSettings.mSpeedStep = convertTo<float>(inValue);
+    } else if (inName == "MaxSpeedStep") {
+      mSettings.mMaxSpeedStep = convertTo<float>(inValue);
+    } else if (inName == "ResetVelocity") {
+      mSettings.fResetVelocity = (inValue == "Yes") ? true : false;
+    }
+  };
+  
+  void Zone::_parseObstacleSetting(const char* inCName, const char* inCValue) {
+    std::string inName(inCName);
+    std::string inValue(inCValue);
+    
+    if (inName == "SpawnRate") {
+      mSettings.mSpawnRate = convertTo<int>(inValue);
+    } else if (inName == "FixedSpawnRate") {
+      mSettings.fFixedSpawnRate = (inValue == "Yes") ? true : false;
+    } else if (inName == "ObstacleCap") {
+      mSettings.mObstacleCap = convertTo<int>(inValue);
+    }
+  };
+  
+  void Zone::_registerObstacleClass(const char* inCName, bool fDominant) {
+    std::string inName(inCName);
+    
+    if (inName == "Dumb") {
+      mSettings.mRegisteredObstacleClasses.push_back(DUMB);
+      if (fDominant)
+        mSettings.mDominantObstacleClass = DUMB;
+    } else if (inName == "Chase") {
+      mSettings.mRegisteredObstacleClasses.push_back(CHASE);
+      if (fDominant)
+        mSettings.mDominantObstacleClass = CHASE;    
+    } else if (inName == "Duette") {
+      mSettings.mRegisteredObstacleClasses.push_back(DUETTE);
+      if (fDominant)
+        mSettings.mDominantObstacleClass = DUETTE;
+    } else if (inName == "Spinner") {
+      mSettings.mRegisteredObstacleClasses.push_back(SPINNER);
+      if (fDominant)
+        mSettings.mDominantObstacleClass = SPINNER;
+    }
+    
+  }
   
   bool Zone::load() {
     if (fLoaded)
@@ -123,7 +283,7 @@ namespace Pixy {
     try {
       parseFile();
     } catch (std::exception& e) {
-      mLog->errorStream() << "could not parse zone from " << mFilename << "!!";
+      mLog->errorStream() << "could not parse zone from " << mFilename << "!! " << e.what();
       throw e;
       return false;
     }
@@ -140,9 +300,10 @@ namespace Pixy {
       return; 
     }
     
-    if (!mSphere)
-      mSphere = mLevel->getSphere();
-      
+    //if (!mSphere)
+    mSphere = mLevel->getSphere();
+    
+    mLog->debugStream() << " I have " << mTunnels.size() << " tunnels";
     // show our first tunnel
     mTunnel = mTunnels.front();
     mTunnel->show();
@@ -202,4 +363,5 @@ namespace Pixy {
   };
   
   Tunnel* Zone::currentTunnel() const { return mTunnel; };
+  std::string& Zone::name() { return mName; };
 };

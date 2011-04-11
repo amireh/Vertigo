@@ -358,12 +358,12 @@ namespace Pixy
 	      mUpdater = &Obstacle::updateDumb;
 	      //mMasterNode->setScale(0.5f, 0.5f, 0.5f);
 	      break;
-	    case STATIONARY:
+	    /*case STATIONARY:
         mUpdater = &Obstacle::updateStationary;
         // push me into a whirl
         if (!fDead)
           mPhyxBody->applyCentralForce(btVector3((rand() % 2 == 0) ? 700 : -700,0,0));
-        break;
+        break;*/
 	  };
 	  mDirection = Vector3(0,0,-1); // set some default direction
 	};

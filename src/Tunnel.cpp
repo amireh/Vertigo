@@ -32,13 +32,7 @@ namespace Pixy {
     mSceneMgr = mGfxEngine->getSM();
     mFxMgr = ParticleUniverse::ParticleSystemManager::getSingletonPtr();
     
-    if (GameManager::getSingleton().currentState()->getId() == STATE_GAME) {
-      mSphere = Level::getSingletonPtr()->getSphere();
-      if (mSphere)
-        mSphereNode = mSphere->getMasterNode();
-      else
-        mLog->warnStream() << "could not get a handle on Sphere";
-    }
+
     
     // create our master node and set its starting position
     mNode = mSceneMgr->getRootSceneNode()->
@@ -48,6 +42,7 @@ namespace Pixy {
     
     mEntrance = mExit = NULL;
     fHasSfx = GameManager::getSingleton().currentState()->areSfxEnabled();
+    fHasFx = GameManager::getSingleton().currentState()->areFxEnabled();
     fPassedEntrance = false;
     fPortalSighted = false;
     fPortalReached = false;
@@ -105,7 +100,7 @@ namespace Pixy {
   
   void Tunnel::generateSegments() {
 
-    mLog->debugStream() << "generating segments";
+    //mLog->debugStream() << "generating segments";
     
     if (!fMeshGenerated) {
       Procedural::Root::getInstance()->sceneManager = mSceneMgr;
@@ -154,11 +149,11 @@ namespace Pixy {
   
   void Tunnel::generatePortals() {
   
-    mLog->debugStream() << "generating portals";
+    //mLog->debugStream() << "generating portals";
     
     mPortalEffect = mFxMgr->getParticleSystem("FxPortal");
     
-    if (!mPortalEffect) {
+    if (fHasFx && !mPortalEffect) {
       mPortalEffect = mFxMgr->createParticleSystem(
         "FxPortal",
         "Vertigo/FX/Portal", 
@@ -212,23 +207,27 @@ namespace Pixy {
     fPortalReached = false;
     fPortalSighted = false;
     
-    if (GameManager::getSingleton().currentState()->getId() == STATE_GAME)
+    if (Level::getSingleton().running()) {
+      mSphere = Level::getSingletonPtr()->getSphere();
       mSphereNode = mSphere->getMasterNode();
-    
-    
-    
-    if (mPortalEffect->isAttached())
-      mPortalEffect->getParentSceneNode()->detachObject(mPortalEffect);
-    mEntrance->attachObject(mPortalEffect);
-    mPortalEffect->startAndStopFade(1);
-    if (fHasSfx) {
-      if (!mSfxPortal->isAttached()) {
-        //mSfxPortal->getParentSceneNode()->detachObject(mSfxPortal);
-        
-        mSphereNode->attachObject(mSfxPortal);
-      }
+
+      if (fHasSfx) {
+        if (!mSfxPortal->isAttached()) {
+          //mSfxPortal->getParentSceneNode()->detachObject(mSfxPortal);
+          
+          mSphereNode->attachObject(mSfxPortal);
+        }
+      }    
     }
     
+    
+    if (fHasFx) {
+      if (mPortalEffect->isAttached())
+        mPortalEffect->getParentSceneNode()->detachObject(mPortalEffect);
+      mEntrance->attachObject(mPortalEffect);
+      mPortalEffect->startAndStopFade(1);
+    }
+
     if (GameManager::getSingleton().currentState()->getId() == STATE_GAME) {
       Event* evt = mEvtMgr->createEvt("PortalEntered");
       mEvtMgr->hook(evt);
@@ -257,10 +256,12 @@ namespace Pixy {
     
     mSphereNode = NULL;
     
-    if (mPortalEffect->isAttached())
-      mPortalEffect->getParentSceneNode()->detachObject(mPortalEffect);
-    mPortalEffect->stop();
-    
+    if (fHasFx) {
+      if (mPortalEffect->isAttached())
+        mPortalEffect->getParentSceneNode()->detachObject(mPortalEffect);
+      mPortalEffect->stop();
+    }
+        
     mLog->infoStream() << "Tunnel" << idObject << " is hidden";
   };
   
@@ -276,12 +277,14 @@ namespace Pixy {
     // if the player is past our entrance portal, we can stop showing it 
     if (!fPassedEntrance && mSphere->getMasterNode()->getPosition().z > mEntrance->getPosition().z + 1000) {
       mLog->debugStream() << "stopped portal effect";
-      mPortalEffect->stop();
-      
-      //mPortal = mExit;
-      mEntrance->detachObject(mPortalEffect);
-	    mExit->attachObject(mPortalEffect);
-	    mPortalEffect->start();
+      if (fHasFx) {
+        mPortalEffect->stop();
+        
+        //mPortal = mExit;
+        mEntrance->detachObject(mPortalEffect);
+        mExit->attachObject(mPortalEffect);
+        mPortalEffect->start();
+      }
 	    //if (mSfxPortal->isAttached())
       //mSfxPortal->getParentSceneNode()->detachObject(mSfxPortal);   
 	    //mExit->attachObject(mSfxPortal);
@@ -311,9 +314,10 @@ namespace Pixy {
 	    if (fHasSfx)
 	      mSfxPortal->play(true);
 	    
-	    //mPortalEffect->setFastForward(175, 2);
-	    mPortalEffect->stopFade();
-	    
+	    if (fHasFx) {
+	      //mPortalEffect->setFastForward(175, 2);
+	      mPortalEffect->stopFade();
+	    }
 	    fPortalReached = true;
       //mSphereNode->setPosition(mExit->getPosition());
       
@@ -332,8 +336,6 @@ namespace Pixy {
 
 	bool Tunnel::evtPortalReached(Event* inEvt) {
 	  //hide();
-	  
-	  
 	  
 	  return true;
 	};

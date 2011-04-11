@@ -94,6 +94,7 @@ namespace Pixy {
     bool fPortalSighted; // triggered when the player almost reaches the exit
     bool fPortalReached;
     bool fHasSfx;
+    bool fHasFx;
     
     typedef Ogre::SceneNode Portal;
     Portal *mEntrance, *mExit;

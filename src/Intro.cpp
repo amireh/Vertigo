@@ -19,17 +19,19 @@ namespace Pixy
 		
 		mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "Intro");
 
-    mSelectedZone = "";
+    mSelectedZone = 0;
     
     mEvtMgr = EventManager::getSingletonPtr();
     mGfxEngine = GfxEngine::getSingletonPtr();
-    mGfxEngine->setup();
-    //GfxEngine::getSingletonPtr()->hideUI();
-    mUIEngine = UIEngine::getSingletonPtr();
-    mUIEngine->setup();
-    mUIEngine->deferredSetup();
     mSfxEngine = SfxEngine::getSingletonPtr();
+    mUIEngine = UIEngine::getSingletonPtr();
+    
+    mGfxEngine->setup();
     mSfxEngine->setup();
+    mUIEngine->setup();
+    
+    mUIEngine->deferredSetup();
+    
 
 		//mUIEngine->show();
 		
@@ -44,7 +46,7 @@ namespace Pixy
 	  
 	  
 	  
-		
+		fRunning = false;
 		bool fShuttingDown = GameManager::getSingleton().shuttingDown();
 		
 		//mUIEngine->cleanup();
@@ -53,13 +55,23 @@ namespace Pixy
 		mPhyxEngine->cleanup();
 		mGfxEngine->cleanup();*/
 		
-		fRunning = false;
 		
-		mUIEngine->_refit(Level::getSingletonPtr());
 		
+		if (!fShuttingDown)
+		  mUIEngine->_refit(Level::getSingletonPtr());
+		else {
+		  mSelectedZone = 0;
+		}
 		mLog->infoStream() << "---- Exiting Intro State ----";
+		
+    mEvtMgr = 0;
+    mGfxEngine = 0;
+    mSfxEngine = 0;
+    mUIEngine = 0;
+		
 		delete mLog;
 		mLog = 0;
+		
 		 
 	}
 	
@@ -133,12 +145,12 @@ namespace Pixy
 
   
   bool Intro::areFxEnabled() { return true; }
-  bool Intro::areSfxEnabled() { return false; }
+  bool Intro::areSfxEnabled() { return true; }
   void Intro::dontUpdateMe(Engine* inEngine) {
     mEngines.remove(inEngine);
   };
   
-  std::string& Intro::getSelectedZone() { return mSelectedZone; };
+  Zone* Intro::getSelectedZone() { return mSelectedZone; };
   
-  void Intro::setSelectedZone(const std::string& inPath) { mSelectedZone = inPath; };
+  void Intro::setSelectedZone(Zone* inZone) { mSelectedZone = inZone; };
 } // end of namespace

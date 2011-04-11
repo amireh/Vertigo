@@ -17,7 +17,7 @@
 
 #include "InputManager.h"
 #include <Ogre.h>
-#include "OgreSdkTrays.h"
+#include "ogre/OgreSdkTrays.h"
 
 
 using namespace OgreBites;
@@ -151,6 +151,9 @@ namespace Pixy {
 
 		void _hideMainMenu();
 		void _showMainMenu();
+		
+		void _hideConfigMenu();
+		void _showConfigMenu();
 	  
 	  // creates widgets for our menu
 	  virtual void setupWidgets();
@@ -176,6 +179,7 @@ namespace Pixy {
 		Ogre::Real mCarouselPlace;                     // current state of carousel
     std::vector<UIZone*> mUIZones;
     OgreBites::TextBox* mTextBoxZoneInfo;
+    bool fConfiguring; // true when configuration menu is shown
     
     // these make for a shading effect over the game scene when the menu is open
 		Ogre::OverlayContainer *mDialogShade;
