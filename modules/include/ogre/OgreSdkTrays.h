@@ -246,6 +246,8 @@ namespace OgreBites
 		{
 			return mElement->isVisible();
 		}
+		
+		virtual bool isButton() { return false; };
 
 		// callbacks
 
@@ -296,10 +298,13 @@ namespace OgreBites
 
 			setCaption(caption);
 			mState = BS_UP;
+			mFlashing = false;
 		}
 
 		virtual ~Button() {}
 
+    virtual bool isButton() { return true; };
+    
 		const Ogre::DisplayString& getCaption()
 		{
 			return mTextArea->getCaption();
@@ -343,11 +348,25 @@ namespace OgreBites
 		{
 			setState(BS_UP);   // reset button if cursor was lost
 		}
+		
+		void _doFlash() {
+		  setState(BS_OVER);
+		  mFlashing = true;
+		};
+		void _stopFlashing() {
+		  mFlashing = false;
+		  setState(BS_UP);
+		};
+		
+		bool _flashing() { return mFlashing; };
 
 	protected:
 
 		void setState(const ButtonState& bs)
 		{
+		  if (mFlashing)
+		    return;
+		    
 			if (bs == BS_OVER)
 			{
 				mBP->setBorderMaterialName("SdkTrays/Button/Over");
@@ -371,6 +390,7 @@ namespace OgreBites
 		Ogre::BorderPanelOverlayElement* mBP;
 		Ogre::TextAreaOverlayElement* mTextArea;
 		bool mFitToContents;
+		bool mFlashing;
 	};  
 
 	/*=============================================================================
@@ -3095,6 +3115,7 @@ namespace OgreBites
 			return false;
 		}
 
+    Ogre::String& getName() { return mName; };
     protected:
 
 		/*-----------------------------------------------------------------------------

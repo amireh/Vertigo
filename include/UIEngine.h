@@ -133,6 +133,9 @@ namespace Pixy {
 	  // hide zones screen
 	  void _hideZones();
 	  
+	  OgreBites::Button* mCurrentButton;
+	  
+	  bool inMainMenu;
 	  bool inZoneScreen;
 	  UIZone *mSelectedZone;
 	  
@@ -191,6 +194,7 @@ namespace Pixy {
 		Ogre::Overlay *mUISheetWin; // shows a label when the player wins
 		Ogre::Overlay *mUISheetPrepare; // this is a prompt, shown prior to starting the game
 		Ogre::Overlay *mUILogo;
+		Ogre::OverlayContainer *mUICursor;
 		
 		// HUDs here
 		Ogre::OverlayElement *mUIScore;

@@ -31,6 +31,7 @@ namespace Pixy {
     mTitleLabel = 0;
     mCarouselPlace = 0.0f;
     mRendererMenu = 0;
+    mCurrentButton = 0;
     fConfiguring = false;
 	}
 	
@@ -122,6 +123,7 @@ namespace Pixy {
         
     mLog->debugStream() << "set up!";
 		fSetup = true;
+		_showMainMenu();
 		return true;
 	}
 	
@@ -235,19 +237,53 @@ namespace Pixy {
 	}
 	
 	void UIEngine::keyPressed( const OIS::KeyEvent &e ) {
-	  if (!inZoneScreen)
+	
+	  if (mTrayMgr->isDialogVisible() && (e.key == OIS::KC_ESCAPE || e.key == OIS::KC_RETURN)) {
+	    mTrayMgr->closeDialog();
 	    return;
-	  
-	  switch (e.key) {
-	    case OIS::KC_RIGHT:
-	      _nextZone();
-	      break;
-	    case OIS::KC_LEFT:
-	      _prevZone();
-	      break;
 	  };
+
+    TrayLocation trayIdx;
+    int widgIdx;
+    switch (e.key) {
+      case OIS::KC_UP:
+        trayIdx = mCurrentButton->getTrayLocation();
+        widgIdx = mTrayMgr->locateWidgetInTray(mCurrentButton);
+        mCurrentButton->_stopFlashing();
+        if (widgIdx == 0) {
+          mCurrentButton = static_cast<Button*>(mTrayMgr->getWidget(trayIdx, mTrayMgr->getNumWidgets(trayIdx)-1));
+        } else {
+          mCurrentButton = static_cast<Button*>(mTrayMgr->getWidget(trayIdx, widgIdx -1));
+        }
+        mCurrentButton->_doFlash();
+        break;
+      case OIS::KC_DOWN:
+        trayIdx = mCurrentButton->getTrayLocation();
+        widgIdx = mTrayMgr->locateWidgetInTray(mCurrentButton);
+        mCurrentButton->_stopFlashing();
+        if (widgIdx == mTrayMgr->getNumWidgets(trayIdx)-1) {
+          mCurrentButton = static_cast<Button*>(mTrayMgr->getWidget(trayIdx, 0));
+        } else {
+          mCurrentButton = static_cast<Button*>(mTrayMgr->getWidget(trayIdx, widgIdx+1));
+        }
+        mCurrentButton->_doFlash();
+        break;
+      case OIS::KC_RETURN:
+        buttonHit(mCurrentButton);
+        break;
+      case OIS::KC_RIGHT:
+        if (inZoneScreen)
+          _nextZone();
+        break;
+      case OIS::KC_LEFT:
+        if (inZoneScreen)
+          _prevZone();
+        break;
+    };
+	  //}
 	};
 	void UIEngine::keyReleased( const OIS::KeyEvent &e ) {
+
 	};	
 	
   void UIEngine::setupWidgets()
@@ -424,7 +460,8 @@ namespace Pixy {
 		mTrayMgr->removeWidgetFromTray("PlayResume");
 		mTrayMgr->removeWidgetFromTray("Configure");
 		mTrayMgr->removeWidgetFromTray("Help");
-		mTrayMgr->removeWidgetFromTray("Quit");	  
+		mTrayMgr->removeWidgetFromTray("Quit");
+		inMainMenu = false;
 	  //mShadeLayer->hide();
 	  //mDialogShade->hide();
 	  //mUILogo->hide();
@@ -435,12 +472,29 @@ namespace Pixy {
 	void UIEngine::_showMainMenu() {
 	  //mTrayMgr->showAll();
 
+	  inMainMenu = true;
 	  
 		mTrayMgr->moveWidgetToTray("PlayResume", TL_BOTTOM);
 		mTrayMgr->moveWidgetToTray("Configure", TL_BOTTOM);
 		mTrayMgr->moveWidgetToTray("Help", TL_BOTTOM);
 		mTrayMgr->moveWidgetToTray("Quit", TL_BOTTOM);
-			  
+	
+	  /*float cursorLeft = mTrayMgr->getWidget("PlayResume")->getOverlayElement()->getLeft();
+	  cursorLeft -= mTrayMgr->getWidget("PlayResume")->getOverlayElement()->getWidth();
+	  cursorLeft -= 24;
+	  float cursorTop = mTrayMgr->getWidget("PlayResume")->getOverlayElement()->getTop();
+	  cursorTop += mTrayMgr->getWidget("PlayResume")->getOverlayElement()->getHeight() / 2;
+	  cursorTop -= 8;
+	  
+	  mLog->debugStream() << "showing cursor at " << cursorLeft << ", " << cursorTop;
+	  
+	  mUICursor->setLeft(cursorLeft);  
+	  mUICursor->show();*/
+	  
+	  if (mCurrentButton)
+      mCurrentButton->_stopFlashing();
+	  mCurrentButton = static_cast<OgreBites::Button*>(mTrayMgr->getWidget("PlayResume"));
+	  mCurrentButton->_doFlash();
 	  //mDialogShade->show();
 	  //mShadeLayer->show();
 	  //mUILogo->show();
@@ -460,6 +514,9 @@ namespace Pixy {
 		mIceShield = mUISheet->getChild("UI/IceShieldContainer")->getChild("UI/IceShield");
 		
 		mUILogo = mOverlayMgr->getByName("Vertigo/UI/Intro/Logo");
+		mUICursor = static_cast<Ogre::OverlayContainer*>(mOverlayMgr->getByName("Vertigo/UI/ButtonCursor")->getChild("UI/Containers/ButtonCursor"));
+		
+		mUICursor->hide();
 	};
 	
 	void UIEngine::setupOverlays() {
@@ -467,6 +524,8 @@ namespace Pixy {
 		mUISheetLoss->hide();
 		mUISheetWin->hide();
 		mUISheetPrepare->show();
+		
+		
 	};
 	
 	void UIEngine::refitOverlays() {
@@ -657,7 +716,9 @@ namespace Pixy {
 	};
 	
   void UIEngine::showDialog(const std::string& inCaption, const std::string& inMessage) {
+    
     mTrayMgr->showOkDialog(inCaption, inMessage, 450);
+
   }
   
   // shifts from main menu to zones screen
@@ -694,6 +755,10 @@ namespace Pixy {
 
 		mRendererMenu->selectItem(mRoot->getRenderSystem()->getName());
 
+    if (mCurrentButton)
+      mCurrentButton->_stopFlashing();
+    mCurrentButton = static_cast<OgreBites::Button*>(mTrayMgr->getWidget("Apply"));
+	  mCurrentButton->_doFlash();
 		//windowResized(mWindow);  
   };
   void UIEngine::evtClickApply() {
@@ -741,17 +806,21 @@ namespace Pixy {
   void UIEngine::evtClickBackFromConfig() {
 
     _hideConfigMenu();
-    
-		mTrayMgr->moveWidgetToTray("PlayResume", TL_BOTTOM);
+    _showMainMenu();
+		/*mTrayMgr->moveWidgetToTray("PlayResume", TL_BOTTOM);
 		mTrayMgr->moveWidgetToTray("Configure", TL_BOTTOM);
 		mTrayMgr->moveWidgetToTray("Help", TL_BOTTOM);
-		mTrayMgr->moveWidgetToTray("Quit", TL_BOTTOM);
+		mTrayMgr->moveWidgetToTray("Quit", TL_BOTTOM);*/
 
 		//windowResized(mWindow);  
   };
   // display a dialogue with some info on how to play the game
   void UIEngine::evtClickHelp() { 
     mTrayMgr->showOkDialog("How to play", mHelpMsg, 520);
+    //if (mCurrentButton)
+      //mCurrentButton->_stopFlashing();
+    //mCurrentButton = static_cast<Button*>(mTrayMgr->getWidget(mTrayMgr->getName() + "/OkButton"));
+    //mCurrentButton->_doFlash();
   };
   void UIEngine::evtClickQuit() {
     return GameManager::getSingleton().requestShutdown();
@@ -822,6 +891,10 @@ namespace Pixy {
     mSelectedZone = mUIZones.front();
     _previewZone();
     
+    if (mCurrentButton)
+      mCurrentButton->_stopFlashing();
+    mCurrentButton = static_cast<OgreBites::Button*>(mTrayMgr->getWidget("Engage"));
+	  mCurrentButton->_doFlash();
   };
   // navigate to the next zone in the list, and preview it
   void UIEngine::_nextZone() {
