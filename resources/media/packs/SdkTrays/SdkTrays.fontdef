@@ -1,8 +1,8 @@
 SdkTrays/Caption
 {
 	type 		truetype
-	source 		cuckoo.ttf
-	size 		15
+	source 		akashi.ttf
+	size 		32
 	resolution 	96
 }
 
@@ -10,6 +10,6 @@ SdkTrays/Value
 {
 	type 		truetype
 	source 		ctrl_freak.ttf
-	size 		20
+	size 		26
 	resolution  96
 }

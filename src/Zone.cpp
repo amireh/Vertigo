@@ -307,7 +307,9 @@ namespace Pixy {
     // show our first tunnel
     mTunnel = mTunnels.front();
     mTunnel->show();
-        
+    
+    // change sky
+    
     mLog->debugStream() << "engaged";
   };
   
@@ -357,11 +359,14 @@ namespace Pixy {
 	  mTunnel->show();
 	  
 	  // increase obstacle spawn rate
-	  mLevel->increaseSpawnRate(mTunnels.size());
+	  if (!mSettings.fFixedSpawnRate)
+	    mLevel->increaseSpawnRate(mTunnels.size());
 	  
 	  return true;
   };
   
   Tunnel* Zone::currentTunnel() const { return mTunnel; };
   std::string& Zone::name() { return mName; };
+  
+  ZoneSettings& Zone::getSettings() { return mSettings; };
 };

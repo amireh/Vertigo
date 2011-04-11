@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Zone Name="Toxicity">
+  <!-- General / Game settings -->
+  <Settings>
+    <!-- 
+      There are 3 game modes that differ in the objectives and gameplay:
+      
+      1) Arcade: 
+         This is the default/normal mode where the player has to reach the
+         last portal with the sphere's shields intact.
+         
+         Shields regenerate mildly.
+         
+      2) Survival:
+         The game virtually does not end until the shields deteriorate.
+         
+         Shields do not regenerate.
+         
+      3) Dodgy:
+         Shields start with 1% state, do not regenerate, and the player
+         has to avoid all incoming obstacles until the last portal is reached.
+         
+         Shield flipping is disabled in this mode.
+    -->
+    <Property Name="Mode" Value="Arcade" />
+    
+    <!-- Name of the SkyBox material to use for this zone -->
+    <!-- Skyboxes are defined under media/materials/scripts/Sky.material -->
+    <Property Name="Skybox" Value="Vertigo/Sky/BLU" />
+    
+    <!-- 
+      Object Movement Settings
+      
+      Obstacles move at a linear speed to keep things consistent except for Spinners.
+      
+      The Sphere, however, starts out with MoveSpeed and accelerates until MaxSpeed
+      is reached. Everytime the player performs a proper collision, this cap is
+      increased by a small factor. Finally, everytime the player enters a portal
+      the speed cap can also be raised marginally, and possibly the acceleration. 
+    -->
+    <!-- Objects' velocity increases by MoveSpeed every step (acceleration) --> 
+    <Property Name="MoveSpeed" Value="6" />
+    <!-- MaxSpeed = MoveSpeed * MaxSpeedFactor, Objects' velocity will be capped at MaxSpeed -->
+    <Property Name="MaxSpeedFactor" Value="3" />
+    <!-- MaxSpeed increases by MaxSpeed*SpeedStep everytime there's a proper collision -->
+    <Property Name="SpeedStep" Value="0.01" />
+    
+    <!-- 
+      Portal Entry Settings 
+    -->
+    <!-- Do we want to reset the Sphere's velocity every time a portal is entered? -->
+    <Property Name="ResetVelocity" Value="No" />
+    <!-- MaxSpeed is increased everytime a portal is reached by the factor below -->
+    <Property Name="MaxSpeedStep" Value="0.25" />
+  </Settings>
+
+  <!-- Obstacle Settings -->
+  <Obstacles>
+    <!-- 1 obstacle is spawned every SpawnRate milliseconds -->
+    <Property Name="SpawnRate" Value="500" />
+    
+    <!-- 
+      Normally, spawn rate is reduced everytime the player enters a portal
+      by 25% down to a threshold of SpawnRate/2, it can not drop below that.
+      If you do not want this increase in spawn rate, you can specify Yes below.
+    -->
+    <Property Name="FixedSpawnRate" Value="No" />
+    
+    <!--
+      There can be no more obstacles at one time than the number below 
+      Accepted range: [3-8]
+    --> 
+    <Property Name="ObstacleCap" Value="4" />
+    
+    <!-- 
+      There are 4 obstacle classes:
+      1) Dumb: dumb obstacles move in a straight line with linear velocity,
+         can be avoided
+      2) Chasing: chasing obstacles make a lock on the player's sphere and 
+         will most likely collide with the player
+      3) Duette: two joined obstacles of opposing shields that stick to a 
+         straight line on each end of a tunnel, cannot be completely avoided
+      4) Spinner: semi-stationary obstacles that spin around the tunnel in a
+         circle for most of their lifetime
+         
+      A "dominant" obstacle class can be considered as a default/fallback class;
+      the attribute is meaningless if only 1 class is registered, further,
+      non-dominant registered classes are guaranteed to be spawned less frequently.
+      At least as far as random numbers guarantee anything.
+      
+      At least one class must be registered. 
+    -->
+    <Class Name="Chase" Dominant="Yes" />
+    <Class Name="Duette" />
+  </Obstacles>
+
+  <Geometry>
+    <Tunnel>
+      <Property Name="Material"       Value="Vertigo/Tunnel/Slime" />
+      <Property Name="Segments"       Value="5" />
+      <Property Name="SegmentLength"  Value="500" />
+    </Tunnel>
+    <Tunnel>
+      <Property Name="Material"       Value="Vertigo/Tunnel/Goo" />
+      <Property Name="Segments"       Value="5" />
+      <Property Name="SegmentLength"  Value="500" />
+    </Tunnel>
+    <Tunnel>
+      <Property Name="Material"       Value="Vertigo/Tunnel/Slime" />
+      <Property Name="Segments"       Value="5" />
+      <Property Name="SegmentLength"  Value="500" />
+    </Tunnel>
+    <Tunnel>
+      <Property Name="Material"       Value="Vertigo/Tunnel/Goo" />
+      <Property Name="Segments"       Value="5" />
+      <Property Name="SegmentLength"  Value="500" />
+    </Tunnel>
+    <Tunnel>
+      <Property Name="Material"       Value="Vertigo/Tunnel/Slime" />
+      <Property Name="Segments"       Value="5" />
+      <Property Name="SegmentLength"  Value="500" />
+    </Tunnel>
+    <Tunnel>
+      <Property Name="Material"       Value="Vertigo/Tunnel/Goo" />
+      <Property Name="Segments"       Value="5" />
+      <Property Name="SegmentLength"  Value="500" />
+    </Tunnel>
+    <Tunnel>
+      <Property Name="Material"       Value="Vertigo/Tunnel/Slime" />
+      <Property Name="Segments"       Value="5" />
+      <Property Name="SegmentLength"  Value="500" />
+    </Tunnel>
+    <Tunnel>
+      <Property Name="Material"       Value="Vertigo/Tunnel/Goo" />
+      <Property Name="Segments"       Value="5" />
+      <Property Name="SegmentLength"  Value="500" />
+    </Tunnel>
+  </Geometry>
+</Zone>

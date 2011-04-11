@@ -24,6 +24,7 @@ namespace Pixy
 		  mMoveSpeed = 0; // speed is set in evtPortalEntered
 		  mMaxSpeed = 0;
       mScore = 0;
+      mSpeedStep = 0;
       
 		  mCurrentShield = FIRE;
 		  mShields[FIRE] = 1000;
@@ -326,23 +327,22 @@ namespace Pixy
 	    // hit our shields and calculate our new score
 	    if (mCurrentShield == mObs->shield()) {
 	      if (mShields[mCurrentShield] < 1000)
-	        mShields[mCurrentShield] += 5;
+	        mShields[mCurrentShield] += 1;
 	      
-	        mPhyxBody->activate(true);
-	        mPhyxBody->clearForces();
-	        
-	        mScore += mPhyxBody->getLinearVelocity().length() / 3;
-	        
-	        // speed the player up a bit
-	        float step = mMoveSpeed / 2;
-          setMaxSpeed(mMaxSpeed+step);
+        mPhyxBody->activate(true);
+        mPhyxBody->clearForces();
+        
+        mScore += mPhyxBody->getLinearVelocity().length() / 3;
+        
+        // speed the player up a bit
+        //float step = mMoveSpeed / 2;
+        setMaxSpeed(mMaxSpeed+mSpeedStep);
 	        
 	    } else {
 	      // deteriorate the shield
 	      mShields[mCurrentShield] -= 100;
 	      // slow the player down
-	      float step = mMoveSpeed / 3;
-        setMaxSpeed(mMaxSpeed-step);
+        setMaxSpeed(mMaxSpeed-mSpeedStep);
         
         mScore -= mPhyxBody->getLinearVelocity().length() / 2;
 	      
@@ -376,7 +376,7 @@ namespace Pixy
 	  //mPhyxBody->applyCentralForce(btVector3(0,-10 * mMoveSpeed,100));
 	  if (fHasFx)
 	    GfxEngine::getSingletonPtr()->playEffect("Despawn", this);
-	  
+	  /*
 	  if (mMoveSpeed == 0)
 	    mMoveSpeed = 6;
 	  
@@ -384,10 +384,12 @@ namespace Pixy
 	  
 	  // default max speed
 	  if (mMaxSpeed == 0)
-	    mMaxSpeed = mMoveSpeed * 2;
+	    mMaxSpeed = mMoveSpeed * 2;*/
 	  
 	  // increase max speed every time the player enters a new tunnel
-	  setMaxSpeed(mMaxSpeed + mMaxSpeed * 0.25f);
+	  Zone* tZone = Level::getSingleton().currentZone();
+	  float tMaxSpeedStep = tZone->getSettings().mMaxSpeedStep;
+	  setMaxSpeed(mMaxSpeed + mMaxSpeed * tMaxSpeedStep);
 	  
 	  // __DEBUG__
 	  //setMaxSpeed(0);
@@ -395,8 +397,12 @@ namespace Pixy
     fPortalSighted = false;
     
     mDirection = Vector3(0, -1, 1);
-    mPhyxBody->activate(true);
-    
+    if (Level::getSingleton().currentZone()->getSettings().fResetVelocity) {
+      mPhyxBody->activate(true);
+      mPhyxBody->clearForces();
+      mPhyxBody->setLinearVelocity(btVector3(0,0,0));
+    }
+        
 	  return true;
 	};
 	
@@ -426,13 +432,17 @@ namespace Pixy
     
     // set default speed
 	  //if (mMoveSpeed == 0)
-	    mMoveSpeed = 6;
+	    //mMoveSpeed = 6;
+	  Zone* tZone = Level::getSingleton().currentZone();
 	  
-	  setMoveSpeed(mMoveSpeed / 2);
+	  mMoveSpeed = tZone->getSettings().mMoveSpeed;
+	  mMaxSpeed = mMoveSpeed * tZone->getSettings().mMaxSpeedFactor;
+	  mSpeedStep = tZone->getSettings().mSpeedStep;
+	  //setMoveSpeed(mMoveSpeed / 2);
 	  
 	  // default max speed
 	  //if (mMaxSpeed == 0)
-	    mMaxSpeed = mMoveSpeed * 2;
+	    //mMaxSpeed = mMoveSpeed * 2;
 	        
     return true;
 	};
@@ -472,8 +482,6 @@ namespace Pixy
 	  mMoveSpeed = 1;
 	  mMaxSpeed = 4;
 
-
-	  
 	  // a default direction
 	  mDirection = Vector3(0,-1,1);
 	  mPhyxBody->activate(true);

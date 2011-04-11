@@ -154,6 +154,9 @@ namespace Pixy
 	  //if (!fDead)
 	  //  return;
 	  
+	  mMoveSpeed = Level::getSingleton().currentZone()->getSettings().mMoveSpeed;
+	  mMaxSpeed = mMoveSpeed * Level::getSingleton().currentZone()->getSettings().mMaxSpeedFactor;
+	  
 	  mDirection = Vector3::ZERO;
 	  
 	  int qualifier = rand();

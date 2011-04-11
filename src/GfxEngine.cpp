@@ -93,9 +93,10 @@ namespace Pixy {
 		setupSceneManager();
     setupViewports();
     setupCamera();
+    setupTerrain();
     // set up sky only in game state
     if (GameManager::getSingleton().currentState()->getId() == STATE_GAME) {
-      setupTerrain();
+      
     } else if (GameManager::getSingleton().currentState()->getId() == STATE_INTRO) {
       // set up a nice intro scene
       
@@ -686,6 +687,7 @@ namespace Pixy {
 		mCamera->lookAt(Vector3(0,75, 100));
 		
 		mUpdate = &GfxEngine::updateNothing;
+		
 		
 		return true;	
 	};	

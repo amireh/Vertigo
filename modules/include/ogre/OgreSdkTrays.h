@@ -1103,10 +1103,12 @@ namespace OgreBites
 	public:
 
 		// Do not instantiate any widgets directly. Use SdkTrayManager.
-		Label(const Ogre::String& name, const Ogre::DisplayString& caption, Ogre::Real width)
+		Label(const Ogre::String& name, const Ogre::DisplayString& caption, Ogre::Real width, int inCharHeight = 0)
 		{
 			mElement = Ogre::OverlayManager::getSingleton().createOverlayElementFromTemplate("SdkTrays/Label", "BorderPanel", name);
 			mTextArea = (Ogre::TextAreaOverlayElement*)((Ogre::OverlayContainer*)mElement)->getChild(getName() + "/LabelCaption");
+			if (inCharHeight != 0)
+			  mTextArea->setCharHeight(inCharHeight);
 #if OGRE_PLATFORM == OGRE_PLATFORM_IPHONE
             mTextArea->setCharHeight(mTextArea->getCharHeight() - 3);
 #endif
@@ -2120,9 +2122,9 @@ namespace OgreBites
 			return createLongSelectMenu(trayLoc, name, caption, 0, boxWidth, maxItemsShown, items);
 		}
 
-		Label* createLabel(TrayLocation trayLoc, const Ogre::String& name, const Ogre::DisplayString& caption, Ogre::Real width = 0)
+		Label* createLabel(TrayLocation trayLoc, const Ogre::String& name, const Ogre::DisplayString& caption, Ogre::Real width = 0, int inCharHeight = 0)
 		{
-			Label* l = new Label(name, caption, width);
+			Label* l = new Label(name, caption, width, inCharHeight);
 			moveWidgetToTray(l, trayLoc);
 			l->_assignListener(mListener);
 			return l;

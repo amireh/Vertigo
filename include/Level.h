@@ -61,6 +61,8 @@ namespace Pixy
 
 		Sphere* getSphere();
     Tunnel* getTunnel();
+    Zone* currentZone();
+    
     const std::list<Obstacle*>& getObstacles();
     
     virtual bool areFxEnabled();

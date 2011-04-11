@@ -79,6 +79,8 @@ namespace Pixy {
     // DEBUG
     void _dump();
     
+    ZoneSettings& getSettings();
+    
 	protected:
 	  void parseFile();
 	  void _parseSetting(const char* inName, const char* inValue);

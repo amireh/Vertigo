@@ -62,9 +62,9 @@ namespace Pixy
   
     // now prepare our obstacles
 		nrObstacles = 12;
-		nrMaxAliveObstacles = 3;
+		nrMaxAliveObstacles = mZone->getSettings().mObstacleCap;
 		
-		mSpawnTimer = 900;
+		mSpawnTimer = mZone->getSettings().mSpawnRate;
 		mSpawningThreshold = mSpawnTimer / 2;
 		
 		for (int i =0; i < nrObstacles; ++i)
@@ -309,10 +309,11 @@ namespace Pixy
 		
 		if (fSpawning && mTimer.getMilliseconds() > mSpawnTimer && mObstacles.size() <= nrMaxAliveObstacles) {
 		  //
-		  if (rand() % 3 == 0)
+		  spawnObstacle(mZone->getSettings().mRegisteredObstacleClasses[rand() % mZone->getSettings().mRegisteredObstacleClasses.size()]);
+		  /*if (rand() % 3 == 0)
 		    spawnDuette();
 		  else
-		    spawnObstacle(CHASE);
+		    spawnObstacle(CHASE);*/
 		    
 		  mTimer.reset();
 		}  
@@ -330,6 +331,11 @@ namespace Pixy
   Obstacle* Level::spawnObstacle(OBSTACLE_CLASS inClass) {
     //mLog->debugStream() << "obstacle is pulled from the pool";
     
+    if (inClass == DUETTE) {
+      spawnDuette();
+      return NULL;
+    }
+      
     Obstacle* mObs = NULL;// = mObstaclePool.front();
     
 		std::list<Obstacle*>::iterator _itr;
@@ -392,10 +398,9 @@ namespace Pixy
   
   bool Level::evtPortalReached(Event* inEvt) {
     
-    //fSpawning = false;
-    //mSphere->getRigidBody()->clearForces();
-    //mSphere->getRigidBody()->setLinearVelocity(btVector3(0,0,0));
-    mSphere->setMaxSpeed(0.0f);
+    //if (mZone->getSettings().fResetVelocity)
+      
+      //mSphere->setMaxSpeed(mSphere->getMoveSpeed());
     //mLog->infoStream() << "Portal is reached, reducing velocity";
     
 		std::list<Obstacle*>::iterator _itr;
@@ -414,7 +419,7 @@ namespace Pixy
 		     _itr != mObstaclePool.end();
 		     ++_itr)
 		{ 
-		  (*_itr)->setMaxSpeed((*_itr)->getMaxSpeed() + (*_itr)->getMaxSpeed() * 0.25f);
+		  (*_itr)->setMaxSpeed((*_itr)->getMaxSpeed() + (*_itr)->getMaxSpeed() * mZone->getSettings().mMaxSpeedStep);
 	  }
 		  
 		return true;
@@ -503,7 +508,6 @@ namespace Pixy
     mLog->infoStream() << "loading a new zone, resetting the game";
     
     mUpdater = &Level::updatePreparation;
-    mSpawnTimer = 900;
     fSpawning = fGameStarted = fGameOver = false;
     
     // destroy our current zone
@@ -523,11 +527,18 @@ namespace Pixy
 		}
 		
 		// load the new zone
-    //mZone = new Zone(Intro::getSingleton().getSelectedZone());
     mZone = Intro::getSingleton().getSelectedZone();
     mZone->engage();
     
+    mSpawnTimer = mZone->getSettings().mSpawnRate;
+    nrMaxAliveObstacles = mZone->getSettings().mObstacleCap;
+    
+    mTimer.reset();
     mSphere->reset();
 
+  };
+  
+  Zone* Level::currentZone() {
+    return mZone;
   };
 } // end of namespace

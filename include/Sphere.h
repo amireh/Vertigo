@@ -94,6 +94,8 @@ namespace Pixy
 		list<Vector3> mWaypoints;
 		Vector3* mNextWaypoint;
 		
+		float mSpeedStep;
+		
 		int mScore;
 		//Ogre::Vector3 mDirection;
 		OgreOggSound::OgreOggISound *mSfxRumbling, *mSfxFlipShield, *mSfxBeep;
