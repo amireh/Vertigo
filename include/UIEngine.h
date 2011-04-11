@@ -13,6 +13,7 @@
 #include "EventManager.h"
 #include "EventListener.h"
 #include "Sphere.h"
+#include "Zone.h"
 
 #include "InputManager.h"
 #include <Ogre.h>
@@ -26,9 +27,12 @@ namespace Pixy {
 	class UIZone {
 	  public:
 	    _tInfo& getInfo() { return mInfo; };
-	  
+	    Zone* getZone() { return mZone; };
+	    void setZone(Zone* inZone) { mZone = inZone; };
+	    
 	  protected:
 	    _tInfo mInfo;
+	    Zone* mZone;
 	};
 	
 	/*	\class UIEngine
@@ -89,6 +93,9 @@ namespace Pixy {
 		 */
 		void _refit(GameState *inState);
 
+    void showMenu();
+    void hideMenu();
+    
 		void showDialog(const std::string& inCaption, const std::string& inMessage);
 		
 	protected:
@@ -98,7 +105,7 @@ namespace Pixy {
 	  bool evtPlayerWon(Event* inEvt);
 	  bool evtSphereDied(Event* inEvt);
 	  
-	  // shifts from main menu to zones screen
+	  // shifts from main menu to zone screen
 	  void evtClickPlay();
 	  // shows the video settings panel
 	  void evtClickConfigure();
@@ -108,6 +115,8 @@ namespace Pixy {
 	  // display a dialogue with some info on how to play the game
 	  void evtClickHelp();
 	  void evtClickQuit();
+	  // back to main menu from zone screen
+	  void evtClickBackFromZones();
 	  // based on the selected zone, switches to Level state and starts the game
 	  void evtClickEngage();
 	  
@@ -124,6 +133,7 @@ namespace Pixy {
 	  // hide zones screen
 	  void _hideZones();
 	  
+	  bool inZoneScreen;
 	  UIZone *mSelectedZone;
 	  
 	  // prompts Ogre::OverlayManager for the overlays we're gonna use
@@ -139,8 +149,8 @@ namespace Pixy {
 	  void _hideHUDs();
 	  void _showHUDs();
 
-		void _hideMenu();
-		void _showMenu();
+		void _hideMainMenu();
+		void _showMainMenu();
 	  
 	  // creates widgets for our menu
 	  virtual void setupWidgets();
@@ -165,6 +175,7 @@ namespace Pixy {
 		std::vector<Ogre::OverlayContainer*> mThumbs;  // zone thumbnails
 		Ogre::Real mCarouselPlace;                     // current state of carousel
     std::vector<UIZone*> mUIZones;
+    OgreBites::TextBox* mTextBoxZoneInfo;
     
     // these make for a shading effect over the game scene when the menu is open
 		Ogre::OverlayContainer *mDialogShade;

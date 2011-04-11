@@ -2,6 +2,7 @@
 #include "GfxEngine.h"
 #include "Level.h"
 #include "SfxEngine.h"
+#include "GameManager.h"
 
 namespace Pixy {
 
@@ -30,11 +31,14 @@ namespace Pixy {
     mGfxEngine = GfxEngine::getSingletonPtr();
     mSceneMgr = mGfxEngine->getSM();
     mFxMgr = ParticleUniverse::ParticleSystemManager::getSingletonPtr();
-    mSphere = Level::getSingletonPtr()->getSphere();
-    if (mSphere)
-      mSphereNode = mSphere->getMasterNode();
-    else
-      mLog->warnStream() << "could not get a handle on Sphere";
+    
+    if (GameManager::getSingleton().currentState()->getId() == STATE_GAME) {
+      mSphere = Level::getSingletonPtr()->getSphere();
+      if (mSphere)
+        mSphereNode = mSphere->getMasterNode();
+      else
+        mLog->warnStream() << "could not get a handle on Sphere";
+    }
     
     // create our master node and set its starting position
     mNode = mSceneMgr->getRootSceneNode()->
@@ -43,7 +47,7 @@ namespace Pixy {
     
     
     mEntrance = mExit = NULL;
-    fHasSfx = Level::getSingleton().areSfxEnabled();
+    fHasSfx = GameManager::getSingleton().currentState()->areSfxEnabled();
     fPassedEntrance = false;
     fPortalSighted = false;
     fPortalReached = false;
@@ -208,7 +212,8 @@ namespace Pixy {
     fPortalReached = false;
     fPortalSighted = false;
     
-    mSphereNode = mSphere->getMasterNode();
+    if (GameManager::getSingleton().currentState()->getId() == STATE_GAME)
+      mSphereNode = mSphere->getMasterNode();
     
     
     
@@ -224,9 +229,11 @@ namespace Pixy {
       }
     }
     
-    Event* evt = mEvtMgr->createEvt("PortalEntered");
-    mEvtMgr->hook(evt);
-	    
+    if (GameManager::getSingleton().currentState()->getId() == STATE_GAME) {
+      Event* evt = mEvtMgr->createEvt("PortalEntered");
+      mEvtMgr->hook(evt);
+    }
+    	    
     mLog->infoStream() << "Tunnel" << idObject << " is rendered";
     
     /*mLog->debugStream() << "My length: " << mLength << ", sphere is at " 
@@ -260,6 +267,9 @@ namespace Pixy {
   void Tunnel::update(unsigned long lTimeElapsed) {
     processEvents();
     
+    if (GameManager::getSingleton().currentState()->getId() != STATE_GAME)
+      return;
+      
     if (fHasSfx)
       mSfxPortal->update(lTimeElapsed);
     

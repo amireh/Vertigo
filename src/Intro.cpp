@@ -66,13 +66,13 @@ namespace Pixy
 	void Intro::keyPressed( const OIS::KeyEvent &e )
 	{
 	
-	  //mUIEngine->keyPressed( e );
+	  mUIEngine->keyPressed( e );
 	
 	}
 	
 	void Intro::keyReleased( const OIS::KeyEvent &e ) {
 		
-		//mUIEngine->keyReleased( e );
+		mUIEngine->keyReleased( e );
 
 		/*if (e.key == OIS::KC_Q) {
 		  return this->requestShutdown();
@@ -133,7 +133,7 @@ namespace Pixy
 
   
   bool Intro::areFxEnabled() { return true; }
-  bool Intro::areSfxEnabled() { return true; }
+  bool Intro::areSfxEnabled() { return false; }
   void Intro::dontUpdateMe(Engine* inEngine) {
     mEngines.remove(inEngine);
   };

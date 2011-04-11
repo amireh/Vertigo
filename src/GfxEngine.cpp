@@ -229,19 +229,11 @@ namespace Pixy {
     void GfxEngine::setupCamera()
     {
 		mLog->debugStream() << "setting up cameras";
-        Vector3 lCamPos;
 		
         mCamera->setNearClipDistance( 10 );
         mCamera->setFarClipDistance( 10000 );
-        /*lCamPos = mPuppetPos[ME];
-        lCamPos.y += 800;
-        lCamPos.z += 1000;
-		 */
-
-        mCamera->setPosition(lCamPos);
-		
-        mCamera->lookAt(Ogre::Vector3(0, 0, 0));
-		
+        mCamera->setPosition(Vector3(0,70,-200));
+		    mCamera->lookAt(Ogre::Vector3(0, 70, 0));
 	};
 	
     void GfxEngine::setupTerrain()
