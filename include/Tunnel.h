@@ -64,6 +64,9 @@ namespace Pixy {
     SceneNode* getEntrancePortal();
     SceneNode* getExitPortal();
     
+    Real& _getLength();
+    Real& _getSegmentLength();
+    
     /*
      * Remove the tunnel from the scene and stop its effects.
      */
@@ -72,6 +75,7 @@ namespace Pixy {
 	protected:
 	  bool evtPortalSighted(Event* inEvt);
 	  bool evtPortalReached(Event* inEvt);
+	  bool evtPortalEntered(Event* inEvt);
 	  
 	  EventManager *mEvtMgr;
 		GfxEngine	*mGfxEngine;
@@ -99,8 +103,8 @@ namespace Pixy {
     typedef Ogre::SceneNode Portal;
     Portal *mEntrance, *mExit;
     
-    Sphere* mSphere;
-    SceneNode* mSphereNode;
+    //Sphere* mSphere;
+    //SceneNode* mSphereNode;
     
     void generateSegments();
     void generatePortals();

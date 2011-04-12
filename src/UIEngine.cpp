@@ -113,7 +113,9 @@ namespace Pixy {
 	  mHelpMsg += "\nYou may use the arrows or A and D buttons to steer your direction.";
 
     assignHandles();
-
+    
+    refitOverlays();
+    
     mLog->debugStream() << "binding handlers";
     
     bindToName("ZoneEntered", this, &UIEngine::evtZoneEntered);
@@ -166,13 +168,13 @@ namespace Pixy {
 		
 		
 		_currentState = GameManager::getSingleton().currentState();
-		_refit(_currentState);
+		//_refit(_currentState);
 		
-		refitOverlays();
+		
 		if (_currentState->getId() == STATE_GAME) {
-		  mSphere = Level::getSingletonPtr()->getSphere();
+		  //mSphere = Level::getSingletonPtr()->getSphere();
 		  
-		  setupOverlays();
+		  
 		  	
 		}
 		
@@ -187,6 +189,7 @@ namespace Pixy {
 
 		  hideMenu();
 		  _showHUDs();
+		  
 	  }
 	  
 	  _currentState = inState;
@@ -238,6 +241,22 @@ namespace Pixy {
 	
 	void UIEngine::keyPressed( const OIS::KeyEvent &e ) {
 	
+
+	  //}
+	};
+	void UIEngine::keyReleased( const OIS::KeyEvent &e ) {
+
+    if (GameManager::getSingleton().currentState()->getId() == STATE_GAME) {
+      switch (e.key) {
+        case OIS::KC_F:
+          if (mTrayMgr->areFrameStatsVisible())
+            mTrayMgr->hideFrameStats();
+          else
+            mTrayMgr->showFrameStats(TL_TOPLEFT);
+          break;      
+      }
+      return;
+    }
 	  if (mTrayMgr->isDialogVisible() && (e.key == OIS::KC_ESCAPE || e.key == OIS::KC_RETURN)) {
 	    mTrayMgr->closeDialog();
 	    return;
@@ -279,11 +298,36 @@ namespace Pixy {
         if (inZoneScreen)
           _prevZone();
         break;
+      case OIS::KC_ESCAPE:
+        if (inZoneScreen) {
+          // going back from zones screen to the main menu
+          _hideZones();
+          _showMainMenu();
+        } else if (inMainMenu) {
+          if (!Level::getSingleton().running())
+            // we're quitting
+            return GameManager::getSingleton().requestShutdown();
+          else {
+            // we're going back to the game
+            // re-engage in case the user went to the zones screen
+            //Level::getSingleton().currentZone()->engage();
+            this->_refit(Level::getSingletonPtr());
+            return GameManager::getSingleton().popState();
+          }
+        } else if (fConfiguring) {
+          // going back from config screen to main menu
+          _hideConfigMenu();
+          _showMainMenu();
+        }
+        break;
+      case OIS::KC_F:
+        if (mTrayMgr->areFrameStatsVisible())
+          mTrayMgr->hideFrameStats();
+        else
+          mTrayMgr->showFrameStats(TL_TOPLEFT);
+        break;
     };
-	  //}
-	};
-	void UIEngine::keyReleased( const OIS::KeyEvent &e ) {
-
+    
 	};	
 	
   void UIEngine::setupWidgets()
@@ -602,6 +646,7 @@ namespace Pixy {
 	
 	void UIEngine::_updateShields() {
     using namespace Ogre;
+    Sphere* mSphere = Level::getSingleton().getSphere();
     OverlayElement* mElement = (mSphere->shield() == FIRE) 
       ? mFireShield
       : mIceShield;
@@ -647,6 +692,7 @@ namespace Pixy {
 	  // if it's dodgy mode, we have to hide one of the shield HUDs since
 	  // the player will be using only one of them
 	  if (Level::getSingleton().currentZone()->getSettings().mMode == DODGY) {
+	    Sphere* mSphere = Level::getSingleton().getSphere();
 	    if (mSphere->shield() == FIRE) {
 	      // hide the ice shield HUD
 	      mIceShield->hide();
@@ -675,6 +721,8 @@ namespace Pixy {
 	};
 	
 	bool UIEngine::evtZoneEntered(Event* inEvt) {
+	  //this->_refit(Level::getSingletonPtr());
+	  
 	  std::ostringstream msg;
 	  msg << "Zone Mode: ";
 	  switch (mSelectedZone->getZone()->getSettings().mMode) {
@@ -702,6 +750,7 @@ namespace Pixy {
 	  tText->setLeft(mViewport->getActualWidth() / 2 - (tText->getWidth() * mViewport->getActualWidth() / 2));*/
 	  mDialogShade->show();
 	  mShadeLayer->show();
+	  mUISheet->show();
 	  mUISheetPrepare->show();
 	  mUISheetWin->hide();
 	  mUISheetLoss->hide();
@@ -732,10 +781,7 @@ namespace Pixy {
   void UIEngine::evtClickConfigure() {
     fConfiguring = true;
     
-		mTrayMgr->removeWidgetFromTray("PlayResume");
-		mTrayMgr->removeWidgetFromTray("Configure");
-		mTrayMgr->removeWidgetFromTray("Help");
-		mTrayMgr->removeWidgetFromTray("Quit");
+		_hideMainMenu();
 		mTrayMgr->moveWidgetToTray("Apply", TL_BOTTOM);
 		mTrayMgr->moveWidgetToTray("BackFromConfig", TL_BOTTOM);
 
@@ -841,20 +887,21 @@ namespace Pixy {
 	  } else {
 	    // if we're engaged in a zone, and the selected zone in menu is not the same
 	    // then we have to reload the game
-	    if (Intro::getSingleton().getSelectedZone() != zone->getZone()) {
+	    //if (Intro::getSingleton().getSelectedZone()->name() != zone->getZone()->name()) {
 	      // reset and load new level
+	      //EventManager::getSingletonPtr()->_clearQueue();
 	      Intro::getSingleton().setSelectedZone(zone->getZone());
 	      Level::getSingleton().reset();
-	      Event* mEvt = mEvtMgr->createEvt("ZoneEntered");
-	      //mEvt->setProperty("Path", zone->getInfo()["Path"]);
-	      mEvtMgr->hook(mEvt);    
-	      
+	      //Event* mEvt = mEvtMgr->createEvt("ZoneEntered");
+	      //mEvtMgr->hook(mEvt);
+	      //this->_refit(Level::getSingletonPtr());
 	      return GameManager::getSingleton().popState();
-	    } else {
+	   /* } else {
 	      // just resume the current level
-	      hideMenu();
+	      //hideMenu();
+	      this->_refit(Level::getSingletonPtr());
 	      return GameManager::getSingleton().popState();
-	    }
+	    }*/
 		}
 		
 	  if (Level::getSingleton().running()) {
@@ -960,7 +1007,7 @@ namespace Pixy {
     //mTrayMgr->removeWidgetFromTray("ZoneInfo");
     //mTextBoxZoneInfo->hide();	
 		  
-    //mSelectedZone->getZone()->disengage();
+    mSelectedZone->getZone()->disengage();
     inZoneScreen = false;
 
   };

@@ -4,7 +4,7 @@
 namespace Pixy {
   
   ::TinyXMLResourceManager* Zone::_tinyXMLResourceManager = NULL;
-  
+   
   Zone::Zone(const std::string &inFilename, bool fAutoload) {
     mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "Zone");
     
@@ -49,6 +49,8 @@ namespace Pixy {
   
   Zone::~Zone() {
     mTunnel = 0;
+    
+    unbind("PortalReached", this);
     
 		for (std::list<Tunnel*>::iterator _itr = mTunnels.begin(); 
 		     _itr != mTunnels.end();
@@ -159,7 +161,7 @@ namespace Pixy {
       xTunnel = xTunnel->NextSibling();
     }
     
-    _dump();
+    //_dump();
     //mLog->debugStream() << "I have found " << mTunnels.size() << " tunnel definitions";
   };
   
@@ -307,18 +309,27 @@ namespace Pixy {
     return fLoaded;
   };
   
-  void Zone::engage() {
+  void Zone::engage(bool fForceReload) {
     if (!fLoaded) {
       mLog->errorStream() << "attempting to engage an unloaded zone!! aborting";
       return; 
     }
     
+    // if the zone is already engaged, do nothing
+    //if (mTunnel)
+    //  return;
+      
     //if (!mSphere)
     mSphere = mLevel->getSphere();
     
     mLog->debugStream() << " I have " << mTunnels.size() << " tunnels";
     // show our first tunnel
-    mTunnel = mTunnels.front();
+    if (!mTunnel)
+      mTunnel = mTunnels.front();
+    
+    if (fForceReload)
+      mTunnel->hide();
+    
     mTunnel->show();
     
     mCurrentTunnelNr = 0;
@@ -329,12 +340,14 @@ namespace Pixy {
   };
   
   void Zone::disengage() {
-    if (!fLoaded) {
+    if (!fLoaded || !mTunnel) {
       mLog->errorStream() << "attempting to disengage an unloaded zone!! aborting";
       return; 
     }
     
     mTunnel->hide();
+    
+    mTunnel = 0;
     
     mLog->debugStream() << "disengaged";
   };
@@ -387,4 +400,6 @@ namespace Pixy {
   
   ZoneSettings& Zone::getSettings() { return mSettings; };
   int Zone::currentTunnelNr() const { return mCurrentTunnelNr; };
+  
+  std::string& Zone::filePath() { return mFilename; };
 };

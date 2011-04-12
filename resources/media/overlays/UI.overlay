@@ -72,7 +72,7 @@ Vertigo/UI
       {
         metrics_mode pixels
         
-        font_name StarWars
+        font_name SdkTrays/Caption
         colour 1 1 1
         colour_bottom 0.5 0.5 0.5
         alignment center
@@ -108,7 +108,7 @@ Vertigo/UI/Win
       {
         metrics_mode pixels
         
-        font_name StarWars
+        font_name SdkTrays/Caption
         colour 1 1 1
         colour_bottom 0.5 0.5 0.5
         alignment center
@@ -141,7 +141,7 @@ Vertigo/UI/Loss
       {
         metrics_mode pixels
         
-        font_name StarWars
+        font_name SdkTrays/Caption
         colour 1 1 1
         colour_bottom 0.5 0.5 0.5
         alignment center
@@ -211,7 +211,7 @@ Vertigo/UI/Loading
       {
         metrics_mode pixels
         
-        font_name StarWars
+        font_name SdkTrays/Caption
         colour 1 1 1
         colour_bottom 0.5 0.5 0.5
         alignment center

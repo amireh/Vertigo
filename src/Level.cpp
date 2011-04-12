@@ -24,7 +24,7 @@ namespace Pixy
 		mEvtMgr = EventManager::getSingletonPtr();
 		
 		//mEngines.clear();
-		mZone = Intro::getSingleton().getSelectedZone();
+		
 		// init engines
 		mGfxEngine = GfxEngine::getSingletonPtr();
 		mPhyxEngine = PhyxEngine::getSingletonPtr();
@@ -49,6 +49,10 @@ namespace Pixy
 		/*mEngines.push_back(mUIEngine);
 		mEngines.back()->setup();*/
 
+    fFirstZone = true;
+    
+    mZone = new Zone(Intro::getSingleton().getSelectedZone()->filePath());
+    
     mLog->debugStream() << "creating sphere";
     // prepare our sphere
 		mSphere = new Sphere();
@@ -57,23 +61,12 @@ namespace Pixy
     // create our level
     //mZone = new Zone(Intro::getSingleton().getSelectedZone());
     
-    mLog->infoStream() << "engaging zone " << mZone->name();
-    mZone->engage();
-  
+    
     // now prepare our obstacles
 		nrObstacles = 12;
-		nrMaxAliveObstacles = mZone->getSettings().mObstacleCap;
-		
-		mSpawnTimer = mZone->getSettings().mSpawnRate;
-		mSpawningThreshold = mSpawnTimer / 2;
-		
 		for (int i =0; i < nrObstacles; ++i)
 	    mObstaclePool.push_back(new Obstacle());
 		
-		fSpawning = true;
-		fGameOver = false;
-    fGameStarted = false;
-    
     // event handlers
     bindToName("ZoneEntered", this, &Level::evtZoneEntered);
     bindToName("PlayerWon", this, &Level::evtPlayerWon);
@@ -87,17 +80,15 @@ namespace Pixy
 		     ++_itrEngines)
 		    (*_itrEngines)->deferredSetup();
 		
+		
+		
 		mTimer.reset();
 
     mUpdater = &Level::updatePreparation;
-
-    Event* mEvt = mEvtMgr->createEvt("ZoneEntered");
-    //mEvt->setProperty("Path", Intro::getSingleton().getSelectedZone());
-    mEvt->setProperty("FirstZone", "True");
-    mEvtMgr->hook(mEvt);		      
-    		
+    
+        		
 		mLog->infoStream() << "Initialized successfully.";
-		
+		reset();
 	}
 
 
@@ -126,7 +117,7 @@ namespace Pixy
 		
 		mLog->infoStream() << "---- Exiting Level State ----";
 		
-		//delete mZone;
+		delete mZone;
 		delete mSphere;
 		
 		mEngines.clear();
@@ -169,7 +160,7 @@ namespace Pixy
 	void Level::keyPressed( const OIS::KeyEvent &e )
 	{
 	
-	  //mUIEngine->keyPressed( e );
+	  mUIEngine->keyPressed( e );
 	
 		if (!fGameStarted)
 		  return;	
@@ -184,7 +175,7 @@ namespace Pixy
 	
 	void Level::keyReleased( const OIS::KeyEvent &e ) {
 		
-		//mUIEngine->keyReleased( e );
+		mUIEngine->keyReleased( e );
 		// start the game when a key is released
 		if (!fGameStarted) {
 		  if ( e.key == OIS::KC_RETURN) {
@@ -256,6 +247,7 @@ namespace Pixy
   void Level::updatePreparation(unsigned long lTimeElapsed) {
     if (fGameStarted) {
       mUpdater = &Level::updateGame;
+      fSpawning = true;
     }
     
     mUIEngine->update(lTimeElapsed);
@@ -263,6 +255,7 @@ namespace Pixy
     mPhyxEngine->update(lTimeElapsed);
     mSfxEngine->update(lTimeElapsed);
     mSphere->update(lTimeElapsed);
+    mZone->update(lTimeElapsed);
   };
 
   void Level::updateGameOver(unsigned long lTimeElapsed) {
@@ -273,6 +266,8 @@ namespace Pixy
 		mUIEngine->update(lTimeElapsed);
 		mSfxEngine->update(lTimeElapsed);
 		mGfxEngine->update(lTimeElapsed);
+		mSphere->update(lTimeElapsed);
+		mZone->update(lTimeElapsed);
   };
   
   void Level::updateGame(unsigned long lTimeElapsed) {
@@ -357,9 +352,9 @@ namespace Pixy
 		mObs->setClass(inClass);
 	  mObstacles.push_back(mObs);
 	  
-	  Event* evt = mEvtMgr->createEvt("ObstacleAlive");
+	  /*Event* evt = mEvtMgr->createEvt("ObstacleAlive");
 	  evt->setAny((void*)mObs);
-	  mEvtMgr->hook(evt);
+	  mEvtMgr->hook(evt);*/
 	  
 	  return mObs;  
   }
@@ -404,24 +399,7 @@ namespace Pixy
       //mSphere->setMaxSpeed(mSphere->getMoveSpeed());
     //mLog->infoStream() << "Portal is reached, reducing velocity";
     
-		std::list<Obstacle*>::iterator _itr;
-		for (_itr = mObstacles.begin(); 
-		     _itr != mObstacles.end();)
-		{      
-      Obstacle *mObs = *_itr;
-      ++_itr;
-      mObs->die();
-      releaseObstacle(mObs);
-      continue;
-		}
-		
-		// raise the speed of all obstacles
-		for (_itr = mObstaclePool.begin(); 
-		     _itr != mObstaclePool.end();
-		     ++_itr)
-		{ 
-		  (*_itr)->setMaxSpeed((*_itr)->getMaxSpeed() + (*_itr)->getMaxSpeed() * mZone->getSettings().mMaxSpeedStep);
-	  }
+
 		  
 		return true;
 
@@ -432,7 +410,27 @@ namespace Pixy
     //mSphere->getRigidBody()->clearForces();
     //mSphere->getRigidBody()->setLinearVelocity(btVector3(0,0,0));
     //mSphere->setMaxSpeed(0.0f);
-    mTimer.reset();
+    
+    // clean up obstacles
+		std::list<Obstacle*>::iterator _itr;
+		/*for (_itr = mObstacles.begin(); 
+		     _itr != mObstacles.end();)
+		{
+      Obstacle *mObs = *_itr;
+      ++_itr;
+      mObs->die();
+      releaseObstacle(mObs);
+      continue;
+		}*/
+		
+		// raise the speed of all obstacles
+		for (_itr = mObstaclePool.begin(); 
+		     _itr != mObstaclePool.end();
+		     ++_itr)
+		{ 
+		  (*_itr)->setMaxSpeed((*_itr)->getMaxSpeed() + (*_itr)->getMaxSpeed() * mZone->getSettings().mMaxSpeedStep);
+	  }    
+    
     mLog->infoStream() << "Portal is in sight";
     
     return true;
@@ -496,49 +494,65 @@ namespace Pixy
   
   bool Level::evtZoneEntered(Event* inEvt) {
     
-    // this class is the one who emits the first "ZoneEntered" event and thus
-    // does not have to handle it
-    if (inEvt->propertyExists("FirstZone"))
-      return true;
-    
-    reset();
+    mLog->infoStream() << " ----- entered " << mZone->name() << " zone ----- ";
+    mZone->engage();
+    mUIEngine->_refit(this);
+    //reset();
     
     return true;
   };
   void Level::reset() {
     mLog->infoStream() << "loading a new zone, resetting the game";
+    //mEvtMgr->_clearQueue();
     
+    
+    // this class is the one who emits the first "ZoneEntered" event and thus
+    // does not have to handle it
+    if (!fFirstZone) {
+
+      mZone->disengage();
+      delete mZone;
+      
+      //mSphere->live();
+      
+      // load the new zone
+      mZone = new Zone(Intro::getSingleton().getSelectedZone()->filePath());
+      
+      
+      
+      // kill our obstacles
+      mLog->debugStream() << "I have " << mObstacles.size() << " obstacles alive, killng em";
+		  std::list<Obstacle*>::iterator _itr;
+		  for (_itr = mObstacles.begin(); 
+		       _itr != mObstacles.end();)
+		  {      
+        Obstacle *mObs = *_itr;
+        ++_itr;
+        mObs->die();
+        releaseObstacle(mObs);
+		  }
+    }
+    
+    nrMaxAliveObstacles = mZone->getSettings().mObstacleCap;
+    mSpawnTimer = mZone->getSettings().mSpawnRate;
+		mSpawningThreshold = mSpawnTimer / 2;
+		
     mUpdater = &Level::updatePreparation;
     fSpawning = false;
     fGameStarted = false;
     fGameOver = false;
     
-    // destroy our current zone
-    mZone->disengage();
-    //delete mZone;
-    
-    // kill our obstacles
-    mLog->debugStream() << "I have " << mObstacles.size() << " obstacles alive, killng em";
-		std::list<Obstacle*>::iterator _itr;
-		for (_itr = mObstacles.begin(); 
-		     _itr != mObstacles.end();)
-		{      
-      Obstacle *mObs = *_itr;
-      ++_itr;
-      mObs->die();
-      releaseObstacle(mObs);
-		}
-		
-		// load the new zone
-    mZone = Intro::getSingleton().getSelectedZone();
-    mZone->engage();
-    
-    mSpawnTimer = mZone->getSettings().mSpawnRate;
-    nrMaxAliveObstacles = mZone->getSettings().mObstacleCap;
+    mLog->infoStream() << "engaging zone " << mZone->name();
+    //mZone->engage();
     
     mTimer.reset();
-    mSphere->reset();
-
+    
+    Event* mEvt = mEvtMgr->createEvt("ZoneEntered");
+    //mEvt->setProperty("Path", Intro::getSingleton().getSelectedZone());
+    //mEvt->setProperty("FirstZone", "True");
+    mEvtMgr->hook(mEvt);  
+    
+    fFirstZone = false;  
   };
   
   Zone* Level::currentZone() {

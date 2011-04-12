@@ -30,13 +30,78 @@ namespace Pixy
 		  mShields[FIRE] = 1000;
 		  mShields[ICE] = 1000;
 		  
-		  if (Level::getSingleton().currentZone()->getSettings().mMode == DODGY) {
-		    mShields[mCurrentShield] = 2000;
-		  }
+
+		  
+		  using Ogre::Vector3;
 		  
 		  // a default direction
 		  mDirection = Vector3(0,-1,1);
 		  
+		  // create our graphical component
+		  Geometry::createSphere(mMesh, 14, 32, 32);
+		
+		  GfxEngine::getSingletonPtr()->attachToScene(this);
+		  //mSceneObject->setCastShadows(true);
+      mMasterNode = GfxEngine::getSingletonPtr()->getSM()->createSceneNode("SphereMasterNode");
+      //mSceneNode->getParent()->removeChild(mSceneNode);
+      mMasterNode->addChild(mSceneNode);
+      //mMasterNode->setVisible(false);
+
+      // preload our materials
+      static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Sphere/Ice");
+      static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Sphere/Fire");		  
+		  
+		  // create our physical component
+		  // initial position
+      btTransform trans = btTransform(btQuaternion(0,0,0,1),btVector3(0,35,30));
+		
+      mPhyxShape = new btSphereShape(14);
+		  mPhyxMS = new MotionState(trans, mMasterNode);
+          btScalar mass = 1000;
+          btVector3 fallInertia(0,0,0);
+		
+      mPhyxShape->calculateLocalInertia(mass,fallInertia);
+          
+		  btRigidBody::btRigidBodyConstructionInfo
+			  mPhyxBodyCI(mass,mPhyxMS,mPhyxShape,fallInertia);
+          
+		  mPhyxBody = new btRigidBody(mPhyxBodyCI);
+		  mPhyxBody->proceedToTransform(trans);
+		
+		  // prepare our sound effects
+      if (fHasSfx) {
+        OgreOggSound::OgreOggSoundManager *mSoundMgr;
+        mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
+        mSfxBeep = mSoundMgr->createSound("SphereBeep" + stringify(idObject), "beep.wav", false, false, true) ;
+        mMasterNode->attachObject(mSfxBeep);
+        
+        mSfxBeep->setRolloffFactor(2.f);
+        mSfxBeep->setReferenceDistance(1000.f);
+        
+        mLog->debugStream() << "created sound effect";
+      }
+      
+      // prepare our visual effects
+      if (fHasFx) {
+	      ParticleUniverse::ParticleSystemManager* fxMgr = 
+        ParticleUniverse::ParticleSystemManager::getSingletonPtr();
+        
+        mFireEffect = fxMgr->createParticleSystem(
+          Ogre::String("FxSphereFireEffect" + stringify(idObject)),
+          "Vertigo/FX/Sphere/FireTrail",
+          GfxEngine::getSingletonPtr()->getSM());
+        mFireEffect->prepare();
+                 
+        mIceEffect = fxMgr->createParticleSystem(
+          Ogre::String("FxSphereIceEffect" + stringify(idObject)),
+          "Vertigo/FX/Sphere/IceSteam",
+          GfxEngine::getSingletonPtr()->getSM());
+        mIceEffect->prepare();
+           
+        mMasterNode->attachObject(mFireEffect);
+        mMasterNode->attachObject(mIceEffect);
+      }
+      
       fDead = true;
   
       bindToName("GameStarted", this, &Sphere::evtGameStarted);
@@ -64,6 +129,7 @@ namespace Pixy
 		  mFireEffect = NULL;
 		  mIceEffect = NULL;
 		};
+		
 		if (fHasSfx) {
       OgreOggSound::OgreOggSoundManager *mSoundMgr;
       mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
@@ -101,85 +167,22 @@ namespace Pixy
 	
 	void Sphere::live() {
 
-    using namespace Ogre;
-		Geometry::createSphere(mMesh, 14, 32, 32);
-		
-		GfxEngine::getSingletonPtr()->attachToScene(this);
-		//mSceneObject->setCastShadows(true);
-    mMasterNode = GfxEngine::getSingletonPtr()->getSM()->getRootSceneNode()->createChildSceneNode();
-    mSceneNode->getParent()->removeChild(mSceneNode);
-    mMasterNode->addChild(mSceneNode);
-    //mMasterNode->setVisible(false);
-
-    // preload our materials
-    static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Sphere/Ice");
-    static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Sphere/Fire");
-    
-
-		btTransform trans = btTransform(btQuaternion(0,0,0,1),btVector3(0,35,30));
-		
-    mPhyxShape = new btSphereShape(14);
-		mPhyxMS = new MotionState(trans, mMasterNode);
-        btScalar mass = 1000;
-        btVector3 fallInertia(0,0,0);
-		
-    mPhyxShape->calculateLocalInertia(mass,fallInertia);
-        
-		btRigidBody::btRigidBodyConstructionInfo
-			mPhyxBodyCI(mass,mPhyxMS,mPhyxShape,fallInertia);
-        
-		mPhyxBody = new btRigidBody(mPhyxBodyCI);
-    
-		PhyxEngine::getSingletonPtr()->attachToWorld(this);
-		mPhyxBody->proceedToTransform(trans);
-		
-		// prepare our sound effects
-    if (fHasSfx) {
-      OgreOggSound::OgreOggSoundManager *mSoundMgr;
-      mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
-      mSfxBeep = mSoundMgr->createSound("SphereBeep" + stringify(idObject), "beep.wav", false, false, true) ;
-      mMasterNode->attachObject(mSfxBeep);
-      
-      mSfxBeep->setRolloffFactor(2.f);
-      mSfxBeep->setReferenceDistance(1000.f);
-      
-      mLog->debugStream() << "created sound effect";
-    }
-    
-    // prepare our visual effects
-    if (fHasFx) {
-	    ParticleUniverse::ParticleSystemManager* fxMgr = 
-      ParticleUniverse::ParticleSystemManager::getSingletonPtr();
-      
-      mFireEffect = fxMgr->createParticleSystem(
-        Ogre::String("FxSphereFireEffect" + stringify(idObject)),
-        "Vertigo/FX/Sphere/FireTrail",
-        GfxEngine::getSingletonPtr()->getSM());
-      mFireEffect->prepare();
-               
-      mIceEffect = fxMgr->createParticleSystem(
-        Ogre::String("FxSphereIceEffect" + stringify(idObject)),
-        "Vertigo/FX/Sphere/IceSteam",
-        GfxEngine::getSingletonPtr()->getSM());
-      mIceEffect->prepare();
-         
-      mMasterNode->attachObject(mFireEffect);
-      mMasterNode->attachObject(mIceEffect);
-    }
+    PhyxEngine::getSingletonPtr()->attachToWorld(this);
+    GfxEngine::getSingletonPtr()->getSM()->getRootSceneNode()->addChild(mMasterNode);
     
     mScore = 0;
     fDead = false;
     
-		reset();
 		mLog->debugStream() << "sphere alive & rendered";
 	};
 	
 	void Sphere::die() {
 	  PhyxEngine::getSingletonPtr()->detachFromWorld(this);
-	  //GfxEngine::getSingletonPtr()->detachFromScene(this);
+	  GfxEngine::getSingletonPtr()->getSM()->getRootSceneNode()->removeChild(mMasterNode);
+
 	  mIceEffect->stop();
 	  mFireEffect->stop();
-	  mMasterNode->setVisible(false);
+	  
 	  fDead = true;
 	};
 	
@@ -189,11 +192,11 @@ namespace Pixy
 		  
 		  if (fHasFx) {
 		    if (mIceEffect->isAttached()) {
-		      mIceEffect->setVisible(false);
+		      //mIceEffect->setVisible(false);
 		      mIceEffect->stop();
 		    }
 
-		    mFireEffect->setVisible(true);
+		    //mFireEffect->setVisible(true);
 		    mFireEffect->start();
 		  }
 		} else {
@@ -201,11 +204,11 @@ namespace Pixy
 		  
 		  if (fHasFx) {
 		    if (mFireEffect->isAttached()) {
-		      mFireEffect->setVisible(false);
+		      //mFireEffect->setVisible(false);
 		      mFireEffect->stop();
 		    }
 
-		    mIceEffect->setVisible(true);
+		    //mIceEffect->setVisible(true);
 		    mIceEffect->start();
 		  }
 		  
@@ -287,8 +290,8 @@ namespace Pixy
   
   void Sphere::updateGame(unsigned long lTimeElapsed) {
 	  //mDirection.z += mMoveSpeed;
-	  if (mMoveSpeed >= mMaxSpeed)
-	    mMoveSpeed = mMaxSpeed;
+	  //if (mMoveSpeed >= mMaxSpeed)
+	  //  mMoveSpeed = mMaxSpeed;
 	  
 		mPhyxBody->activate(true);
 		mPhyxBody->setLinearVelocity(
@@ -296,10 +299,36 @@ namespace Pixy
 		            mDirection.y * mMoveSpeed * lTimeElapsed, 
 		            mDirection.z * mMoveSpeed * lTimeElapsed));
 		            
-	  if (fHasSfx)
-	    mSfxBeep->update(lTimeElapsed);
+	  //if (fHasSfx)
+	  //  mSfxBeep->update(lTimeElapsed);
+	  
+		//mPhyxBody->applyCentralForce(btVector3(mDirection.x *lTimeElapsed, mDirection.y *lTimeElapsed, mDirection.z * mMoveSpeed * lTimeElapsed));
+		
+	  if (!fPortalSighted && mMasterNode->getPosition().z >= mLastTunnelSegment) {
+	    mLog->debugStream() << "exit portal is sighted";
 	    
-		//mPhyxBody->applyCentralForce(btVector3(mDirection.x *lTimeElapsed, mDirection.y *lTimeElapsed, mDirection.z * mMoveSpeed * lTimeElapsed));  
+	    Event* evt = EventManager::getSingleton().createEvt("PortalSighted");
+	    EventManager::getSingleton().hook(evt);
+	    
+	    mLog->debugStream() << "Portal reached? " << (fPortalReached ? "yes" : "no")
+	      << ", node position z : " << mMasterNode->getPosition().z;
+	    
+	    fPortalReached = false;
+	    fPortalSighted = true;
+	  };
+
+	  if (!fPortalReached && mMasterNode->getPosition().z >= mTunnelLength) {
+	    mLog->debugStream() << "exit portal is reached";
+	    
+	    Event* evt = EventManager::getSingleton().createEvt("PortalReached");
+	    EventManager::getSingleton().hook(evt);
+	    
+	    fPortalReached = true;
+	    
+	    evt = 0;
+      
+      return;		
+	  };		
   };
   
 	void Sphere::update(unsigned long lTimeElapsed) {
@@ -403,6 +432,7 @@ namespace Pixy
 	  //setMaxSpeed(0);
     
     fPortalSighted = false;
+    fPortalReached = false;
     
     mDirection = Vector3(0, -1, 1);
     if (Level::getSingleton().currentZone()->getSettings().fResetVelocity) {
@@ -410,6 +440,9 @@ namespace Pixy
       mPhyxBody->clearForces();
       mPhyxBody->setLinearVelocity(btVector3(0,0,0));
     }
+    
+    mTunnelLength = tZone->currentTunnel()->_getLength();
+	  mLastTunnelSegment = mTunnelLength - tZone->currentTunnel()->_getSegmentLength();
         
 	  return true;
 	};
@@ -446,8 +479,13 @@ namespace Pixy
 	  mMoveSpeed = tZone->getSettings().mMoveSpeed;
 	  mMaxSpeed = mMoveSpeed * tZone->getSettings().mMaxSpeedFactor;
 	  mSpeedStep = tZone->getSettings().mSpeedStep;
+	  
+	  mTunnelLength = tZone->currentTunnel()->_getLength();
+	  mLastTunnelSegment = mTunnelLength - tZone->currentTunnel()->_getSegmentLength();
 	  //setMoveSpeed(mMoveSpeed / 2);
 	  
+	  fPortalSighted = false;
+    fPortalReached = false;
 	  // default max speed
 	  //if (mMaxSpeed == 0)
 	    //mMaxSpeed = mMoveSpeed * 2;
@@ -456,8 +494,10 @@ namespace Pixy
 	};
 	
 	bool Sphere::evtZoneEntered(Event* inEvt) {
-	  reset();
 	  mUpdate = &Sphere::updatePreparation;
+	  
+	  reset();
+	  
 	  return true;
 	};
 	void Sphere::reset() {
@@ -465,10 +505,11 @@ namespace Pixy
 
 	  if (fDead) {
 	    // TODO: make live() reset exactly what die() does
-	    fDead = false;
+	    live();
+	    //fDead = false;
 	    //GfxEngine::getSingletonPtr()->attachToScene(this);
-	    PhyxEngine::getSingletonPtr()->attachToWorld(this);
-	    mMasterNode->setVisible(true);
+	    //PhyxEngine::getSingletonPtr()->attachToWorld(this);
+	    //mMasterNode->setVisible(true);
 	  }
 	  
 	  mCurrentShield = (rand() % 2 == 0) ? FIRE : ICE;
@@ -482,17 +523,15 @@ namespace Pixy
 	  }
 	  
 	  fPortalSighted = false;
+    fPortalReached = false;
 	  
 	  // reset our position and clear forces
 	  //PhyxEngine::getSingletonPtr()->detachFromWorld(this);
 	  //PhyxEngine::getSingletonPtr()->attachToWorld(this);
 	  
-	  
-
-	  
 	  // reset our speed
-	  mMoveSpeed = 1;
-	  mMaxSpeed = 4;
+	  mMoveSpeed = 0;
+	  mMaxSpeed = 0;
 
 	  // a default direction
 	  mDirection = Vector3(0,-1,1);

@@ -131,6 +131,8 @@ namespace Pixy
 		int mSpawnTimer; // how often?
 		int mSpawningThreshold; // spawn rate can't drop below this, original rate / 2
 		
+		bool fFirstZone;
+		
 		Obstacle* spawnObstacle(OBSTACLE_CLASS inClass);
 		void spawnDuette();
 		void releaseObstacle(Obstacle* inObs);

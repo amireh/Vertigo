@@ -32,6 +32,7 @@ namespace OgreOggSound {
   class OgreOggISound;
 };
 
+using Ogre::Real;
 namespace Pixy
 {
 
@@ -103,6 +104,10 @@ namespace Pixy
 		
 		bool fDamped;
 		bool fPortalSighted;
+		bool fPortalReached;
+		
+		Real mLastTunnelSegment;
+		Real mTunnelLength;
 	};
 } // end of namespace
 #endif

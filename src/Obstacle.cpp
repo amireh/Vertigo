@@ -34,18 +34,17 @@ namespace Pixy
 	  int qualifier = rand();
 	  mShield = (qualifier % 2 == 0) ? ICE : FIRE;
 	  
-	  mSphere = Level::getSingleton().getSphere();
-	  mPosition = randomPosition(); //ector3(0,10, -1000);
 	  
 	  GfxEngine::getSingletonPtr()->attachToScene(this);
 	  
 	  //mSceneNode->setPosition(mPosition);
 
-    mMasterNode = GfxEngine::getSingletonPtr()->getSM()->getRootSceneNode()->createChildSceneNode();
-    mSceneNode->getParent()->removeChild(mSceneNode);
+    mMasterNode = GfxEngine::getSingletonPtr()->getSM()->createSceneNode();
+    //mSceneNode->getParent()->removeChild(mSceneNode);
     mMasterNode->addChild(mSceneNode);
-    mMasterNode->setPosition(mPosition);
+    //mMasterNode->setPosition(mPosition);
 	  
+	  // create visual effects; particle systems
 	  if (fHasFx) {
 	    ParticleUniverse::ParticleSystemManager* fxMgr = 
       ParticleUniverse::ParticleSystemManager::getSingletonPtr();
@@ -69,10 +68,34 @@ namespace Pixy
       mMasterNode->attachObject(mSteam);      
     }
     
+    // create sound effects
+    if (fHasSfx) {
+      //if (!fSfxCreated) {
+        OgreOggSound::OgreOggSoundManager *mSoundMgr;
+        mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
+        mSfxExplosion = mSoundMgr->createSound(Ogre::String("Explosion" + stringify(idObject)), "explosion.wav", false, false, true) ;
+        mSfxShatter = mSoundMgr->createSound(Ogre::String("Shatter" + stringify(idObject)), "shatter3.wav", false, false, true) ;
+        mMasterNode->attachObject(mSfxExplosion);
+        mMasterNode->attachObject(mSfxShatter);
+        
+        mSfxExplosion->setRolloffFactor(2.f);
+        mSfxExplosion->setReferenceDistance(1000.f);
+        mSfxShatter->setRolloffFactor(2.f);
+        mSfxShatter->setReferenceDistance(1000.f);
+        
+        mLog->debugStream() << "created sound effect";
+      
+        fSfxCreated = true;
+      //}    
+      if (mShield == FIRE)
+        mSfx = &mSfxExplosion;
+      else
+        mSfx = &mSfxShatter;
+
+    }    
 	  //render();
 	 
-	  btTransform trans = btTransform(btQuaternion(0,0,0,1),
-	      btVector3(mPosition.x,mPosition.y,mPosition.z));
+	  btTransform trans = btTransform(btQuaternion(0,0,0,1), btVector3(0,0,0));
 	      
     mPhyxShape = ourShape;
 	  mPhyxMS = new MotionState(trans, mMasterNode);
@@ -87,7 +110,7 @@ namespace Pixy
 	  mPhyxBody = new btRigidBody(mPhyxBodyCI);
     mPhyxBody->proceedToTransform(trans);
 	      
-    mSceneNode->setVisible(false);
+    //mSceneNode->setVisible(false);
     fSfxCreated = false;
     
     setClass(CHASE);
@@ -108,12 +131,28 @@ namespace Pixy
     
     if (fHasSfx && fSfxCreated) {
       OgreOggSound::OgreOggSoundManager *mSoundMgr;
-      mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
+        mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
+      
       mSoundMgr->destroySound(mSfxExplosion);
       mSoundMgr->destroySound(mSfxShatter);
-      mSoundMgr = NULL;
-      mSfxExplosion = mSfxShatter = NULL;
+      
+      mSoundMgr = 0;
+      mSfxExplosion = 0;
+      mSfxShatter = 0;
     }
+    
+	  if (fHasFx) {
+      ParticleUniverse::ParticleSystemManager* fxMgr = 
+        ParticleUniverse::ParticleSystemManager::getSingletonPtr();
+      
+      fxMgr->destroyParticleSystem(mBlaze,GfxEngine::getSingletonPtr()->getSM());
+      fxMgr->destroyParticleSystem(mSteam,GfxEngine::getSingletonPtr()->getSM());
+      
+      mBlaze = 0;
+      mSteam = 0;
+      fxMgr = 0;
+	  }
+	  
 		if (ourShape) {
 		  mLog->debugStream() << "deleted our physics shape";
 		  delete ourShape;
@@ -129,35 +168,27 @@ namespace Pixy
 	Vector3 Obstacle::randomPosition() {
 	  int qualifier = rand();
 	  int sign = (qualifier % 2 == 0) ? 1 : -1;
-	  //float z = mSphere->getPosition().z + 1200;
-	  float z;
-	  /*Obstacle *tmpObs = Level::getSingletonPtr()->lastObstacleAlive();
-	  if (tmpObs)
-	    z = tmpObs->getMasterNode()->getPosition().z;
-	  else*/
-	    z = mSphere->getPosition().z;
-	  z += 1200;
-	  //float z = Level::getSingletonPtr()->lastObstacleAlive()->getPosition().z;
-	  float portalZ = Level::getSingletonPtr()->getTunnel()->getExitPortal()->getPosition().z;
+
+	  float z = mSphere->getPosition().z + 1200;
+
+    // clamp to our portal position if it was further
+	  float portalZ = Level::getSingleton().getTunnel()->getExitPortal()->getPosition().z;
 	  if (z > portalZ)
 	    z = portalZ;
 	  
-	  if (Level::getSingleton().currentZone()->getSettings().fFixedSpawnPosition) {
+	  if (Level::getSingleton().currentZone()->getSettings().fFixedSpawnPosition)
 	    return Vector3(0,20,z);
-	  } else {
-	  return Vector3(
-	    //0,
-	    //16, 
-	    (qualifier % 30) * sign,
-	    //20,
-	    (qualifier % 70),
-	    z); 
-	    //mSphere->getPosition().z + 1200);
-	  }
+	  else
+	    return Vector3( (qualifier % 30) * sign, (qualifier % 70), z); 
+	  
 	}
 	void Obstacle::live() {
 	  //if (!fDead)
 	  //  return;
+	  
+    mSphere = Level::getSingleton().getSphere();
+    
+	  // parse zone settings
 	  Zone* tZone = Level::getSingleton().currentZone();
 	  
 	  mMoveSpeed = tZone->getSettings().mOMoveSpeed;
@@ -168,8 +199,9 @@ namespace Pixy
 	  
 	  int qualifier = rand();
 	  mShield = (qualifier % 2 == 0) ? ICE : FIRE;
-    render();
-	  mSceneNode->setVisible(true);
+
+    mSfx = (mShield == FIRE) ? &mSfxExplosion : &mSfxShatter;
+        
 	  mPosition = randomPosition();
 	  mMasterNode->setPosition(mPosition); 
 	  
@@ -177,39 +209,17 @@ namespace Pixy
 	  
 	  mPhyxBody->activate(true);
 	  mPhyxBody->clearForces();
-    mPhyxBody->proceedToTransform(btTransform(btQuaternion(0,0,0,1),
-	      btVector3(mPosition.x,mPosition.y,mPosition.z)));
-	  //mPhyxBody->setLinearVelocity(btVector3(0,0,0));
-	  //mPhyxBody->setLinearVelocity(btVector3(0,0,-mMoveSpeed));
-
-    if (fHasSfx) {
-      if (!fSfxCreated) {
-        OgreOggSound::OgreOggSoundManager *mSoundMgr;
-        mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
-        mSfxExplosion = mSoundMgr->createSound(Ogre::String("Explosion" + stringify(idObject)), "explosion.wav", false, false, true) ;
-        mSfxShatter = mSoundMgr->createSound(Ogre::String("Shatter" + stringify(idObject)), "shatter3.wav", false, false, true) ;
-        mMasterNode->attachObject(mSfxExplosion);
-        mMasterNode->attachObject(mSfxShatter);
-        
-        mSfxExplosion->setRolloffFactor(2.f);
-        mSfxExplosion->setReferenceDistance(1000.f);
-        mSfxShatter->setRolloffFactor(2.f);
-        mSfxShatter->setReferenceDistance(1000.f);
-        
-        mLog->debugStream() << "created sound effect";
-      
-        fSfxCreated = true;
-      }
-
-      if (mShield == FIRE)
-        mSfx = &mSfxExplosion;
-      else
-        mSfx = &mSfxShatter;
-
-    }
+    mPhyxBody->proceedToTransform(
+      btTransform(
+        btQuaternion(0,0,0,1),
+	      btVector3(mPosition.x,mPosition.y,mPosition.z)
+	    )
+	  );
     
-    //mClass = (qualifier % 2 == 0) ? CHASE : DUMB;// : STATIONARY;
-    
+    render();
+	  //mSceneNode->setVisible(true);
+	  GfxEngine::getSingletonPtr()->getSM()->getRootSceneNode()->addChild(mMasterNode);
+	  
 	  fDead = false;	  
 	  //mLog->debugStream() << mName << idObject << " is alive";
 	};
@@ -220,24 +230,30 @@ namespace Pixy
 	  
 	  //mLog->debugStream() << mName << idObject << " is dead";
 	  
+	  // detach our physics body
 	  mPhyxBody->activate(true);
 	  mPhyxBody->clearForces();
 	  mPhyxBody->setLinearVelocity(btVector3(0,0,0));
 	  
+	  PhyxEngine::getSingletonPtr()->detachFromWorld(this);
+	  
+	  // hide our mesh and particle systems
 	  if (fHasFx) {
 	    if (mShield == FIRE) {
 	      mBlaze->stop();
-	      mBlaze->setVisible(false);
+	      //mBlaze->setVisible(false);
 	    } else {
 	      mSteam->stop();
-	      mSteam->setVisible(false);
+	      //mSteam->setVisible(false);
 	    }
 	  }
-	  mSceneNode->setVisible(false);
-	  PhyxEngine::getSingletonPtr()->detachFromWorld(this);
+	  //mSceneNode->setVisible(false);
+	  
+	  GfxEngine::getSingletonPtr()->getSM()->getRootSceneNode()->removeChild(mMasterNode);
+	  
+	  mUpdater = &Obstacle::updateNothing;
 	  
 	  fDead = true;
-
 	};
 	
 	void Obstacle::render() {
@@ -247,22 +263,22 @@ namespace Pixy
 		  
 		  if (fHasFx) {
 		    if (mSteam->isAttached()) {
-		      mSteam->setVisible(false);
+		      ///mSteam->setVisible(false);
 		      mSteam->stop();
 		    }
 
-		    mBlaze->setVisible(true);
+		    //mBlaze->setVisible(true);
 		    mBlaze->start();
 		  }
 		} else {
 		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Obstacle/Ice");
 		  if (fHasFx) {
 		    if (mBlaze->isAttached()) {
-		      mBlaze->setVisible(false);
+		      //mBlaze->setVisible(false);
 		      mBlaze->stop();
 		    }
 
-        mSteam->setVisible(true);
+        //mSteam->setVisible(true);
         mSteam->start();
 		  }
 		}
@@ -272,42 +288,43 @@ namespace Pixy
 	  
 	};
 	
+	void Obstacle::updateNothing(unsigned long lTimeElapsed) {
+	
+	};
+	
 	void Obstacle::update(unsigned long lTimeElapsed) {
-
-    if (fDead || fDying)
-      return;
-    
+	  (this->*mUpdater)(lTimeElapsed);
+	};
+	
+	void Obstacle::updateCommon(unsigned long lTimeElapsed) {
+    //if (fHasSfx)
+    //  (*mSfx)->update(lTimeElapsed);
+    	
+	  // have i passed the player? then kill me
     if (mSphere->getPosition().z > mMasterNode->getPosition().z + 100) {
       die();
       return;
     }
-    if (fHasSfx)
-      (*mSfx)->update(lTimeElapsed);
     
-    //if (mSceneObject->getWorldBoundingBox().intersects(mSphere->getSceneObject()->getWorldBoundingBox())) {
+    // colliding with the player?
     if (mSceneNode->_getWorldAABB().intersects(mSphere->getSceneNode()->_getWorldAABB())) {
       Event* evt = EventManager::getSingleton().createEvt("ObstacleCollided");
       evt->setAny((void*)this);
       EventManager::getSingleton().hook(evt);
-      evt = NULL;
+      evt = 0;
       
-      //OgreOggSound::OgreOggSoundManager *mSoundMgr;
-      //mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
-      //mSoundMgr->getSound(Ogre::String("Explosion" + stringify(idObject)))->play();
-      //mSfxExplosion->setPosition(mMasterNode->getPosition());
       if (fHasSfx) {
         (*mSfx)->stop();
         (*mSfx)->play(true);
       }
-      //mSoundMgr = NULL;
-      return die();
-    }
 
-	  (this->*mUpdater)(lTimeElapsed);
+      return die();
+    }	
 	};
 	
   void Obstacle::updateChase(unsigned long lTimeElapsed) {
-
+    updateCommon(lTimeElapsed);
+    
     mDirection = mSphere->getPosition() - mMasterNode->getPosition();
     mDirection.normalise();
     
@@ -328,6 +345,8 @@ namespace Pixy
 	};
 	
 	void Obstacle::updateDumb(unsigned long lTimeElapsed) {
+	  updateCommon(lTimeElapsed);
+	  
 	  mPhyxBody->activate(true);
 	  //mDirection = Vector3(0,-1,-1) * lTimeElapsed * mMoveSpeed;
 	  mPhyxBody->setLinearVelocity(btVector3(
@@ -340,6 +359,8 @@ namespace Pixy
 	};
 
 	void Obstacle::updateStationary(unsigned long lTimeElapsed) {
+	  updateCommon(lTimeElapsed);
+	  
 	  mPhyxBody->activate(true);
 	  //mDirection = Vector3(mDirection.x * -1,0,0);// * lTimeElapsed * mMoveSpeed;
 	  /*mPhyxBody->setLinearVelocity(btVector3(

@@ -364,8 +364,7 @@ namespace OgreBites
 
 		void setState(const ButtonState& bs)
 		{
-		  if (mFlashing)
-		    return;
+
 		    
 			if (bs == BS_OVER)
 			{
@@ -374,6 +373,8 @@ namespace OgreBites
 			}
 			else if (bs == BS_UP)
 			{
+		    if (mFlashing)
+		      return;
 				mBP->setBorderMaterialName("SdkTrays/Button/Up");
 				mBP->setMaterialName("SdkTrays/Button/Up");
 			}

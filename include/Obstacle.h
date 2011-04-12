@@ -67,12 +67,16 @@ namespace Pixy
 		void setShield(const SHIELD inShield);
 			
 	protected:		
+		void (Obstacle::*mUpdater)(unsigned long);
 		
 		void updateChase(unsigned long lTimeElapsed);
 		void updateDumb(unsigned long lTimeElapsed);
 		void updateStationary(unsigned long lTimeElapsed);
+		// called when dead
+		void updateNothing(unsigned long lTimeElapsed);
 		
-		void (Obstacle::*mUpdater)(unsigned long);
+		// this is shared between all ALIVE obstacles regardless of class
+		void updateCommon(unsigned long lTimeElapsed);
 		
 		//! helper method for copy ctor and assignment operator
 		virtual void copyFrom(const Obstacle& src);

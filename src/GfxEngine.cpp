@@ -37,7 +37,7 @@ namespace Pixy {
 		//mSceneLoader = 0;
 		//mMoveSpeed = 0.1;
 		//mDirection = Ogre::Vector3::ZERO;
-		fPortalReached = false;
+		//fPortalReached = false;
 		
 	}
 	
@@ -132,13 +132,13 @@ namespace Pixy {
 
     bindToName("ZoneEntered", this, &GfxEngine::evtZoneEntered);
     bindToName("GameStarted", this, &GfxEngine::evtGameStarted);
-    bindToName("PlayerWon", this, &GfxEngine::evtPlayerWon);
+    //bindToName("PlayerWon", this, &GfxEngine::evtPlayerWon);
     bindToName("SphereDied", this, &GfxEngine::evtSphereDied);    
-    bindToName("ObstacleAlive", this, &GfxEngine::evtObstacleAlive);
+    //bindToName("ObstacleAlive", this, &GfxEngine::evtObstacleAlive);
     bindToName("ObstacleCollided", this, &GfxEngine::evtObstacleCollided);
-    bindToName("PortalEntered", this, &GfxEngine::evtPortalEntered);
-    bindToName("PortalReached", this, &GfxEngine::evtPortalReached);
-    bindToName("PortalSighted", this, &GfxEngine::evtPortalSighted);
+    //bindToName("PortalEntered", this, &GfxEngine::evtPortalEntered);
+    //bindToName("PortalReached", this, &GfxEngine::evtPortalReached);
+    //bindToName("PortalSighted", this, &GfxEngine::evtPortalSighted);
     
 		return true;
 	}
@@ -327,13 +327,15 @@ namespace Pixy {
 						  Ogre::SceneNode* inParent)
     {
         Ogre::SceneNode* mNode;
-        if (!inParent)
-            inParent = mSceneMgr->getRootSceneNode();
-		
-        mNode = inParent->createChildSceneNode(inName, inPosition);
+        if (!inParent) {
+          mNode = mSceneMgr->createSceneNode(inName);
+          mNode->setPosition(inPosition);
+        } else
+          mNode = inParent->createChildSceneNode(inName, inPosition);
+        
         mNode->setScale(inScale);
         mNode->lookAt(inDirection, Ogre::Node::TS_WORLD);
-    	//mNode->showBoundingBox(true);
+    	  mNode->showBoundingBox(true);
 		
         //mNode = NULL;
         return mNode;
@@ -351,7 +353,7 @@ namespace Pixy {
 		
 		  //mLog->debugStream() << "Creating an Entity with name " << entityName;
 		  mEntity = mSceneMgr->createEntity(entityName, inEntity->getMesh());
-		  inNode->setUserAny(Ogre::Any(inEntity));
+		  //inNode->setUserAny(Ogre::Any(inEntity));
 		  inNode->attachObject(mEntity);
 		
 		
@@ -647,15 +649,15 @@ namespace Pixy {
 
 	
 	bool GfxEngine::evtPortalEntered(Event* inEvt) {
-	  mSphere->getMasterNode()->setVisible(true);
-	  fPortalReached = false;
+	  //mSphere->getMasterNode()->setVisible(true);
+	  //fPortalReached = false;
 	  
 	  return true;
 	};
 	
 	bool GfxEngine::evtPortalReached(Event* inEvt) {
-		mSphere->getMasterNode()->setVisible(false);
-		fPortalReached = true;
+		//mSphere->getMasterNode()->setVisible(false);
+		//fPortalReached = true;
 		
 	
 		return true;	  

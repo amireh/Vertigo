@@ -201,7 +201,7 @@ namespace Pixy
 			}
 			
 			inline void 
-			unbind(std::string inName) 
+			unbind(std::string inName, EventListener* inInstance) 
 			{	
 			  name_bind_t::iterator _binder = mNameBindings.find(inName);
 				
@@ -211,6 +211,8 @@ namespace Pixy
 					_binder->second.clear();
 					mNameBindings.erase(_binder);
 				}
+				
+				EventManager::getSingletonPtr()->unsubscribeFromName(inName, inInstance);
 			};
 			
 			template < class T >

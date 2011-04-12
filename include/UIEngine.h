@@ -169,7 +169,7 @@ namespace Pixy {
     Ogre::RenderWindow *mWindow;
     SdkTrayManager *mTrayMgr;
 		Ogre::OverlayManager *mOverlayMgr;
-		Sphere* mSphere;
+		//Sphere* mSphere;
 
     // this message is shown to the player in a dialogue
     Ogre::String mHelpMsg;

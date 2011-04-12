@@ -72,7 +72,7 @@ namespace Pixy {
     void update(unsigned long lTimeElapsed);
     
     // starts processing the Tunnels in queue, effectively starting the game
-    void engage();
+    void engage(bool fForceReload = false);
     
     // stops updating the Tunnels
     void disengage();
@@ -80,7 +80,7 @@ namespace Pixy {
     Tunnel *currentTunnel() const;
     int currentTunnelNr() const;
     std::string &name();
-    
+    std::string &filePath();
     // DEBUG
     void _dump();
     

@@ -199,6 +199,9 @@ namespace Pixy
              */
             void update();
 			
+			/* called by the current GameState when resetting */
+			void _clearQueue();
+			
 			/*! \brief
 			 *	Removes inEvt from the master container and destructs it.
 			 *
@@ -214,18 +217,18 @@ namespace Pixy
 			 */
 			void releaseEvt(Event* inEvt);
 					
-        protected:
-            EventManager();
-            EventManager(const EventManager& src);
-            EventManager& operator=(const EventManager& rhs);
-            static EventManager* mInstance;
-			
-            /*! \brief 
-			 *	Calls all EventListeners subscribed to the Event being processed
-             *
-             *  Order of dispatching is controlled by the order of subscription.
-             */
-            void dispatch(Event* inEvt);
+      protected:
+        EventManager();
+        EventManager(const EventManager& src);
+        EventManager& operator=(const EventManager& rhs);
+        static EventManager* mInstance;
+
+        /*! \brief 
+        *	Calls all EventListeners subscribed to the Event being processed
+        *
+        *  Order of dispatching is controlled by the order of subscription.
+        */
+        void dispatch(Event* inEvt);
 
 			/*! \brief
 			 *	Removes the front Event from the processing queue after being
@@ -239,7 +242,7 @@ namespace Pixy
 			bool alreadySubscribed(EventListener* inListener, vector<EventListener*>* inList);
 			
 			void detachListener(EventListener* inListener, subscription_t* inContainer);
-        private:
+    private:
 			log4cpp::Category* mLog;
 			
 			//typedef map< EVENT_UID, vector<EventListener*> > uid_subscription_t;

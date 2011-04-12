@@ -34,7 +34,7 @@ namespace Pixy
     mSfxEngine->deferredSetup();
 
 		//mUIEngine->show();
-		
+		mUIEngine->_refit(this);
 		
 		mLog->infoStream() << "Initialized successfully.";
 		
@@ -57,8 +57,8 @@ namespace Pixy
 		
 		
 		
-		if (!fShuttingDown)
-		  mUIEngine->_refit(Level::getSingletonPtr());
+		if (!fShuttingDown);
+		  //mUIEngine->_refit(Level::getSingletonPtr());
 		else {
 		  mSelectedZone = 0;
 		}
@@ -88,14 +88,14 @@ namespace Pixy
 
 		/*if (e.key == OIS::KC_Q) {
 		  return this->requestShutdown();
-		} else */if (e.key == OIS::KC_ESCAPE) {
+		} else if (e.key == OIS::KC_ESCAPE) {
 		  if (Level::getSingleton().running())
 		    return GameManager::getSingleton().popState();
-		  else
-		    return this->requestShutdown();
+		  //else
+		  //  return this->requestShutdown();
 		  
 		}
-
+*/
 		
 	}
 	
