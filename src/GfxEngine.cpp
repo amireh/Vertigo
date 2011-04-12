@@ -335,7 +335,7 @@ namespace Pixy {
         
         mNode->setScale(inScale);
         mNode->lookAt(inDirection, Ogre::Node::TS_WORLD);
-    	  mNode->showBoundingBox(true);
+    	  //mNode->showBoundingBox(true);
 		
         //mNode = NULL;
         return mNode;

@@ -75,8 +75,8 @@ namespace Pixy
         mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
         mSfxExplosion = mSoundMgr->createSound(Ogre::String("Explosion" + stringify(idObject)), "explosion.wav", false, false, true) ;
         mSfxShatter = mSoundMgr->createSound(Ogre::String("Shatter" + stringify(idObject)), "shatter3.wav", false, false, true) ;
-        mMasterNode->attachObject(mSfxExplosion);
-        mMasterNode->attachObject(mSfxShatter);
+        //mMasterNode->attachObject(mSfxExplosion);
+        //mMasterNode->attachObject(mSfxShatter);
         
         mSfxExplosion->setRolloffFactor(2.f);
         mSfxExplosion->setReferenceDistance(1000.f);
@@ -403,5 +403,9 @@ namespace Pixy
 	  mDirection = inDirection;
 	};
   SHIELD Obstacle::shield() { return mShield; }
-	void Obstacle::setShield(const SHIELD inShield) { mShield = inShield; render(); };
+	void Obstacle::setShield(const SHIELD inShield) { 
+	  mShield = inShield; 
+	  render();
+	  mSfx = (mShield == FIRE) ? &mSfxExplosion : &mSfxShatter;
+	};
 } // end of namespace

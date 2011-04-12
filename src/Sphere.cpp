@@ -73,7 +73,7 @@ namespace Pixy
         OgreOggSound::OgreOggSoundManager *mSoundMgr;
         mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
         mSfxBeep = mSoundMgr->createSound("SphereBeep" + stringify(idObject), "beep.wav", false, false, true) ;
-        mMasterNode->attachObject(mSfxBeep);
+        //mMasterNode->attachObject(mSfxBeep);
         
         mSfxBeep->setRolloffFactor(2.f);
         mSfxBeep->setReferenceDistance(1000.f);

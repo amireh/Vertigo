@@ -141,7 +141,7 @@ namespace Pixy {
 	void SfxEngine::updateGame(unsigned long lTimeElapsed) {
 		
 		mSoundMgr->update(lTimeElapsed);
-		mSoundMgr->getListener()->setPosition(mSphere->getPosition());
+		//mSoundMgr->getListener()->setPosition(mSphere->getPosition());
 		//mMusicTrack->update(lTimeElapsed);
     /*mSoundMgr->setListenerPosition( mListener->getMasterNode()->getPosition(),
                                     Ogre::Vector3::ZERO, 
