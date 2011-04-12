@@ -99,13 +99,13 @@ namespace Pixy
         
         mFireEffect = fxMgr->createParticleSystem(
           Ogre::String("FxSphereFireEffect" + stringify(idObject)),
-          "Vertigo/FX/Sphere/FireTrail",
+          "Vertigo/FX/Blaze",
           GfxEngine::getSingletonPtr()->getSM());
         mFireEffect->prepare();
                  
         mIceEffect = fxMgr->createParticleSystem(
           Ogre::String("FxSphereIceEffect" + stringify(idObject)),
-          "Vertigo/FX/Sphere/IceSteam",
+          "Vertigo/FX/Steam",
           GfxEngine::getSingletonPtr()->getSM());
         mIceEffect->prepare();
            
@@ -196,6 +196,10 @@ namespace Pixy
 	  mIceEffect->stop();
 	  mFireEffect->stop();
 	  
+	  if (fHasSfx) {
+	    if (mSfxWarning->isPlaying())
+	      mSfxWarning->startFade(false, 1.0f);
+	  }
 	  fDead = true;
 	};
 	
@@ -405,8 +409,8 @@ namespace Pixy
 	    }
 	    
 	    if (mShields[mCurrentShield] < 300 && !mSfxWarning->isPlaying()) {
+	      //mSfxWarning->loop(true);
 	      mSfxWarning->play(true);
-	      mSfxWarning->loop(true);
 	    } else {
 	      //if (mSfxWarning->isPlaying())
 	      //  mSfxWarning->startFade(false, 1);
@@ -432,8 +436,8 @@ namespace Pixy
 	  //mDirection = Vector3(0,0,1);
 	  //mPhyxBody->activate(true);
 	  //mPhyxBody->applyCentralForce(btVector3(0,-10 * mMoveSpeed,100));
-	  if (fHasFx)
-	    GfxEngine::getSingletonPtr()->playEffect("Despawn", this);
+	  //if (fHasFx)
+	    //GfxEngine::getSingletonPtr()->playEffect("Despawn", this);
 	  /*
 	  if (mMoveSpeed == 0)
 	    mMoveSpeed = 6;

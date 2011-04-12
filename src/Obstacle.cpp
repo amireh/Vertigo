@@ -51,9 +51,21 @@ namespace Pixy
       
       mBlaze = fxMgr->createParticleSystem(
         Ogre::String("FxBlaze" + stringify(idObject)),
-        "Vertigo/FX/Sphere/FireTrail",
+        "Vertigo/FX/Blaze",
         GfxEngine::getSingletonPtr()->getSM());
       mBlaze->prepare();
+      
+      mTide = fxMgr->createParticleSystem(
+        Ogre::String("FxTide" + stringify(idObject)),
+        "Vertigo/FX/Tide",
+        GfxEngine::getSingletonPtr()->getSM());
+      mTide->prepare();
+      
+      mMortar = fxMgr->createParticleSystem(
+        Ogre::String("FxMortar" + stringify(idObject)),
+        "Vertigo/FX/Mortar",
+        GfxEngine::getSingletonPtr()->getSM());
+      mMortar->prepare();
       
       mSteam = fxMgr->createParticleSystem(
         Ogre::String("FxSteam" + stringify(idObject)),
@@ -61,11 +73,14 @@ namespace Pixy
         GfxEngine::getSingletonPtr()->getSM());
       mSteam->prepare();
       
-      //mSteam->stop();
+      //mTide->stop();
       //mBlaze->stop();
          
       mMasterNode->attachObject(mBlaze);
-      mMasterNode->attachObject(mSteam);      
+      mMasterNode->attachObject(mSteam);
+      mMasterNode->attachObject(mMortar);
+      mMasterNode->attachObject(mTide);
+      
     }
     
     // create sound effects
@@ -147,9 +162,13 @@ namespace Pixy
       
       fxMgr->destroyParticleSystem(mBlaze,GfxEngine::getSingletonPtr()->getSM());
       fxMgr->destroyParticleSystem(mSteam,GfxEngine::getSingletonPtr()->getSM());
+      fxMgr->destroyParticleSystem(mTide,GfxEngine::getSingletonPtr()->getSM());
+      fxMgr->destroyParticleSystem(mMortar,GfxEngine::getSingletonPtr()->getSM());
       
       mBlaze = 0;
       mSteam = 0;
+      mMortar = 0;
+      mTide = 0;
       fxMgr = 0;
 	  }
 	  
@@ -243,8 +262,8 @@ namespace Pixy
 	      mBlaze->stop();
 	      //mBlaze->setVisible(false);
 	    } else {
-	      mSteam->stop();
-	      //mSteam->setVisible(false);
+	      mTide->stop();
+	      //mTide->setVisible(false);
 	    }
 	  }
 	  //mSceneNode->setVisible(false);
@@ -262,23 +281,25 @@ namespace Pixy
 		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Obstacle/Fire");
 		  
 		  if (fHasFx) {
-		    if (mSteam->isAttached()) {
-		      ///mSteam->setVisible(false);
+		    //if (mTide->isAttached()) {
+		      ///mTide->setVisible(false);
 		      mSteam->stop();
-		    }
+		    //}
 
 		    //mBlaze->setVisible(true);
+		    mMortar->start();
 		    mBlaze->start();
 		  }
 		} else {
 		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Obstacle/Ice");
 		  if (fHasFx) {
-		    if (mBlaze->isAttached()) {
+		    //if (mBlaze->isAttached()) {
 		      //mBlaze->setVisible(false);
 		      mBlaze->stop();
-		    }
+		    //}
 
-        //mSteam->setVisible(true);
+        //mTide->setVisible(true);
+        mTide->start();
         mSteam->start();
 		  }
 		}

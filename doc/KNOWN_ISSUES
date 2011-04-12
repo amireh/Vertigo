@@ -2,3 +2,7 @@
 * sphere sometimes skips the portal when running too fast (FIXED)
 * for some reason, the flag fPortalReached in Tunnel.cpp is being set to true
   mysteriously.. added temporary fix, but this doesn't make sense
+  
+* no explosion when sphere dies
+* music doesn't loop
+* sphere doesn't disappear when wins

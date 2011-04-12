@@ -495,6 +495,7 @@ namespace Pixy
   bool Level::evtZoneEntered(Event* inEvt) {
     
     mLog->infoStream() << " ----- entered " << mZone->name() << " zone ----- ";
+    mSfxEngine->playMusic();
     mZone->engage();
     mUIEngine->_refit(this);
     //reset();

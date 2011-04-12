@@ -39,8 +39,8 @@ namespace Pixy
 		virtual void update(unsigned long lTimeElapsed);
 		virtual bool cleanup();
 		
-    void startMusic();
-    void pauseMusic();
+		void playMusic();
+    //void stopMusic();
     
     void toggleAudioState();
     
@@ -61,7 +61,7 @@ namespace Pixy
     bool evtPortalEntered(Event* inEvt);
   
     
-		OgreOggISound *mMusicTrack, *mIntroTrack;
+		OgreOggISound *mGameTrack, *mIntroTrack;
 		unsigned int idSound;
 		
 		Sphere* mSphere;

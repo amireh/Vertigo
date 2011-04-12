@@ -132,11 +132,11 @@ namespace Pixy {
 
     bindToName("ZoneEntered", this, &GfxEngine::evtZoneEntered);
     bindToName("GameStarted", this, &GfxEngine::evtGameStarted);
-    //bindToName("PlayerWon", this, &GfxEngine::evtPlayerWon);
+    bindToName("PlayerWon", this, &GfxEngine::evtPlayerWon);
     bindToName("SphereDied", this, &GfxEngine::evtSphereDied);    
     //bindToName("ObstacleAlive", this, &GfxEngine::evtObstacleAlive);
     bindToName("ObstacleCollided", this, &GfxEngine::evtObstacleCollided);
-    //bindToName("PortalEntered", this, &GfxEngine::evtPortalEntered);
+    bindToName("PortalEntered", this, &GfxEngine::evtPortalEntered);
     //bindToName("PortalReached", this, &GfxEngine::evtPortalReached);
     //bindToName("PortalSighted", this, &GfxEngine::evtPortalSighted);
     
@@ -246,8 +246,8 @@ namespace Pixy {
 		 */
         // skyz0rs
         mLog->noticeStream() << "Setting up sky";
-		  //mSceneMgr->setSkyDome(true, "Examples/CloudySky", 2, 0.5);
-		  mSceneMgr->setSkyBox(true, "Vertigo/Sky/Vortex", 5000, true);				
+		  //mSceneMgr->setSkyDome(true, "Vertigo/Sky", 2, 1);
+		  //mSceneMgr->setSkyBox(true, "Vertigo/Sky/Vortex", 5000, true);				
 		 
 
 		
@@ -268,7 +268,7 @@ namespace Pixy {
 
      light = mSceneMgr->createLight("Light3");
 		 light->setType(Ogre::Light::LT_DIRECTIONAL);
-		 //light->setPosition(Vector3(0, 0, 1000));
+		 //light->setPositiontion(Vector3(0, 0, 1000));
 		 light->setDirection(Vector3(0,-0.5f,1));
 		 light->setDiffuseColour(0.9f, 0.9f, 0.9f);
 		 light->setSpecularColour(0.6f, 0.6f, 0.6f);
@@ -291,14 +291,14 @@ namespace Pixy {
 		  mSpotLight = mSceneMgr->createLight("TunnelLight2");
       mSpotLight->setType(Ogre::Light::LT_POINT);
       mSpotLight->setPosition(Vector3(30, 0, 2500));
-      mSpotLight->setDiffuseColour(0.3f, 0.3f, 0.3f);
+      mSpotLight->setDiffuseColour(0.9f, 0.9f, 0.9f);
       mSpotLight->setSpecularColour(0.3f, 0.3f, 0.3f);
       
       mSpotLight = mSceneMgr->createLight("TunnelLight3");
       mSpotLight->setType(Ogre::Light::LT_POINT);
       mSpotLight->setPosition(Vector3(0, 30, 4500));
       mSpotLight->setDiffuseColour(0.1f, 0.1f, 0.1f);
-      mSpotLight->setSpecularColour(0.1f, 0.1f, 0.1f);
+      mSpotLight->setSpecularColour(0.9f, 0.9f, 0.9f);
       
       /* now let's setup our light so we can see the shizzle */
       /*mSpotLight = mSceneMgr->createLight("PlayerLight2");
@@ -443,7 +443,7 @@ namespace Pixy {
 				applyMotionBlur(500);
 				break;	
 		  case OIS::KC_R:
-		    playEffect("Blaze", mSphere);
+		    playEffect("Mortar", mSphere);
 		    break;
 		  case OIS::KC_T:
 		    playEffect("Despawn", mSphere);
@@ -556,11 +556,11 @@ namespace Pixy {
     effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("BlackHole", effect));*/
 
     effect = fxMgr->createParticleSystem(
-      "FxBlaze",
-      "Vertigo/FX/Blaze", 
+      "FxMortar",
+      "Vertigo/FX/Mortar", 
       mSceneMgr);
     effect->prepare();
-    effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("Blaze", effect));    
+    effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("Mortar", effect));    
 
     /*effect = fxMgr->createParticleSystem(
       "FxSpawnPoint",
@@ -597,7 +597,7 @@ namespace Pixy {
     //effectExplosion->start();
 
     
-    //mPortableEffect = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+    mPortableEffect = mSceneMgr->getRootSceneNode()->createChildSceneNode();
     //mSpawnPoint = mSceneMgr->getRootSceneNode()->createChildSceneNode("NodeSpawnPoint");
     //mSpawnPoint->attachObject(effects["Despawn"]);
     
@@ -618,7 +618,7 @@ namespace Pixy {
 	};
 	
 	void GfxEngine::playEffect(std::string inEffect, const Vector3& inPos) {
-	  /*effectMap::iterator cursor = effects.find(inEffect);
+	  effectMap::iterator cursor = effects.find(inEffect);
 	  if (cursor != effects.end()) {
 	    ParticleUniverse::ParticleSystem* effect = cursor->second;
 	    if (effect->isAttached())
@@ -627,7 +627,7 @@ namespace Pixy {
 	    mPortableEffect->setPosition(inPos);
 	    mPortableEffect->attachObject(effect);
       effect->start();
-	  }	*/
+	  }	
 	};
 	
 	
@@ -652,6 +652,8 @@ namespace Pixy {
 	  //mSphere->getMasterNode()->setVisible(true);
 	  //fPortalReached = false;
 	  
+	  this->playEffect("Despawn", Level::getSingleton().getSphere());
+	  
 	  return true;
 	};
 	
@@ -668,7 +670,8 @@ namespace Pixy {
 	};
 	
 	bool GfxEngine::evtSphereDied(Event* inEvt) {
-	  playEffect("SphereExplosion", mSphere);
+	  this->playEffect("SphereExplosion", Level::getSingleton().getSphere()->getMasterNode()->getPosition());
+	 
 	  return true;
 	};
 	
@@ -676,11 +679,17 @@ namespace Pixy {
 	bool GfxEngine::evtPlayerWon(Event* inEvt) {
 	  mUpdate = &GfxEngine::updateNothing;
 	  
+	  Level::getSingleton().getSphere()->getMasterNode()->setVisible(false);
+	  this->playEffect("Despawn", Level::getSingleton().getSphere());
+	  
 	  return true;
 	};
 	
 	bool GfxEngine::evtGameStarted(Event* inEvt) {
 	  mUpdate = &GfxEngine::updateGame;
+	  
+	  Level::getSingleton().getSphere()->getMasterNode()->setVisible(true);
+	  
 	  return true;
 	};
 	

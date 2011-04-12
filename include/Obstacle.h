@@ -92,7 +92,7 @@ namespace Pixy
     bool fSfxCreated;
     OgreOggSound::OgreOggISound *mSfxExplosion, *mSfxShatter, **mSfx;
     
-    ParticleUniverse::ParticleSystem *mBlaze, *mSteam;
+    ParticleUniverse::ParticleSystem *mBlaze, *mSteam, *mTide, *mMortar;
     static bool ourMeshCreated;
     static btCollisionShape* ourShape;
 	};

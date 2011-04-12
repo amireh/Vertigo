@@ -1,3 +1,22 @@
+material Vertigo/Sky
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			depth_write off
+
+			texture_unit
+			{
+				texture 406.bmp
+				scroll_anim 0.05 0
+				wave_xform scroll_y sine 0 0 0 -0.1
+				
+			}
+		}
+	}
+}
 material Vertigo/Sky/Vortex
 {
 	technique

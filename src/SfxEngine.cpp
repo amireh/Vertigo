@@ -21,7 +21,7 @@ namespace Pixy {
 
     		
 		idSound = 0;
-		mMusicTrack = mIntroTrack = NULL;
+		mGameTrack = mIntroTrack = NULL;
 		mSoundMgr = NULL;
 		
 		fSetup = false;		
@@ -33,9 +33,9 @@ namespace Pixy {
 			delete mLog;
 			mLog = 0;
 
-		  if (mMusicTrack) {
-        mSoundMgr->destroySound(mMusicTrack);
-        mMusicTrack = NULL;
+		  if (mGameTrack) {
+        mSoundMgr->destroySound(mGameTrack);
+        mGameTrack = NULL;
       }
       if (mIntroTrack) {
         mSoundMgr->destroySound(mIntroTrack);
@@ -62,13 +62,15 @@ namespace Pixy {
         mSoundMgr->setSceneManager(GfxEngine::getSingletonPtr()->getSM());
       }
  
-   	  if (!mMusicTrack) {
-        mMusicTrack = mSoundMgr->createSound("MusicTrack", "music.ogg", true, false, true);
-        mMusicTrack->setVolume(0.3f);
+   	  if (!mGameTrack) {
+        mGameTrack = mSoundMgr->createSound("MusicTrack", "music.ogg", true, false, true);
+        mGameTrack->loop(true);
+        mGameTrack->setVolume(0.5f);
       }
       if (!mIntroTrack) {
         mIntroTrack = mSoundMgr->createSound("IntroTrack", "intro.ogg", true, false, true);
-        mIntroTrack->setVolume(0.3f);
+        mIntroTrack->loop(true);
+        mIntroTrack->setVolume(0.5f);
       }
       
       mSoundMgr->setMasterVolume(mSoundMgr->getMasterVolume() * 10);
@@ -89,8 +91,8 @@ namespace Pixy {
 	
 	  mUpdater = &SfxEngine::updateIntro;
 	  
-	  /*if (mIntroTrack)
-	    mIntroTrack->play();*/
+	  //if (mIntroTrack)
+	  //  mIntroTrack->play();
 	  return true;
 	};
 	
@@ -102,8 +104,8 @@ namespace Pixy {
     /*if (mIntroTrack)
       mIntroTrack->stop();*/
       
- 	  if (mMusicTrack)
-	    mMusicTrack->play();
+ 	  //if (mGameTrack)
+	  // mGameTrack->play();
 	           
     //bindToName("ObstacleCollided", this, &SfxEngine::evtObstacleCollided);
     //bindToName("PortalEntered", this, &SfxEngine::evtPortalEntered);
@@ -144,7 +146,7 @@ namespace Pixy {
 		
 		mSoundMgr->update(lTimeElapsed);
 		//mSoundMgr->getListener()->setPosition(mSphere->getPosition());
-		//mMusicTrack->update(lTimeElapsed);
+		//mGameTrack->update(lTimeElapsed);
     /*mSoundMgr->setListenerPosition( mListener->getMasterNode()->getPosition(),
                                     Ogre::Vector3::ZERO, 
                                     mListener->getMasterNode()->getOrientation() );	*/	
@@ -170,8 +172,8 @@ namespace Pixy {
     
     GameState *currentState = (GameManager::getSingleton().currentState());
     if (currentState->getId() == STATE_GAME) {
-      if (mMusicTrack) {
-        mMusicTrack->stop();
+      if (mGameTrack) {
+        mGameTrack->stop();
         
       }
     }
@@ -213,5 +215,27 @@ namespace Pixy {
 	  }
 	  
 	  fAudioStopped = !fAudioStopped;
+	};
+	
+	void SfxEngine::playMusic() {
+	  if (GameManager::getSingleton().currentState()->getId() == STATE_INTRO) {
+	    if (mIntroTrack->isPlaying())
+	      return;
+	      
+	    if (mGameTrack->isPlaying())
+	      mGameTrack->stop();
+	    
+	    mIntroTrack->loop(true);
+	    mIntroTrack->play();
+	  } else {
+	    if (mGameTrack->isPlaying())
+	      return;
+	  
+	    if (mIntroTrack->isPlaying())
+	      mIntroTrack->startFade(false, 1.0f);
+	    
+	    mGameTrack->loop(true);
+	    mGameTrack->play();
+	  }
 	};
 }

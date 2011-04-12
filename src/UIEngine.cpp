@@ -122,9 +122,15 @@ namespace Pixy {
     bindToName("GameStarted", this, &UIEngine::evtGameStarted);
     bindToName("PlayerWon", this, &UIEngine::evtPlayerWon);
     bindToName("SphereDied", this, &UIEngine::evtSphereDied);
+    
+    inZoneScreen = false;
+    inMainMenu = false;
+    fConfiguring = false;
         
     mLog->debugStream() << "set up!";
 		fSetup = true;
+		
+		
 		_showMainMenu();
 		return true;
 	}

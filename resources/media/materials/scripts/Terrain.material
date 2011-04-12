@@ -243,7 +243,7 @@ material Vertigo/Tunnel/Goo
 	}
 }
 
-material Vertigo/Tunnel/Inferno
+material Vertigo/Tunnel/Pandemonium/0
 {
 	technique
 	{
@@ -255,15 +255,91 @@ material Vertigo/Tunnel/Inferno
 
 			texture_unit
 			{
-				texture Lava.jpg
+				texture Melted_Jello_Shots_Yellow.jpg
 				scroll_anim 0.1 0.1
 			}
 
 			texture_unit
 			{
-				texture Lava.jpg
+				texture Melted_Jello_Shots_Yellow.jpg
 				//wave_xform scroll_y sine 0 0.1 0 0.1
 			}
 		}
 	}
 }
+material Vertigo/Tunnel/Pandemonium/1
+{
+	technique
+	{
+		pass
+		{
+			ambient 1 1 1
+			cull_software none
+			cull_hardware none
+
+			texture_unit
+			{
+				texture Melted_Jello_Shots_Green.jpg
+				scroll_anim 0.1 0.1
+			}
+
+			texture_unit
+			{
+				texture Melted_Jello_Shots_Green.jpg
+				wave_xform scroll_y sine 0 0.1 0 0.1
+			}
+		}
+	}
+}
+
+material Vertigo/Tunnel/Pandemonium/2
+{
+	technique
+	{
+		pass
+		{
+			ambient 1 1 1
+			cull_software none
+			cull_hardware none
+
+			texture_unit
+			{
+				texture Melted_Jello_Shots_Red.jpg
+				scroll_anim 0.1 0.1
+			}
+
+			texture_unit
+			{
+				texture Melted_Jello_Shots_Red.jpg
+				wave_xform scroll_y sine 0 0.1 0 0.1
+			}
+		}
+	}
+}
+
+material Vertigo/Tunnel/Pandemonium/3
+{
+	technique
+	{
+		pass
+		{
+			ambient 1 1 1
+			cull_software none
+			cull_hardware none
+
+			texture_unit
+			{
+				texture Melted_Jello_Shots.jpg
+				scroll_anim 0.1 0.1
+			}
+
+			texture_unit
+			{
+				texture Melted_Jello_Shots.jpg
+				wave_xform scroll_y sine 0 0.1 0 0.1
+			}
+		}
+	}
+}
+
+
