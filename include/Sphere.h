@@ -100,7 +100,7 @@ namespace Pixy
 		
 		int mScore;
 		//Ogre::Vector3 mDirection;
-		OgreOggSound::OgreOggISound *mSfxRumbling, *mSfxFlipShield, *mSfxBeep;
+		OgreOggSound::OgreOggISound *mSfxRumbling, *mSfxFlip, *mSfxBeep, *mSfxWarning;
 		ParticleUniverse::ParticleSystem *mFireEffect, *mIceEffect;
 		
 		bool fDamped;

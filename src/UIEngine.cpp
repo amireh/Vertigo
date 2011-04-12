@@ -706,7 +706,6 @@ namespace Pixy {
 	      // resize the background of the shield hud
 	      mFireShield->show();
 	      mUISheet->getChild("UI/FireShieldContainer")->show();
-	      mUISheet->getChild("UI/FireShieldContainer")->setWidth(mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
 	      
 	      // and center them both
 	      //mFireShield->setHorizontalAlignment(Ogre::GHA_CENTER);
@@ -719,18 +718,20 @@ namespace Pixy {
 	      
 	      mIceShield->show();
 	      mUISheet->getChild("UI/IceShieldContainer")->show();
-	      mUISheet->getChild("UI/IceShieldContainer")->setWidth(mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
-	      mUISheet->getChild("UI/IceShieldContainer")->setLeft(-1 * mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
 	    }
 	  } else {
-	    mUISheet->getChild("UI/FireShieldContainer")->setWidth(mShieldBarWidth);
 	    mUISheet->getChild("UI/FireShieldContainer")->show();
-	    mUISheet->getChild("UI/IceShieldContainer")->setWidth(mShieldBarWidth);
 	    mUISheet->getChild("UI/IceShieldContainer")->show();
-	    mUISheet->getChild("UI/IceShieldContainer")->setLeft(-1 * mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
+	    
 	    mIceShield->show();
 	    mFireShield->show();
 	  }
+	  
+    mUISheet->getChild("UI/FireShieldContainer")->setWidth(mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
+    mUISheet->getChild("UI/FireShieldContainer")->setWidth(mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
+    mUISheet->getChild("UI/IceShieldContainer")->setWidth(mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
+	  mUISheet->getChild("UI/IceShieldContainer")->setLeft(-1 * mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
+	  
 	  _updateShields();
 	  return true;
 	};

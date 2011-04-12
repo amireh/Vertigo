@@ -1,0 +1,23 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE project PUBLIC "-//audacityproject-1.3.0//DTD//EN" "http://audacity.sourceforge.net/xml/audacityproject-1.3.0.dtd" >
+<project xmlns="http://audacity.sourceforge.net/xml/" projname="warning_siren_data" version="1.3.0" audacityversion="1.3.12-beta" sel0="-0.0487301587" sel1="12.7577551020" vpos="0" h="0.0000000000" zoom="86.1328125000" rate="44100">
+	<tags>
+		<tag name="id3v2" value="1"/>
+	</tags>
+	<wavetrack name="Audio Track" channel="2" linked="0" mute="0" solo="0" height="150" minimized="0" rate="44100" gain="1" pan="0">
+		<waveclip offset="-0.04873016">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="564766">
+				<waveblock start="0">
+					<simpleblockfile filename="e0000c07.au" len="262144" min="-0.459261" max="0.346691" rms="0.094238"/>
+				</waveblock>
+				<waveblock start="262144">
+					<simpleblockfile filename="e0000559.au" len="262144" min="-0.417071" max="0.371599" rms="0.094039"/>
+				</waveblock>
+				<waveblock start="524288">
+					<simpleblockfile filename="e000017a.au" len="40478" min="-0.414246" max="0.34368" rms="0.081909"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+</project>

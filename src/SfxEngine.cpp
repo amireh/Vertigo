@@ -64,13 +64,15 @@ namespace Pixy {
  
    	  if (!mMusicTrack) {
         mMusicTrack = mSoundMgr->createSound("MusicTrack", "music.ogg", true, false, true);
-        mMusicTrack->setVolume(0.5f);
+        mMusicTrack->setVolume(0.3f);
       }
       if (!mIntroTrack) {
         mIntroTrack = mSoundMgr->createSound("IntroTrack", "intro.ogg", true, false, true);
-        mIntroTrack->setVolume(0.5f);
+        mIntroTrack->setVolume(0.3f);
       }
-                 
+      
+      mSoundMgr->setMasterVolume(mSoundMgr->getMasterVolume() * 10);
+      
       fAudioStopped = false;
       toggleAudioState();
       

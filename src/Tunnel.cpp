@@ -205,7 +205,7 @@ namespace Pixy {
     mSceneMgr->getRootSceneNode()->addChild(mNode);
     //mNode->setVisible(true);
     
-    //bindToName("PortalReached", this, &Tunnel::evtPortalReached);
+    bindToName("PortalReached", this, &Tunnel::evtPortalReached);
     bindToName("PortalEntered", this, &Tunnel::evtPortalEntered);
     
     fPassedEntrance = false;
@@ -255,7 +255,7 @@ namespace Pixy {
     mSceneMgr->getRootSceneNode()->removeChild(mNode);
     
     unbind("PortalEntered", this);
-    //unbind("PortalReached");
+    unbind("PortalReached", this);
     
     fPassedEntrance = false;
     fPortalReached = false;
@@ -314,7 +314,7 @@ namespace Pixy {
 	  
     if (fHasFx) {
       //mPortalEffect->setFastForward(175, 2);
-      //mPortalEffect->stopFade();
+      mPortalEffect->stopFade();
     }
 
 	  return true;

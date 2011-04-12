@@ -72,11 +72,22 @@ namespace Pixy
       if (fHasSfx) {
         OgreOggSound::OgreOggSoundManager *mSoundMgr;
         mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
-        mSfxBeep = mSoundMgr->createSound("SphereBeep" + stringify(idObject), "beep.wav", false, false, true) ;
+        mSfxBeep = mSoundMgr->createSound("SphereBeep" + stringify(idObject), "beep.wav", false, false, true);
+        mSfxWarning = mSoundMgr->createSound("SphereWarning" + stringify(idObject), "warning_siren.ogg", false, false, true);
+        mSfxFlip = mSoundMgr->createSound("SphereFlipShield" + stringify(idObject), "flip.wav", false, false, true);
         //mMasterNode->attachObject(mSfxBeep);
         
         mSfxBeep->setRolloffFactor(2.f);
         mSfxBeep->setReferenceDistance(1000.f);
+        mSfxBeep->setVolume(0.5f);
+        
+        mSfxWarning->disable3D(true);
+        mSfxWarning->setVolume(1);
+        
+        mSfxFlip->disable3D(true);
+        mSfxFlip->setVolume(1);
+        //mSfxWarning->setRolloffFactor(2.f);
+        //mSfxWarning->setReferenceDistance(1000.f);
         
         mLog->debugStream() << "created sound effect";
       }
@@ -135,6 +146,8 @@ namespace Pixy
       mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
       
       mSoundMgr->destroySound(mSfxBeep);
+      mSoundMgr->destroySound(mSfxWarning);
+      mSoundMgr->destroySound(mSfxFlip);
       
       mSoundMgr = NULL;
       mSfxBeep = NULL;
@@ -343,6 +356,7 @@ namespace Pixy
 	  if (Level::getSingleton().currentZone()->getSettings().mMode == DODGY)
 	    return;
 	    
+	  mSfxFlip->play(true);
 	  mCurrentShield = (mCurrentShield == FIRE) ? ICE : FIRE;
 	  render();
 	};
@@ -390,6 +404,13 @@ namespace Pixy
 	      }
 	    }
 	    
+	    if (mShields[mCurrentShield] < 300 && !mSfxWarning->isPlaying()) {
+	      mSfxWarning->play(true);
+	      mSfxWarning->loop(true);
+	    } else {
+	      //if (mSfxWarning->isPlaying())
+	      //  mSfxWarning->startFade(false, 1);
+	    }
 	    if (mScore <= 0)
 	      mScore = 0;
 	    
