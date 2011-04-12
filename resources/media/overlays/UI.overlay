@@ -239,16 +239,3 @@ Vertigo/UI/Intro/Logo
   }
 }
 
-Vertigo/UI/ButtonCursor
-{
-  container Panel(UI/Containers/ButtonCursor)
-  {
-    metrics_mode pixels
-    left 0
-    top 0
-    width 16
-    height 16
-    
-    material SdkTrays/Handle
-  }
-}

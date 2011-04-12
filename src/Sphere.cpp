@@ -463,6 +463,9 @@ namespace Pixy
 	int Sphere::getShieldState() {
 	  return mShields[mCurrentShield];
 	};
+	int Sphere::getShieldState(SHIELD inShield) {
+	  return mShields[inShield];
+	}
 	
 	const int Sphere::score() {
 	  return mScore;
@@ -486,6 +489,8 @@ namespace Pixy
 	  
 	  fPortalSighted = false;
     fPortalReached = false;
+    
+    UIEngine::getSingletonPtr()->_updateShields();
 	  // default max speed
 	  //if (mMaxSpeed == 0)
 	    //mMaxSpeed = mMoveSpeed * 2;

@@ -169,7 +169,7 @@ namespace Pixy {
 		
 		_currentState = GameManager::getSingleton().currentState();
 		//_refit(_currentState);
-		
+		refitOverlays();
 		
 		if (_currentState->getId() == STATE_GAME) {
 		  //mSphere = Level::getSingletonPtr()->getSphere();
@@ -496,6 +496,9 @@ namespace Pixy {
 	  //mTrayMgr->moveWidgetToTray("LogoSep", TL_BOTTOM);
 	  _showMainMenu();
 	  
+	  mUISheetWin->hide();
+	  mUISheetLoss->hide();
+	  
 	  /*GfxEngine::getSingletonPtr()->getViewport()->setAutoUpdated(false);
 	  GfxEngine::getSingletonPtr()->getViewport()->clear();*/
 	};
@@ -523,17 +526,6 @@ namespace Pixy {
 		mTrayMgr->moveWidgetToTray("Help", TL_BOTTOM);
 		mTrayMgr->moveWidgetToTray("Quit", TL_BOTTOM);
 	
-	  /*float cursorLeft = mTrayMgr->getWidget("PlayResume")->getOverlayElement()->getLeft();
-	  cursorLeft -= mTrayMgr->getWidget("PlayResume")->getOverlayElement()->getWidth();
-	  cursorLeft -= 24;
-	  float cursorTop = mTrayMgr->getWidget("PlayResume")->getOverlayElement()->getTop();
-	  cursorTop += mTrayMgr->getWidget("PlayResume")->getOverlayElement()->getHeight() / 2;
-	  cursorTop -= 8;
-	  
-	  mLog->debugStream() << "showing cursor at " << cursorLeft << ", " << cursorTop;
-	  
-	  mUICursor->setLeft(cursorLeft);  
-	  mUICursor->show();*/
 	  
 	  if (mCurrentButton)
       mCurrentButton->_stopFlashing();
@@ -558,9 +550,6 @@ namespace Pixy {
 		mIceShield = mUISheet->getChild("UI/IceShieldContainer")->getChild("UI/IceShield");
 		
 		mUILogo = mOverlayMgr->getByName("Vertigo/UI/Intro/Logo");
-		mUICursor = static_cast<Ogre::OverlayContainer*>(mOverlayMgr->getByName("Vertigo/UI/ButtonCursor")->getChild("UI/Containers/ButtonCursor"));
-		
-		mUICursor->hide();
 	};
 	
 	void UIEngine::setupOverlays() {
@@ -647,15 +636,29 @@ namespace Pixy {
 	void UIEngine::_updateShields() {
     using namespace Ogre;
     Sphere* mSphere = Level::getSingleton().getSphere();
-    OverlayElement* mElement = (mSphere->shield() == FIRE) 
-      ? mFireShield
-      : mIceShield;
-    
-    mElement->setWidth(mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
-    
-    if (mElement->getHorizontalAlignment() == Ogre::GHA_RIGHT)
-      mElement->setLeft(-1 * mElement->getWidth());
-    
+    if (Level::getSingleton().currentZone()->getSettings().mMode == DODGY) {
+      OverlayElement* mElement = (mSphere->shield() == FIRE) 
+        ? mFireShield
+        : mIceShield;
+        
+      mElement->setWidth(mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
+      
+      if (mElement->getHorizontalAlignment() == Ogre::GHA_RIGHT)
+        mElement->setLeft(-1 * mElement->getWidth());
+    } else {
+    for (int i=0; i < 2; ++i) {
+      SHIELD tShield = (i == 0) ? FIRE : ICE;
+      
+      OverlayElement* mElement = (tShield == FIRE) 
+        ? mFireShield
+        : mIceShield;
+      
+      mElement->setWidth(mShieldBarWidth * (mSphere->getShieldState(tShield) / 1000.0f));
+      
+      if (mElement->getHorizontalAlignment() == Ogre::GHA_RIGHT)
+        mElement->setLeft(-1 * mElement->getWidth());
+    }
+    }
     // update the player's score
     mUIScore->setCaption(stringify(mSphere->score()));
     
@@ -691,8 +694,9 @@ namespace Pixy {
 	  
 	  // if it's dodgy mode, we have to hide one of the shield HUDs since
 	  // the player will be using only one of them
+	  Sphere* mSphere = Level::getSingleton().getSphere();
 	  if (Level::getSingleton().currentZone()->getSettings().mMode == DODGY) {
-	    Sphere* mSphere = Level::getSingleton().getSphere();
+	    
 	    if (mSphere->shield() == FIRE) {
 	      // hide the ice shield HUD
 	      mIceShield->hide();
@@ -700,6 +704,8 @@ namespace Pixy {
 	      //mUISheet->getChild("UI/FireShieldContainer")->setWidth(mShieldBarWidth);
 	      
 	      // resize the background of the shield hud
+	      mFireShield->show();
+	      mUISheet->getChild("UI/FireShieldContainer")->show();
 	      mUISheet->getChild("UI/FireShieldContainer")->setWidth(mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
 	      
 	      // and center them both
@@ -710,9 +716,18 @@ namespace Pixy {
 	      // hide the fire one
 	      mFireShield->hide();
 	      mUISheet->getChild("UI/FireShieldContainer")->hide();
+	      
+	      mIceShield->show();
+	      mUISheet->getChild("UI/IceShieldContainer")->show();
 	      mUISheet->getChild("UI/IceShieldContainer")->setWidth(mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
+	      mUISheet->getChild("UI/IceShieldContainer")->setLeft(-1 * mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
 	    }
 	  } else {
+	    mUISheet->getChild("UI/FireShieldContainer")->setWidth(mShieldBarWidth);
+	    mUISheet->getChild("UI/FireShieldContainer")->show();
+	    mUISheet->getChild("UI/IceShieldContainer")->setWidth(mShieldBarWidth);
+	    mUISheet->getChild("UI/IceShieldContainer")->show();
+	    mUISheet->getChild("UI/IceShieldContainer")->setLeft(-1 * mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
 	    mIceShield->show();
 	    mFireShield->show();
 	  }
@@ -923,7 +938,8 @@ namespace Pixy {
 		
 		if (Level::getSingleton().running()) {
 		  Level::getSingleton().getTunnel()->getNode()->setVisible(false);
-		  GfxEngine::getSingletonPtr()->getCamera()->setPosition(Vector3(0,70,-200));
+		  GfxEngine::getSingletonPtr()->getCamera()->setPosition(Vector3(0,75, -200));
+		  GfxEngine::getSingletonPtr()->getCamera()->lookAt(Vector3(0,75, 100));
 		}
 		mTrayMgr->moveWidgetToTray("Engage", TL_BOTTOM);
 		mTrayMgr->moveWidgetToTray("BackFromZones", TL_BOTTOM);

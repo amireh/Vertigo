@@ -64,6 +64,7 @@ namespace Pixy
 		void flipShields();
 		
 		int getShieldState();
+		int getShieldState(SHIELD inShield);
 		
 		void reset();
 		//float getMaxSpeed() const;

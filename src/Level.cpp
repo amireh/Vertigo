@@ -255,7 +255,7 @@ namespace Pixy
     mPhyxEngine->update(lTimeElapsed);
     mSfxEngine->update(lTimeElapsed);
     mSphere->update(lTimeElapsed);
-    mZone->update(lTimeElapsed);
+    //mZone->update(lTimeElapsed);
   };
 
   void Level::updateGameOver(unsigned long lTimeElapsed) {
