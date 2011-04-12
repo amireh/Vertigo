@@ -93,7 +93,7 @@ namespace Pixy
       }
       
       // prepare our visual effects
-      if (fHasFx) {
+      //if (fHasFx) {
 	      ParticleUniverse::ParticleSystemManager* fxMgr = 
         ParticleUniverse::ParticleSystemManager::getSingletonPtr();
         
@@ -111,10 +111,11 @@ namespace Pixy
            
         mMasterNode->attachObject(mFireEffect);
         mMasterNode->attachObject(mIceEffect);
-      }
+      //}
       
       fDead = true;
   
+      bindToName("SettingsChanged", this, &Sphere::evtSettingsChanged);
       bindToName("GameStarted", this, &Sphere::evtGameStarted);
       bindToName("ZoneEntered", this, &Sphere::evtZoneEntered);
       bindToName("ObstacleCollided", this, &Sphere::evtObstacleCollided);
@@ -130,7 +131,7 @@ namespace Pixy
 	{
 	  mLog->infoStream() <<"destructed";
 			
-		if (fHasFx) {
+		//if (fHasFx) {
 		  ParticleUniverse::ParticleSystemManager* fxMgr = 
       ParticleUniverse::ParticleSystemManager::getSingletonPtr();
       
@@ -139,7 +140,7 @@ namespace Pixy
       
 		  mFireEffect = NULL;
 		  mIceEffect = NULL;
-		};
+		//};
 		
 		if (fHasSfx) {
       OgreOggSound::OgreOggSoundManager *mSoundMgr;
@@ -570,5 +571,12 @@ namespace Pixy
 	  btTransform trans = btTransform(btQuaternion(0,0,0,1),btVector3(0,70,30));
 	  mPhyxBody->proceedToTransform(trans);
 	  mMasterNode->setPosition(Vector3(0,70,30));
+	};
+	
+	bool Sphere::evtSettingsChanged(Event* inEvt) {
+	  fHasFx = Level::getSingleton().areFxEnabled();
+	  fHasSfx = Level::getSingleton().areSfxEnabled();
+	  
+	  return true;
 	};
 } // end of namespace

@@ -88,7 +88,7 @@ namespace Pixy
     OBSTACLE_CLASS mClass;
     
     bool fDying;
-    //bool fHasFX;
+    bool fHasFullFx;
     bool fSfxCreated;
     OgreOggSound::OgreOggISound *mSfxExplosion, *mSfxShatter, **mSfx;
     

@@ -441,8 +441,8 @@ namespace Pixy
     return mZone->currentTunnel();
   };
   
-  bool Level::areFxEnabled() { return true; }
-  bool Level::areSfxEnabled() { return true; }
+  bool Level::areFxEnabled() { return GameManager::getSingleton().getSettings()["Visual Detail"] != "None"; }
+  bool Level::areSfxEnabled() { return GameManager::getSingleton().getSettings()["Sound Enabled"] == "Yes"; }
   
   void Level::dontUpdateMe(Engine* inEngine) {
     mEngines.remove(inEngine);

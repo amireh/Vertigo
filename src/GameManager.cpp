@@ -135,23 +135,28 @@ namespace Pixy
 		// init logger
 		initLogger();
 		using std::ostringstream;
-		ostringstream lPathResources, lPathPlugins, lPathOgreCfg, lPathLog;
+		ostringstream lPathResources, lPathPlugins, lPathCfg, lPathOgreCfg, lPathLog;
 #if OGRE_PLATFORM == OGRE_PLATFORM_WINDOWS
 		lPathResources << PROJECT_ROOT << PROJECT_RESOURCES << "\\config\\resources_win32.cfg";
     lPathPlugins << PROJECT_ROOT << PROJECT_RESOURCES << "\\config\\plugins.cfg";
-		lPathOgreCfg << PROJECT_ROOT << PROJECT_RESOURCES << "\\config\\ogre.cfg";	
+    lPathCfg << PROJECT_ROOT << PROJECT_RESOURCES << "\\config\\";
+		lPathOgreCfg << mConfigPath << "ogre.cfg";	
 		lPathLog << PROJECT_LOG_DIR << "\\Ogre.log";	
 #elif OGRE_PLATFORM == OGRE_PLATFORM_APPLE
 		lPathResources << macBundlePath() << "/Contents/Resources/config/resources_osx.cfg";
 		lPathPlugins << macBundlePath() << "/Contents/Resources/config/plugins.cfg";
-		lPathOgreCfg << macBundlePath() << "/Contents/Resources/config/ogre.cfg";	
+		lPathCfg << macBundlePath << "/Contents/Resources/config/";
+		lPathOgreCfg << mConfigPath << "ogre.cfg";	
 		lPathLog << macBundlePath() << "/Contents/Logs/Ogre.log";    
 #else
 		lPathResources << PROJECT_ROOT << PROJECT_RESOURCES << "/config/resources_linux.cfg";
     lPathPlugins << PROJECT_ROOT << PROJECT_RESOURCES << "/config/plugins.cfg";
-		lPathOgreCfg << PROJECT_ROOT << PROJECT_RESOURCES << "/config/ogre.cfg";	
+    lPathCfg << PROJECT_ROOT << PROJECT_RESOURCES << "/config/";
+		lPathOgreCfg << mConfigPath << "ogre.cfg";	
 		lPathLog << PROJECT_LOG_DIR << "/Ogre.log";
 #endif
+    
+    mConfigPath = lPathCfg.str();
     
 		mRoot = OGRE_NEW Root(lPathPlugins.str(), lPathOgreCfg.str(), lPathLog.str());
 		if (!mRoot) {
@@ -281,6 +286,7 @@ namespace Pixy
 		mTrayMgr->showLoadingBar(1,1, 1);
 		//ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 		ResourceGroupManager::getSingleton().initialiseResourceGroup("General");
+		this->loadConfig();
 		mTrayMgr->hideLoadingBar();
 		delete mTrayMgr;
 		
@@ -437,4 +443,69 @@ namespace Pixy
 	}
 	
 	bool GameManager::shuttingDown() { return fShutdown; };
+	
+	tPixySettings& GameManager::getSettings() {
+	  return mSettings;
+	};
+	
+	void GameManager::loadConfig() {
+	  mLog->infoStream() << "loading Vertigo config";
+	  
+	  Ogre::ResourceGroupManager& mRGM = Ogre::ResourceGroupManager::getSingleton();
+	  
+	  if (mRGM.resourceExists("General", "vertigo.cfg")) {
+	    mLog->infoStream() << "found existing configuration, parsing...";
+	    
+	    Ogre::ConfigFile *mCfg = new Ogre::ConfigFile();
+	    mCfg->loadFromResourceSystem("vertigo.cfg", "General");
+	    mSettings.insert(std::make_pair<std::string,std::string>(
+	      "Visual Detail", 
+	      mCfg->getSetting("Visual Detail", Ogre::StringUtil::BLANK, "Medium")
+	    ));
+	    
+	    mSettings.insert(std::make_pair<std::string,std::string>(
+	      "Music Enabled", 
+	      mCfg->getSetting("Music Enabled", Ogre::StringUtil::BLANK, "Yes")
+	    ));
+	    
+	    mSettings.insert(std::make_pair<std::string,std::string>(
+	      "Sound Enabled", 
+	      mCfg->getSetting("Sound Enabled", Ogre::StringUtil::BLANK, "Yes")
+	    ));
+	    
+	    delete mCfg;
+	    
+	  } else {
+	    // default values
+	    mSettings.insert(std::make_pair<std::string,std::string>("Visual Detail", "Medium"));
+	    mSettings.insert(std::make_pair<std::string,std::string>("Sound Enabled", "Yes"));
+	    mSettings.insert(std::make_pair<std::string,std::string>("Music Enabled", "Yes"));
+	  }
+	  
+    this->saveConfig();
+	};
+	
+	void GameManager::saveConfig() {
+	  mLog->infoStream() << "saving Vertigo config";
+	  
+	  std::string tConfigFilePath = mConfigPath + "vertigo.cfg";
+	  std::ofstream of(tConfigFilePath.c_str());
+	  if (!of) {
+	    mLog->errorStream() << "could not write settings to " << tConfigFilePath << "!! aborting";
+	    return;
+	  }
+	  
+	  of << "Visual Detail=" << mSettings["Visual Detail"] << std::endl;
+	  of << "Music Enabled=" << mSettings["Music Enabled"] << std::endl;
+	  of << "Sound Enabled=" << mSettings["Sound Enabled"] << std::endl;
+	  of.close();
+	  
+	};
+	
+	void GameManager::applyNewSettings(tPixySettings& inSettings) {
+	  mSettings = inSettings;
+	  this->saveConfig();
+	  EventManager* mEvtMgr = EventManager::getSingletonPtr();
+	  mEvtMgr->hook(mEvtMgr->createEvt("SettingsChanged"));
+	};
 } // end of namespace Pixy

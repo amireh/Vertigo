@@ -30,8 +30,12 @@
 #include "log4cpp/Category.hh"
 #include "log4cpp/FileAppender.hh"
 #include "log4cpp/SimpleLayout.hh"
+
+#include "map"
+
 namespace Pixy
 {
+  typedef std::map<std::string, std::string> tPixySettings;
 	class GameState;
 	/*! \class GameManager
 	 *  \brief
@@ -90,6 +94,9 @@ namespace Pixy
 		static GameManager& getSingleton();
 		
 		GameState* currentState();
+		
+		tPixySettings& getSettings();
+		void applyNewSettings(tPixySettings& inSettings);
 		
 		bool shuttingDown();
 	private:
@@ -163,6 +170,9 @@ namespace Pixy
 		 */
 		void initLogger();
 		
+		void loadConfig();
+		void saveConfig();
+		
 		Ogre::Root			*mRoot;
 		Ogre::RenderWindow	*mRenderWindow;
 		InputManager		*mInputMgr;
@@ -177,6 +187,10 @@ namespace Pixy
 		std::vector<GameState*> mStates;
 		static GameManager *mGameManager;
 		log4cpp::Category* mLog;
+		
+		tPixySettings mSettings;
+		
+		std::string mConfigPath;
 	};
 } // end of namespace
 

@@ -76,6 +76,7 @@ namespace Pixy {
 	  bool evtPortalSighted(Event* inEvt);
 	  bool evtPortalReached(Event* inEvt);
 	  bool evtPortalEntered(Event* inEvt);
+	  bool evtSettingsChanged(Event* inEvt);
 	  
 	  EventManager *mEvtMgr;
 		GfxEngine	*mGfxEngine;

@@ -43,7 +43,8 @@ namespace Pixy {
     
     mEntrance = mExit = NULL;
     fHasSfx = GameManager::getSingleton().currentState()->areSfxEnabled();
-    fHasFx = GameManager::getSingleton().currentState()->areFxEnabled();
+    //fHasFx = GameManager::getSingleton().currentState()->areFxEnabled();
+    fHasFx = true; // tunnel always has to have particles, for portals
     fPassedEntrance = false;
     fPortalSighted = false;
     fPortalReached = false;
@@ -205,6 +206,7 @@ namespace Pixy {
     mSceneMgr->getRootSceneNode()->addChild(mNode);
     //mNode->setVisible(true);
     
+    bindToName("SettingsChanged", this, &Tunnel::evtSettingsChanged);
     bindToName("PortalReached", this, &Tunnel::evtPortalReached);
     bindToName("PortalEntered", this, &Tunnel::evtPortalEntered);
     
@@ -343,5 +345,12 @@ namespace Pixy {
 	SceneNode* Tunnel::getNode() { return mNode; };
 	
 	Real& Tunnel::_getLength() { return mLength; };
-	Real& Tunnel::_getSegmentLength() { return mSegmentLength; }; 
+	Real& Tunnel::_getSegmentLength() { return mSegmentLength; };
+	
+	bool Tunnel::evtSettingsChanged(Event* inEvt) {
+    fHasSfx = GameManager::getSingleton().currentState()->areSfxEnabled();
+    //fHasFx = GameManager::getSingleton().currentState()->areFxEnabled();
+    
+    return true;	
+	}; 
 };

@@ -40,7 +40,7 @@ namespace Pixy
 		virtual bool cleanup();
 		
 		void playMusic();
-    //void stopMusic();
+    void stopMusic();
     
     void toggleAudioState();
     
@@ -59,7 +59,8 @@ namespace Pixy
     
     bool evtObstacleCollided(Event* inEvt);
     bool evtPortalEntered(Event* inEvt);
-  
+    bool evtSettingsChanged(Event* inEvt);
+
     
 		OgreOggISound *mGameTrack, *mIntroTrack;
 		unsigned int idSound;

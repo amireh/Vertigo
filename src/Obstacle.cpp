@@ -24,6 +24,8 @@ namespace Pixy
 	  mMoveSpeed = 1.2f;
 	  mMaxSpeed = mMoveSpeed * 20;
 	  fDying = false;
+	  fHasFullFx = GameManager::getSingleton().getSettings()["Visual Detail"] == "Full";
+
 	  mClass = CHASE;
 	  
 	  if (!ourMeshCreated)
@@ -45,7 +47,11 @@ namespace Pixy
     //mMasterNode->setPosition(mPosition);
 	  
 	  // create visual effects; particle systems
-	  if (fHasFx) {
+	  mBlaze = 0;
+	  mMortar = 0;
+	  mSteam = 0;
+	  mTide = 0;
+	  //if (fHasFx) {
 	    ParticleUniverse::ParticleSystemManager* fxMgr = 
       ParticleUniverse::ParticleSystemManager::getSingletonPtr();
       
@@ -81,7 +87,7 @@ namespace Pixy
       mMasterNode->attachObject(mMortar);
       mMasterNode->attachObject(mTide);
       
-    }
+    //}
     
     // create sound effects
     if (fHasSfx) {
@@ -156,7 +162,7 @@ namespace Pixy
       mSfxShatter = 0;
     }
     
-	  if (fHasFx) {
+	  //if (fHasFx) {
       ParticleUniverse::ParticleSystemManager* fxMgr = 
         ParticleUniverse::ParticleSystemManager::getSingletonPtr();
       
@@ -170,7 +176,7 @@ namespace Pixy
       mMortar = 0;
       mTide = 0;
       fxMgr = 0;
-	  }
+	  //}
 	  
 		if (ourShape) {
 		  mLog->debugStream() << "deleted our physics shape";
@@ -206,6 +212,9 @@ namespace Pixy
 	  //  return;
 	  
     mSphere = Level::getSingleton().getSphere();
+	  fHasFx = Level::getSingleton().areFxEnabled();
+	  fHasFullFx = GameManager::getSingleton().getSettings()["Visual Detail"] == "Full";
+	  fHasSfx = Level::getSingleton().areSfxEnabled();
     
 	  // parse zone settings
 	  Zone* tZone = Level::getSingleton().currentZone();
@@ -257,14 +266,16 @@ namespace Pixy
 	  PhyxEngine::getSingletonPtr()->detachFromWorld(this);
 	  
 	  // hide our mesh and particle systems
-	  if (fHasFx) {
-	    if (mShield == FIRE) {
+	  if (fHasFx || (mBlaze && mTide && mSteam && mMortar)) {
+	    //if (mShield == FIRE) {
 	      mBlaze->stop();
 	      //mBlaze->setVisible(false);
-	    } else {
+	    //} else {
 	      mTide->stop();
+	      mMortar->stop();
+	      mSteam->stop();
 	      //mTide->setVisible(false);
-	    }
+	    //}
 	  }
 	  //mSceneNode->setVisible(false);
 	  
@@ -283,11 +294,13 @@ namespace Pixy
 		  if (fHasFx) {
 		    //if (mTide->isAttached()) {
 		      ///mTide->setVisible(false);
-		      mSteam->stop();
+		      if (fHasFullFx)
+		        mSteam->stop();
 		    //}
 
 		    //mBlaze->setVisible(true);
-		    mMortar->start();
+		    if (fHasFullFx)
+		      mMortar->start();
 		    mBlaze->start();
 		  }
 		} else {
@@ -300,7 +313,8 @@ namespace Pixy
 
         //mTide->setVisible(true);
         mTide->start();
-        mSteam->start();
+        if (fHasFullFx)
+          mSteam->start();
 		  }
 		}
 	};
@@ -429,4 +443,5 @@ namespace Pixy
 	  render();
 	  mSfx = (mShield == FIRE) ? &mSfxExplosion : &mSfxShatter;
 	};
+	
 } // end of namespace

@@ -371,9 +371,26 @@ namespace Pixy {
 		mTrayMgr->createButton(TL_NONE, "BackFromConfig", "Go Back", button_width);
 
 		// create configuration screen label and renderer menu
-		mTrayMgr->createLabel(TL_NONE, "ConfigLabel", "Configuration");
+		mTrayMgr->createLabel(TL_NONE, "ConfigLabel", "Video Settings");
+		mFxMenu = mTrayMgr->createLongSelectMenu(TL_NONE, "ConfigFxMenu", "Visual Effects", 340, 140, 3);
+		mFxMenu->addItem("Full");
+		mFxMenu->addItem("Medium");
+		mFxMenu->addItem("None");
+		mFxMenu->selectItem(GameManager::getSingleton().getSettings()["Visual Detail"]);
+		
+		mMusicMenu = mTrayMgr->createLongSelectMenu(TL_NONE, "ConfigMusicMenu", "Music", 340, 140, 2);
+		mMusicMenu->addItem("On");
+		mMusicMenu->addItem("Off");
+		mMusicMenu->selectItem(GameManager::getSingleton().getSettings()["Music Enabled"] == "Yes" ? "On" : "Off");
+		
+		mSfxMenu = mTrayMgr->createLongSelectMenu(TL_NONE, "ConfigSfxMenu", "Sound Effects", 340, 140, 2);
+		mSfxMenu->addItem("On");
+		mSfxMenu->addItem("Off");
+		mSfxMenu->selectItem(GameManager::getSingleton().getSettings()["Sound Enabled"] == "Yes" ? "On" : "Off");
+		
 		mRendererMenu = mTrayMgr->createLongSelectMenu(TL_NONE, "RendererMenu", "Render System", 450, 240, 10);
 		mTrayMgr->createSeparator(TL_NONE, "ConfigSeparator");
+		mTrayMgr->createSeparator(TL_NONE, "ConfigSeparator2");
 
 		// populate render system names
 		Ogre::StringVector rsNames;
@@ -822,6 +839,11 @@ namespace Pixy {
 		mTrayMgr->moveWidgetToTray("ConfigSeparator", TL_CENTER);
 
 		mRendererMenu->selectItem(mRoot->getRenderSystem()->getName());
+		
+		mTrayMgr->moveWidgetToTray("ConfigSeparator2", TL_CENTER);
+		mTrayMgr->moveWidgetToTray(mFxMenu, TL_CENTER);
+		mTrayMgr->moveWidgetToTray(mMusicMenu, TL_CENTER);
+		mTrayMgr->moveWidgetToTray(mSfxMenu, TL_CENTER);
 
     if (mCurrentButton)
       mCurrentButton->_stopFlashing();
@@ -841,7 +863,7 @@ namespace Pixy {
 
 		if (mRendererMenu->getSelectedItem() != mRoot->getRenderSystem()->getName()) reset = true;
 
-		for (unsigned int i = 3; i < mTrayMgr->getNumWidgets(mRendererMenu->getTrayLocation()); i++)
+		for (unsigned int i = 3; i < mTrayMgr->getNumWidgets(mRendererMenu->getTrayLocation()) - 4; i++)
 		{
 			SelectMenu* menu = (SelectMenu*)mTrayMgr->getWidget(mRendererMenu->getTrayLocation(), i);
 			if (menu->getSelectedItem() != options[menu->getCaption()].currentValue) reset = true;
@@ -849,10 +871,22 @@ namespace Pixy {
 		}
 
 		// reset with new settings if necessary
-		if (reset) reconfigure(mRendererMenu->getSelectedItem(), newOptions);  
+		if (reset) reconfigure(mRendererMenu->getSelectedItem(), newOptions);
+		
+		tPixySettings settings;
+		settings["Visual Detail"] = mFxMenu->getSelectedItem();
+		settings["Music Enabled"] = (mMusicMenu->getSelectedItem() == "On") ? "Yes" : "No";
+		settings["Sound Enabled"] = (mSfxMenu->getSelectedItem() == "On") ? "Yes" : "No";
+		
+		GameManager::getSingleton().applyNewSettings(settings);
   };
   
   void UIEngine::_hideConfigMenu() {
+		mTrayMgr->removeWidgetFromTray(mSfxMenu);
+		mTrayMgr->removeWidgetFromTray(mMusicMenu);
+		mTrayMgr->removeWidgetFromTray(mFxMenu);
+		mTrayMgr->removeWidgetFromTray("ConfigSeparator2");
+		  
 		while (mTrayMgr->getNumWidgets(mRendererMenu->getTrayLocation()) > 3)
 		{
 			mTrayMgr->destroyWidget(mRendererMenu->getTrayLocation(), 3);
@@ -867,7 +901,9 @@ namespace Pixy {
 		mTrayMgr->removeWidgetFromTray("BackFromConfig");
 		mTrayMgr->removeWidgetFromTray("ConfigLabel");
 		mTrayMgr->removeWidgetFromTray(mRendererMenu);
+
 		mTrayMgr->removeWidgetFromTray("ConfigSeparator");
+		
 		
 		fConfiguring = false;
   };

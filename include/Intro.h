@@ -65,7 +65,7 @@ namespace Pixy
     void setSelectedZone(Zone* inZone);
     
 	protected:
-	  
+	  bool evtSettingsChanged(Event* inEvt);
 	  // contains the path of the Zone sheet, this is set by the UIEngine
 	  // when a player chooses a zone thumb from the menu
 	  Zone* mSelectedZone;

@@ -147,8 +147,8 @@ namespace Pixy
 	}
 
   
-  bool Intro::areFxEnabled() { return true; }
-  bool Intro::areSfxEnabled() { return true; }
+  bool Intro::areFxEnabled() { return GameManager::getSingleton().getSettings()["Visual Detail"] != "None"; }
+  bool Intro::areSfxEnabled() { return GameManager::getSingleton().getSettings()["Sound Enabled"] == "Yes"; }
   void Intro::dontUpdateMe(Engine* inEngine) {
     mEngines.remove(inEngine);
   };
@@ -156,4 +156,5 @@ namespace Pixy
   Zone* Intro::getSelectedZone() { return mSelectedZone; };
   
   void Intro::setSelectedZone(Zone* inZone) { mSelectedZone = inZone; };
+  
 } // end of namespace

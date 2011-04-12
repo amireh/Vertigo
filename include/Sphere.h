@@ -81,6 +81,7 @@ namespace Pixy
 		bool evtPortalEntered(Event* inEvt);
 		bool evtPortalSighted(Event* inEvt);
 		bool evtObstacleCollided(Event* inEvt);
+		bool evtSettingsChanged(Event* inEvt);
 		
 		void locateNextWaypoint();
 		

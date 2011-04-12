@@ -238,4 +238,18 @@ namespace Pixy {
 	    mGameTrack->play();
 	  }
 	};
+	
+	void SfxEngine::stopMusic() {
+	  if (mIntroTrack->isPlaying())
+	    mIntroTrack->stop(true);
+	  if (mGameTrack->isPlaying())
+	    mGameTrack->stop(true);
+	};
+	
+	bool SfxEngine::evtSettingsChanged(Event* inEvt) {
+	  if (GameManager::getSingleton().getSettings()["Music Enabled"] == "No")
+      this->stopMusic();
+    
+    return true;
+	};
 }

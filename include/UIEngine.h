@@ -175,7 +175,7 @@ namespace Pixy {
     Ogre::String mHelpMsg;
     
     // holds all of OGRE's video settings 
-    SelectMenu* mRendererMenu;
+    SelectMenu* mRendererMenu, *mFxMenu, *mSfxMenu, *mMusicMenu;
     SelectMenu* mZoneMenu;
 		Label* mTitleLabel;                            // zone title label
 		std::vector<Ogre::OverlayContainer*> mThumbs;  // zone thumbnails
