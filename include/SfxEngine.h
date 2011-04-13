@@ -39,8 +39,13 @@ namespace Pixy
 		virtual void update(unsigned long lTimeElapsed);
 		virtual bool cleanup();
 		
+		void keyReleased( const OIS::KeyEvent &e );	
+		
 		void playMusic();
     void stopMusic();
+    
+    void raiseVolume();
+    void lowerVolume();
     
     void toggleAudioState();
     

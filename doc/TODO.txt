@@ -59,3 +59,7 @@
 * make sure WARNING sound is played beyond the first zone
 * add survival mode
 * add score / accuracy
+* add text logo
+* add version
+* add resume / choose new zone button
+* clean up unused materials, scripts etc

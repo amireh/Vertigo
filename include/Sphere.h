@@ -91,6 +91,10 @@ namespace Pixy
 		void updatePreparation(unsigned long lTimeElapsed);
 		void updateGame(unsigned long lTimeElapsed);
 		
+		bool (Sphere::*mCollide)(Event*);
+		bool collideCommon(Event* inEvt);
+		bool collideNervebreak(Event* inEvt);
+		
 		//! helper method for copy ctor and assignment operator
 		virtual void copyFrom(const Sphere& src);
 		
@@ -115,6 +119,8 @@ namespace Pixy
 		// score
 		unsigned long mNrMisses;
 		unsigned long mNrHits;
+		
+		int mRegenRate; // in survival mode, the regen rate is higher than the others
 		
 		Real mLastTunnelSegment;
 		Real mTunnelLength;

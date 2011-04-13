@@ -115,20 +115,21 @@ namespace Pixy {
 	  loadZones();
 	  setupWidgets();
 	  
-	  mHelpMsg = "The sphere you're controlling is equipped with 2 shields: ";
-	  mHelpMsg += "\na fiery one to protect against fire obstacles,\nand an icy one ";
-	  mHelpMsg += "to protect against ice obstacles. ";
-	  mHelpMsg += "\n\nYour mission is to reach the last portal with your shields intact.";
-	  mHelpMsg += "\n\nGame Controls:";
-	  mHelpMsg += "\n* Press the space bar to flip shields";
-	  mHelpMsg += "\n* You may use the arrows or A and D buttons to strafe";
-	  mHelpMsg += "\n\nOther Controls:";
-	  mHelpMsg += "\n* Press M to toggle all sounds on and off";
-	  mHelpMsg += "\n* Press K to take a screenshot";
-	  mHelpMsg += "\n* Press U to toggle the interface";
-	  mHelpMsg += "\n* Press F to toggle frame stats";
+	  mHelpMsg = "Gameplay:";
+	  mHelpMsg += "\n The probe you're controlling is equipped with 2 shields: ";
+	  mHelpMsg += "\n one to protect against fiery drones, and another to\n protect against icy drones.";
+	  mHelpMsg += "\n\n You will be warped through zones, and your \nobjective will be reported there.";
+	  mHelpMsg += "\n\nControls:";
+	  mHelpMsg += "\n - Press the space bar to flip shields";
+	  mHelpMsg += "\n - You may use the arrows or A and D buttons to strafe";
+	  mHelpMsg += "\n\nMisc. Controls:";
+	  mHelpMsg += "\n - Press M to toggle all sounds on and off";
+	  mHelpMsg += "\n - Press K to take a screenshot";
+	  mHelpMsg += "\n - Press U to toggle the interface";
+	  mHelpMsg += "\n - Press F to toggle frame stats";
+	  mHelpMsg += "\n - Press - or = to control sound volume";
 	  mHelpMsg += "\n\nIf you think the game is running too slow\ntry adjusting some settings in the\nconfiguration menu.";
-	  mHelpMsg += "\n\n Have fun!";
+	  mHelpMsg += "\n\nMay the force be with you.";
 
     assignHandles();
     
@@ -205,8 +206,13 @@ namespace Pixy {
 	  } else {
 
 		  hideMenu();
-		  _showHUDs();
-		  
+		  if (!Level::getSingleton().isGameOver())
+		    _showHUDs();
+		  else {
+		    // show score
+		    mUISheet->show();
+		    mUIScore->show(); 
+		  }
 	  }
 	  
 	  _currentState = inState;
@@ -324,8 +330,7 @@ namespace Pixy {
             return GameManager::getSingleton().requestShutdown();
           else {
             // we're going back to the game
-            // re-engage in case the user went to the zones screen
-            //Level::getSingleton().currentZone()->engage();
+            // show HUDs unless the game is over
             this->_refit(Level::getSingletonPtr());
             return GameManager::getSingleton().popState();
           }
@@ -523,7 +528,7 @@ namespace Pixy {
     mUISheet->hide();
     
     // return everything to what it was
-    if (Level::getSingleton().running()) {
+    if (Level::getSingleton().running() && !Level::getSingleton().isGameOver()) {
 	    Level::getSingleton()._showEverything();
 	  }
 	  
@@ -544,6 +549,8 @@ namespace Pixy {
     mTrayMgr->showCursor();
 	  _showMainMenu();
 	  
+	  mDialogShade->hide();
+	  mShadeLayer->hide();
 	  mUISheet->show();
 	  mUIScore->hide();
 	  mUIPrepare->hide();
@@ -714,7 +721,7 @@ namespace Pixy {
 	  mTextScoreCaption->setCaption("You have LOST");
 
 	  Sphere *mSphere = Level::getSingleton().getSphere();
-	  double accuracy = (mSphere->getNrHits() / (mSphere->getNrMisses() + mSphere->getNrHits())) * 100;
+	  double accuracy = (mSphere->getNrHits() * 1.0f / (mSphere->getNrMisses() + mSphere->getNrHits()) ) * 100.f;
 	  std::ostringstream msg;
 	  msg << "\n\nScore: " << stringify(mSphere->score())
 	      << "\nAccuracy: " << stringify( accuracy ) << "%"
@@ -726,13 +733,15 @@ namespace Pixy {
     mLog->debugStream() << "sphere misses: " << mSphere->getNrMisses()
     << ", hits " << mSphere->getNrHits()
     << ", accuracy: " << accuracy;
-    
+
+	  mDialogShade->show();
+	  mShadeLayer->show();    
     mUISheet->show();
 	  mUIScore->show();
 	  return true;
 	};
 	
-	
+	// TODO: refactor these two methods into 1 helper
 	bool UIEngine::evtPlayerWon(Event* inEvt) {
 	  mTextScoreCaption->setCaption("Congratulations! You have WON");
 	  
@@ -750,9 +759,12 @@ namespace Pixy {
 	  mLog->debugStream() << "sphere misses: " << mSphere->getNrMisses()
     << ", hits " << mSphere->getNrHits()
     << ", accuracy: " << accuracy;
-    
+
+	  //mDialogShade->show();
+	  //mShadeLayer->show();
 	  mUISheet->show();
 	  mUIScore->show();
+	  _hideHUDs();
 	  
 	  return true;
 	};
@@ -762,6 +774,8 @@ namespace Pixy {
 	  mShadeLayer->hide();
 	  mUIPrepare->hide();
 	  mUIScore->hide();
+	  
+	  
 	  
 	  // if it's dodgy mode, we have to hide one of the shield HUDs since
 	  // the player will be using only one of them
@@ -824,6 +838,7 @@ namespace Pixy {
 	    mHUDIceShield->show();
 	  }
 
+    _showHUDs();
 	  _updateShields();
 	  return true;
 	};
@@ -835,28 +850,51 @@ namespace Pixy {
 	  msg << "Zone Mode: ";
 	  switch (mSelectedZone->getZone()->getSettings().mMode) {
 	    case ARCADE:
-	      msg << "Arcade\n"
-	          << "\nYour objective is to reach the last \nportal with both shields functional."
+	      msg << "Arcade"
+	          << "\nDifficulty: Easy"
+	          << "\n\nObjective:"
+	          << "\n Reach the last portal with both shields functional."
 	          << "\n\nControls:"
-	          << "\nFlip shields by pressing SPACE BAR."
-	          << "\nYou can also move to the left and\nright by pushing A and D.";
+	          << "\n - Flip shields by pressing SPACE BAR."
+	          << "\n - You can move to the left and right"
+	          << "\n   by pushing A and D.";
 	      break;
 	    case DODGY:
-	      msg << "Dodgy\n"
-	          << "\nOnly one of your shields is functional,\nyou MUST dodge one kind of hazards."
+	      msg << "Dodgy"
+	          << "\nDifficulty: Moderate"
+	          << "\n\nObjective:"
+	          << "\n Only one of your shields is functional,"
+	          << "\n you MUST dodge one kind of drones."
 	          << "\n\nControls:"
-	          << "\nYou can move to the left and\nright by pushing A and D.";
+	          << "\n - You can move to the left and right"
+	          << "\n   by pushing A and D.";
 	      break;
 	    case SURVIVAL:
-	      msg << "Survival\n"
-	          << "\nBoth of your shields are active and\n your mission"
-	          << "is to explore as much\nas you can by surviving."
+	      msg << "Survival"
+	          << "\nDifficulty: Moderate"
+	          << "\n\nObjective:"
+	          << "\n Both of your shields are active and"
+	          << "\n your missionis to explore as much"
+	          << "\n as you can by surviving."
 	          << "\n\nControls:"
-	          << "\nFlip shields by pressing SPACE BAR."
-	          << "\nYou can also move to the left and\nright by pushing A and D.";
+	          << "\n - Flip shields by pressing SPACE BAR."
+	          << "\n - You can move to the left and right"
+	          << "\n   by pushing A and D.";
 	      break;
+	    case NERVEBREAK:
+	      msg << "Nervebreak"
+	          << "\nDifficulty: Hard"
+	          << "\n\nObjective:"
+	          << "\n The drones have adapted to your shields,"
+	          << "\n you must hit each drone with the shield"
+	          << "\n opposite to its element."
+	          << "\n\nControls:"
+	          << "\n - Flip shields by pressing SPACE BAR."
+	          << "\n - You can also move as usual."
+	          << "\n\n** WARNING: brain stability might deteriorate **";
 	  }
 	  msg << "\n\nPress ENTER when ready!";
+	  
 	  
 	  
 	  mTextPrepare->setCaption(msg.str());
@@ -865,6 +903,9 @@ namespace Pixy {
     mUISheet->show();
 	  mUIPrepare->show();
 	  //mTextPrepare->show();
+	  
+	  _hideHUDs();
+	  //_updateShields();
 	  
 	  return true;
 	};

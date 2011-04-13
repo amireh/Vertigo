@@ -47,6 +47,12 @@ material SdkTrays/Shade
                 tex_address_mode clamp
 		            texture sdk_shade.png
 		        }
+            texture_unit
+		        {
+                tex_address_mode clamp
+		            texture sdk_shade.png
+		        }
+		        
         }
     }
 }

@@ -513,12 +513,12 @@ namespace Pixy {
     effect->prepare();
     effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("Shatter", effect));
         
-    /*effect = fxMgr->createParticleSystem(
+    effect = fxMgr->createParticleSystem(
       "FxBlackHole",
       "Vertigo/FX/BlackHole", 
       mSceneMgr);
     effect->prepare();
-    effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("BlackHole", effect));*/
+    effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("BlackHole", effect));
 
     effect = fxMgr->createParticleSystem(
       "FxMortar",
@@ -575,9 +575,7 @@ namespace Pixy {
 	    if (effect->isAttached())
 	      effect->getParentSceneNode()->detachObject(effect);
 	    inEntity->getMasterNode()->attachObject(effect);
-	    /*if (inEffect == "BlackHole")
-	      effect->startAndStopFade(1);
-	    else*/
+	    
 	      effect->start();
 	  }
 	};
@@ -591,7 +589,10 @@ namespace Pixy {
 	    
 	    mPortableEffect->setPosition(inPos);
 	    mPortableEffect->attachObject(effect);
-      effect->start();
+	    if (inEffect == "BlackHole")
+	      effect->startAndStopFade(5.0f);
+	    else
+        effect->start();
 	  }	
 	};
 	
@@ -605,8 +606,8 @@ namespace Pixy {
 	  Obstacle* mObs = static_cast<Obstacle*>(inEvt->getAny());
 	  playEffect( (mObs->shield() == FIRE) ? "Explosion" : "Shatter", mSphere); 
 
-    if (mSphere->shield() != mObs->shield())
-	      applyMotionBlur(0.5f);
+    //if (mSphere->shield() != mObs->shield())
+	      
 	  
 	  return true;
 	};
@@ -645,8 +646,15 @@ namespace Pixy {
 	  mUpdate = &GfxEngine::updateNothing;
 	  
 	  Level::getSingleton().getSphere()->getMasterNode()->setVisible(false);
-	  this->playEffect("Despawn", Level::getSingleton().getSphere());
 	  
+	  Vector3 camPos = Level::getSingleton().getSphere()->getMasterNode()->getPosition();
+	  camPos.z += 30;
+	  Vector3 effectPos = Vector3(camPos);
+	  effectPos.z += 50;
+	  
+	  //mCamera->move(camPos);
+	  mCamera->lookAt(effectPos);
+	  this->playEffect("BlackHole", effectPos);
 	  return true;
 	};
 	

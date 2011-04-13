@@ -264,4 +264,26 @@ namespace Pixy {
       
     return true;
 	};
+	
+	void SfxEngine::raiseVolume() {
+	  mSoundMgr->setMasterVolume(mSoundMgr->getMasterVolume() + 0.1f);
+	};
+	
+	void SfxEngine::lowerVolume() {
+	  mSoundMgr->setMasterVolume(mSoundMgr->getMasterVolume() - 0.1f);
+	};
+	
+	void SfxEngine::keyReleased( const OIS::KeyEvent &e ) {
+	  switch (e.key) {
+	    case OIS::KC_MINUS:
+	      lowerVolume();
+	      break;
+	    case OIS::KC_EQUALS:
+	      raiseVolume();
+	      break;
+	    case OIS::KC_M:
+	      toggleAudioState();
+	      break;
+	  }
+	}	
 }

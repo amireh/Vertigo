@@ -108,13 +108,15 @@ Vertigo/UI
   // -- Help Sheet --
   container Panel(UI/Containers/Help)
   {
-    metrics_mode pixels
+    metrics_mode relative
     
-    horz_align center
-    vert_align middle
+    horz_align left
+    vert_align top
   
-    left -160
-    top -240
+    left 0
+    top 0
+    width 1
+    height 1
     
     element TextArea(UI/Text/Help)
     {
@@ -124,15 +126,14 @@ Vertigo/UI
       colour 0.9 0.9 0.9
       colour_bottom 0.7 0.7 0.7
       alignment left
-      char_height 32
-      space_width 24
+      char_height 28
+      space_width 12
       
       horz_align left
       vert_align top
       
-      left -240
-      width 420
-      height 480
+      left 10
+      top 10
       
     }
   } 
@@ -143,10 +144,10 @@ Vertigo/UI
     metrics_mode pixels
     
     horz_align left
-    vert_align middle
+    vert_align top
   
     left 10
-    top -240
+    top 10
     
     element TextArea(UI/Text/Prepare)
     {
@@ -156,15 +157,14 @@ Vertigo/UI
       colour 0.9 0.9 0.9
       colour_bottom 0.7 0.7 0.7
       alignment left
-      char_height 32
-      space_width 24
+      char_height 28
+      space_width 12
       
       horz_align left
       vert_align top
       
       left 0
-      width 420
-      height 480
+      top 0
       
     }
   }  

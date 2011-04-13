@@ -175,6 +175,7 @@ namespace Pixy
 	
 	void Level::keyReleased( const OIS::KeyEvent &e ) {
 		
+		mSfxEngine->keyReleased(e);
 		mUIEngine->keyReleased( e );
 		// start the game when a key is released
 		if (!fGameStarted) {
@@ -196,9 +197,6 @@ namespace Pixy
 		switch (e.key) {
 		  case OIS::KC_P:
 		    GameManager::getSingleton().pushState(StatePause::getSingletonPtr());
-		    break;
-		  case OIS::KC_M:
-		    mSfxEngine->toggleAudioState();
 		    break;
 			case OIS::KC_EQUALS:
 				
@@ -481,6 +479,9 @@ namespace Pixy
   bool Level::evtPlayerWon(Event* inEvt) {
     mUpdater = &Level::updateGameOver;
     fGameOver = true;
+    
+    _hideEverything();
+    
     return true;
   };
  

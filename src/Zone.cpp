@@ -170,7 +170,9 @@ namespace Pixy {
     std::ostringstream msg;
     msg << "-- Settings --\n";
     msg << "Game Mode: " << 
-      ((mSettings.mMode == ARCADE) ? "Arcade" : (mSettings.mMode == SURVIVAL) ? "Survival" : "Dodgy")
+      ((mSettings.mMode == ARCADE) ? "Arcade"
+      : (mSettings.mMode == SURVIVAL) ? "Survival"
+      : (mSettings.mMode == DODGY) ? "Dodgy" : "Nervebreak")
        << "\n";
     msg << "Skybox: " << mSettings.mSkyboxMaterial << "\n";
     msg << "MoveSpeed: " << mSettings.mMoveSpeed << "\n";
@@ -227,6 +229,8 @@ namespace Pixy {
         _mode = SURVIVAL;
       else if (inValue == "Dodgy")
         _mode = DODGY;
+      else if (inValue == "Nervebreak")
+        _mode = NERVEBREAK;
       else {
         mLog->errorStream() << "Invalid game mode " << inValue << ", resetting to Arcade";
         _mode = ARCADE;

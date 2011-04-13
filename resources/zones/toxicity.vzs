@@ -45,6 +45,15 @@
       <Property Name="Segments"       Value="35" />
       <Property Name="SegmentLength"  Value="500" />
     </Tunnel>
-
+    <Tunnel>
+      <Property Name="Material"       Value="Vertigo/Tunnel/Toxicity/1" />
+      <Property Name="Segments"       Value="25" />
+      <Property Name="SegmentLength"  Value="500" />
+    </Tunnel>
+    <Tunnel>
+      <Property Name="Material"       Value="Vertigo/Tunnel/Toxicity/2" />
+      <Property Name="Segments"       Value="15" />
+      <Property Name="SegmentLength"  Value="500" />
+    </Tunnel>
   </Geometry>
 </Zone>

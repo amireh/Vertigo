@@ -25,6 +25,10 @@ namespace Pixy
 		  mMaxSpeed = 0;
       mScore = 0;
       mSpeedStep = 0;
+      mRegenRate = 0;
+      
+      mUpdate = 0;
+      mCollide = 0;
       
 		  mCurrentShield = (rand() % 2 == 0) ? FIRE : ICE;
 		  mShields[FIRE] = 1000;
@@ -254,7 +258,7 @@ namespace Pixy
 		
 		switch (e.key) {
 			case OIS::KC_W:
-				mDirection.z = 20;
+				mDirection.z = 2;
 				//mMaxSpeed += mMoveSpeed;
 				break;
 			case OIS::KC_A:
@@ -387,69 +391,115 @@ namespace Pixy
 	
 	SHIELD Sphere::shield() { return mCurrentShield; };
 
-	
+	bool Sphere::collideNervebreak(Event* inEvt) {
+	  Obstacle* mObs = static_cast<Obstacle*>(inEvt->getAny());
+	  
+    // hit our shields and calculate our new score
+    if (mCurrentShield != mObs->shield()) {
+      if (mShields[mCurrentShield] < 1000)
+        mShields[mCurrentShield] += mRegenRate;
+      
+      mPhyxBody->activate(true);
+      mPhyxBody->clearForces();
+      
+      mScore += mPhyxBody->getLinearVelocity().length() / 3;
+      
+      // speed the player up a bit
+      //float step = mMoveSpeed / 2;
+      setMaxSpeed(mMaxSpeed+mSpeedStep);
+      
+      // if we hit both pairs of a duette, then it's a miss and not an actual hit
+      if (!(mObs->getClass() == DUETTE && mObs->getDuetteTwin()->dead()))
+        ++mNrHits;
+      
+        
+    } else {
+      // deteriorate the shield
+      mShields[mCurrentShield] -= 100;
+      // slow the player down
+      setMaxSpeed(mMaxSpeed-mSpeedStep);
+      
+      mScore -= mPhyxBody->getLinearVelocity().length() / 2;
+      
+      if (fHasSfx) {
+        // play beep sound
+        mSfxBeep->stop();
+        mSfxBeep->play(true);
+      }
+      
+      ++mNrMisses;
+      GfxEngine::getSingletonPtr()->applyMotionBlur(0.5f);
+    }	  
+	}
+	bool Sphere::collideCommon(Event* inEvt) {
+	  
+	  Obstacle* mObs = static_cast<Obstacle*>(inEvt->getAny());
+	  
+    // hit our shields and calculate our new score
+    if (mCurrentShield == mObs->shield()) {
+      if (mShields[mCurrentShield] < 1000)
+        mShields[mCurrentShield] += mRegenRate;
+      
+      mPhyxBody->activate(true);
+      mPhyxBody->clearForces();
+      
+      mScore += mPhyxBody->getLinearVelocity().length() / 3;
+      
+      // speed the player up a bit
+      //float step = mMoveSpeed / 2;
+      setMaxSpeed(mMaxSpeed+mSpeedStep);
+      
+      // if we hit both pairs of a duette, then it's a miss and not an actual hit
+      if (!(mObs->getClass() == DUETTE && mObs->getDuetteTwin()->dead()))
+        ++mNrHits;
+      
+        
+    } else {
+      // deteriorate the shield
+      mShields[mCurrentShield] -= 100;
+      // slow the player down
+      setMaxSpeed(mMaxSpeed-mSpeedStep);
+      
+      mScore -= mPhyxBody->getLinearVelocity().length() / 2;
+      
+      if (fHasSfx) {
+        // play beep sound
+        mSfxBeep->stop();
+        mSfxBeep->play(true);
+      }
+      
+      ++mNrMisses;
+      
+      GfxEngine::getSingletonPtr()->applyMotionBlur(0.5f);
+    }
+    
+	  
+	};
 	bool Sphere::evtObstacleCollided(Event* inEvt) {
+	  
 	  //mLog->debugStream() << "collided with object at " << getPosition().z;
 	  if (fPortalSighted)
 	    return true;
 	  
-	  Obstacle* mObs = static_cast<Obstacle*>(inEvt->getAny());
-	  
-	    // hit our shields and calculate our new score
-	    if (mCurrentShield == mObs->shield()) {
-	      if (mShields[mCurrentShield] < 1000)
-	        mShields[mCurrentShield] += 1;
-	      
-        mPhyxBody->activate(true);
-        mPhyxBody->clearForces();
-        
-        mScore += mPhyxBody->getLinearVelocity().length() / 3;
-        
-        // speed the player up a bit
-        //float step = mMoveSpeed / 2;
-        setMaxSpeed(mMaxSpeed+mSpeedStep);
-	      
-	      // if we hit both pairs of a duette, then it's a miss and not an actual hit
-        if (!(mObs->getClass() == DUETTE && mObs->getDuetteTwin()->dead()))
-	        ++mNrHits;
-	      
-	        
-	    } else {
-	      // deteriorate the shield
-	      mShields[mCurrentShield] -= 100;
-	      // slow the player down
-        setMaxSpeed(mMaxSpeed-mSpeedStep);
-        
-        mScore -= mPhyxBody->getLinearVelocity().length() / 2;
-	      
-	      if (fHasSfx) {
-	        // play beep sound
-	        mSfxBeep->stop();
-	        mSfxBeep->play(true);
-	      }
-	      
-	      ++mNrMisses;
-	    }
-	    
-	    if (fHasSfx && mShields[mCurrentShield] < 300 && !mSfxWarning->isPlaying()) {
-	      mSfxWarning->loop(true);
-	      mSfxWarning->play(true);
-	    } else {
-	      //if (mSfxWarning->isPlaying())
-	      //  mSfxWarning->startFade(false, 1);
-	    }
-	    if (mScore <= 0)
-	      mScore = 0;
-	    
-	    UIEngine::getSingletonPtr()->_updateShields();
-	    
-	    if (mShields[mCurrentShield] <= 0) {
-	      Event* mEvt = EventManager::getSingletonPtr()->createEvt("SphereDied");
-	      EventManager::getSingletonPtr()->hook(mEvt);
-	      mEvt = NULL;
-	      die();
-	      mLog->debugStream() << "oops! i'm dead";
-	    };
+	  (this->*mCollide)(inEvt);
+
+    if (fHasSfx && mShields[mCurrentShield] < 300 && !mSfxWarning->isPlaying()) {
+      mSfxWarning->loop(true);
+      mSfxWarning->play(true);
+    }
+    
+    if (mScore <= 0)
+      mScore = 0;
+    
+    UIEngine::getSingletonPtr()->_updateShields();
+    
+    if (mShields[mCurrentShield] <= 0) {
+      Event* mEvt = EventManager::getSingletonPtr()->createEvt("SphereDied");
+      EventManager::getSingletonPtr()->hook(mEvt);
+      mEvt = NULL;
+      die();
+      mLog->debugStream() << "oops! i'm dead";
+    };
 	  
 	  return true;
 	};
@@ -484,9 +534,11 @@ namespace Pixy
     
     mDirection = Vector3(0, -1, 1);
     if (Level::getSingleton().currentZone()->getSettings().fResetVelocity) {
-      mPhyxBody->activate(true);
-      mPhyxBody->clearForces();
-      mPhyxBody->setLinearVelocity(btVector3(0,0,0));
+      PhyxEngine::getSingletonPtr()->detachFromWorld(this);
+      PhyxEngine::getSingletonPtr()->attachToWorld(this);
+      //mPhyxBody->activate(true);
+      //mPhyxBody->clearForces();
+      //mPhyxBody->setLinearVelocity(btVector3(0,0,0));
     }
     
     mTunnelLength = tZone->currentTunnel()->_getLength();
@@ -548,7 +600,7 @@ namespace Pixy
 	
 	bool Sphere::evtZoneEntered(Event* inEvt) {
 	  mUpdate = &Sphere::updatePreparation;
-	  
+	    
 	  reset();
 	  
 	  return true;
@@ -558,23 +610,27 @@ namespace Pixy
     mNrMisses = 0;
     mNrHits = 0;
     
-	  if (fDead) {
-	    // TODO: make live() reset exactly what die() does
+	  if (fDead)
 	    live();
-	    //fDead = false;
-	    //GfxEngine::getSingletonPtr()->attachToScene(this);
-	    //PhyxEngine::getSingletonPtr()->attachToWorld(this);
-	    //mMasterNode->setVisible(true);
-	  }
-	  
+
 	  mCurrentShield = (rand() % 2 == 0) ? FIRE : ICE;
 	  render();
 	  
+	  // default stuff across game modes
 	  mShields[FIRE] = 1000;
-	  mShields[ICE] = 1000;
-	  if (Level::getSingleton().currentZone()->getSettings().mMode == DODGY) {
-		    mShields[mCurrentShield] = 2000;
-		    mShields[(mCurrentShield == FIRE) ? ICE : FIRE] = 0;
+	  mShields[ICE] = 1000;	  
+	  mCollide = &Sphere::collideCommon;
+	  mRegenRate = 1;
+	  
+	  // set game mode specific stuff
+	  GAMEMODE tMode = Level::getSingleton().currentZone()->getSettings().mMode;
+	  if (tMode == DODGY) {
+	    mShields[mCurrentShield] = 2000;
+	    mShields[(mCurrentShield == FIRE) ? ICE : FIRE] = 0;
+	  } else if (tMode == SURVIVAL) {
+	    mRegenRate = 10;
+	  } else if (tMode == NERVEBREAK) {
+	    mCollide = &Sphere::collideNervebreak;
 	  }
 	  
 	  fPortalSighted = false;

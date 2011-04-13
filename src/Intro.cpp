@@ -88,7 +88,8 @@ namespace Pixy
 	void Intro::keyReleased( const OIS::KeyEvent &e ) {
 		
 		mUIEngine->keyReleased( e );
-
+    mSfxEngine->keyReleased(e);
+    
 		/*if (e.key == OIS::KC_Q) {
 		  return this->requestShutdown();
 		} else if (e.key == OIS::KC_ESCAPE) {

@@ -448,12 +448,12 @@ material Vertigo/Tunnel/Hysteria/0
 
 			texture_unit
 			{
-				texture domino.jpg
+				texture Hysteria0.jpg
 			}
 
 			texture_unit
 			{
-				texture domino.jpg
+				texture Hysteria0.jpg
 			}
 		}
 		
@@ -474,13 +474,13 @@ material Vertigo/Tunnel/Hysteria/1
 
 			texture_unit
 			{
-				texture domino.jpg
+				texture Hysteria0.jpg
 				scroll_anim 0.1 0
 			}
 
 			texture_unit
 			{
-				texture domino.jpg
+				texture Hysteria0.jpg
 				wave_xform scroll_y sine 0 1 0 0.1
 			}
 		}
@@ -501,13 +501,13 @@ material Vertigo/Tunnel/Hysteria/2
 
 			texture_unit
 			{
-				texture domino.jpg
+				texture Hysteria0.jpg
 				scroll_anim 0.1 0
 			}
 
 			texture_unit
 			{
-				texture domino.jpg
+				texture Hysteria0.jpg
 				wave_xform scroll_x sine 0 0.5 0 0.1
 			}
 		}
@@ -529,13 +529,13 @@ material Vertigo/Tunnel/Hysteria/3
 
 			texture_unit
 			{
-				texture domino.jpg
+				texture Hysteria0.jpg
 				scroll_anim -0.1 0
 			}
 
 			texture_unit
 			{
-				texture domino.jpg
+				texture Hysteria0.jpg
 				wave_xform scroll_x sine 0 1 0 0.1
 			}
 		}
@@ -558,13 +558,13 @@ material Vertigo/Tunnel/Hysteria/4
       
 			texture_unit
 			{
-				texture domino.jpg
+				texture Hysteria0.jpg
 				rotate_anim 0.1
 			}
 
 			texture_unit
 			{
-				texture domino.jpg
+				texture Hysteria0.jpg
 				wave_xform scroll_x sine 0 1 0 0.1
 			}
 		}
@@ -579,16 +579,90 @@ material Vertigo/Tunnel/Hysteria/4
 
 			texture_unit
 			{
-				texture domino.jpg
+				texture Hysteria0.jpg
 				scroll_anim 0.1 0
 				//rotate_anim 0.1
 			}
 
 			texture_unit
 			{
-				texture domino.jpg
+				texture Hysteria0.jpg
 				wave_xform scroll_x sine 0 1 0 0.1
 			}
 		}		
+	}
+}
+
+
+// ---- Galactic Tundra ----
+material Vertigo/Tunnel/Tundra/0
+{
+	technique
+	{
+		pass
+		{
+			ambient 1 1 1
+			cull_software none
+			cull_hardware none
+			scene_blend add
+
+			texture_unit
+			{
+				texture Tundra0.jpg
+				scroll_anim 0 0.1
+				// wave_xform <xform_type> <wave_type> <base> <frequency> <phase> <amplitude>
+				wave_xform scroll_x sine 1 0.1 0 2 
+			}
+
+		}
+	
+	}
+}
+
+material Vertigo/Tunnel/Tundra/1
+{
+	technique
+	{
+
+		pass
+		{
+			ambient 1 1 1
+			cull_software none
+			cull_hardware none
+			scene_blend add
+
+			texture_unit
+			{
+				texture Tundra1.jpg
+				scroll_anim 0.2 0
+			}
+			texture_unit
+			{
+				texture Tundra1.jpg
+				scroll_anim 0.2 0
+			}
+		}
+	}
+}
+
+material Vertigo/Tunnel/Tundra/2
+{
+	technique
+	{
+
+		pass
+		{
+			ambient 1 1 1
+			cull_software none
+			cull_hardware none
+			//scene_blend add
+
+			texture_unit
+			{
+				texture Tundra2.jpg
+				scroll_anim -0.2 0
+			}
+			
+		}
 	}
 }

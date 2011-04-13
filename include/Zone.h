@@ -22,7 +22,8 @@ namespace Pixy {
   typedef enum {
     ARCADE,
     SURVIVAL,
-    DODGY
+    DODGY,
+    NERVEBREAK
   } GAMEMODE;
   
   struct ZoneSettings {
