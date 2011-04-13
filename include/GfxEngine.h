@@ -120,6 +120,8 @@ namespace Pixy {
 	  void updateGame(unsigned long lTimeElapsed);
 	  void updateNothing(unsigned long lTimeElapsed);
 	  
+	  bool evtGameShown(Event* inEvt);
+	  bool evtMenuShown(Event* inEvt);
 	  bool evtZoneEntered(Event* inEvt);
 	  bool evtGameStarted(Event* inEvt);
 	  bool evtPlayerWon(Event* inEvt);

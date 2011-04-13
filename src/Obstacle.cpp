@@ -90,7 +90,7 @@ namespace Pixy
     //}
     
     // create sound effects
-    if (fHasSfx) {
+    //if (fHasSfx) {
       //if (!fSfxCreated) {
         OgreOggSound::OgreOggSoundManager *mSoundMgr;
         mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
@@ -113,7 +113,7 @@ namespace Pixy
       else
         mSfx = &mSfxShatter;
 
-    }    
+    //}    
 	  //render();
 	 
 	  btTransform trans = btTransform(btQuaternion(0,0,0,1), btVector3(0,0,0));
@@ -150,7 +150,7 @@ namespace Pixy
 		delete mPhyxBody->getMotionState();
     delete mPhyxBody;
     
-    if (fHasSfx && fSfxCreated) {
+    //if (fHasSfx && fSfxCreated) {
       OgreOggSound::OgreOggSoundManager *mSoundMgr;
         mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
       
@@ -160,7 +160,7 @@ namespace Pixy
       mSoundMgr = 0;
       mSfxExplosion = 0;
       mSfxShatter = 0;
-    }
+    //}
     
 	  //if (fHasFx) {
       ParticleUniverse::ParticleSystemManager* fxMgr = 

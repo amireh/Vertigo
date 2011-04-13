@@ -52,6 +52,16 @@ namespace Pixy {
 	      mUIZones.pop_back();
 	    }
 	    
+      OgreOggSound::OgreOggSoundManager *mSoundMgr;
+        mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
+      
+      mSoundMgr->destroySound(mSfxButtonHit);
+      mSoundMgr->destroySound(mSfxButtonOver);
+      
+      mSoundMgr = 0;
+      mSfxButtonHit = 0;
+      mSfxButtonOver = 0;
+      	    
 	    //mUIZones.clear();
 	    
 			delete mLog; 
@@ -124,6 +134,21 @@ namespace Pixy {
     
     refitOverlays();
     
+    // set up sounds
+    mLog->debugStream() << "creating sound effects";
+    
+    OgreOggSound::OgreOggSoundManager *mSoundMgr;
+      mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
+    mSfxButtonHit = mSoundMgr->createSound("UIButtonHit", "button_hit.wav", false, false, true);
+    mSfxButtonOver = mSoundMgr->createSound("UIButtonOver", "button_over.wav", false, false, true);
+
+    mSfxButtonHit->disable3D(true);
+    mSfxButtonHit->setVolume(1);
+    
+    mSfxButtonOver->disable3D(true);
+    mSfxButtonOver->setVolume(1);
+    
+
     mLog->debugStream() << "binding handlers";
     
     bindToName("ZoneEntered", this, &UIEngine::evtZoneEntered);
@@ -135,7 +160,7 @@ namespace Pixy {
     inMainMenu = false;
     fConfiguring = false;
     fShowingHelp = false;
-        
+    
     mLog->debugStream() << "set up!";
 		fSetup = true;
 		
@@ -146,36 +171,42 @@ namespace Pixy {
 	
 	bool UIEngine::loadZones() { 
 		
-		UIZone* mUIZone = new UIZone();
-		mUIZone->getInfo()["Title"] = "Inferno";
-		mUIZone->getInfo()["Path"] = "inferno.vzs";
-		mUIZone->getInfo()["Description"] = "Difficulty: Rookie\nFoo: bar.";
-		mUIZone->setZone(new Zone(mUIZone->getInfo()["Path"]));
-		mUIZones.push_back(mUIZone);
+		Ogre::ResourceGroupManager& mRGM = Ogre::ResourceGroupManager::getSingleton();
+		Ogre::StringVectorPtr tZones = mRGM.findResourceNames("General", "*.vzs", false);
+		//while (!itrZones.isNull()) {
+		for (Ogre::StringVector::iterator itrZones = tZones->begin(); 
+		     itrZones != tZones->end(); 
+		     ++itrZones)
+		{
+		  // skip this we don't want to parse it
+		  if (*itrZones == "example.vzs")
+		    continue;
+		    
+		  mLog->debugStream() << "found a zone named " << (*itrZones);
+		  
+		  UIZone* mUIZone = new UIZone();
+		  mUIZone->getInfo()["Path"] = *itrZones;
+		  mUIZone->setZone(new Zone(mUIZone->getInfo()["Path"]));
+		  mUIZones.push_back(mUIZone);
+		}
 		
-		mUIZone = new UIZone();
-		mUIZone->getInfo()["Title"] = "Twilight Meadow";
+		/*mUIZone = new UIZone();
 		mUIZone->getInfo()["Path"] = "twilight_meadow.vzs";
-		mUIZone->getInfo()["Description"] = "Difficulty: Rookie\nFoo: bar.";
 		mUIZone->setZone(new Zone(mUIZone->getInfo()["Path"]));
 		mUIZones.push_back(mUIZone);
 		
 		mUIZone = new UIZone();
-		mUIZone->getInfo()["Title"] = "Toxicity";
 		mUIZone->getInfo()["Path"] = "toxicity.vzs";
-		mUIZone->getInfo()["Description"] = "Difficulty: Rookie\nFoo: bar.";
 		mUIZone->setZone(new Zone(mUIZone->getInfo()["Path"]));
 		mUIZones.push_back(mUIZone);
 
     //for (int i =0; i < 6; ++i) {
 		mUIZone = new UIZone();
-		mUIZone->getInfo()["Title"] = "Dante's Afterlife";
 		mUIZone->getInfo()["Path"] = "dante_afterlife.vzs";
-		mUIZone->getInfo()["Description"] = "Difficulty: Rookie\nFoo: bar.";
 		mUIZone->setZone(new Zone(mUIZone->getInfo()["Path"]));
 		mUIZones.push_back(mUIZone);
 		//}
-		
+		*/
 		return true;
 	}
 	
@@ -267,7 +298,7 @@ namespace Pixy {
           if (mTrayMgr->areFrameStatsVisible())
             mTrayMgr->hideFrameStats();
           else
-            mTrayMgr->showFrameStats(TL_TOPLEFT);
+            mTrayMgr->showFrameStats(TL_TOPRIGHT);
           break;      
       }
       return;
@@ -347,7 +378,7 @@ namespace Pixy {
         if (mTrayMgr->areFrameStatsVisible())
           mTrayMgr->hideFrameStats();
         else
-          mTrayMgr->showFrameStats(TL_TOPLEFT);
+          mTrayMgr->showFrameStats(TL_TOPRIGHT);
         break;
     };
     
@@ -370,7 +401,7 @@ namespace Pixy {
 		//mTrayMgr->showLogo(TL_BOTTOM);
 		//mTrayMgr->createSeparator(TL_BOTTOM, "LogoSep");
 		mTrayMgr->createButton(TL_BOTTOM, "PlayResume", Level::getSingleton().running() ? "Resume" : "Play", button_width);
-		mTrayMgr->createButton(TL_BOTTOM, "Configure", "Configure", button_width);
+		mTrayMgr->createButton(TL_BOTTOM, "Configure", "Settings", button_width);
 		mTrayMgr->createButton(TL_BOTTOM, "Help", "Help", button_width);
 		mTrayMgr->createButton(TL_BOTTOM, "Quit", "Quit", button_width);
 		
@@ -378,8 +409,8 @@ namespace Pixy {
 		mTextBoxZoneInfo = mTrayMgr->createTextBox(TL_NONE, "ZoneInfo", "Zone Information", 450, 400);
 		mTrayMgr->createButton(TL_NONE, "Engage", "Engage", button_width);
 		mTrayMgr->createLabel(TL_NONE, "ChooseZoneLabel", "Choose a Zone", mViewport->getActualWidth()/2);
-		mTrayMgr->createButton(TL_NONE, "NextZone", ">");
-		mTrayMgr->createButton(TL_NONE, "PrevZone", "<");
+		mTrayMgr->createButton(TL_NONE, "NextZone", "next");
+		mTrayMgr->createButton(TL_NONE, "PrevZone", "previous");
 		mTrayMgr->createButton(TL_NONE, "BackFromZones", "Go Back", button_width);
 		mTextBoxZoneInfo->hide();
 
@@ -392,7 +423,7 @@ namespace Pixy {
 		mFxMenu = mTrayMgr->createLongSelectMenu(TL_NONE, "ConfigFxMenu", "Visual Effects", 340, 140, 3);
 		mFxMenu->addItem("Full");
 		mFxMenu->addItem("Medium");
-		mFxMenu->addItem("None");
+		mFxMenu->addItem("Low");
 		mFxMenu->selectItem(GameManager::getSingleton().getSettings()["Visual Detail"]);
 		
 		mMusicMenu = mTrayMgr->createLongSelectMenu(TL_NONE, "ConfigMusicMenu", "Music", 340, 140, 2);
@@ -425,6 +456,13 @@ namespace Pixy {
 	};
 		
   void UIEngine::buttonHit(Button* b) {
+    if (GameManager::getSingleton().getSettings()["Sound Enabled"] == "Yes") {
+      if (mSfxButtonHit->isPlaying())
+        mSfxButtonHit->stop();
+      
+      mSfxButtonHit->play(true);      
+    }
+      
 		if (b->getName() == "Configure")   // enter configuration screen
 		{
 		  evtClickConfigure();
@@ -454,6 +492,16 @@ namespace Pixy {
 		  else if (b->getName() == "NextZone")
 		  _nextZone();
   };
+  
+  void UIEngine::buttonOver(Button* b) {
+    if (GameManager::getSingleton().getSettings()["Sound Enabled"] != "Yes")
+      return;
+      
+    if (mSfxButtonOver->isPlaying())
+      mSfxButtonOver->stop();
+    
+    mSfxButtonOver->startFade(true, 0.2f);
+  }
   
   void UIEngine::itemSelected(SelectMenu* menu) {
     if (menu == mRendererMenu)    // renderer selected, so update all settings
@@ -526,16 +574,21 @@ namespace Pixy {
     if (Level::getSingleton().running()) {
 	    Level::getSingleton()._showEverything();
 	  }
+	  
+	  EventManager::getSingleton().hook(EventManager::getSingleton().createEvt("GameShown"));
+	  
 	  /*GfxEngine::getSingletonPtr()->getViewport()->setAutoUpdated(true);
 	  GfxEngine::getSingletonPtr()->getViewport()->clear();*/	  
 	};
 	
 	void UIEngine::showMenu() {
-	  if (Level::getSingleton().running()) {
+    
+    EventManager::getSingleton().hook(EventManager::getSingleton().createEvt("MenuShown"));
+    
+    if (Level::getSingleton().running()) {
 	    Level::getSingleton()._hideEverything();
 	  }
-    
-    
+	  
     mTrayMgr->showCursor();
 	  //mTrayMgr->showLogo(TL_BOTTOM);
 	  //mTrayMgr->moveWidgetToTray("LogoSep", TL_BOTTOM);
@@ -616,10 +669,11 @@ namespace Pixy {
 		float aspect_ratio = width / height;
 		
 		//if (_currentState->getId() == STATE_INTRO) {
+		//((Ogre::OverlayContainer*)mTrayMgr->getWidget("ChooseZoneLabel")->getOverlayElement())->setHorizontalAlignment(Ogre::GHA_CENTER);
 		  Ogre::TextAreaOverlayElement* label = static_cast<Ogre::TextAreaOverlayElement*>(((Ogre::OverlayContainer*)mTrayMgr->getWidget("ChooseZoneLabel")->getOverlayElement())->getChild("ChooseZoneLabel/LabelCaption")); 
 		  label->setCharHeight(mViewport->getActualHeight() / 12);
-		  label->setHorizontalAlignment(Ogre::GHA_LEFT);
-		  label->setAlignment(Ogre::TextAreaOverlayElement::Left);
+		  label->setHorizontalAlignment(Ogre::GHA_CENTER);
+		  label->setAlignment(Ogre::TextAreaOverlayElement::Center);
 		
 		  // resize the logo to span a 1/2 of the viewport's height, since it's a regular
 		  // rectangle, then we use the same dimension for both width and height
@@ -692,24 +746,28 @@ namespace Pixy {
       OverlayElement* mElement = (mSphere->shield() == FIRE) 
         ? mFireShield
         : mIceShield;
-        
+      
+      float step = mElement->getWidth();
       mElement->setWidth(mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
+      step -= mElement->getWidth();
       
-      if (mElement->getHorizontalAlignment() == Ogre::GHA_RIGHT)
-        mElement->setLeft(-1 * mElement->getWidth());
+      //if (mElement->getHorizontalAlignment() == Ogre::GHA_RIGHT)
+      //if (mElement == mIceShield) {
+      //  mElement->setLeft(mElement->getLeft() - step);
+     // }
     } else {
-    for (int i=0; i < 2; ++i) {
-      SHIELD tShield = (i == 0) ? FIRE : ICE;
-      
-      OverlayElement* mElement = (tShield == FIRE) 
-        ? mFireShield
-        : mIceShield;
-      
-      mElement->setWidth(mShieldBarWidth * (mSphere->getShieldState(tShield) / 1000.0f));
-      
-      if (mElement->getHorizontalAlignment() == Ogre::GHA_RIGHT)
-        mElement->setLeft(-1 * mElement->getWidth());
-    }
+      for (int i=0; i < 2; ++i) {
+        SHIELD tShield = (i == 0) ? FIRE : ICE;
+        
+        OverlayElement* mElement = (tShield == FIRE) 
+          ? mFireShield
+          : mIceShield;
+        
+        mElement->setWidth(mShieldBarWidth * (mSphere->getShieldState(tShield) / 1000.0f));
+        
+        if (mElement->getHorizontalAlignment() == Ogre::GHA_RIGHT)
+          mElement->setLeft(-1 * mElement->getWidth());
+      }
     }
     // update the player's score
     mUIScore->setCaption(stringify(mSphere->score()));
@@ -747,6 +805,11 @@ namespace Pixy {
 	  // if it's dodgy mode, we have to hide one of the shield HUDs since
 	  // the player will be using only one of them
 	  Sphere* mSphere = Level::getSingleton().getSphere();
+	  Ogre::Viewport* mViewport = mWindow->getViewport(0);
+
+    mUISheet->getChild("UI/FireShieldContainer")->setWidth(mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
+    mUISheet->getChild("UI/IceShieldContainer")->setWidth(mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
+    	  
 	  if (Level::getSingleton().currentZone()->getSettings().mMode == DODGY) {
 	    
 	    if (mSphere->shield() == FIRE) {
@@ -759,6 +822,10 @@ namespace Pixy {
 	      mFireShield->show();
 	      mUISheet->getChild("UI/FireShieldContainer")->show();
 	      
+	      float pos = (mViewport->getActualWidth() - mUISheet->getChild("UI/FireShieldContainer")->getWidth()) / 2;
+        mUISheet->getChild("UI/FireShieldContainer")->setLeft(pos);
+        mFireShield->setLeft(0);
+        
 	      // and center them both
 	      //mFireShield->setHorizontalAlignment(Ogre::GHA_CENTER);
 	      //mUISheet->getChild("UI/FireShieldContainer")->setHorizontalAlignment(Ogre::GHA_CENTER);
@@ -770,20 +837,29 @@ namespace Pixy {
 	      
 	      mIceShield->show();
 	      mUISheet->getChild("UI/IceShieldContainer")->show();
+	      
+	      // and set the ice ones into their new positions
+	      float pos = (mViewport->getActualWidth() - mUISheet->getChild("UI/IceShieldContainer")->getWidth()) / 2;
+	      pos *= -1;
+	      pos -= mUISheet->getChild("UI/IceShieldContainer")->getWidth();
+        mUISheet->getChild("UI/IceShieldContainer")->setLeft(pos);
+        mIceShield->setLeft(-1 * mUISheet->getChild("UI/IceShieldContainer")->getWidth());
 	    }
 	  } else {
+	    // reset positions of the shields
+	    mUISheet->getChild("UI/FireShieldContainer")->setLeft(0);
+	    mFireShield->setLeft(0);
+	    
+	    mUISheet->getChild("UI/IceShieldContainer")->setLeft(-1 * mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
+	    mIceShield->setLeft(-1 * mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
+	    
 	    mUISheet->getChild("UI/FireShieldContainer")->show();
 	    mUISheet->getChild("UI/IceShieldContainer")->show();
 	    
 	    mIceShield->show();
 	    mFireShield->show();
 	  }
-	  
-    mUISheet->getChild("UI/FireShieldContainer")->setWidth(mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
-    mUISheet->getChild("UI/FireShieldContainer")->setWidth(mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
-    mUISheet->getChild("UI/IceShieldContainer")->setWidth(mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
-	  mUISheet->getChild("UI/IceShieldContainer")->setLeft(-1 * mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
-	  
+
 	  _updateShields();
 	  return true;
 	};
@@ -1023,16 +1099,18 @@ namespace Pixy {
   void UIEngine::_showZones() {
 		//mUILogo->hide();
 		
+		GfxEngine::getSingletonPtr()->getCamera()->setPosition(Vector3(0,75, -300));
+	  GfxEngine::getSingletonPtr()->getCamera()->lookAt(Vector3(0,75, 100));
+		  
 		if (Level::getSingleton().running()) {
-		  Level::getSingleton().getTunnel()->getNode()->setVisible(false);
-		  GfxEngine::getSingletonPtr()->getCamera()->setPosition(Vector3(0,75, -300));
-		  GfxEngine::getSingletonPtr()->getCamera()->lookAt(Vector3(0,75, 100));
+		  //Level::getSingleton().getTunnel()->getNode()->setVisible(false);
+		  
 		}
 		mTrayMgr->moveWidgetToTray("Engage", TL_BOTTOM);
 		mTrayMgr->moveWidgetToTray("BackFromZones", TL_BOTTOM);
 		mTrayMgr->moveWidgetToTray("PrevZone", TL_LEFT);
 		mTrayMgr->moveWidgetToTray("NextZone", TL_RIGHT);
-		mTrayMgr->moveWidgetToTray("ChooseZoneLabel", TL_TOPLEFT);
+		mTrayMgr->moveWidgetToTray("ChooseZoneLabel", TL_TOP);
     //mTrayMgr->moveWidgetToTray("ZoneInfo", TL_LEFT);
     //mTextBoxZoneInfo->show();		
 
@@ -1074,7 +1152,7 @@ namespace Pixy {
     //mSelectedZone->getZone()->engage();
     GfxEngine::getSingletonPtr()->getSM()->getRootSceneNode()->addChild(mSelectedZone->getZone()->firstTunnel()->getNode());
     //mTextBoxZoneInfo->setText(mSelectedZone->getInfo()["Description"]);
-    static_cast<OgreBites::Label*>(mTrayMgr->getWidget("ChooseZoneLabel"))->setCaption(mSelectedZone->getInfo()["Title"]);
+    static_cast<OgreBites::Label*>(mTrayMgr->getWidget("ChooseZoneLabel"))->setCaption(mSelectedZone->getZone()->name());
   };
   // navigate to the previous zone in the list, and preview it
   void UIEngine::_prevZone() {
@@ -1100,10 +1178,10 @@ namespace Pixy {
   };
   // hide zones screen
   void UIEngine::_hideZones() {
-  
-    if (Level::getSingleton().running()) {
+    
+    /*if (Level::getSingleton().running()) {
 		  Level::getSingleton().getTunnel()->getNode()->setVisible(true);
-		}
+		}*/
 
 		mTrayMgr->removeWidgetFromTray("ChooseZoneLabel");
 		mTrayMgr->removeWidgetFromTray("Engage");

@@ -64,9 +64,9 @@ Vertigo/UI
       width 120
       height 40
       horz_align center
-      vert_align bottom
+      vert_align top
       left -60
-      top -40
+      top 0
       
       element TextArea(UI/Timer)
       {
@@ -76,7 +76,7 @@ Vertigo/UI
         colour 1 1 1
         colour_bottom 0.5 0.5 0.5
         alignment center
-        char_height 24
+        char_height 64
         space_width 4
         
         

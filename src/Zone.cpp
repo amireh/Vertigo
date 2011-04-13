@@ -289,6 +289,11 @@ namespace Pixy {
         mSettings.mDominantObstacleClass = SPINNER;
     }
     
+    // if there was a dominant class, add more instances of it to our queue thus
+    // increasing the chance of it spawning
+    if (fDominant)
+      for (int i=0; i<2;++i)
+        mSettings.mRegisteredObstacleClasses.push_back(mSettings.mDominantObstacleClass);
   }
   
   bool Zone::load() {

@@ -49,13 +49,13 @@ namespace Pixy {
     fPortalSighted = false;
     fPortalReached = false;
     
-    mLog->debugStream() << "created";
+    //mLog->debugStream() << "created";
     
     generateSegments();
     generatePortals();
     
     // prepare sound effect
-    if (fHasSfx && !mSfxPortal) {
+    if (!mSfxPortal) {
       OgreOggSound::OgreOggSoundManager *mSoundMgr;
       mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
       mSfxPortal = mSoundMgr->createSound("Teleport", "teleport.wav", false, false, true) ;
@@ -214,17 +214,19 @@ namespace Pixy {
     fPortalReached = false;
     fPortalSighted = false;
     
+    fHasSfx = GameManager::getSingleton().currentState()->areSfxEnabled();
+    
     // attach portal particle system only if the player is actually playing
     // NOT in zone screen (hence we're not checking for GameState.running() )
     if (GameManager::getSingleton().currentState()->getId() == STATE_GAME) {
     //if (Level::getSingleton().running()) {
-      if (fHasFx) {
+      //if (fHasFx) {
         if (mPortalEffect->isAttached())
           mPortalEffect->getParentSceneNode()->detachObject(mPortalEffect);
         mEntrance->attachObject(mPortalEffect);
         //mPortalEffect->startAndStopFade(0.2f);
         mPortalEffect->start();
-      }
+      //}
       
       // and the teleporting sound effect
       if (fHasSfx) {
@@ -258,6 +260,7 @@ namespace Pixy {
     
     unbind("PortalEntered", this);
     unbind("PortalReached", this);
+    unbind("SettingsChanged", this);
     
     fPassedEntrance = false;
     fPortalReached = false;
@@ -330,7 +333,8 @@ namespace Pixy {
     mExit->attachObject(mPortalEffect);
     mPortalEffect->start();
     
-    mSfxPortal->play(true);
+    if (fHasSfx)
+      mSfxPortal->play(true);
     
     return true;
 	};
@@ -348,9 +352,10 @@ namespace Pixy {
 	Real& Tunnel::_getSegmentLength() { return mSegmentLength; };
 	
 	bool Tunnel::evtSettingsChanged(Event* inEvt) {
+	  mLog->debugStream() << "parsing new settings";
     fHasSfx = GameManager::getSingleton().currentState()->areSfxEnabled();
     //fHasFx = GameManager::getSingleton().currentState()->areFxEnabled();
-    
+
     return true;	
 	}; 
 };

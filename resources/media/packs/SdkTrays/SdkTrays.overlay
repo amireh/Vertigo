@@ -37,12 +37,14 @@ template container BorderPanel(SdkTrays/Button)
 	material SdkTrays/Button/Up
 	horz_align center
 	height 64
-	uv_coords 0.145 0.000 0.855 1.000
+	uv_coords 0 0 1 1
 	
 	border_material SdkTrays/Button/Up
-	border_size 32 32 0 0
-	border_left_uv  0.000 0.000 0.125 1.000
-	border_right_uv 0.875 0.000 1.000 1.000
+	border_size 0 0 0 0
+	//border_left_uv  0.000 0.000 0.125 1.000
+	border_left_uv  0.000 0.000 0 0
+	//border_right_uv 0.875 0.000 1.000 1.000
+	border_right_uv 0 0 0 0
 
 	element TextArea(ButtonCaption)
 	{
@@ -53,7 +55,7 @@ template container BorderPanel(SdkTrays/Button)
         font_name SdkTrays/Caption
         char_height 24
         space_width 7
-        colour 0 0 0
+        colour 0.8 0.8 0.8
 	}
 }
 

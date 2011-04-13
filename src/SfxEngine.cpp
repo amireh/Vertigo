@@ -76,12 +76,14 @@ namespace Pixy {
       mSoundMgr->setMasterVolume(mSoundMgr->getMasterVolume() * 10);
       
       fAudioStopped = false;
-      toggleAudioState();
+      //toggleAudioState();
+      
+      mUpdater = &SfxEngine::updateIntro;
       
       fSetup = true;
     }
 
-
+    bindToName("SettingsChanged", this, &SfxEngine::evtSettingsChanged);
     
     mLog->infoStream() << "set up!";
 		return fSetup;
@@ -120,10 +122,10 @@ namespace Pixy {
 	    return false;
 
     GameState *currentState = (GameManager::getSingleton().currentState());
-    if ( !currentState->areSfxEnabled() ) {
+    /*if ( !currentState->areSfxEnabled() ) {
       currentState->dontUpdateMe(this);
       return true;
-    }    
+    }   */ 
     if (currentState->getId() == STATE_INTRO)
       fSetup = setupIntro();
     else 
@@ -218,7 +220,15 @@ namespace Pixy {
 	};
 	
 	void SfxEngine::playMusic() {
-	  if (GameManager::getSingleton().currentState()->getId() == STATE_INTRO) {
+	  if (GameManager::getSingleton().getSettings()["Music Enabled"] == "No")
+	    return;
+	  
+	  if (mGameTrack->isPlaying())
+	    return;
+	  
+	  mGameTrack->loop(true);
+    mGameTrack->play();
+	  /*if (GameManager::getSingleton().currentState()->getId() == STATE_INTRO) {
 	    if (mIntroTrack->isPlaying())
 	      return;
 	      
@@ -236,7 +246,7 @@ namespace Pixy {
 	    
 	    mGameTrack->loop(true);
 	    mGameTrack->play();
-	  }
+	  }*/
 	};
 	
 	void SfxEngine::stopMusic() {
@@ -249,7 +259,9 @@ namespace Pixy {
 	bool SfxEngine::evtSettingsChanged(Event* inEvt) {
 	  if (GameManager::getSingleton().getSettings()["Music Enabled"] == "No")
       this->stopMusic();
-    
+    else
+      this->playMusic();
+      
     return true;
 	};
 }

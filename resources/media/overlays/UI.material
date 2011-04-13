@@ -5,14 +5,16 @@ material Vertigo/Overlays/Materials/Shields/Fire
 	{
 		pass
 		{
-			ambient 1 0 0
-			diffuse 1.0 0 0
+		  lighting off
       scene_blend add
 
 			texture_unit
 			{
 				texture UI_FireShield5.png
-			}			
+				tex_address_mode clamp
+				
+				//colour_op add
+			}		
 		}
 	}
 }
@@ -23,17 +25,17 @@ material Vertigo/Overlays/Materials/Shields/Ice
 	{
 		pass
 		{
-			ambient 1 1 1
-			diffuse 1.0 1.0 1.0
+		  lighting off
+			//ambient 1 1 1
+			//diffuse 1.0 1.0 1.0
 			scene_blend add
 			cull_software none
 			cull_hardware none
 
 			texture_unit
 			{
-				tex_address_mode clamp
+				tex_address_mode wrap
 				texture UI_IceShield.png
-
 			}
 
 		}
@@ -46,8 +48,9 @@ material Vertigo/Overlays/Materials/Shields/Filler
 	{
 		pass
 		{
-			ambient 1 1 1
-			scene_blend add
+		  lighting off
+			//ambient 1 1 1
+			scene_blend alpha_blend
 			//depth_write off
 			cull_software none
 			cull_hardware none

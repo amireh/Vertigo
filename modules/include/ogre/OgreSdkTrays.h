@@ -79,6 +79,7 @@ namespace OgreBites
 
 		virtual ~SdkTrayListener() {}
 		virtual void buttonHit(Button* button) {}
+		virtual void buttonOver(Button* button) {}
 		virtual void itemSelected(SelectMenu* menu) {}
 		virtual void labelHit(Label* label) {}
 		virtual void sliderMoved(Slider* slider) {}
@@ -336,7 +337,10 @@ namespace OgreBites
 		{
 			if (isCursorOver(mElement, cursorPos, 4))
 			{
-				if (mState == BS_UP) setState(BS_OVER);
+				if (mState == BS_UP) {
+				  setState(BS_OVER);
+				  if (mListener) mListener->buttonOver(this);
+				}
 			}
 			else
 			{
@@ -351,6 +355,7 @@ namespace OgreBites
 		
 		void _doFlash() {
 		  setState(BS_OVER);
+		  if (mListener) mListener->buttonOver(this);
 		  mFlashing = true;
 		};
 		void _stopFlashing() {

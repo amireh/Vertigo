@@ -105,15 +105,20 @@ namespace Pixy {
     setupNodes();
     setupParticles();
 		
+		mDirection = Vector3(0,0,1);
+		mMoveSpeed = 0;
     //mCameraMan = new OgreBites::SdkCameraMan(mCamera);
     //mRenderWindow->setActive(true);
 
+    bindToName("GameShown", this, &GfxEngine::evtGameShown);
+    bindToName("MenuShown", this, &GfxEngine::evtMenuShown);
+    
 		fSetup = true;
 		return fSetup;
 	}
 	
 	bool GfxEngine::deferredSetup() {
-		mSphere = Level::getSingleton().getSphere();
+		
 		//mCamera->setAutoTracking (true, mSphere->getSceneNode());
 		//mCamera->setPosition(Vector3(200, 200, 200));
 		//mCamera->lookAt(mSphere->getSceneNode()->getPosition());
@@ -125,6 +130,7 @@ namespace Pixy {
 		  return true;
 		}
 		
+		mSphere = Level::getSingleton().getSphere();
 		mUpdate = &GfxEngine::updateGame;
 				
 		mCamera->setPosition(Vector3(0,75, -200));
@@ -413,54 +419,20 @@ namespace Pixy {
 	}
 	
 	void GfxEngine::mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id ) 
-	{
-		//if (mCameraMan)
-		//	mCameraMan->injectMouseUp(e, id);
+  {
+  
 	}
 	
 	
 	void GfxEngine::keyPressed( const OIS::KeyEvent &e )
 	{
-	  //mCameraMan->injectKeyDown(e);
-		switch (e.key) {
-		/*
-			case OIS::KC_UP:
-				mCamera->move(Vector3(0, 0, 1));
-				break;
-			case OIS::KC_DOWN:
-				mCamera->move(Vector3(0, 0, -1));
-				break;
-			case OIS::KC_LEFT:
-				mCamera->move(Vector3(-1, 0, 0));
-				break;
-			case OIS::KC_RIGHT:
-				mCamera->move(Vector3(1, 0, 0));
-				break;
-			case OIS::KC_T:
-				mCamera->move(Vector3(0, 1, 0));
-				break;*/
-			case OIS::KC_G:
-				applyMotionBlur(500);
-				break;	
-		  case OIS::KC_R:
-		    playEffect("Mortar", mSphere);
-		    break;
-		  case OIS::KC_T:
-		    playEffect("Despawn", mSphere);
-		    break;
-		  case OIS::KC_Y:
-		    playEffect("Explosion", mSphere);
-		    break;
-		  case OIS::KC_H:
-		    playEffect("Shatter", mSphere);
-		    break;		    
-		  case OIS::KC_F:
-		    break;		    
-			
+	  std::string fileName;
+	  time_t seconds;
+		switch (e.key) {   
 		  case OIS::KC_K:
-	      time_t seconds;
+	      // take a screenshot
         seconds = time (NULL);
-        std::string fileName = "Screenshot_";
+        fileName = "Screenshot_";
         fileName += stringify(seconds);
         fileName += ".png";
 		    mRenderWindow->writeContentsToFile(fileName);
@@ -481,7 +453,6 @@ namespace Pixy {
 	};
 	
 	void GfxEngine::updateIntro(unsigned long lTimeElapsed) {
-	
 	};
 	
 	void GfxEngine::updateNothing(unsigned long lTimeElapsed) {
@@ -489,12 +460,6 @@ namespace Pixy {
 	};
 	
 	void GfxEngine::updateGame(unsigned long lTimeElapsed) {
-
-		/*if (Level::getSingletonPtr()->isGameOver())
-		  return;
-		
-		if (fPortalReached)
-		  return;*/
 		
 		if (mEffectEnabled && mEffectTimer.getMilliseconds() > mEffectDuration * 1000) {
 		  mEffectTimer.reset();
@@ -701,5 +666,19 @@ namespace Pixy {
 		
 		
 		return true;	
+	};
+	
+	bool GfxEngine::evtGameShown(Event* inEvt) {
+	  mUpdate = &GfxEngine::updateGame;
+	  
+	  return true;
 	};	
+
+	bool GfxEngine::evtMenuShown(Event* inEvt) {
+	  mUpdate = &GfxEngine::updateIntro;
+	  
+	  return true;
+	};	
+
 }
+

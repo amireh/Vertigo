@@ -69,7 +69,7 @@ namespace Pixy
 		  mPhyxBody->proceedToTransform(trans);
 		
 		  // prepare our sound effects
-      if (fHasSfx) {
+      //if (fHasSfx) {
         OgreOggSound::OgreOggSoundManager *mSoundMgr;
         mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
         mSfxBeep = mSoundMgr->createSound("SphereBeep" + stringify(idObject), "beep.wav", false, false, true);
@@ -90,7 +90,7 @@ namespace Pixy
         //mSfxWarning->setReferenceDistance(1000.f);
         
         mLog->debugStream() << "created sound effect";
-      }
+      //}
       
       // prepare our visual effects
       //if (fHasFx) {
@@ -142,7 +142,7 @@ namespace Pixy
 		  mIceEffect = NULL;
 		//};
 		
-		if (fHasSfx) {
+		//if (fHasSfx) {
       OgreOggSound::OgreOggSoundManager *mSoundMgr;
       mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
       
@@ -152,7 +152,9 @@ namespace Pixy
       
       mSoundMgr = NULL;
       mSfxBeep = NULL;
-    }
+      mSfxWarning = 0;
+      mSfxFlip = 0;
+    //}
     
 		delete mPhyxBody->getMotionState();
     delete mPhyxBody;
@@ -205,6 +207,12 @@ namespace Pixy
 	};
 	
 	void Sphere::render() {
+	
+	  if (!fHasFx) {
+	    mIceEffect->stop();
+	    mFireEffect->stop();
+	  }
+	  
 		if (mCurrentShield == FIRE) {
 		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Sphere/Fire");
 		  
@@ -364,8 +372,10 @@ namespace Pixy
 	  // no flipping shields in dodgy mode
 	  if (Level::getSingleton().currentZone()->getSettings().mMode == DODGY)
 	    return;
-	    
-	  mSfxFlip->play(true);
+	  
+	  if (fHasSfx)  
+	    mSfxFlip->play(true);
+	  
 	  mCurrentShield = (mCurrentShield == FIRE) ? ICE : FIRE;
 	  render();
 	};
@@ -413,8 +423,8 @@ namespace Pixy
 	      }
 	    }
 	    
-	    if (mShields[mCurrentShield] < 300 && !mSfxWarning->isPlaying()) {
-	      //mSfxWarning->loop(true);
+	    if (fHasSfx && mShields[mCurrentShield] < 300 && !mSfxWarning->isPlaying()) {
+	      mSfxWarning->loop(true);
 	      mSfxWarning->play(true);
 	    } else {
 	      //if (mSfxWarning->isPlaying())
@@ -567,6 +577,9 @@ namespace Pixy
 	  // reset our speed
 	  mMoveSpeed = 0;
 	  mMaxSpeed = 0;
+	  
+	  if (mSfxWarning->isPlaying())
+	    mSfxWarning->stop();
 
 	  // a default direction
 	  mDirection = Vector3(0,-1,1);
@@ -581,6 +594,12 @@ namespace Pixy
 	  fHasFx = Level::getSingleton().areFxEnabled();
 	  fHasSfx = Level::getSingleton().areSfxEnabled();
 	  
+	  render();
+	  
+	  if (!fHasSfx) {
+	    if (mSfxWarning->isPlaying())
+	      mSfxWarning->stop();
+	  }
 	  return true;
 	};
 } // end of namespace

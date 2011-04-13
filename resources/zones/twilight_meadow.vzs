@@ -6,19 +6,19 @@
     <Property Name="Skybox" Value="Vertigo/Sky/Vortex" />
     <Property Name="MoveSpeed" Value="4.2" />
     <Property Name="MaxSpeedFactor" Value="5" />
-    <Property Name="SpeedStep" Value="0.75" />
-    <Property Name="ResetVelocity" Value="No" />
-    <Property Name="MaxSpeedStep" Value="0.25" />
+    <Property Name="SpeedStep" Value="0.1" />
+    <Property Name="ResetVelocity" Value="Yes" />
+    <Property Name="MaxSpeedStep" Value="0.05" />
   </Settings>
 
   <!-- Obstacle Settings -->
   <Obstacles>
-    <Property Name="SpawnRate" Value="700" />
+    <Property Name="SpawnRate" Value="650" />
     <Property Name="FixedSpawnRate" Value="No" />
     <Property Name="ObstacleCap" Value="4" />
-    <Property Name="MoveSpeed" Value="2" />
+    <Property Name="MoveSpeed" Value="5" />
     <Property Name="MaxSpeed" Value="4" />
-    <Property Name="MaxSpeedStep" Value="0.25" />
+    <Property Name="MaxSpeedStep" Value="0.5" />
     <Property Name="FixedSpawnPosition" Value="No" />
     <Class Name="Chase" Dominant="Yes" />
     

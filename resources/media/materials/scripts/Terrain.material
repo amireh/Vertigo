@@ -214,7 +214,7 @@ material Vertigo/Tunnel/Ruby/Translucent
 	}
 }
 
-material Vertigo/Tunnel/Slime
+material Vertigo/Tunnel/Toxicity/0
 {
 	technique
 	{
@@ -241,7 +241,7 @@ material Vertigo/Tunnel/Slime
 	}
 }
 
-material Vertigo/Tunnel/Goo
+material Vertigo/Tunnel/Toxicity/1
 {
 	technique
 	{
@@ -256,13 +256,67 @@ material Vertigo/Tunnel/Goo
 			texture_unit
 			{
 				texture Goo.jpg
-				scroll_anim 0 0.5
+				scroll_anim 0.4 0.4
 			}
 
 			texture_unit
 			{
 				texture Goo.jpg
 				//wave_xform scroll_y sine 0 0.1 0 0.25
+			}
+		}
+	}
+}
+
+material Vertigo/Tunnel/Toxicity/2
+{
+	technique
+	{
+		pass
+		{
+			ambient 1 1 1
+			scene_blend add
+			//depth_write off
+			cull_software none
+			cull_hardware none
+
+			texture_unit
+			{
+				texture Slime.jpg
+				scroll_anim 0 0.5
+			}
+
+			texture_unit
+			{
+				texture Slime.jpg
+				wave_xform scroll_x sine 0 1 0 0.1
+			}
+		}
+	}
+}
+
+material Vertigo/Tunnel/Toxicity/3
+{
+	technique
+	{
+		pass
+		{
+			ambient 1 1 1
+			scene_blend dest zero
+			//depth_write off
+			cull_software none
+			cull_hardware none
+
+			texture_unit
+			{
+				texture Goo.jpg
+				scroll_anim 1 0.4
+			}
+
+			texture_unit
+			{
+				texture Goo.jpg
+				wave_xform scroll_y sine 0 1 0 0.1
 			}
 		}
 	}
@@ -379,3 +433,162 @@ material Vertigo/Tunnel/Pandemonium/3
 }
 
 
+
+material Vertigo/Tunnel/Hysteria/0
+{
+	technique
+	{
+		pass
+		{
+		  lighting on
+			ambient 1 1 1
+			cull_software none
+			cull_hardware none
+			scene_blend zero
+
+			texture_unit
+			{
+				texture domino.jpg
+			}
+
+			texture_unit
+			{
+				texture domino.jpg
+			}
+		}
+		
+		
+	}
+}
+material Vertigo/Tunnel/Hysteria/1
+{
+	technique
+	{
+		pass
+		{
+		  lighting on
+			ambient 1 1 1
+			cull_software none
+			cull_hardware none
+			scene_blend zero
+
+			texture_unit
+			{
+				texture domino.jpg
+				scroll_anim 0.1 0
+			}
+
+			texture_unit
+			{
+				texture domino.jpg
+				wave_xform scroll_y sine 0 1 0 0.1
+			}
+		}
+		
+		
+	}
+}
+material Vertigo/Tunnel/Hysteria/2
+{
+	technique
+	{
+		pass
+		{
+		  lighting on
+			ambient 1 1 1
+			cull_software none
+			cull_hardware none
+
+			texture_unit
+			{
+				texture domino.jpg
+				scroll_anim 0.1 0
+			}
+
+			texture_unit
+			{
+				texture domino.jpg
+				wave_xform scroll_x sine 0 0.5 0 0.1
+			}
+		}
+	}
+}
+
+
+material Vertigo/Tunnel/Hysteria/3
+{
+	technique
+	{
+		pass
+		{
+		  lighting on
+			ambient 1 1 1
+			cull_software none
+			cull_hardware none
+			scene_blend add
+
+			texture_unit
+			{
+				texture domino.jpg
+				scroll_anim -0.1 0
+			}
+
+			texture_unit
+			{
+				texture domino.jpg
+				wave_xform scroll_x sine 0 1 0 0.1
+			}
+		}
+		
+	
+	}
+}
+
+material Vertigo/Tunnel/Hysteria/4
+{
+	technique
+	{
+		pass
+		{
+		  lighting on
+			ambient 1 1 1
+			cull_software none
+			cull_hardware none
+      scene_blend add
+      
+			texture_unit
+			{
+				texture domino.jpg
+				rotate_anim 0.1
+			}
+
+			texture_unit
+			{
+				texture domino.jpg
+				wave_xform scroll_x sine 0 1 0 0.1
+			}
+		}
+		
+		pass
+		{
+		  lighting on
+			ambient 1 1 1
+			cull_software none
+			cull_hardware none
+			scene_blend add
+
+			texture_unit
+			{
+				texture domino.jpg
+				scroll_anim 0.1 0
+				//rotate_anim 0.1
+			}
+
+			texture_unit
+			{
+				texture domino.jpg
+				wave_xform scroll_x sine 0 1 0 0.1
+			}
+		}		
+	}
+}

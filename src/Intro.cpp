@@ -32,6 +32,7 @@ namespace Pixy
     
     mUIEngine->deferredSetup();
     mSfxEngine->deferredSetup();
+    mGfxEngine->deferredSetup();
 
 		//mUIEngine->show();
 		mUIEngine->_refit(this);
@@ -144,10 +145,11 @@ namespace Pixy
 		
     mUIEngine->update(lTimeElapsed);
     mSfxEngine->update(lTimeElapsed);
+    mGfxEngine->update(lTimeElapsed);
 	}
 
   
-  bool Intro::areFxEnabled() { return GameManager::getSingleton().getSettings()["Visual Detail"] != "None"; }
+  bool Intro::areFxEnabled() { return GameManager::getSingleton().getSettings()["Visual Detail"] != "Low"; }
   bool Intro::areSfxEnabled() { return GameManager::getSingleton().getSettings()["Sound Enabled"] == "Yes"; }
   void Intro::dontUpdateMe(Engine* inEngine) {
     mEngines.remove(inEngine);

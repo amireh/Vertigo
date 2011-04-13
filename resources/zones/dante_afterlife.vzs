@@ -4,21 +4,21 @@
   <Settings>
     <Property Name="Mode" Value="Arcade" />
     <Property Name="Skybox" Value="Vertigo/Sky/Vortex" />
-    <Property Name="MoveSpeed" Value="2" />
-    <Property Name="MaxSpeedFactor" Value="4" />
+    <Property Name="MoveSpeed" Value="1.5" />
+    <Property Name="MaxSpeedFactor" Value="2" />
     <Property Name="SpeedStep" Value="1" />
-    <Property Name="ResetVelocity" Value="No" />
-    <Property Name="MaxSpeedStep" Value="0.1" />
+    <Property Name="ResetVelocity" Value="Yes" />
+    <Property Name="MaxSpeedStep" Value="0" />
   </Settings>
 
   <!-- Obstacle Settings -->
   <Obstacles>
-    <Property Name="SpawnRate" Value="550" />
+    <Property Name="SpawnRate" Value="450" />
     <Property Name="FixedSpawnRate" Value="Yes" />
-    <Property Name="ObstacleCap" Value="8" />
-    <Property Name="MoveSpeed" Value="2" />
-    <Property Name="MaxSpeed" Value="4" />
-    <Property Name="MaxSpeedStep" Value="0.25" />
+    <Property Name="ObstacleCap" Value="12" />
+    <Property Name="MoveSpeed" Value="6" />
+    <Property Name="MaxSpeed" Value="2" />
+    <Property Name="MaxSpeedStep" Value="0" />
     <Property Name="FixedSpawnPosition" Value="No" />
     <Class Name="Chase" Dominant="Yes" />
   </Obstacles>
@@ -30,17 +30,17 @@
     </Tunnel>
     <Tunnel>
       <Property Name="Material"       Value="Vertigo/Tunnel/Dante/Translucent" />
-      <Property Name="Segments"       Value="30" />
+      <Property Name="Segments"       Value="10" />
       <Property Name="SegmentLength"  Value="500" />
     </Tunnel>
     <Tunnel>
       <Property Name="Material"       Value="Vertigo/Tunnel/Lava/Translucent" />
-      <Property Name="Segments"       Value="40" />
+      <Property Name="Segments"       Value="10" />
       <Property Name="SegmentLength"  Value="500" />
     </Tunnel>
     <Tunnel>
       <Property Name="Material"       Value="Vertigo/Tunnel/Lava" />
-      <Property Name="Segments"       Value="20" />
+      <Property Name="Segments"       Value="10" />
       <Property Name="SegmentLength"  Value="500" />
     </Tunnel>
   </Geometry>

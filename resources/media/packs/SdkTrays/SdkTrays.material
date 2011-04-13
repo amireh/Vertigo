@@ -115,6 +115,10 @@ material SdkTrays/Button/Up : SdkTrays/Base
             {
                 texture sdk_button_up.png
             }
+            texture_unit
+            {
+                texture sdk_button_up.png
+            }            
         }
     }
 }
@@ -125,6 +129,10 @@ material SdkTrays/Button/Over : SdkTrays/Base
     {
         pass
         {
+            texture_unit
+            {
+                texture sdk_button_over.png
+            }
             texture_unit
             {
                 texture sdk_button_over.png

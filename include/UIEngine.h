@@ -19,8 +19,10 @@
 #include <Ogre.h>
 #include "ogre/OgreSdkTrays.h"
 
+#include "OgreOggSound.h"
 
 using namespace OgreBites;
+using namespace OgreOggSound;
 namespace Pixy {
 	
 	typedef std::map<Ogre::String, Ogre::String> _tInfo;
@@ -210,6 +212,9 @@ namespace Pixy {
     // menu event handlers
     virtual void itemSelected(SelectMenu* menu);
     virtual void buttonHit(Button* b);
+    virtual void buttonOver(Button* b);
+    
+    OgreOggISound *mSfxButtonOver, *mSfxButtonHit;
     
     // saves the contents of mRendererMenu into Ogre's config file
     virtual void reconfigure(const Ogre::String& renderer, Ogre::NameValuePairList& options);

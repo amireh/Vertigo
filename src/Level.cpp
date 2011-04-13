@@ -303,7 +303,7 @@ namespace Pixy
 		  ++_itrObstacles;
 		}
 		
-		if (fSpawning && mTimer.getMilliseconds() > mSpawnTimer && mObstacles.size() <= nrMaxAliveObstacles) {
+		if (fSpawning && mTimer.getMilliseconds() > mSpawnTimer) {
 		  //
 		  spawnObstacle(mZone->getSettings().mRegisteredObstacleClasses[rand() % mZone->getSettings().mRegisteredObstacleClasses.size()]);
 		  /*if (rand() % 3 == 0)
@@ -441,7 +441,7 @@ namespace Pixy
     return mZone->currentTunnel();
   };
   
-  bool Level::areFxEnabled() { return GameManager::getSingleton().getSettings()["Visual Detail"] != "None"; }
+  bool Level::areFxEnabled() { return GameManager::getSingleton().getSettings()["Visual Detail"] != "Low"; }
   bool Level::areSfxEnabled() { return GameManager::getSingleton().getSettings()["Sound Enabled"] == "Yes"; }
   
   void Level::dontUpdateMe(Engine* inEngine) {
