@@ -246,7 +246,7 @@ namespace Pixy {
 		 */
         // skyz0rs
         mLog->noticeStream() << "Setting up sky";
-		  //mSceneMgr->setSkyDome(true, "Vertigo/Sky", 2, 1);
+		  mSceneMgr->setSkyDome(true, "Vertigo/Sky", 2, 1);
 		  //mSceneMgr->setSkyBox(true, "Vertigo/Sky/Vortex", 5000, true);				
 		 
 

@@ -79,6 +79,9 @@ namespace Pixy
     
     void reset();
     
+    void _hideEverything();
+    void _showEverything();
+    
 	protected:
     void (Level::*mUpdater)(unsigned long);
     

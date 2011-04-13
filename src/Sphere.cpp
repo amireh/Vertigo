@@ -249,11 +249,13 @@ namespace Pixy
 				//mMaxSpeed += mMoveSpeed;
 				break;
 			case OIS::KC_A:
+			case OIS::KC_LEFT:
 				//mPhyxBody->clearForces();
 				mDirection.x = 1;
 				//mDirection.z = mMoveSpeed;
 				break;
 			case OIS::KC_D:
+			case OIS::KC_RIGHT:
 				//mPhyxBody->clearForces();
 				mDirection.x = -1;
 				//mDirection.z = mMoveSpeed;
@@ -285,9 +287,11 @@ namespace Pixy
 				//mMaxSpeed -= mMoveSpeed;
 				break;
 			case OIS::KC_A:
+			case OIS::KC_LEFT:
 				mDirection.x = (mDirection.x > 0) ? 0 : mDirection.x;
 				break;
 			case OIS::KC_D:
+			case OIS::KC_RIGHT:
 				mDirection.x = (mDirection.x < 0) ? 0 : mDirection.x;
 				break;
 		}

@@ -60,7 +60,6 @@ material Vertigo/Tunnel/Dante
 		pass
 		{
 			ambient 1 1 1
-			scene_blend add
 			//depth_write off
 			cull_software none
 			cull_hardware none
@@ -80,6 +79,32 @@ material Vertigo/Tunnel/Dante
 	}
 }
 
+material Vertigo/Tunnel/Dante/Translucent
+{
+	technique
+	{
+		pass
+		{
+			ambient 1 1 1
+			scene_blend add
+			//depth_write off
+			cull_software none
+			cull_hardware none
+
+			texture_unit
+			{
+				texture Dante_Afterlife.jpg
+				scroll_anim 0 0.75
+			}
+
+			texture_unit
+			{
+				texture Dante_Afterlife.jpg
+				//wave_xform scroll_y sine 0 0.2 0 0.5
+			}
+		}
+	}
+}
 material Vertigo/Tunnel/Rose
 {
 	technique
@@ -280,13 +305,13 @@ material Vertigo/Tunnel/Pandemonium/1
 			texture_unit
 			{
 				texture Melted_Jello_Shots_Green.jpg
-				scroll_anim 0.1 0.1
+				scroll_anim -0.5 0
 			}
 
 			texture_unit
 			{
 				texture Melted_Jello_Shots_Green.jpg
-				wave_xform scroll_y sine 0 0.1 0 0.1
+				wave_xform scroll_x sine 0 0.1 0 0.6
 			}
 		}
 	}
@@ -305,13 +330,13 @@ material Vertigo/Tunnel/Pandemonium/2
 			texture_unit
 			{
 				texture Melted_Jello_Shots_Red.jpg
-				scroll_anim 0.1 0.1
+				scroll_anim 0.5 0
 			}
 
 			texture_unit
 			{
 				texture Melted_Jello_Shots_Red.jpg
-				wave_xform scroll_y sine 0 0.1 0 0.1
+				wave_xform scroll_x sine 0 0.6 0 0.1
 			}
 		}
 	}
@@ -326,17 +351,28 @@ material Vertigo/Tunnel/Pandemonium/3
 			ambient 1 1 1
 			cull_software none
 			cull_hardware none
-
+      scene_blend add
+      
 			texture_unit
 			{
 				texture Melted_Jello_Shots.jpg
-				scroll_anim 0.1 0.1
+				//rotate_anim 0.1
+				tex_address_mode clamp
+				texture_mode wrap
+				scroll_anim 0.5 0
 			}
 
 			texture_unit
 			{
 				texture Melted_Jello_Shots.jpg
-				wave_xform scroll_y sine 0 0.1 0 0.1
+				wave_xform scroll_x sine 0 0.1 0 1
+				//rotate_anim -0.1
+			}
+			
+			texture_unit
+			{
+			  texture Melted_Jello_Shots.jpg
+				wave_xform scroll_x sine 0 1 0 0.1
 			}
 		}
 	}

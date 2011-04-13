@@ -402,4 +402,11 @@ namespace Pixy {
   int Zone::currentTunnelNr() const { return mCurrentTunnelNr; };
   
   std::string& Zone::filePath() { return mFilename; };
+  
+  Tunnel* Zone::firstTunnel() const { 
+    if (!mTunnels.empty()) 
+      return mTunnels.front();
+    
+    return NULL;
+  };
 };

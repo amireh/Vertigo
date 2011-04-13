@@ -84,6 +84,8 @@ namespace Pixy {
     // DEBUG
     void _dump();
     
+    Tunnel *firstTunnel() const;
+    
     ZoneSettings& getSettings();
     
 	protected:

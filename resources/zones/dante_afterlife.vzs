@@ -29,7 +29,7 @@
       <Property Name="SegmentLength"  Value="500" />
     </Tunnel>
     <Tunnel>
-      <Property Name="Material"       Value="Vertigo/Tunnel/Inferno" />
+      <Property Name="Material"       Value="Vertigo/Tunnel/Dante/Translucent" />
       <Property Name="Segments"       Value="30" />
       <Property Name="SegmentLength"  Value="500" />
     </Tunnel>

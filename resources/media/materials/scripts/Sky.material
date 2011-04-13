@@ -9,14 +9,15 @@ material Vertigo/Sky
 
 			texture_unit
 			{
-				texture 406.bmp
-				scroll_anim 0.05 0
-				wave_xform scroll_y sine 0 0 0 -0.1
+				texture vortex.png
+				scroll_anim 0.05 -0.05
+				
 				
 			}
 		}
 	}
 }
+/*
 material Vertigo/Sky/Vortex
 {
 	technique
@@ -67,3 +68,4 @@ material Vertigo/Sky/BLU
 		}
 	}
 }
+*/

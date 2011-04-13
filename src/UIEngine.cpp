@@ -106,11 +106,19 @@ namespace Pixy {
 	  setupWidgets();
 	  
 	  mHelpMsg = "The sphere you're controlling is equipped with 2 shields: ";
-	  mHelpMsg += "a fiery one to protect against fire obstacles, and an icy one ";
+	  mHelpMsg += "\na fiery one to protect against fire obstacles,\nand an icy one ";
 	  mHelpMsg += "to protect against ice obstacles. ";
-	  mHelpMsg += "\nYour mission is to reach the last portal with your shields intact.";
-	  mHelpMsg += "\nPress space to flip shields.";
-	  mHelpMsg += "\nYou may use the arrows or A and D buttons to steer your direction.";
+	  mHelpMsg += "\n\nYour mission is to reach the last portal with your shields intact.";
+	  mHelpMsg += "\n\nGame Controls:";
+	  mHelpMsg += "\n* Press the space bar to flip shields";
+	  mHelpMsg += "\n* You may use the arrows or A and D buttons to strafe";
+	  mHelpMsg += "\n\nOther Controls:";
+	  mHelpMsg += "\n* Press M to toggle all sounds on and off";
+	  mHelpMsg += "\n* Press K to take a screenshot";
+	  mHelpMsg += "\n* Press U to toggle the interface";
+	  mHelpMsg += "\n* Press F to toggle frame stats";
+	  mHelpMsg += "\n\nIf you think the game is running too slow\ntry adjusting some settings in the\nconfiguration menu.";
+	  mHelpMsg += "\n\n Have fun!";
 
     assignHandles();
     
@@ -126,6 +134,7 @@ namespace Pixy {
     inZoneScreen = false;
     inMainMenu = false;
     fConfiguring = false;
+    fShowingHelp = false;
         
     mLog->debugStream() << "set up!";
 		fSetup = true;
@@ -175,7 +184,7 @@ namespace Pixy {
 		
 		_currentState = GameManager::getSingleton().currentState();
 		//_refit(_currentState);
-		refitOverlays();
+		//refitOverlays();
 		
 		if (_currentState->getId() == STATE_GAME) {
 		  //mSphere = Level::getSingletonPtr()->getSphere();
@@ -263,8 +272,16 @@ namespace Pixy {
       }
       return;
     }
-	  if (mTrayMgr->isDialogVisible() && (e.key == OIS::KC_ESCAPE || e.key == OIS::KC_RETURN)) {
-	    mTrayMgr->closeDialog();
+	  //if (mTrayMgr->isDialogVisible() && (e.key == OIS::KC_ESCAPE || e.key == OIS::KC_RETURN)) {
+	  if (fShowingHelp && (e.key == OIS::KC_ESCAPE || e.key == OIS::KC_RETURN)) {
+	    //mTrayMgr->closeDialog();
+	    mUISheetHelp->hide();
+	    mDialogShade->hide();
+	    mShadeLayer->hide();
+	    fShowingHelp = false;
+	    
+	    _showMainMenu();
+	    
 	    return;
 	  };
 
@@ -493,7 +510,7 @@ namespace Pixy {
 	}
 	
 	void UIEngine::hideMenu() {
-	  mUILogo->hide();
+	  //mUILogo->hide();
 	  //mTrayMgr->hideLogo();
 	  mTrayMgr->hideCursor();
 	  //mTrayMgr->removeWidgetFromTray("LogoSep");
@@ -506,13 +523,18 @@ namespace Pixy {
 	    _hideConfigMenu();
     //_hideConfigMenu();
     
+    if (Level::getSingleton().running()) {
+	    Level::getSingleton()._showEverything();
+	  }
 	  /*GfxEngine::getSingletonPtr()->getViewport()->setAutoUpdated(true);
 	  GfxEngine::getSingletonPtr()->getViewport()->clear();*/	  
 	};
 	
 	void UIEngine::showMenu() {
-	  if (!Level::getSingleton().running())
-      mUILogo->show();
+	  if (Level::getSingleton().running()) {
+	    Level::getSingleton()._hideEverything();
+	  }
+    
     
     mTrayMgr->showCursor();
 	  //mTrayMgr->showLogo(TL_BOTTOM);
@@ -534,7 +556,7 @@ namespace Pixy {
 		inMainMenu = false;
 	  //mShadeLayer->hide();
 	  //mDialogShade->hide();
-	  //mUILogo->hide();
+	  mUILogo->hide();
 	  
 
 	};
@@ -556,7 +578,7 @@ namespace Pixy {
 	  mCurrentButton->_doFlash();
 	  //mDialogShade->show();
 	  //mShadeLayer->show();
-	  //mUILogo->show();
+	  mUILogo->show();
 	  
 
 	};
@@ -568,6 +590,7 @@ namespace Pixy {
 		mUISheetLoss = mOverlayMgr->getByName("Vertigo/UI/Loss");
 		mUISheetWin = mOverlayMgr->getByName("Vertigo/UI/Win");
 		mUISheetPrepare = mOverlayMgr->getByName("Vertigo/UI/Prepare");
+		mUISheetHelp = mOverlayMgr->getByName("Vertigo/UI/Help");
 		
 		mFireShield = mUISheet->getChild("UI/FireShieldContainer")->getChild("UI/FireShield");
 		mIceShield = mUISheet->getChild("UI/IceShieldContainer")->getChild("UI/IceShield");
@@ -592,7 +615,7 @@ namespace Pixy {
 		int height = mViewport->getActualHeight();
 		float aspect_ratio = width / height;
 		
-		if (_currentState->getId() == STATE_INTRO) {
+		//if (_currentState->getId() == STATE_INTRO) {
 		  Ogre::TextAreaOverlayElement* label = static_cast<Ogre::TextAreaOverlayElement*>(((Ogre::OverlayContainer*)mTrayMgr->getWidget("ChooseZoneLabel")->getOverlayElement())->getChild("ChooseZoneLabel/LabelCaption")); 
 		  label->setCharHeight(mViewport->getActualHeight() / 12);
 		  label->setHorizontalAlignment(Ogre::GHA_LEFT);
@@ -602,6 +625,8 @@ namespace Pixy {
 		  // rectangle, then we use the same dimension for both width and height
 		  mUILogo->getChild("UI/Intro/Logo")->setWidth(height / 2);
 		  mUILogo->getChild("UI/Intro/Logo")->setHeight(height / 2);
+		  mUILogo->getChild("UI/Intro/Logo")->setTop(height / 5);
+		  mUILogo->getChild("UI/Intro/Logo")->setLeft(-1 * (height / 4) - (height / 18));
 		
 		  //mTrayMgr->getWidget("Vertigo/Intro/Logo")->getOverlayElement()->setHeight(height / 12);
 		  //mTrayMgr->getWidget("Vertigo/Intro/Logo")->getOverlayElement()->setWidth(height / 12);
@@ -617,7 +642,7 @@ namespace Pixy {
 		  mTrayMgr->getWidget("BackFromZones")->getOverlayElement()->setHeight(height / 16);
 		
 		  mTrayMgr->adjustTrays();
-		} else {
+		//} else {
 		
 		  //mShieldBarWidth = mUISheet->getChild("UI/FireShieldContainer")->getChild("UI/FireShield")->getWidth();
 		  mShieldBarWidth = mViewport->getActualWidth() / 3;
@@ -652,8 +677,12 @@ namespace Pixy {
         mOverlayMgr->getByName("Vertigo/UI/Win")->
                      getChild("UI/Containers/Win")->
                      getChild("UI/Text/Win"))->setCharHeight(font_size);
+      static_cast<TextAreaOverlayElement*>(
+        mOverlayMgr->getByName("Vertigo/UI/Help")->
+                     getChild("UI/Containers/Help")->
+                     getChild("UI/Text/Help"))->setCharHeight(font_size);
                      
-    };
+    //};
 	};
 	
 	void UIEngine::_updateShields() {
@@ -920,7 +949,20 @@ namespace Pixy {
   };
   // display a dialogue with some info on how to play the game
   void UIEngine::evtClickHelp() { 
-    mTrayMgr->showOkDialog("How to play", mHelpMsg, 520);
+    //mTrayMgr->showOkDialog("How to play", mHelpMsg, 520);
+	  Ogre::OverlayElement* tText = static_cast<Ogre::OverlayElement*>
+	    (mUISheetHelp->getChild("UI/Containers/Help")->getChild("UI/Text/Help"));
+	    
+	  tText->setCaption(mHelpMsg);
+	  mDialogShade->show();
+	  mShadeLayer->show();
+	  mUISheetHelp->show();
+	  
+	  
+	  _hideMainMenu();
+	  
+	  fShowingHelp = true;
+	  
     //if (mCurrentButton)
       //mCurrentButton->_stopFlashing();
     //mCurrentButton = static_cast<Button*>(mTrayMgr->getWidget(mTrayMgr->getName() + "/OkButton"));
@@ -948,7 +990,9 @@ namespace Pixy {
 	    //if (Intro::getSingleton().getSelectedZone()->name() != zone->getZone()->name()) {
 	      // reset and load new level
 	      //EventManager::getSingletonPtr()->_clearQueue();
+	      
 	      Intro::getSingleton().setSelectedZone(zone->getZone());
+	      Level::getSingleton()._showEverything();
 	      Level::getSingleton().reset();
 	      //Event* mEvt = mEvtMgr->createEvt("ZoneEntered");
 	      //mEvtMgr->hook(mEvt);
@@ -977,11 +1021,11 @@ namespace Pixy {
   
   // show the zones screen
   void UIEngine::_showZones() {
-		mUILogo->hide();
+		//mUILogo->hide();
 		
 		if (Level::getSingleton().running()) {
 		  Level::getSingleton().getTunnel()->getNode()->setVisible(false);
-		  GfxEngine::getSingletonPtr()->getCamera()->setPosition(Vector3(0,75, -200));
+		  GfxEngine::getSingletonPtr()->getCamera()->setPosition(Vector3(0,75, -300));
 		  GfxEngine::getSingletonPtr()->getCamera()->lookAt(Vector3(0,75, 100));
 		}
 		mTrayMgr->moveWidgetToTray("Engage", TL_BOTTOM);
@@ -1018,7 +1062,8 @@ namespace Pixy {
         }
     }
     
-    mSelectedZone->getZone()->disengage();
+    //mSelectedZone->getZone()->disengage();
+    GfxEngine::getSingletonPtr()->getSM()->getRootSceneNode()->removeChild(mSelectedZone->getZone()->firstTunnel()->getNode());
     mSelectedZone = mNextZone;
     
     _previewZone();
@@ -1026,7 +1071,8 @@ namespace Pixy {
   // display a sheet with the Zone's info and a rendering context with
   // a live preview of it in action
   void UIEngine::_previewZone() {
-    mSelectedZone->getZone()->engage();
+    //mSelectedZone->getZone()->engage();
+    GfxEngine::getSingletonPtr()->getSM()->getRootSceneNode()->addChild(mSelectedZone->getZone()->firstTunnel()->getNode());
     //mTextBoxZoneInfo->setText(mSelectedZone->getInfo()["Description"]);
     static_cast<OgreBites::Label*>(mTrayMgr->getWidget("ChooseZoneLabel"))->setCaption(mSelectedZone->getInfo()["Title"]);
   };
@@ -1046,7 +1092,8 @@ namespace Pixy {
         }
     }
     
-    mSelectedZone->getZone()->disengage();
+    //mSelectedZone->getZone()->disengage();
+    GfxEngine::getSingletonPtr()->getSM()->getRootSceneNode()->removeChild(mSelectedZone->getZone()->firstTunnel()->getNode());
     mSelectedZone = mPrevZone;
     
     _previewZone();
@@ -1065,8 +1112,10 @@ namespace Pixy {
 		mTrayMgr->removeWidgetFromTray("NextZone");
     //mTrayMgr->removeWidgetFromTray("ZoneInfo");
     //mTextBoxZoneInfo->hide();	
-		  
-    mSelectedZone->getZone()->disengage();
+		
+		if (mSelectedZone->getZone()->firstTunnel()->getNode()->getParentSceneNode())
+      GfxEngine::getSingletonPtr()->getSM()->getRootSceneNode()->removeChild(mSelectedZone->getZone()->firstTunnel()->getNode());
+    
     inZoneScreen = false;
 
   };

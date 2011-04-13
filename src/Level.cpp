@@ -559,4 +559,27 @@ namespace Pixy
   Zone* Level::currentZone() {
     return mZone;
   };
+  
+  void Level::_hideEverything() {
+    // hide our tunnel, obstacles, and sphere
+    mSphere->getMasterNode()->setVisible(false);
+	  std::list<Obstacle*>::iterator _itr;
+	  for (_itr = mObstacles.begin(); 
+	       _itr != mObstacles.end();
+	       ++_itr)
+      (*_itr)->getMasterNode()->setVisible(false);
+      
+    mZone->currentTunnel()->getNode()->setVisible(false);
+  };
+  
+  void Level::_showEverything() {
+    mSphere->getMasterNode()->setVisible(true);
+	  std::list<Obstacle*>::iterator _itr;
+	  for (_itr = mObstacles.begin(); 
+	       _itr != mObstacles.end();
+	       ++_itr)
+      (*_itr)->getMasterNode()->setVisible(true);
+      
+    mZone->currentTunnel()->getNode()->setVisible(true);  
+  };
 } // end of namespace

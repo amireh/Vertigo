@@ -107,6 +107,7 @@ namespace Pixy
 		bool fDamped;
 		bool fPortalSighted;
 		bool fPortalReached;
+		bool fStrafing;
 		
 		Real mLastTunnelSegment;
 		Real mTunnelLength;

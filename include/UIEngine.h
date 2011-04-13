@@ -183,6 +183,7 @@ namespace Pixy {
     std::vector<UIZone*> mUIZones;
     OgreBites::TextBox* mTextBoxZoneInfo;
     bool fConfiguring; // true when configuration menu is shown
+    bool fShowingHelp; // when UISheetHelp is shown
     
     // these make for a shading effect over the game scene when the menu is open
 		Ogre::OverlayContainer *mDialogShade;
@@ -193,6 +194,7 @@ namespace Pixy {
 		Ogre::Overlay *mUISheetLoss; // shows a label when the player loses
 		Ogre::Overlay *mUISheetWin; // shows a label when the player wins
 		Ogre::Overlay *mUISheetPrepare; // this is a prompt, shown prior to starting the game
+		Ogre::Overlay *mUISheetHelp; // how to play overlay
 		Ogre::Overlay *mUILogo;
 		Ogre::OverlayContainer *mUICursor;
 		

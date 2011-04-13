@@ -187,9 +187,41 @@ Vertigo/UI/Prepare
         width 420
         height 480
         
-        transparent false
-        
         caption press ENTER when ready
+      }
+    }  
+}
+
+Vertigo/UI/Help
+{
+    container Panel(UI/Containers/Help)
+    {
+      metrics_mode pixels
+      
+      horz_align center
+      vert_align middle
+    
+      left -160
+      top -240
+      
+      element TextArea(UI/Text/Help)
+      {
+        metrics_mode pixels
+        
+        font_name SdkTrays/Caption
+        colour 0.9 0.9 0.9
+        colour_bottom 0.7 0.7 0.7
+        alignment left
+        char_height 64
+        space_width 24
+        
+        horz_align left
+        vert_align top
+        
+        left -240
+        width 420
+        height 480
+        
       }
     }  
 }
@@ -233,10 +265,14 @@ Vertigo/UI/Intro/Logo
   {
 	  metrics_mode pixels
 	  material Vertigo/Logo
-	  horz_align left
+	  horz_align center
+	  top 0
 	  width 640
 	  height 640
+	  
+
   }
+  
 }
 
 Vertigo/UI/ButtonCursor
