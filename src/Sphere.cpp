@@ -30,6 +30,7 @@ namespace Pixy
 		  mShields[FIRE] = 1000;
 		  mShields[ICE] = 1000;
 		  
+		  nrBadImpacts = nrGoodImpacts = 0;
 
 		  
 		  using Ogre::Vector3;
@@ -407,6 +408,8 @@ namespace Pixy
         // speed the player up a bit
         //float step = mMoveSpeed / 2;
         setMaxSpeed(mMaxSpeed+mSpeedStep);
+	      
+	      ++nrGoodImpacts;
 	        
 	    } else {
 	      // deteriorate the shield
@@ -421,6 +424,8 @@ namespace Pixy
 	        mSfxBeep->stop();
 	        mSfxBeep->play(true);
 	      }
+	      
+	      ++nrBadImpacts;
 	    }
 	    
 	    if (fHasSfx && mShields[mCurrentShield] < 300 && !mSfxWarning->isPlaying()) {
@@ -547,7 +552,9 @@ namespace Pixy
 	};
 	void Sphere::reset() {
 	  mScore = 0;
-
+    nrBadImpacts = 0;
+    nrGoodImpacts = 0;
+    
 	  if (fDead) {
 	    // TODO: make live() reset exactly what die() does
 	    live();
@@ -577,6 +584,7 @@ namespace Pixy
 	  // reset our speed
 	  mMoveSpeed = 0;
 	  mMaxSpeed = 0;
+	  
 	  
 	  if (mSfxWarning->isPlaying())
 	    mSfxWarning->stop();

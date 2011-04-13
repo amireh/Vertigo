@@ -109,6 +109,10 @@ namespace Pixy
 		bool fPortalReached;
 		bool fStrafing;
 		
+		// score
+		unsigned long nrBadImpacts;
+		unsigned long nrGoodImpacts;
+		
 		Real mLastTunnelSegment;
 		Real mTunnelLength;
 	};

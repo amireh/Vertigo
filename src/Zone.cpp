@@ -367,9 +367,16 @@ namespace Pixy {
   bool Zone::evtPortalReached(Event *inEvt) {
     // was this the last tunnel? if so, the player won
 	  if (mTunnel == mTunnels.back()) {
-	    // the player has won
-	    mEvtMgr->hook(mEvtMgr->createEvt("PlayerWon"));
-	    return true;
+	    // if it's survival mode, there's no winning, just go back to tunnel #1
+	    if (mSettings.mMode == SURVIVAL) {
+	      mTunnel->hide();
+	      mTunnel = mTunnels.front();
+	      ++mCurrentTunnelNr;
+	    } else {
+	      // the player has won
+	      mEvtMgr->hook(mEvtMgr->createEvt("PlayerWon"));
+	      return true;
+	    }
 	  }
 	  else {
 	    mTunnel->hide();

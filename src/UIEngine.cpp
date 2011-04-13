@@ -883,6 +883,14 @@ namespace Pixy {
 	          << "\n\nControls:"
 	          << "\nYou can move to the left and right\nby pushing A and D.";
 	      break;
+	    case SURVIVAL:
+	      msg << "Survival\n"
+	          << "\nBoth of your shields are active and your mission"
+	          << "\nis to explore as much as you can by surviving."
+	          << "\n\nControls:"
+	          << "\nFlip shields by pressing SPACE BAR."
+	          << "\nYou can also move to the left and right by pushing A and D.";
+	      break;
 	  }
 	  msg << "\n\nPress ENTER when ready!";
 	  
