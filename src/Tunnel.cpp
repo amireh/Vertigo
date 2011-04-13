@@ -221,11 +221,11 @@ namespace Pixy {
     if (GameManager::getSingleton().currentState()->getId() == STATE_GAME) {
     //if (Level::getSingleton().running()) {
       //if (fHasFx) {
-        if (mPortalEffect->isAttached())
+        /*if (mPortalEffect->isAttached())
           mPortalEffect->getParentSceneNode()->detachObject(mPortalEffect);
         mEntrance->attachObject(mPortalEffect);
-        //mPortalEffect->startAndStopFade(0.2f);
-        mPortalEffect->start();
+        mPortalEffect->startAndStopFade(0.5f);*/
+        //mPortalEffect->start();
       //}
       
       // and the teleporting sound effect

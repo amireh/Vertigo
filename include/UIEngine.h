@@ -97,8 +97,6 @@ namespace Pixy {
 
     void showMenu();
     void hideMenu();
-    
-		void showDialog(const std::string& inCaption, const std::string& inMessage);
 		
 	protected:
 
@@ -145,8 +143,6 @@ namespace Pixy {
 	  // and assigns pointers to them
 	  void assignHandles();
 	  
-	  // toggles visibility of overlays appropriately
-	  void setupOverlays();
 	  // resizes shield bars to span 1/3 of the viewport each, and scales
 	  // font size depending on the screen resolution 
 	  void refitOverlays();
@@ -162,7 +158,6 @@ namespace Pixy {
 	  
 	  // creates widgets for our menu
 	  virtual void setupWidgets();
-	  virtual void populateZoneMenu();
 	  bool loadZones();
 	  
 		EventManager *mEvtMgr;
@@ -184,7 +179,7 @@ namespace Pixy {
 		Ogre::Real mCarouselPlace;                     // current state of carousel
     std::vector<UIZone*> mUIZones;
     OgreBites::TextBox* mTextBoxZoneInfo;
-    bool fConfiguring; // true when configuration menu is shown
+    bool inConfigMenu; // true when configuration menu is shown
     bool fShowingHelp; // when UISheetHelp is shown
     
     // these make for a shading effect over the game scene when the menu is open
@@ -192,17 +187,22 @@ namespace Pixy {
 		Ogre::Overlay *mShadeLayer;
 		
 		// these are the game UI sheets
-		Ogre::Overlay *mUISheet; // holds the shield bars
-		Ogre::Overlay *mUISheetLoss; // shows a label when the player loses
-		Ogre::Overlay *mUISheetWin; // shows a label when the player wins
-		Ogre::Overlay *mUISheetPrepare; // this is a prompt, shown prior to starting the game
-		Ogre::Overlay *mUISheetHelp; // how to play overlay
-		Ogre::Overlay *mUILogo;
-		Ogre::OverlayContainer *mUICursor;
+		Ogre::Overlay *mUISheet;
+		Ogre::OverlayContainer *mUIScore; // shows a label when the player wins
+		Ogre::OverlayContainer *mUIPrepare; // this is a prompt, shown prior to starting the game
+		Ogre::OverlayContainer *mUIHelp; // how to play overlay
+		Ogre::OverlayContainer *mUILogo;
+		
+		Ogre::TextAreaOverlayElement *mTextScoreCaption;
+		Ogre::TextAreaOverlayElement *mTextScoreStats;
+		Ogre::TextAreaOverlayElement *mTextPrepare;
+		Ogre::TextAreaOverlayElement *mTextHelp;
+		
 		
 		// HUDs here
-		Ogre::OverlayElement *mUIScore;
-		Ogre::OverlayElement *mFireShield, *mIceShield;
+		Ogre::Overlay *mHUDSheet; // holds the shield bars
+		Ogre::OverlayElement *mHUDScore;
+		Ogre::OverlayElement *mHUDFireShield, *mHUDIceShield;
 		
 		float mShieldBarWidth;
 		Ogre::FrameEvent evt;

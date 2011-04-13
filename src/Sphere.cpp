@@ -30,7 +30,7 @@ namespace Pixy
 		  mShields[FIRE] = 1000;
 		  mShields[ICE] = 1000;
 		  
-		  nrBadImpacts = nrGoodImpacts = 0;
+		  mNrMisses = mNrHits = 0;
 
 		  
 		  using Ogre::Vector3;
@@ -254,7 +254,7 @@ namespace Pixy
 		
 		switch (e.key) {
 			case OIS::KC_W:
-				mDirection.z = 2;
+				mDirection.z = 20;
 				//mMaxSpeed += mMoveSpeed;
 				break;
 			case OIS::KC_A:
@@ -409,7 +409,10 @@ namespace Pixy
         //float step = mMoveSpeed / 2;
         setMaxSpeed(mMaxSpeed+mSpeedStep);
 	      
-	      ++nrGoodImpacts;
+	      // if we hit both pairs of a duette, then it's a miss and not an actual hit
+        if (!(mObs->getClass() == DUETTE && mObs->getDuetteTwin()->dead()))
+	        ++mNrHits;
+	      
 	        
 	    } else {
 	      // deteriorate the shield
@@ -425,7 +428,7 @@ namespace Pixy
 	        mSfxBeep->play(true);
 	      }
 	      
-	      ++nrBadImpacts;
+	      ++mNrMisses;
 	    }
 	    
 	    if (fHasSfx && mShields[mCurrentShield] < 300 && !mSfxWarning->isPlaying()) {
@@ -552,8 +555,8 @@ namespace Pixy
 	};
 	void Sphere::reset() {
 	  mScore = 0;
-    nrBadImpacts = 0;
-    nrGoodImpacts = 0;
+    mNrMisses = 0;
+    mNrHits = 0;
     
 	  if (fDead) {
 	    // TODO: make live() reset exactly what die() does
@@ -610,4 +613,11 @@ namespace Pixy
 	  }
 	  return true;
 	};
+	
+  unsigned long Sphere::getNrHits() const {
+    return mNrHits;
+  };
+	unsigned long Sphere::getNrMisses() const {
+	  return mNrMisses;
+	};	
 } // end of namespace

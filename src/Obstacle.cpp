@@ -25,7 +25,8 @@ namespace Pixy
 	  mMaxSpeed = mMoveSpeed * 20;
 	  fDying = false;
 	  fHasFullFx = GameManager::getSingleton().getSettings()["Visual Detail"] == "Full";
-
+    mDuetteTwin = 0;
+    
 	  mClass = CHASE;
 	  
 	  if (!ourMeshCreated)
@@ -244,6 +245,8 @@ namespace Pixy
 	    )
 	  );
     
+    mDuetteTwin = 0;
+    
     render();
 	  //mSceneNode->setVisible(true);
 	  GfxEngine::getSingletonPtr()->getSM()->getRootSceneNode()->addChild(mMasterNode);
@@ -278,6 +281,8 @@ namespace Pixy
 	    //}
 	  }
 	  //mSceneNode->setVisible(false);
+	  
+	  
 	  
 	  GfxEngine::getSingletonPtr()->getSM()->getRootSceneNode()->removeChild(mMasterNode);
 	  
@@ -421,6 +426,7 @@ namespace Pixy
 	      //mMasterNode->setScale(1.0f, 1.0f, 1.0f);
 	      break;
 	    case DUMB:
+	    case DUETTE:
 	      mUpdater = &Obstacle::updateDumb;
 	      //mMasterNode->setScale(0.5f, 0.5f, 0.5f);
 	      break;
@@ -444,4 +450,11 @@ namespace Pixy
 	  mSfx = (mShield == FIRE) ? &mSfxExplosion : &mSfxShatter;
 	};
 	
+	void Obstacle::setDuetteTwin(Obstacle* inObs) {
+	  mDuetteTwin = inObs;
+	};
+	
+	Obstacle* Obstacle::getDuetteTwin() { return mDuetteTwin; }; 
+	
+	OBSTACLE_CLASS Obstacle::getClass() { return mClass; };
 } // end of namespace

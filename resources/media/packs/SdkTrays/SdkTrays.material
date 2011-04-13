@@ -42,11 +42,11 @@ material SdkTrays/Shade
             scene_blend alpha_blend
             depth_check off
             
-		    texture_unit
-			{
+            texture_unit
+		        {
                 tex_address_mode clamp
-			    texture sdk_shade.png
-			}
+		            texture sdk_shade.png
+		        }
         }
     }
 }

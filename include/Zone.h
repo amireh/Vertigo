@@ -88,6 +88,9 @@ namespace Pixy {
     
     ZoneSettings& getSettings();
     
+    // gets the time this zone has been running for in seconds
+    double getTimeElapsed();
+    
 	protected:
 	  void parseFile();
 	  void _parseSetting(const char* inName, const char* inValue);
@@ -112,6 +115,8 @@ namespace Pixy {
     std::string mFilename;
     std::string mName;
     ZoneSettings mSettings;
+    
+    unsigned long mTimeElapsed;
     
     static ::TinyXMLResourceManager* _tinyXMLResourceManager;
 	private:

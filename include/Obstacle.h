@@ -63,9 +63,14 @@ namespace Pixy
 	  virtual void setDirection(Vector3 inDirection);
 	  virtual void setClass(OBSTACLE_CLASS inClass);
 	  
+	  OBSTACLE_CLASS getClass();
+	  
 		SHIELD shield();
 		void setShield(const SHIELD inShield);
-			
+	  
+	  Obstacle* getDuetteTwin();
+	  void setDuetteTwin(Obstacle* inObs);
+	  
 	protected:		
 		void (Obstacle::*mUpdater)(unsigned long);
 		
@@ -86,6 +91,7 @@ namespace Pixy
     Vector3 randomPosition();
 
     OBSTACLE_CLASS mClass;
+    Obstacle* mDuetteTwin;
     
     bool fDying;
     bool fHasFullFx;

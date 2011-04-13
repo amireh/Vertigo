@@ -53,3 +53,9 @@
 * parse zones from external XML sheets (done)
 * refactor GfxEngine .. it's a bloody mess there (done)
 * THREAD IT
+
+
+* portal effect shouldn't be started when the overlay is shown
+* make sure WARNING sound is played beyond the first zone
+* add survival mode
+* add score / accuracy

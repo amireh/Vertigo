@@ -73,6 +73,9 @@ namespace Pixy
 		
 		const Vector3& getPosition();
 		const int score();
+		
+		unsigned long getNrHits() const;
+		unsigned long getNrMisses() const;
 	protected:		
 		void (Sphere::*mUpdate)(unsigned long);
 		
@@ -110,8 +113,8 @@ namespace Pixy
 		bool fStrafing;
 		
 		// score
-		unsigned long nrBadImpacts;
-		unsigned long nrGoodImpacts;
+		unsigned long mNrMisses;
+		unsigned long mNrHits;
 		
 		Real mLastTunnelSegment;
 		Real mTunnelLength;

@@ -659,7 +659,7 @@ namespace Pixy {
 	};
 	
 	bool GfxEngine::evtZoneEntered(Event* inEvt) {
-		mCamera->setPosition(Vector3(0,75, -200));
+		mCamera->setPosition(Vector3(0,75, -300));
 		mCamera->lookAt(Vector3(0,75, 100));
 		
 		mUpdate = &GfxEngine::updateNothing;
@@ -669,7 +669,11 @@ namespace Pixy {
 	};
 	
 	bool GfxEngine::evtGameShown(Event* inEvt) {
-	  mUpdate = &GfxEngine::updateGame;
+	  // don't start updating the game if it hasn't started yet
+	  // this event is triggered whenever the menu is hidden, even if it's at
+	  // entering a zone
+	  if (mUpdate == &GfxEngine::updateIntro)
+	    mUpdate = &GfxEngine::updateGame;
 	  
 	  return true;
 	};	

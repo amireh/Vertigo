@@ -360,20 +360,23 @@ namespace Pixy
   }
   
   void Level::spawnDuette() {
-    Obstacle *mObs = NULL;
+    Obstacle *mObs[2];
     SHIELD lastShield = (rand() % 2 == 0) ? FIRE : ICE;
     for (int i=0;i<2;++i) {
-      mObs = spawnObstacle(DUMB);
-      if (!mObs)
+      mObs[i] = spawnObstacle(DUMB);
+      mObs[i]->setClass(DUETTE);
+      if (!mObs[i])
         break;
 
       // set one of them to go left and the other to the right
-      mObs->setDirection(Vector3((i == 0) ? 0.5f : -0.5f,-1,-1));
-      mObs->setShield(lastShield);
+      mObs[i]->setDirection(Vector3((i == 0) ? 0.5f : -0.5f,-1,-1));
+      mObs[i]->setShield(lastShield);
       
       // swap shields
       lastShield = (lastShield == FIRE) ? ICE : FIRE;
     }
+    mObs[0]->setDuetteTwin(mObs[1]);
+    mObs[1]->setDuetteTwin(mObs[0]);
   };
   
   void Level::releaseObstacle(Obstacle* inObs) {

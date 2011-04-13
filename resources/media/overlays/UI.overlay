@@ -1,9 +1,9 @@
 // The name of the overlay comes first
-Vertigo/UI
+Vertigo/HUD
 {
     zorder 200
 
-    container Panel(UI/FireShieldContainer)
+    container Panel(HUD/Containers/FireShield)
     {
       metrics_mode pixels
       horz_align left
@@ -15,7 +15,7 @@ Vertigo/UI
       //transparent true
       material Vertigo/Overlays/Materials/Shields/Filler
       
-      element Panel(UI/FireShield)
+      element Panel(HUD/Elements/FireShield)
       {
           // Center it horizontally, put it at the top
           metrics_mode pixels
@@ -30,7 +30,7 @@ Vertigo/UI
       }
     }
     
-    container Panel(UI/IceShieldContainer)
+    container Panel(HUD/Containers/IceShield)
     {
       metrics_mode pixels
       horz_align right
@@ -42,7 +42,7 @@ Vertigo/UI
       //transparent true
       material Vertigo/Overlays/Materials/Shields/Filler
       
-      element Panel(UI/IceShield)
+      element Panel(HUD/Elements/IceShield)
       {
           // Center it horizontally, put it at the top
           metrics_mode pixels
@@ -57,7 +57,7 @@ Vertigo/UI
       }
     }
     
-    container Panel(UI/TimerContainer)
+    container Panel(HUD/Containers/Score)
     {
       metrics_mode pixels
       
@@ -68,7 +68,7 @@ Vertigo/UI
       left -60
       top 0
       
-      element TextArea(UI/Timer)
+      element TextArea(HUD/Elements/Score)
       {
         metrics_mode pixels
         
@@ -91,177 +91,11 @@ Vertigo/UI
 
 }
 
-Vertigo/UI/Win
+Vertigo/UI
 {
-    container Panel(UI/Containers/Win)
-    {
-      metrics_mode pixels
-      
-      horz_align center
-      vert_align middle
-      width 320
-      height 120
-      left -160
-      top -60
-      
-      element TextArea(UI/Text/Win)
-      {
-        metrics_mode pixels
-        
-        font_name SdkTrays/Caption
-        colour 1 1 1
-        colour_bottom 0.5 0.5 0.5
-        alignment center
-        char_height 84
-        space_width 32
-        
-        
-        horz_align center
-        vert_align top
-        
-        caption You Won!
-      }
-    } 
-}
 
-Vertigo/UI/Loss
-{
-    container Panel(UI/Containers/Loss)
-    {
-      metrics_mode pixels
-      
-      horz_align center
-      vert_align middle
-      width 320
-      height 120
-      left -160
-      top -60
-      
-      element TextArea(UI/Text/Loss)
-      {
-        metrics_mode pixels
-        
-        font_name SdkTrays/Caption
-        colour 1 1 1
-        colour_bottom 0.5 0.5 0.5
-        alignment center
-        char_height 84
-        space_width 32
-        
-        
-        horz_align center
-        vert_align top
-        
-        caption You Lost!
-      }
-    }  
-}
-
-Vertigo/UI/Prepare
-{
-    container Panel(UI/Containers/Prepare)
-    {
-      metrics_mode pixels
-      
-      horz_align center
-      vert_align middle
-    
-      left -160
-      top -240
-      
-      element TextArea(UI/Text/Prepare)
-      {
-        metrics_mode pixels
-        
-        font_name SdkTrays/Caption
-        colour 0.9 0.9 0.9
-        colour_bottom 0.7 0.7 0.7
-        alignment left
-        char_height 84
-        space_width 32
-        
-        horz_align left
-        vert_align top
-        
-        left -240
-        width 420
-        height 480
-        
-        caption press ENTER when ready
-      }
-    }  
-}
-
-Vertigo/UI/Help
-{
-    container Panel(UI/Containers/Help)
-    {
-      metrics_mode pixels
-      
-      horz_align center
-      vert_align middle
-    
-      left -160
-      top -240
-      
-      element TextArea(UI/Text/Help)
-      {
-        metrics_mode pixels
-        
-        font_name SdkTrays/Caption
-        colour 0.9 0.9 0.9
-        colour_bottom 0.7 0.7 0.7
-        alignment left
-        char_height 64
-        space_width 24
-        
-        horz_align left
-        vert_align top
-        
-        left -240
-        width 420
-        height 480
-        
-      }
-    }  
-}
-
-Vertigo/UI/Loading
-{
-    container Panel(UI/Containers/Loading)
-    {
-      metrics_mode pixels
-      
-      horz_align center
-      vert_align middle
-      width 320
-      height 120
-      left -160
-      top -60
-      
-      element TextArea(UI/Text/Loading)
-      {
-        metrics_mode pixels
-        
-        font_name SdkTrays/Caption
-        colour 1 1 1
-        colour_bottom 0.5 0.5 0.5
-        alignment center
-        char_height 84
-        space_width 32
-        
-        
-        horz_align center
-        vert_align top
-        
-        caption loading...
-      }
-    }  
-}
-
-Vertigo/UI/Intro/Logo
-{
-  container Panel(UI/Intro/Logo)
+  // -- Logo --
+  container Panel(UI/Containers/Logo)
   {
 	  metrics_mode pixels
 	  material Vertigo/Logo
@@ -269,22 +103,120 @@ Vertigo/UI/Intro/Logo
 	  top 0
 	  width 640
 	  height 640
-	  
-
   }
   
-}
-
-Vertigo/UI/ButtonCursor
-{
-  container Panel(UI/Containers/ButtonCursor)
+  // -- Help Sheet --
+  container Panel(UI/Containers/Help)
   {
     metrics_mode pixels
-    left 0
-    top 0
-    width 16
-    height 16
     
-    material SdkTrays/Handle
-  }
+    horz_align center
+    vert_align middle
+  
+    left -160
+    top -240
+    
+    element TextArea(UI/Text/Help)
+    {
+      metrics_mode pixels
+      
+      font_name SdkTrays/Caption
+      colour 0.9 0.9 0.9
+      colour_bottom 0.7 0.7 0.7
+      alignment left
+      char_height 32
+      space_width 24
+      
+      horz_align left
+      vert_align top
+      
+      left -240
+      width 420
+      height 480
+      
+    }
+  } 
+  
+  // -- Preparation Sheet --
+  container Panel(UI/Containers/Prepare)
+  {
+    metrics_mode pixels
+    
+    horz_align left
+    vert_align middle
+  
+    left 10
+    top -240
+    
+    element TextArea(UI/Text/Prepare)
+    {
+      metrics_mode pixels
+      
+      font_name SdkTrays/Caption
+      colour 0.9 0.9 0.9
+      colour_bottom 0.7 0.7 0.7
+      alignment left
+      char_height 32
+      space_width 24
+      
+      horz_align left
+      vert_align top
+      
+      left 0
+      width 420
+      height 480
+      
+    }
+  }  
+    
+  // -- Score Sheet -- 
+  container Panel(UI/Containers/Score)
+  {
+    metrics_mode relative
+    
+    horz_align left
+    vert_align top
+    
+    width 0.6
+    left 0.25
+    top 0.25
+    
+    element TextArea(UI/Text/Score/Caption)
+    {
+      metrics_mode pixels
+      
+      font_name SdkTrays/Caption
+      colour 1 1 1
+      colour_bottom 0.5 0.5 0.5
+      alignment left
+      char_height 64
+      space_width 32
+      
+      horz_align left
+      vert_align top
+      
+      caption You Won!
+    }
+    
+    element TextArea(UI/Text/Score/Stats)
+    {
+      metrics_mode pixels
+      
+      font_name SdkTrays/Caption
+      colour 1 1 1
+      colour_bottom 0.5 0.5 0.5
+      alignment left
+      char_height 32
+      space_width 16
+      
+      horz_align left
+      vert_align top
+      
+      left 20
+      top 20
+    }
+  }   
 }
+
+
+

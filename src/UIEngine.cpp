@@ -32,7 +32,7 @@ namespace Pixy {
     mCarouselPlace = 0.0f;
     mRendererMenu = 0;
     mCurrentButton = 0;
-    fConfiguring = false;
+    inConfigMenu = false;
 	}
 	
 	UIEngine::~UIEngine() {
@@ -158,7 +158,7 @@ namespace Pixy {
     
     inZoneScreen = false;
     inMainMenu = false;
-    fConfiguring = false;
+    inConfigMenu = false;
     fShowingHelp = false;
     
     mLog->debugStream() << "set up!";
@@ -173,7 +173,7 @@ namespace Pixy {
 		
 		Ogre::ResourceGroupManager& mRGM = Ogre::ResourceGroupManager::getSingleton();
 		Ogre::StringVectorPtr tZones = mRGM.findResourceNames("General", "*.vzs", false);
-		//while (!itrZones.isNull()) {
+
 		for (Ogre::StringVector::iterator itrZones = tZones->begin(); 
 		     itrZones != tZones->end(); 
 		     ++itrZones)
@@ -189,41 +189,12 @@ namespace Pixy {
 		  mUIZone->setZone(new Zone(mUIZone->getInfo()["Path"]));
 		  mUIZones.push_back(mUIZone);
 		}
-		
-		/*mUIZone = new UIZone();
-		mUIZone->getInfo()["Path"] = "twilight_meadow.vzs";
-		mUIZone->setZone(new Zone(mUIZone->getInfo()["Path"]));
-		mUIZones.push_back(mUIZone);
-		
-		mUIZone = new UIZone();
-		mUIZone->getInfo()["Path"] = "toxicity.vzs";
-		mUIZone->setZone(new Zone(mUIZone->getInfo()["Path"]));
-		mUIZones.push_back(mUIZone);
 
-    //for (int i =0; i < 6; ++i) {
-		mUIZone = new UIZone();
-		mUIZone->getInfo()["Path"] = "dante_afterlife.vzs";
-		mUIZone->setZone(new Zone(mUIZone->getInfo()["Path"]));
-		mUIZones.push_back(mUIZone);
-		//}
-		*/
 		return true;
 	}
 	
 	bool UIEngine::deferredSetup() {
-		
-		
-		_currentState = GameManager::getSingleton().currentState();
-		//_refit(_currentState);
-		//refitOverlays();
-		
-		if (_currentState->getId() == STATE_GAME) {
-		  //mSphere = Level::getSingletonPtr()->getSphere();
-		  
-		  
-		  	
-		}
-		
+
 		return true;
 	}
 	
@@ -258,22 +229,14 @@ namespace Pixy {
 		
 		if (_currentState->getId() != STATE_INTRO)
 		  return;
-		 
-		/*if (mTitleLabel->getTrayLocation() != TL_NONE &&
-			  orientedEvt.state.Z.rel != 0 && mZoneMenu->getNumItems() != 0)
-		{
-			int newIndex = mZoneMenu->getSelectionIndex() - orientedEvt.state.Z.rel / Ogre::Math::Abs(orientedEvt.state.Z.rel);
-			mZoneMenu->selectItem(Ogre::Math::Clamp<int>(newIndex, 0, mZoneMenu->getNumItems() - 1));
-		} */  	
+
 	}
 	
 	void UIEngine::mousePressed( const OIS::MouseEvent &e, OIS::MouseButtonID id ) {
 	  OIS::MouseState state = e.state;
 	  OIS::MouseEvent orientedEvt((OIS::Object*)e.device, state);
 	  if (mTrayMgr->injectMouseDown(orientedEvt, id)) return;
-	  
-	  if (_currentState->getId() != STATE_INTRO)
-		  return;
+
 		  
 	}
 	
@@ -286,9 +249,7 @@ namespace Pixy {
 	}
 	
 	void UIEngine::keyPressed( const OIS::KeyEvent &e ) {
-	
 
-	  //}
 	};
 	void UIEngine::keyReleased( const OIS::KeyEvent &e ) {
 
@@ -303,10 +264,10 @@ namespace Pixy {
       }
       return;
     }
-	  //if (mTrayMgr->isDialogVisible() && (e.key == OIS::KC_ESCAPE || e.key == OIS::KC_RETURN)) {
+
 	  if (fShowingHelp && (e.key == OIS::KC_ESCAPE || e.key == OIS::KC_RETURN)) {
-	    //mTrayMgr->closeDialog();
-	    mUISheetHelp->hide();
+
+	    mUIHelp->hide();
 	    mDialogShade->hide();
 	    mShadeLayer->hide();
 	    fShowingHelp = false;
@@ -368,7 +329,7 @@ namespace Pixy {
             this->_refit(Level::getSingletonPtr());
             return GameManager::getSingleton().popState();
           }
-        } else if (fConfiguring) {
+        } else if (inConfigMenu) {
           // going back from config screen to main menu
           _hideConfigMenu();
           _showMainMenu();
@@ -398,8 +359,6 @@ namespace Pixy {
 		int button_width = mViewport->getActualWidth() / 5;
 		
 		// create main navigation tray
-		//mTrayMgr->showLogo(TL_BOTTOM);
-		//mTrayMgr->createSeparator(TL_BOTTOM, "LogoSep");
 		mTrayMgr->createButton(TL_BOTTOM, "PlayResume", Level::getSingleton().running() ? "Resume" : "Play", button_width);
 		mTrayMgr->createButton(TL_BOTTOM, "Configure", "Settings", button_width);
 		mTrayMgr->createButton(TL_BOTTOM, "Help", "Help", button_width);
@@ -408,7 +367,7 @@ namespace Pixy {
 		// create zone screen tray
 		mTextBoxZoneInfo = mTrayMgr->createTextBox(TL_NONE, "ZoneInfo", "Zone Information", 450, 400);
 		mTrayMgr->createButton(TL_NONE, "Engage", "Engage", button_width);
-		mTrayMgr->createLabel(TL_NONE, "ChooseZoneLabel", "Choose a Zone", mViewport->getActualWidth()/2);
+		mTrayMgr->createLabel(TL_NONE, "ZoneTitle", "Choose a Zone", mViewport->getActualWidth()/2);
 		mTrayMgr->createButton(TL_NONE, "NextZone", "next");
 		mTrayMgr->createButton(TL_NONE, "PrevZone", "previous");
 		mTrayMgr->createButton(TL_NONE, "BackFromZones", "Go Back", button_width);
@@ -449,11 +408,8 @@ namespace Pixy {
 		}
 		mRendererMenu->setItems(rsNames);
 
-		//populateZoneMenu();
 	}
-	
-	void UIEngine::populateZoneMenu() {
-	};
+
 		
   void UIEngine::buttonHit(Button* b) {
     if (GameManager::getSingleton().getSettings()["Sound Enabled"] == "Yes") {
@@ -534,7 +490,6 @@ namespace Pixy {
 		    }
 	    }
 
-	    //windowResized(mWindow);
     }
   }
   
@@ -558,104 +513,95 @@ namespace Pixy {
 	}
 	
 	void UIEngine::hideMenu() {
-	  //mUILogo->hide();
-	  //mTrayMgr->hideLogo();
+
 	  mTrayMgr->hideCursor();
-	  //mTrayMgr->removeWidgetFromTray("LogoSep");
-	  
 	  _hideMainMenu();
-	  
 	  _hideZones();
-	  //mTrayMgr->clearAllTrays();
-	  if (fConfiguring)
+	  if (inConfigMenu)
 	    _hideConfigMenu();
-    //_hideConfigMenu();
     
+    mUISheet->hide();
+    
+    // return everything to what it was
     if (Level::getSingleton().running()) {
 	    Level::getSingleton()._showEverything();
 	  }
 	  
+	  // and tell who's interested that we resumed the game
 	  EventManager::getSingleton().hook(EventManager::getSingleton().createEvt("GameShown"));
-	  
-	  /*GfxEngine::getSingletonPtr()->getViewport()->setAutoUpdated(true);
-	  GfxEngine::getSingletonPtr()->getViewport()->clear();*/	  
 	};
 	
 	void UIEngine::showMenu() {
     
+    // tell who's interested that we paused the game
     EventManager::getSingleton().hook(EventManager::getSingleton().createEvt("MenuShown"));
     
+    // hide the scene
     if (Level::getSingleton().running()) {
 	    Level::getSingleton()._hideEverything();
 	  }
 	  
     mTrayMgr->showCursor();
-	  //mTrayMgr->showLogo(TL_BOTTOM);
-	  //mTrayMgr->moveWidgetToTray("LogoSep", TL_BOTTOM);
 	  _showMainMenu();
 	  
-	  mUISheetWin->hide();
-	  mUISheetLoss->hide();
-	  
-	  /*GfxEngine::getSingletonPtr()->getViewport()->setAutoUpdated(false);
-	  GfxEngine::getSingletonPtr()->getViewport()->clear();*/
+	  mUISheet->show();
+	  mUIScore->hide();
+	  mUIPrepare->hide();
+	  mUIHelp->hide();
 	};
+	
 	void UIEngine::_hideMainMenu() {
-	  //mTrayMgr->hideAll();
+
 		mTrayMgr->removeWidgetFromTray("PlayResume");
 		mTrayMgr->removeWidgetFromTray("Configure");
 		mTrayMgr->removeWidgetFromTray("Help");
 		mTrayMgr->removeWidgetFromTray("Quit");
-		inMainMenu = false;
-	  //mShadeLayer->hide();
-	  //mDialogShade->hide();
 	  mUILogo->hide();
 	  
-
+		inMainMenu = false;
 	};
 	
 	void UIEngine::_showMainMenu() {
-	  //mTrayMgr->showAll();
-
 	  inMainMenu = true;
 	  
+    mUILogo->show();		
 		mTrayMgr->moveWidgetToTray("PlayResume", TL_BOTTOM);
 		mTrayMgr->moveWidgetToTray("Configure", TL_BOTTOM);
 		mTrayMgr->moveWidgetToTray("Help", TL_BOTTOM);
 		mTrayMgr->moveWidgetToTray("Quit", TL_BOTTOM);
-	
 	  
+	  // assign a default button
 	  if (mCurrentButton)
       mCurrentButton->_stopFlashing();
 	  mCurrentButton = static_cast<OgreBites::Button*>(mTrayMgr->getWidget("PlayResume"));
 	  mCurrentButton->_doFlash();
-	  //mDialogShade->show();
-	  //mShadeLayer->show();
-	  mUILogo->show();
-	  
 
 	};
 	
 	void UIEngine::assignHandles() {
-		mUISheet = mOverlayMgr->getByName("Vertigo/UI");
-		mUIScore = mUISheet->getChild("UI/TimerContainer")->getChild("UI/Timer");
-		
-		mUISheetLoss = mOverlayMgr->getByName("Vertigo/UI/Loss");
-		mUISheetWin = mOverlayMgr->getByName("Vertigo/UI/Win");
-		mUISheetPrepare = mOverlayMgr->getByName("Vertigo/UI/Prepare");
-		mUISheetHelp = mOverlayMgr->getByName("Vertigo/UI/Help");
-		
-		mFireShield = mUISheet->getChild("UI/FireShieldContainer")->getChild("UI/FireShield");
-		mIceShield = mUISheet->getChild("UI/IceShieldContainer")->getChild("UI/IceShield");
-		
-		mUILogo = mOverlayMgr->getByName("Vertigo/UI/Intro/Logo");
-	};
 	
-	void UIEngine::setupOverlays() {
-	  mUISheet->show();
-		mUISheetLoss->hide();
-		mUISheetWin->hide();
-		mUISheetPrepare->show();
+		mHUDSheet = mOverlayMgr->getByName("Vertigo/HUD");
+		mHUDScore = mHUDSheet->getChild("HUD/Containers/Score")->getChild("HUD/Elements/Score");
+
+		mHUDFireShield = mHUDSheet->getChild("HUD/Containers/FireShield")->getChild("HUD/Elements/FireShield");
+		mHUDIceShield = mHUDSheet->getChild("HUD/Containers/IceShield")->getChild("HUD/Elements/IceShield");
+		
+		mUISheet = mOverlayMgr->getByName("Vertigo/UI");
+		mUIPrepare = mUISheet->getChild("UI/Containers/Prepare");
+		mUIHelp = mUISheet->getChild("UI/Containers/Help");
+		mUIScore = mUISheet->getChild("UI/Containers/Score");
+		mUILogo = mUISheet->getChild("UI/Containers/Logo");
+		
+		using Ogre::TextAreaOverlayElement;
+		mTextPrepare = static_cast<TextAreaOverlayElement*>
+		  (mUIPrepare->getChild("UI/Text/Prepare"));
+		mTextHelp = static_cast<TextAreaOverlayElement*>
+		  (mUIHelp->getChild("UI/Text/Help"));
+		mTextScoreCaption = static_cast<TextAreaOverlayElement*>
+		  (mUIScore->getChild("UI/Text/Score/Caption"));  
+		mTextScoreStats = static_cast<TextAreaOverlayElement*>
+		  (mUIScore->getChild("UI/Text/Score/Stats"));
+    
 		
 		
 	};
@@ -668,196 +614,214 @@ namespace Pixy {
 		int height = mViewport->getActualHeight();
 		float aspect_ratio = width / height;
 		
-		//if (_currentState->getId() == STATE_INTRO) {
-		//((Ogre::OverlayContainer*)mTrayMgr->getWidget("ChooseZoneLabel")->getOverlayElement())->setHorizontalAlignment(Ogre::GHA_CENTER);
-		  Ogre::TextAreaOverlayElement* label = static_cast<Ogre::TextAreaOverlayElement*>(((Ogre::OverlayContainer*)mTrayMgr->getWidget("ChooseZoneLabel")->getOverlayElement())->getChild("ChooseZoneLabel/LabelCaption")); 
-		  label->setCharHeight(mViewport->getActualHeight() / 12);
-		  label->setHorizontalAlignment(Ogre::GHA_CENTER);
-		  label->setAlignment(Ogre::TextAreaOverlayElement::Center);
+		/* --------- UI / Intro sheets section --------- */
 		
-		  // resize the logo to span a 1/2 of the viewport's height, since it's a regular
-		  // rectangle, then we use the same dimension for both width and height
-		  mUILogo->getChild("UI/Intro/Logo")->setWidth(height / 2);
-		  mUILogo->getChild("UI/Intro/Logo")->setHeight(height / 2);
-		  mUILogo->getChild("UI/Intro/Logo")->setTop(height / 5);
-		  mUILogo->getChild("UI/Intro/Logo")->setLeft(-1 * (height / 4) - (height / 18));
+		// resize our Zone title label, center it and set it to span 1/12 of the height of the viewport
+	  Ogre::TextAreaOverlayElement* label = static_cast<Ogre::TextAreaOverlayElement*>(((Ogre::OverlayContainer*)mTrayMgr->getWidget("ZoneTitle")->getOverlayElement())->getChild("ZoneTitle/LabelCaption")); 
+	  label->setCharHeight(mViewport->getActualHeight() / 12);
+	  label->setHorizontalAlignment(Ogre::GHA_CENTER);
+	  label->setAlignment(Ogre::TextAreaOverlayElement::Center);
+	
+	  // resize the logo to span a 1/2 of the viewport's height, since it's a regular
+	  // rectangle, then we use the same dimension for both width and height
+	  mUILogo->setWidth(height / 2);
+	  mUILogo->setHeight(height / 2);
+	  mUILogo->setTop(height / 5);
+	  mUILogo->setLeft(-1 * (height / 4) - (height / 18));
+	
+	
+	  // resize all our buttons to 1/16 of viewport height
+	  mTrayMgr->getWidget("PlayResume")->getOverlayElement()->setHeight(height / 16);
+	  mTrayMgr->getWidget("Configure")->getOverlayElement()->setHeight(height / 16);
+	  mTrayMgr->getWidget("Help")->getOverlayElement()->setHeight(height / 16);
+	  mTrayMgr->getWidget("Quit")->getOverlayElement()->setHeight(height / 16);
+	  mTrayMgr->getWidget("Apply")->getOverlayElement()->setHeight(height / 16);
+	  mTrayMgr->getWidget("BackFromConfig")->getOverlayElement()->setHeight(height / 16);
+	  mTrayMgr->getWidget("Engage")->getOverlayElement()->setHeight(height / 16);
+	  mTrayMgr->getWidget("BackFromZones")->getOverlayElement()->setHeight(height / 16);
+	
+	  mTrayMgr->adjustTrays();
+	  
+	  // scale overlays' font size
+    //float font_size = 32 / aspect_ratio;
+    mTextPrepare->setCharHeight(mTextPrepare->getCharHeight() / aspect_ratio);
+    mTextHelp->setCharHeight(mTextHelp->getCharHeight() / aspect_ratio);
+    mTextScoreCaption->setCharHeight(mTextScoreCaption->getCharHeight() / aspect_ratio);
+    mTextScoreStats->setCharHeight(mTextScoreStats->getCharHeight() / aspect_ratio);
+    
+
+		/* --------- HUDs section --------- */
 		
-		  //mTrayMgr->getWidget("Vertigo/Intro/Logo")->getOverlayElement()->setHeight(height / 12);
-		  //mTrayMgr->getWidget("Vertigo/Intro/Logo")->getOverlayElement()->setWidth(height / 12);
-		
-		  // resize all our buttons to 1/16 of viewport height
-		  mTrayMgr->getWidget("PlayResume")->getOverlayElement()->setHeight(height / 16);
-		  mTrayMgr->getWidget("Configure")->getOverlayElement()->setHeight(height / 16);
-		  mTrayMgr->getWidget("Help")->getOverlayElement()->setHeight(height / 16);
-		  mTrayMgr->getWidget("Quit")->getOverlayElement()->setHeight(height / 16);
-		  mTrayMgr->getWidget("Apply")->getOverlayElement()->setHeight(height / 16);
-		  mTrayMgr->getWidget("BackFromConfig")->getOverlayElement()->setHeight(height / 16);
-		  mTrayMgr->getWidget("Engage")->getOverlayElement()->setHeight(height / 16);
-		  mTrayMgr->getWidget("BackFromZones")->getOverlayElement()->setHeight(height / 16);
-		
-		  mTrayMgr->adjustTrays();
-		//} else {
-		
-		  //mShieldBarWidth = mUISheet->getChild("UI/FireShieldContainer")->getChild("UI/FireShield")->getWidth();
-		  mShieldBarWidth = mViewport->getActualWidth() / 3;
-		  mUISheet->getChild("UI/FireShieldContainer")->setWidth(mShieldBarWidth);
-		  mUISheet->getChild("UI/FireShieldContainer")->getChild("UI/FireShield")->setWidth(mShieldBarWidth);
-		
-		  /*mUISheet->getChild("UI/FireShieldContainer")->setHeight(64.0f / aspect_ratio);
-		  mUISheet->getChild("UI/FireShieldContainer")->getChild("UI/FireShield")->setHeight(64.0f / aspect_ratio);*/
-		
-		  mUISheet->getChild("UI/IceShieldContainer")->setWidth(mShieldBarWidth);
-		  mUISheet->getChild("UI/IceShieldContainer")->setLeft(-1*mShieldBarWidth);
-		  mUISheet->getChild("UI/IceShieldContainer")->getChild("UI/IceShield")->setWidth(mShieldBarWidth);
-		  mUISheet->getChild("UI/IceShieldContainer")->getChild("UI/IceShield")->setLeft(-1*mShieldBarWidth);
-		
-      // scale overlays' font size
-      
-      TextAreaOverlayElement* mTOverlay;
-      float font_size = 32 / aspect_ratio;
-      static_cast<TextAreaOverlayElement*>(
-        mOverlayMgr->getByName("Vertigo/UI/Prepare")->
-                     getChild("UI/Containers/Prepare")->
-                     getChild("UI/Text/Prepare"))->setCharHeight(font_size);
-      static_cast<TextAreaOverlayElement*>(
-        mOverlayMgr->getByName("Vertigo/UI/Loading")->
-                     getChild("UI/Containers/Loading")->
-                     getChild("UI/Text/Loading"))->setCharHeight(font_size);
-      static_cast<TextAreaOverlayElement*>(
-        mOverlayMgr->getByName("Vertigo/UI/Loss")->
-                     getChild("UI/Containers/Loss")->
-                     getChild("UI/Text/Loss"))->setCharHeight(font_size);
-      static_cast<TextAreaOverlayElement*>(
-        mOverlayMgr->getByName("Vertigo/UI/Win")->
-                     getChild("UI/Containers/Win")->
-                     getChild("UI/Text/Win"))->setCharHeight(font_size);
-      static_cast<TextAreaOverlayElement*>(
-        mOverlayMgr->getByName("Vertigo/UI/Help")->
-                     getChild("UI/Containers/Help")->
-                     getChild("UI/Text/Help"))->setCharHeight(font_size);
-                     
-    //};
+		// our shield bars should span 1/3 of the width of the viewport
+	  mShieldBarWidth = mViewport->getActualWidth() / 3;
+	  mHUDSheet->getChild("HUD/Containers/FireShield")->setWidth(mShieldBarWidth);
+	  mHUDSheet->getChild("HUD/Containers/FireShield")->getChild("HUD/Elements/FireShield")->setWidth(mShieldBarWidth);
+	
+	  // since our ice shield is on the right side of the screen, and we shrink
+	  // it inwards, we have to tune its left position
+	  mHUDIceShield->getParent()->setWidth(mShieldBarWidth);
+	  mHUDIceShield->getParent()->setLeft(-1*mShieldBarWidth);
+	  mHUDIceShield->setWidth(mShieldBarWidth);
+	  mHUDIceShield->setLeft(-1*mShieldBarWidth);
+
 	};
 	
 	void UIEngine::_updateShields() {
+	
     using namespace Ogre;
     Sphere* mSphere = Level::getSingleton().getSphere();
+    
+    // in the Dodgy game mode, there is only 1 bar and it's centered
+    // so we don't need to tune the left positioning of the ice shield
+    // nor update them both
+    // TODO: why am i updating both shields??
     if (Level::getSingleton().currentZone()->getSettings().mMode == DODGY) {
       OverlayElement* mElement = (mSphere->shield() == FIRE) 
-        ? mFireShield
-        : mIceShield;
+        ? mHUDFireShield
+        : mHUDIceShield;
       
-      float step = mElement->getWidth();
       mElement->setWidth(mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
-      step -= mElement->getWidth();
-      
-      //if (mElement->getHorizontalAlignment() == Ogre::GHA_RIGHT)
-      //if (mElement == mIceShield) {
-      //  mElement->setLeft(mElement->getLeft() - step);
-     // }
+
     } else {
       for (int i=0; i < 2; ++i) {
         SHIELD tShield = (i == 0) ? FIRE : ICE;
         
         OverlayElement* mElement = (tShield == FIRE) 
-          ? mFireShield
-          : mIceShield;
+          ? mHUDFireShield
+          : mHUDIceShield;
         
         mElement->setWidth(mShieldBarWidth * (mSphere->getShieldState(tShield) / 1000.0f));
         
+        // adjust the iceshield's left position
         if (mElement->getHorizontalAlignment() == Ogre::GHA_RIGHT)
           mElement->setLeft(-1 * mElement->getWidth());
       }
     }
-    // update the player's score
-    mUIScore->setCaption(stringify(mSphere->score()));
     
-    //mLog->debugStream() << "updating UI, element's new width: " << mElement->getWidth();  
-    //mElement->setCaption(String(stringify(mSphere->getShieldState())));	
+    // update the player's score
+    mHUDScore->setCaption(stringify(mSphere->score()));
 	};
 	
 	void UIEngine::_hideHUDs() {
-	  mUISheet->hide();
+	  mHUDSheet->hide();
 	};
 	
 	void UIEngine::_showHUDs() {
-	  mUISheet->show();
+	  mHUDSheet->show();
 	};
 	
 	bool UIEngine::evtSphereDied(Event* inEvt) {
-	  mUISheetLoss->show();
+	  mTextScoreCaption->setCaption("You have LOST");
+
+	  Sphere *mSphere = Level::getSingleton().getSphere();
+	  double accuracy = (mSphere->getNrHits() / (mSphere->getNrMisses() + mSphere->getNrHits())) * 100;
+	  std::ostringstream msg;
+	  msg << "\n\nScore: " << stringify(mSphere->score())
+	      << "\nAccuracy: " << stringify( accuracy ) << "%"
+	      << "\nTime survived: "
+	      << stringify( Level::getSingleton().currentZone()->getTimeElapsed() )
+	      << " seconds";
+	  mTextScoreStats->setCaption(msg.str());
+    
+    mLog->debugStream() << "sphere misses: " << mSphere->getNrMisses()
+    << ", hits " << mSphere->getNrHits()
+    << ", accuracy: " << accuracy;
+    
+    mUISheet->show();
+	  mUIScore->show();
 	  return true;
 	};
 	
 	
 	bool UIEngine::evtPlayerWon(Event* inEvt) {
-	  mUISheetWin->show();
+	  mTextScoreCaption->setCaption("Congratulations! You have WON");
+	  
+	  Sphere *mSphere = Level::getSingleton().getSphere();
+	  double accuracy = (mSphere->getNrHits() * 1.0f / (mSphere->getNrMisses() + mSphere->getNrHits()) ) * 100.f;
+	  
+	  std::ostringstream msg;
+	  msg << "\n\nScore: " << stringify(mSphere->score())
+	      << "\nAccuracy: " << stringify( accuracy ) << "%"
+	      << "\nTime survived: "
+	      << stringify( Level::getSingleton().currentZone()->getTimeElapsed() )
+	      << " seconds";
+	  mTextScoreStats->setCaption(msg.str());
+	  
+	  mLog->debugStream() << "sphere misses: " << mSphere->getNrMisses()
+    << ", hits " << mSphere->getNrHits()
+    << ", accuracy: " << accuracy;
+    
+	  mUISheet->show();
+	  mUIScore->show();
+	  
 	  return true;
 	};
 	
 	bool UIEngine::evtGameStarted(Event* inEvt) {  
 	  mDialogShade->hide();
 	  mShadeLayer->hide();
-	  mUISheetPrepare->hide();
-	  mUISheetWin->hide();
-	  mUISheetLoss->hide();
+	  mUIPrepare->hide();
+	  mUIScore->hide();
 	  
 	  // if it's dodgy mode, we have to hide one of the shield HUDs since
 	  // the player will be using only one of them
 	  Sphere* mSphere = Level::getSingleton().getSphere();
 	  Ogre::Viewport* mViewport = mWindow->getViewport(0);
 
-    mUISheet->getChild("UI/FireShieldContainer")->setWidth(mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
-    mUISheet->getChild("UI/IceShieldContainer")->setWidth(mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
-    	  
+    // we divide by 1000 because the shield's normal starting value is 1000
+    mHUDFireShield->getParent()->setWidth(mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
+    mHUDIceShield->getParent()->setWidth(mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
+
+    // if it's dodgy mode, we have to hide one of the bars, and center the other
+    // keep in mind that each bar has 2 elements: the background and the foreground
 	  if (Level::getSingleton().currentZone()->getSettings().mMode == DODGY) {
 	    
 	    if (mSphere->shield() == FIRE) {
 	      // hide the ice shield HUD
-	      mIceShield->hide();
-	      mUISheet->getChild("UI/IceShieldContainer")->hide();
-	      //mUISheet->getChild("UI/FireShieldContainer")->setWidth(mShieldBarWidth);
+	      mHUDIceShield->getParent()->hide();
+	      mHUDIceShield->hide();
+	      
+	      mHUDFireShield->show();
+	      mHUDFireShield->getParent()->show();
 	      
 	      // resize the background of the shield hud
-	      mFireShield->show();
-	      mUISheet->getChild("UI/FireShieldContainer")->show();
+	      float pos = (mViewport->getActualWidth() - mHUDFireShield->getParent()->getWidth()) / 2;
 	      
-	      float pos = (mViewport->getActualWidth() - mUISheet->getChild("UI/FireShieldContainer")->getWidth()) / 2;
-        mUISheet->getChild("UI/FireShieldContainer")->setLeft(pos);
-        mFireShield->setLeft(0);
-        
-	      // and center them both
-	      //mFireShield->setHorizontalAlignment(Ogre::GHA_CENTER);
-	      //mUISheet->getChild("UI/FireShieldContainer")->setHorizontalAlignment(Ogre::GHA_CENTER);
+	      // center them both
+	      // TODO: why not use Ogre's overlay alignment scheme?
+        mHUDFireShield->getParent()->setLeft(pos);
+        mHUDFireShield->setLeft(0);
 	      
 	    } else {
 	      // hide the fire one
-	      mFireShield->hide();
-	      mUISheet->getChild("UI/FireShieldContainer")->hide();
+	      mHUDFireShield->hide();
+	      mHUDFireShield->getParent()->hide();
 	      
-	      mIceShield->show();
-	      mUISheet->getChild("UI/IceShieldContainer")->show();
+	      mHUDIceShield->getParent()->show();
+	      mHUDIceShield->show();
 	      
 	      // and set the ice ones into their new positions
-	      float pos = (mViewport->getActualWidth() - mUISheet->getChild("UI/IceShieldContainer")->getWidth()) / 2;
+	      // NOTE: this is weird, i myself don't get why it's working this way
+	      float pos = (mViewport->getActualWidth() - mHUDIceShield->getParent()->getWidth()) / 2;
 	      pos *= -1;
-	      pos -= mUISheet->getChild("UI/IceShieldContainer")->getWidth();
-        mUISheet->getChild("UI/IceShieldContainer")->setLeft(pos);
-        mIceShield->setLeft(-1 * mUISheet->getChild("UI/IceShieldContainer")->getWidth());
+	      pos -= mHUDIceShield->getParent()->getWidth();
+        mHUDIceShield->getParent()->setLeft(pos);
+        mHUDIceShield->setLeft(-1 * mHUDIceShield->getParent()->getWidth());
 	    }
 	  } else {
 	    // reset positions of the shields
-	    mUISheet->getChild("UI/FireShieldContainer")->setLeft(0);
-	    mFireShield->setLeft(0);
+	    mHUDFireShield->getParent()->setLeft(0);
+	    mHUDFireShield->setLeft(0);
 	    
-	    mUISheet->getChild("UI/IceShieldContainer")->setLeft(-1 * mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
-	    mIceShield->setLeft(-1 * mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
+	    mHUDIceShield->getParent()->setLeft(-1 * mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
+	    mHUDIceShield->setLeft(-1 * mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
 	    
-	    mUISheet->getChild("UI/FireShieldContainer")->show();
-	    mUISheet->getChild("UI/IceShieldContainer")->show();
+	    // and show them
+	    mHUDFireShield->getParent()->show();
+	    mHUDFireShield->show();
 	    
-	    mIceShield->show();
-	    mFireShield->show();
+	    mHUDIceShield->getParent()->show();
+	    mHUDIceShield->show();
 	  }
 
 	  _updateShields();
@@ -875,37 +839,33 @@ namespace Pixy {
 	          << "\nYour objective is to reach the last \nportal with both shields functional."
 	          << "\n\nControls:"
 	          << "\nFlip shields by pressing SPACE BAR."
-	          << "\nYou can also move to the left and right\nby pushing A and D.";
+	          << "\nYou can also move to the left and\nright by pushing A and D.";
 	      break;
 	    case DODGY:
 	      msg << "Dodgy\n"
-	          << "\nOnly one of your shields is functional,\n you MUST dodge one kind of hazards."
+	          << "\nOnly one of your shields is functional,\nyou MUST dodge one kind of hazards."
 	          << "\n\nControls:"
-	          << "\nYou can move to the left and right\nby pushing A and D.";
+	          << "\nYou can move to the left and\nright by pushing A and D.";
 	      break;
 	    case SURVIVAL:
 	      msg << "Survival\n"
-	          << "\nBoth of your shields are active and your mission"
-	          << "\nis to explore as much as you can by surviving."
+	          << "\nBoth of your shields are active and\n your mission"
+	          << "is to explore as much\nas you can by surviving."
 	          << "\n\nControls:"
 	          << "\nFlip shields by pressing SPACE BAR."
-	          << "\nYou can also move to the left and right by pushing A and D.";
+	          << "\nYou can also move to the left and\nright by pushing A and D.";
 	      break;
 	  }
 	  msg << "\n\nPress ENTER when ready!";
 	  
-	  Ogre::OverlayElement* tText = static_cast<Ogre::OverlayElement*>(mUISheetPrepare->getChild("UI/Containers/Prepare")->getChild("UI/Text/Prepare"));
-	  tText->setCaption(msg.str());
-	  //tText->setMetricsMode(Ogre::GMM_PIXELS);
-	  /*Ogre::Viewport* mViewport = mWindow->getViewport(0);
-	  tText->setTop(mViewport->getActualHeight() / 2 - ((tText->getHeight() * mViewport->getActualHeight()) / 2));
-	  tText->setLeft(mViewport->getActualWidth() / 2 - (tText->getWidth() * mViewport->getActualWidth() / 2));*/
+	  
+	  mTextPrepare->setCaption(msg.str());
 	  mDialogShade->show();
 	  mShadeLayer->show();
-	  mUISheet->show();
-	  mUISheetPrepare->show();
-	  mUISheetWin->hide();
-	  mUISheetLoss->hide();
+    mUISheet->show();
+	  mUIPrepare->show();
+	  //mTextPrepare->show();
+	  
 	  return true;
 	};
 	
@@ -913,14 +873,9 @@ namespace Pixy {
 	  if (mTrayMgr->areFrameStatsVisible())
 	    mTrayMgr->hideFrameStats();
 	  else
-	    mTrayMgr->showFrameStats(OgreBites::TL_TOPLEFT);
+	    mTrayMgr->showFrameStats(OgreBites::TL_TOPRIGHT);
 	};
 	
-  void UIEngine::showDialog(const std::string& inCaption, const std::string& inMessage) {
-    
-    mTrayMgr->showOkDialog(inCaption, inMessage, 450);
-
-  }
   
   // shifts from main menu to zones screen
   void UIEngine::evtClickPlay() {
@@ -931,7 +886,7 @@ namespace Pixy {
   
   // shows the video settings panel
   void UIEngine::evtClickConfigure() {
-    fConfiguring = true;
+    inConfigMenu = true;
     
 		_hideMainMenu();
 		mTrayMgr->moveWidgetToTray("Apply", TL_BOTTOM);
@@ -1018,7 +973,7 @@ namespace Pixy {
 		mTrayMgr->removeWidgetFromTray("ConfigSeparator");
 		
 		
-		fConfiguring = false;
+		inConfigMenu = false;
   };
   void UIEngine::evtClickBackFromConfig() {
 
@@ -1031,70 +986,45 @@ namespace Pixy {
 
 		//windowResized(mWindow);  
   };
-  // display a dialogue with some info on how to play the game
+
+  // display an overlay with some info on how to play the game
   void UIEngine::evtClickHelp() { 
-    //mTrayMgr->showOkDialog("How to play", mHelpMsg, 520);
-	  Ogre::OverlayElement* tText = static_cast<Ogre::OverlayElement*>
-	    (mUISheetHelp->getChild("UI/Containers/Help")->getChild("UI/Text/Help"));
-	    
-	  tText->setCaption(mHelpMsg);
+	  
+	  mTextHelp->setCaption(mHelpMsg);
 	  mDialogShade->show();
 	  mShadeLayer->show();
-	  mUISheetHelp->show();
 	  
+	  mUIHelp->show();
+	  mTextHelp->show();
 	  
 	  _hideMainMenu();
 	  
 	  fShowingHelp = true;
-	  
-    //if (mCurrentButton)
-      //mCurrentButton->_stopFlashing();
-    //mCurrentButton = static_cast<Button*>(mTrayMgr->getWidget(mTrayMgr->getName() + "/OkButton"));
-    //mCurrentButton->_doFlash();
   };
+  
   void UIEngine::evtClickQuit() {
     return GameManager::getSingleton().requestShutdown();
   };
+  
   // based on the selected zone, switches to Level state and starts the game
   void UIEngine::evtClickEngage() {
-	  // if the Level state is running, then we resume it
-	  // if it's not, then we're launching a new game
-	  UIZone* zone = mSelectedZone;//Ogre::any_cast<UIZone*>(mThumbs[mZoneMenu->getSelectionIndex()]->getUserAny());
 	  
-	  if (!zone)
+	  if (!mSelectedZone) // this shouldn't happen
 	    return;
 	  
 	  // if this is the first zone the player wants to play, just switch to it
 	  if (!Level::getSingleton().running()) {
-	    Intro::getSingleton().setSelectedZone(zone->getZone());
+	    Intro::getSingleton().setSelectedZone(mSelectedZone->getZone());
 	    return GameManager::getSingleton().changeState(Level::getSingletonPtr());
 	  } else {
-	    // if we're engaged in a zone, and the selected zone in menu is not the same
-	    // then we have to reload the game
-	    //if (Intro::getSingleton().getSelectedZone()->name() != zone->getZone()->name()) {
-	      // reset and load new level
-	      //EventManager::getSingletonPtr()->_clearQueue();
-	      
-	      Intro::getSingleton().setSelectedZone(zone->getZone());
-	      Level::getSingleton()._showEverything();
-	      Level::getSingleton().reset();
-	      //Event* mEvt = mEvtMgr->createEvt("ZoneEntered");
-	      //mEvtMgr->hook(mEvt);
-	      //this->_refit(Level::getSingletonPtr());
-	      return GameManager::getSingleton().popState();
-	   /* } else {
-	      // just resume the current level
-	      //hideMenu();
-	      this->_refit(Level::getSingletonPtr());
-	      return GameManager::getSingleton().popState();
-	    }*/
+	    // a zone was selected, engage it
+	    // Level will check for the selected zone in reset() and handle it from there
+      Intro::getSingleton().setSelectedZone(mSelectedZone->getZone());
+      Level::getSingleton()._showEverything(); // we be nice and return everything to what it was
+      Level::getSingleton().reset();
+      return GameManager::getSingleton().popState();
 		}
 		
-	  if (Level::getSingleton().running()) {
-	    
-	  } else {
-	    
-	  }
   };
   
   void UIEngine::evtClickBackFromZones() {
@@ -1118,7 +1048,7 @@ namespace Pixy {
 		mTrayMgr->moveWidgetToTray("BackFromZones", TL_BOTTOM);
 		mTrayMgr->moveWidgetToTray("PrevZone", TL_LEFT);
 		mTrayMgr->moveWidgetToTray("NextZone", TL_RIGHT);
-		mTrayMgr->moveWidgetToTray("ChooseZoneLabel", TL_TOP);
+		mTrayMgr->moveWidgetToTray("ZoneTitle", TL_TOP);
     //mTrayMgr->moveWidgetToTray("ZoneInfo", TL_LEFT);
     //mTextBoxZoneInfo->show();		
 
@@ -1160,7 +1090,7 @@ namespace Pixy {
     //mSelectedZone->getZone()->engage();
     GfxEngine::getSingletonPtr()->getSM()->getRootSceneNode()->addChild(mSelectedZone->getZone()->firstTunnel()->getNode());
     //mTextBoxZoneInfo->setText(mSelectedZone->getInfo()["Description"]);
-    static_cast<OgreBites::Label*>(mTrayMgr->getWidget("ChooseZoneLabel"))->setCaption(mSelectedZone->getZone()->name());
+    static_cast<OgreBites::Label*>(mTrayMgr->getWidget("ZoneTitle"))->setCaption(mSelectedZone->getZone()->name());
   };
   // navigate to the previous zone in the list, and preview it
   void UIEngine::_prevZone() {
@@ -1191,7 +1121,7 @@ namespace Pixy {
 		  Level::getSingleton().getTunnel()->getNode()->setVisible(true);
 		}*/
 
-		mTrayMgr->removeWidgetFromTray("ChooseZoneLabel");
+		mTrayMgr->removeWidgetFromTray("ZoneTitle");
 		mTrayMgr->removeWidgetFromTray("Engage");
 		mTrayMgr->removeWidgetFromTray("BackFromZones");
 		mTrayMgr->removeWidgetFromTray("PrevZone");

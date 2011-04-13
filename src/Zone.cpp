@@ -26,6 +26,7 @@ namespace Pixy {
     mSettings.fFixedSpawnPosition = false;
     
     mCurrentTunnelNr = 0;
+    mTimeElapsed = 0;
     
     mEvtMgr = EventManager::getSingletonPtr();
     mLevel = Level::getSingletonPtr();
@@ -360,6 +361,7 @@ namespace Pixy {
   void Zone::update(unsigned long lTimeElapsed) {
     processEvents();
     
+    mTimeElapsed += lTimeElapsed;
     mTunnel->update(lTimeElapsed);
   };
   
@@ -421,4 +423,6 @@ namespace Pixy {
     
     return NULL;
   };
+  
+  double Zone::getTimeElapsed() { return mTimeElapsed / 1000.0f; };
 };
