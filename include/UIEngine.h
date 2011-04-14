@@ -107,6 +107,7 @@ namespace Pixy {
 	  
 	  // shifts from main menu to zone screen
 	  void evtClickPlay();
+	  void evtClickContinue();
 	  // shows the video settings panel
 	  void evtClickConfigure();
 	  // saves the video settings

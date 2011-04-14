@@ -60,10 +60,10 @@
 * add survival mode (DONE)
 * add nervebreak mode (DONE)
 * add score / accuracy (DONE)
-* add text logo
-* add version
-* add resume / choose new zone button
+* add text logo (scratched) 
+* add version (done)
+* add resume / choose new zone button (done)
 * clean up unused materials, scripts etc
-* change ogre's config panel on first run
+* change ogre's config panel on first run (done)
 * pack resources
 * patcher

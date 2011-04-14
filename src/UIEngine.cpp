@@ -197,6 +197,9 @@ namespace Pixy {
 	
 	bool UIEngine::deferredSetup() {
 
+    if (Level::getSingleton().running())
+      static_cast<OgreBites::Button*>(mTrayMgr->getWidget("Play"))->setCaption("Continue");
+    
 		return true;
 	}
 	
@@ -365,7 +368,9 @@ namespace Pixy {
 		int button_width = mViewport->getActualWidth() / 5;
 		
 		// create main navigation tray
-		mTrayMgr->createButton(TL_BOTTOM, "PlayResume", Level::getSingleton().running() ? "Resume" : "Play", button_width);
+		mTrayMgr->createButton(TL_BOTTOM, "Play", "Play", button_width);
+		mTrayMgr->createButton(TL_NONE, "Continue", "Continue", button_width);
+		mTrayMgr->createButton(TL_NONE, "ChangeZone", "Change Zone", button_width);
 		mTrayMgr->createButton(TL_BOTTOM, "Configure", "Settings", button_width);
 		mTrayMgr->createButton(TL_BOTTOM, "Help", "Help", button_width);
 		mTrayMgr->createButton(TL_BOTTOM, "Quit", "Quit", button_width);
@@ -437,9 +442,11 @@ namespace Pixy {
 		{
 		  evtClickApply();
 		}
-		else if (b->getName() == "PlayResume") {
+		else if (b->getName() == "Play" || b->getName() == "ChangeZone")
 		  evtClickPlay();
-		} else if (b->getName() == "Quit") {
+		else if (b->getName() == "Continue")
+		  evtClickContinue();
+		else if (b->getName() == "Quit") {
 		  evtClickQuit();
 		  
 		} else if(b->getName() == "Help") {
@@ -560,7 +567,13 @@ namespace Pixy {
 	
 	void UIEngine::_hideMainMenu() {
 
-		mTrayMgr->removeWidgetFromTray("PlayResume");
+		
+		if (Level::getSingleton().running()) {
+		  mTrayMgr->removeWidgetFromTray("ChangeZone");
+		  mTrayMgr->removeWidgetFromTray("Continue");
+		} else
+		  mTrayMgr->removeWidgetFromTray("Play");
+		  
 		mTrayMgr->removeWidgetFromTray("Configure");
 		mTrayMgr->removeWidgetFromTray("Help");
 		mTrayMgr->removeWidgetFromTray("Quit");
@@ -575,7 +588,12 @@ namespace Pixy {
 	  
     mUILogo->show();
     mTextVersion->show();
-		mTrayMgr->moveWidgetToTray("PlayResume", TL_BOTTOM);
+		
+		if (Level::getSingleton().running()) {
+		  mTrayMgr->moveWidgetToTray("Continue", TL_BOTTOM);
+		  mTrayMgr->moveWidgetToTray("ChangeZone", TL_BOTTOM);
+		} else 
+		  mTrayMgr->moveWidgetToTray("Play", TL_BOTTOM);
 		mTrayMgr->moveWidgetToTray("Configure", TL_BOTTOM);
 		mTrayMgr->moveWidgetToTray("Help", TL_BOTTOM);
 		mTrayMgr->moveWidgetToTray("Quit", TL_BOTTOM);
@@ -583,7 +601,11 @@ namespace Pixy {
 	  // assign a default button
 	  if (mCurrentButton)
       mCurrentButton->_stopFlashing();
-	  mCurrentButton = static_cast<OgreBites::Button*>(mTrayMgr->getWidget("PlayResume"));
+    // flash Continue if a game is running, otherwise flash Play
+    if (Level::getSingleton().running())
+	    mCurrentButton = static_cast<OgreBites::Button*>(mTrayMgr->getWidget("Continue"));
+	  else
+	    mCurrentButton = static_cast<OgreBites::Button*>(mTrayMgr->getWidget("Play"));
 	  mCurrentButton->_doFlash();
 
 	};
@@ -643,7 +665,9 @@ namespace Pixy {
 	
 	
 	  // resize all our buttons to 1/16 of viewport height
-	  mTrayMgr->getWidget("PlayResume")->getOverlayElement()->setHeight(height / 16);
+	  mTrayMgr->getWidget("Play")->getOverlayElement()->setHeight(height / 16);
+	  mTrayMgr->getWidget("Continue")->getOverlayElement()->setHeight(height / 16);
+	  mTrayMgr->getWidget("ChangeZone")->getOverlayElement()->setHeight(height / 16);
 	  mTrayMgr->getWidget("Configure")->getOverlayElement()->setHeight(height / 16);
 	  mTrayMgr->getWidget("Help")->getOverlayElement()->setHeight(height / 16);
 	  mTrayMgr->getWidget("Quit")->getOverlayElement()->setHeight(height / 16);
@@ -950,6 +974,14 @@ namespace Pixy {
     _showZones(); 
   };
   
+  void UIEngine::evtClickContinue() {
+    if (!Level::getSingleton().running())
+      return;
+      
+    this->_refit(Level::getSingletonPtr());
+    return GameManager::getSingleton().popState();
+  };
+  
   // shows the video settings panel
   void UIEngine::evtClickConfigure() {
     inConfigMenu = true;
@@ -1045,7 +1077,7 @@ namespace Pixy {
 
     _hideConfigMenu();
     _showMainMenu();
-		/*mTrayMgr->moveWidgetToTray("PlayResume", TL_BOTTOM);
+		/*mTrayMgr->moveWidgetToTray("Play", TL_BOTTOM);
 		mTrayMgr->moveWidgetToTray("Configure", TL_BOTTOM);
 		mTrayMgr->moveWidgetToTray("Help", TL_BOTTOM);
 		mTrayMgr->moveWidgetToTray("Quit", TL_BOTTOM);*/
