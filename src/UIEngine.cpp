@@ -564,6 +564,7 @@ namespace Pixy {
 		mTrayMgr->removeWidgetFromTray("Help");
 		mTrayMgr->removeWidgetFromTray("Quit");
 	  mUILogo->hide();
+	  mTextVersion->hide();
 	  
 		inMainMenu = false;
 	};
@@ -571,7 +572,8 @@ namespace Pixy {
 	void UIEngine::_showMainMenu() {
 	  inMainMenu = true;
 	  
-    mUILogo->show();		
+    mUILogo->show();
+    mTextVersion->show();
 		mTrayMgr->moveWidgetToTray("PlayResume", TL_BOTTOM);
 		mTrayMgr->moveWidgetToTray("Configure", TL_BOTTOM);
 		mTrayMgr->moveWidgetToTray("Help", TL_BOTTOM);
