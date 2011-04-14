@@ -197,14 +197,16 @@ namespace Pixy {
 		Ogre::TextAreaOverlayElement *mTextScoreStats;
 		Ogre::TextAreaOverlayElement *mTextPrepare;
 		Ogre::TextAreaOverlayElement *mTextHelp;
+		Ogre::TextAreaOverlayElement *mTextVersion;
 		
 		
 		// HUDs here
 		Ogre::Overlay *mHUDSheet; // holds the shield bars
-		Ogre::OverlayElement *mHUDScore;
+		Ogre::TextAreaOverlayElement *mHUDScore;
 		Ogre::OverlayElement *mHUDFireShield, *mHUDIceShield;
 		
 		float mShieldBarWidth;
+		float mShieldBarHeight;
 		Ogre::FrameEvent evt;
 		
 		GameState *_currentState;    

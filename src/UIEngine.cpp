@@ -586,9 +586,11 @@ namespace Pixy {
 	};
 	
 	void UIEngine::assignHandles() {
-	
+	  using Ogre::TextAreaOverlayElement;
+	  
 		mHUDSheet = mOverlayMgr->getByName("Vertigo/HUD");
-		mHUDScore = mHUDSheet->getChild("HUD/Containers/Score")->getChild("HUD/Elements/Score");
+		mHUDScore = static_cast<TextAreaOverlayElement*>
+		  (mHUDSheet->getChild("HUD/Containers/Score")->getChild("HUD/Elements/Score"));
 
 		mHUDFireShield = mHUDSheet->getChild("HUD/Containers/FireShield")->getChild("HUD/Elements/FireShield");
 		mHUDIceShield = mHUDSheet->getChild("HUD/Containers/IceShield")->getChild("HUD/Elements/IceShield");
@@ -599,7 +601,7 @@ namespace Pixy {
 		mUIScore = mUISheet->getChild("UI/Containers/Score");
 		mUILogo = mUISheet->getChild("UI/Containers/Logo");
 		
-		using Ogre::TextAreaOverlayElement;
+		
 		mTextPrepare = static_cast<TextAreaOverlayElement*>
 		  (mUIPrepare->getChild("UI/Text/Prepare"));
 		mTextHelp = static_cast<TextAreaOverlayElement*>
@@ -608,9 +610,9 @@ namespace Pixy {
 		  (mUIScore->getChild("UI/Text/Score/Caption"));  
 		mTextScoreStats = static_cast<TextAreaOverlayElement*>
 		  (mUIScore->getChild("UI/Text/Score/Stats"));
+		mTextVersion = static_cast<TextAreaOverlayElement*>
+		  (mUISheet->getChild("UI/Containers/Version")->getChild("UI/Text/Version"));
     
-		
-		
 	};
 	
 	void UIEngine::refitOverlays() {
@@ -653,16 +655,32 @@ namespace Pixy {
     //float font_size = 32 / aspect_ratio;
     mTextPrepare->setCharHeight(mTextPrepare->getCharHeight() / aspect_ratio);
     mTextHelp->setCharHeight(mTextHelp->getCharHeight() / aspect_ratio);
+    mTextVersion->setCharHeight(mTextVersion->getCharHeight() / aspect_ratio);
     mTextScoreCaption->setCharHeight(mTextScoreCaption->getCharHeight() / aspect_ratio);
     mTextScoreStats->setCharHeight(mTextScoreStats->getCharHeight() / aspect_ratio);
+    mHUDScore->setCharHeight(mHUDScore->getCharHeight() / aspect_ratio);
     
+    // move the Version label to right bottom corner
+    mTextVersion->setLeft(-1 * (mTextVersion->getSpaceWidth() * 10 )); // 10 is nr of chars -1
+    mTextVersion->setTop(-1 * (mTextVersion->getCharHeight()));
+    
+    mLog->debugStream() << "Version text's dimensions: " 
+      << mTextVersion->_getRelativeWidth() 
+      << ", " << mTextVersion->_getRelativeHeight();
 
 		/* --------- HUDs section --------- */
 		
 		// our shield bars should span 1/3 of the width of the viewport
 	  mShieldBarWidth = mViewport->getActualWidth() / 3;
-	  mHUDSheet->getChild("HUD/Containers/FireShield")->setWidth(mShieldBarWidth);
-	  mHUDSheet->getChild("HUD/Containers/FireShield")->getChild("HUD/Elements/FireShield")->setWidth(mShieldBarWidth);
+	  mShieldBarHeight = mViewport->getActualHeight() / 16;
+	  
+	  mHUDFireShield->getParent()->setWidth(mShieldBarWidth);
+	  mHUDFireShield->setWidth(mShieldBarWidth);
+	  
+	  mHUDFireShield->getParent()->setHeight(mShieldBarHeight);
+	  mHUDFireShield->getParent()->setTop(-1*mShieldBarHeight);
+	  mHUDFireShield->setHeight(mShieldBarHeight);
+	  mHUDFireShield->setTop(-1*mShieldBarHeight);
 	
 	  // since our ice shield is on the right side of the screen, and we shrink
 	  // it inwards, we have to tune its left position
@@ -671,6 +689,10 @@ namespace Pixy {
 	  mHUDIceShield->setWidth(mShieldBarWidth);
 	  mHUDIceShield->setLeft(-1*mShieldBarWidth);
 
+	  mHUDIceShield->getParent()->setHeight(mShieldBarHeight);
+	  mHUDIceShield->getParent()->setTop(-1*mShieldBarHeight);
+	  mHUDIceShield->setHeight(mShieldBarHeight);
+	  mHUDIceShield->setTop(-1*mShieldBarHeight);
 	};
 	
 	void UIEngine::_updateShields() {

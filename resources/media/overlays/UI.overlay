@@ -94,6 +94,41 @@ Vertigo/HUD
 Vertigo/UI
 {
 
+    // -- Logo --
+  container Panel(UI/Containers/Version)
+  {
+	  metrics_mode relative
+	  horz_align left
+	  vert_align top
+	  
+	  width 1
+	  height 1
+	  left 0
+	  top 0
+	  
+	  
+    element TextArea(UI/Text/Version)
+    {
+      metrics_mode pixels
+      
+      font_name SdkTrays/Caption
+      colour 0.9 0.9 0.9
+      colour_bottom 0.7 0.7 0.7
+      alignment left
+      char_height 22
+      space_width 11
+      
+      horz_align right
+      vert_align bottom
+      
+      top 0
+      left 0
+      
+      caption  Vertigo 1.0	  
+    }
+  }
+
+
   // -- Logo --
   container Panel(UI/Containers/Logo)
   {
@@ -103,6 +138,7 @@ Vertigo/UI
 	  top 0
 	  width 640
 	  height 640
+	  
   }
   
   // -- Help Sheet --

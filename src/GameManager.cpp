@@ -140,23 +140,24 @@ namespace Pixy
 		lPathResources << PROJECT_ROOT << PROJECT_RESOURCES << "\\config\\resources_win32.cfg";
     lPathPlugins << PROJECT_ROOT << PROJECT_RESOURCES << "\\config\\plugins.cfg";
     lPathCfg << PROJECT_ROOT << PROJECT_RESOURCES << "\\config\\";
-		lPathOgreCfg << mConfigPath << "ogre.cfg";	
+		lPathOgreCfg << lPathCfg.str() << "ogre.cfg";	
 		lPathLog << PROJECT_LOG_DIR << "\\Ogre.log";	
 #elif OGRE_PLATFORM == OGRE_PLATFORM_APPLE
 		lPathResources << macBundlePath() << "/Contents/Resources/config/resources_osx.cfg";
 		lPathPlugins << macBundlePath() << "/Contents/Resources/config/plugins.cfg";
 		lPathCfg << macBundlePath << "/Contents/Resources/config/";
-		lPathOgreCfg << mConfigPath << "ogre.cfg";	
+		lPathOgreCfg << lPathCfg.str() << "ogre.cfg";	
 		lPathLog << macBundlePath() << "/Contents/Logs/Ogre.log";    
 #else
 		lPathResources << PROJECT_ROOT << PROJECT_RESOURCES << "/config/resources_linux.cfg";
     lPathPlugins << PROJECT_ROOT << PROJECT_RESOURCES << "/config/plugins.cfg";
     lPathCfg << PROJECT_ROOT << PROJECT_RESOURCES << "/config/";
-		lPathOgreCfg << mConfigPath << "ogre.cfg";	
+		lPathOgreCfg << lPathCfg.str() << "ogre.cfg";	
 		lPathLog << PROJECT_LOG_DIR << "/Ogre.log";
 #endif
     
     mConfigPath = lPathCfg.str();
+    
     
 		mRoot = OGRE_NEW Root(lPathPlugins.str(), lPathOgreCfg.str(), lPathLog.str());
 		if (!mRoot) {

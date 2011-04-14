@@ -55,11 +55,15 @@
 * THREAD IT
 
 
-* portal effect shouldn't be started when the overlay is shown
+* portal effect shouldn't be started when the overlay is shown (DONE)
 * make sure WARNING sound is played beyond the first zone
-* add survival mode
-* add score / accuracy
+* add survival mode (DONE)
+* add nervebreak mode (DONE)
+* add score / accuracy (DONE)
 * add text logo
 * add version
 * add resume / choose new zone button
 * clean up unused materials, scripts etc
+* change ogre's config panel on first run
+* pack resources
+* patcher
