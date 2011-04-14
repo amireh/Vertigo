@@ -367,7 +367,7 @@ namespace Pixy
         break;
 
       // set one of them to go left and the other to the right
-      mObs[i]->setDirection(Vector3((i == 0) ? 0.5f : -0.5f,-1,-1));
+      mObs[i]->setDirection(Vector3((i == 0) ? 0.6f : -0.6f,-1,-1));
       mObs[i]->setShield(lastShield);
       
       // swap shields
@@ -528,14 +528,17 @@ namespace Pixy
       // kill our obstacles
       mLog->debugStream() << "I have " << mObstacles.size() << " obstacles alive, killng em";
 		  std::list<Obstacle*>::iterator _itr;
-		  for (_itr = mObstacles.begin(); 
-		       _itr != mObstacles.end();)
+		  for (_itr = mObstaclePool.begin(); 
+		       _itr != mObstaclePool.end();)
 		  {      
         Obstacle *mObs = *_itr;
-        ++_itr;
+        //++_itr;
         mObs->die();
-        releaseObstacle(mObs);
+        ++_itr;
+        //releaseObstacle(mObs);
 		  }
+		  
+		  mObstacles.clear();
     }
     
     nrMaxAliveObstacles = mZone->getSettings().mObstacleCap;

@@ -265,12 +265,20 @@ namespace Pixy
 			case OIS::KC_LEFT:
 				//mPhyxBody->clearForces();
 				mDirection.x = 1;
+				
+				//if (Level::getSingleton().currentZone()->getSettings().mMode == DODGY)
+	      //  mDirection.x *= 3;
+				
+				
 				//mDirection.z = mMoveSpeed;
 				break;
 			case OIS::KC_D:
 			case OIS::KC_RIGHT:
 				//mPhyxBody->clearForces();
 				mDirection.x = -1;
+				
+				//if (Level::getSingleton().currentZone()->getSettings().mMode == DODGY)
+	      //  mDirection.x *= 3;
 				//mDirection.z = mMoveSpeed;
 				break;
 			/*case OIS::KC_S:
@@ -286,6 +294,8 @@ namespace Pixy
 			  flipShields();
 			  break;
 		}
+		
+		
 		
 	}
 	
@@ -627,8 +637,9 @@ namespace Pixy
 	  if (tMode == DODGY) {
 	    mShields[mCurrentShield] = 2000;
 	    mShields[(mCurrentShield == FIRE) ? ICE : FIRE] = 0;
-	  } else if (tMode == SURVIVAL) {
 	    mRegenRate = 10;
+	  } else if (tMode == SURVIVAL) {
+	    mRegenRate = 2;
 	  } else if (tMode == NERVEBREAK) {
 	    mCollide = &Sphere::collideNervebreak;
 	  }

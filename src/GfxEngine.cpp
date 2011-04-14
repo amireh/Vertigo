@@ -110,6 +110,7 @@ namespace Pixy {
     //mCameraMan = new OgreBites::SdkCameraMan(mCamera);
     //mRenderWindow->setActive(true);
 
+    
     bindToName("GameShown", this, &GfxEngine::evtGameShown);
     bindToName("MenuShown", this, &GfxEngine::evtMenuShown);
     
@@ -235,13 +236,15 @@ namespace Pixy {
 	  
     void GfxEngine::setupCamera()
     {
-		mLog->debugStream() << "setting up cameras";
-		
-        mCamera->setNearClipDistance( 10 );
-        mCamera->setFarClipDistance( 10000 );
-        mCamera->setPosition(Vector3(0,70,-200));
-		    mCamera->lookAt(Ogre::Vector3(0, 70, 0));
-	};
+	    mLog->debugStream() << "setting up cameras";
+	
+      mCamera->setNearClipDistance( 10 );
+      mCamera->setFarClipDistance( 10000 );
+      mCamera->setPosition(Vector3(0,70,-200));
+	    mCamera->lookAt(Ogre::Vector3(0, 70, 0));
+	    
+	    setCameraMode(CAMERA_CHASE);
+	  };
 	
     void GfxEngine::setupTerrain()
     {
@@ -437,6 +440,18 @@ namespace Pixy {
         fileName += ".png";
 		    mRenderWindow->writeContentsToFile(fileName);
 		    break;
+		  case OIS::KC_1:
+		    setCameraMode(CAMERA_CHASE);
+		    break;
+		  case OIS::KC_2:
+		    setCameraMode(CAMERA_FIXED);
+		    break;
+		  case OIS::KC_3:
+		    setCameraMode(CAMERA_STICKY);
+		    break;
+		  case OIS::KC_4:
+		    setCameraMode(CAMERA_LOLLY);
+		    break;
 		}
 	}
 	
@@ -469,26 +484,92 @@ namespace Pixy {
 		
 		mSpherePos = mSphere->getPosition();
 		
+		(this->*mUpdateCamera)();
+		
+	}
+	
+	void GfxEngine::setCameraMode(CAMERA_MODE inMode) {
+	
+	  switch (inMode) {
+	    case CAMERA_CHASE:
+	      mUpdateCamera = &GfxEngine::updateCameraChase;
+	      break;
+	    case CAMERA_FIXED:
+	      mUpdateCamera = &GfxEngine::updateCameraFixed;
+	      break;
+	    case CAMERA_STICKY:
+	      mUpdateCamera = &GfxEngine::updateCameraSticky;
+	      break;
+	    case CAMERA_LOLLY:
+	      mUpdateCamera = &GfxEngine::updateCameraLolly;
+	      break;
+	    default:
+	      mUpdateCamera = &GfxEngine::updateCameraChase;
+	  };
+	  
+	}
+	
+	void GfxEngine::updateCameraChase() {
+		mSpherePos = mSphere->getPosition();
+		
 		mCamera->setPosition(
 		  mSpherePos.x,
-      mSpherePos.y + 35,
+		  mSpherePos.y + 35,
       mSpherePos.z-120
     );
-	  
-	  //mCamera->setOrientation(mSphere->getMasterNode()->getOrientation());
-	  
+    
 	  mCamera->lookAt(
 	    mSpherePos.x,
 	    mSpherePos.y + 20,
 	    mSpherePos.z
-	  );
-							 
-		/*evt.timeSinceLastEvent = lTimeElapsed;
-		evt.timeSinceLastFrame = lTimeElapsed;*/
+	  );	
+	}
+	
+	void GfxEngine::updateCameraFixed() {
+		mSpherePos = mSphere->getPosition();
 		
-		//mCameraMan->update(lTimeElapsed);
-		//using namespace Ogre;
+		mCamera->setPosition(
+		  0,
+		  35,
+      mSpherePos.z-120
+    );
+    
+	  mCamera->lookAt(
+	    0,
+	    35,
+	    mSpherePos.z
+	  );	
+	}
+	void GfxEngine::updateCameraSticky() {
+		mSpherePos = mSphere->getPosition();
 		
+		mCamera->setPosition(
+		  mSpherePos.x,
+		  mSpherePos.y + 35,
+      mSpherePos.z-120
+    );
+    
+	  mCamera->lookAt(
+	    mSpherePos.x,
+	    35,
+	    mSpherePos.z
+	  );	
+	}
+	
+	void GfxEngine::updateCameraLolly() {
+		mSpherePos = mSphere->getPosition();
+		
+		mCamera->setPosition(
+		  mSpherePos.x,
+		  35,
+      mSpherePos.z-120
+    );
+    
+	  mCamera->lookAt(
+	    0,
+	    mSpherePos.y+35,
+	    mSpherePos.z
+	  );	
 	}
 	
   

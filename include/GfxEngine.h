@@ -38,7 +38,13 @@ using std::pair;
 using std::vector;
 
 namespace Pixy {
-		
+
+  typedef enum {
+    CAMERA_CHASE,
+    CAMERA_FIXED,
+    CAMERA_STICKY,
+    CAMERA_LOLLY
+  } CAMERA_MODE;
 	/*! \class GfxEngine
 	 *	\brief
 	 *	Handles all graphics related features of the game, acts as the immediate
@@ -58,6 +64,7 @@ namespace Pixy {
 		virtual bool cleanup();
 		
 		void setCamera(const Ogre::String& inCameraName);
+		void setCameraMode(CAMERA_MODE inMode);
 		
 		//! Attaches a Pixy::Entity to an SceneNode and renders it
 		/*!
@@ -115,10 +122,17 @@ namespace Pixy {
     
 	protected:
 	  void (GfxEngine::*mUpdate)(unsigned long);
+	  void (GfxEngine::*mUpdateCamera)();
 	  
 	  void updateIntro(unsigned long lTimeElapsed);
 	  void updateGame(unsigned long lTimeElapsed);
 	  void updateNothing(unsigned long lTimeElapsed);
+	  
+	  
+	  void updateCameraChase();
+	  void updateCameraFixed();
+	  void updateCameraSticky();
+	  void updateCameraLolly();
 	  
 	  bool evtGameShown(Event* inEvt);
 	  bool evtMenuShown(Event* inEvt);

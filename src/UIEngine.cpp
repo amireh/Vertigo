@@ -122,6 +122,7 @@ namespace Pixy {
 	  mHelpMsg += "\n\nControls:";
 	  mHelpMsg += "\n - Press the space bar to flip shields";
 	  mHelpMsg += "\n - You may use the arrows or A and D buttons to strafe";
+	  mHelpMsg += "\n - Press 1-4 to change camera mode";
 	  mHelpMsg += "\n\nMisc. Controls:";
 	  mHelpMsg += "\n - Press M to toggle all sounds on and off";
 	  mHelpMsg += "\n - Press K to take a screenshot";
