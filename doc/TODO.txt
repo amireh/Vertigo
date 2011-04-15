@@ -52,11 +52,11 @@
 * create zones that contain a nr of tunnels (done)
 * parse zones from external XML sheets (done)
 * refactor GfxEngine .. it's a bloody mess there (done)
-* THREAD IT
+* THREAD IT (fuck it)
 
 
 * portal effect shouldn't be started when the overlay is shown (DONE)
-* make sure WARNING sound is played beyond the first zone
+* make sure WARNING sound is played beyond the first zone (DONE)
 * add survival mode (DONE)
 * add nervebreak mode (DONE)
 * add score / accuracy (DONE)
@@ -67,3 +67,9 @@
 * change ogre's config panel on first run (done)
 * pack resources
 * patcher
+
+* resolution starts @ 800x600 .. config screen is not accessible on that resolution
+* eliminate fps bursts when taking screenshots
+* UI toggling
+* preferred camera mode per game mode
+* win/loss sheets should be centered

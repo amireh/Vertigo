@@ -121,7 +121,6 @@ namespace Pixy {
 	  // based on the selected zone, switches to Level state and starts the game
 	  void evtClickEngage();
 	  
-	  
 	  // show the zones screen
 	  void _showZones();
 	  // navigate to the next zone in the list, and preview it

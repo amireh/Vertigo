@@ -224,9 +224,13 @@ namespace Pixy
 	}
 	
 	void Level::pause( void ) {
+	  mLog->infoStream() << "---- Pausing ----";
+	  this->_hideEverything();
 	}
 	
 	void Level::resume( void ) {
+	  mLog->infoStream() << "---- Resuming ----";
+	  this->_showEverything();
 	}
 		
 	Level* Level::getSingletonPtr( void ) {
@@ -500,13 +504,16 @@ namespace Pixy
     
     mLog->infoStream() << " ----- entered " << mZone->name() << " zone ----- ";
     mSfxEngine->playMusic();
-    mZone->engage();
+    //mZone->engage();
     mUIEngine->_refit(this);
     //reset();
     
     return true;
   };
   void Level::reset() {
+    if (!fRunning)
+      return;
+    
     mLog->infoStream() << "loading a new zone, resetting the game";
     //mEvtMgr->_clearQueue();
     
@@ -551,7 +558,7 @@ namespace Pixy
     fGameOver = false;
     
     mLog->infoStream() << "engaging zone " << mZone->name();
-    //mZone->engage();
+    mZone->engage();
     
     mTimer.reset();
     
@@ -582,8 +589,8 @@ namespace Pixy
   void Level::_showEverything() {
     mSphere->getMasterNode()->setVisible(true);
 	  std::list<Obstacle*>::iterator _itr;
-	  for (_itr = mObstacles.begin(); 
-	       _itr != mObstacles.end();
+	  for (_itr = mObstaclePool.begin(); 
+	       _itr != mObstaclePool.end();
 	       ++_itr)
       (*_itr)->getMasterNode()->setVisible(true);
       

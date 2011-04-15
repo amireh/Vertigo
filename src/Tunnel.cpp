@@ -54,14 +54,7 @@ namespace Pixy {
     generateSegments();
     generatePortals();
     
-    // prepare sound effect
-    if (!mSfxPortal) {
-      OgreOggSound::OgreOggSoundManager *mSoundMgr;
-      mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
-      mSfxPortal = mSoundMgr->createSound("Teleport", "teleport.wav", false, false, true) ;
-      mSfxPortal->setRolloffFactor(2.f);
-      mSfxPortal->setReferenceDistance(1000.f);
-    };
+
     
     //mNode->setVisible(false);
     
@@ -90,7 +83,7 @@ namespace Pixy {
     if (mNode->getParentSceneNode())
       mNode->getParentSceneNode()->removeAndDestroyChild(mNode->getName());
     
-    mLog->debugStream() << "destructed " << idObject;
+    //mLog->debugStream() << "destructed " << idObject;
     if (mLog)
       delete mLog;
     
@@ -158,7 +151,8 @@ namespace Pixy {
     
     mPortalEffect = mFxMgr->getParticleSystem("FxPortal");
     
-    if (fHasFx && !mPortalEffect) {
+    // prepare portal visual effect
+    if (!mPortalEffect) {
       mPortalEffect = mFxMgr->createParticleSystem(
         "FxPortal",
         "Vertigo/FX/Portal", 
@@ -166,6 +160,15 @@ namespace Pixy {
       mPortalEffect->prepare();
       fEffectPrepared = true;
     }
+    
+    // prepare sound effect
+    if (!mSfxPortal) {
+      OgreOggSound::OgreOggSoundManager *mSoundMgr;
+      mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
+      mSfxPortal = mSoundMgr->createSound("Teleport", "teleport.wav", false, false, true) ;
+      mSfxPortal->setRolloffFactor(2.f);
+      mSfxPortal->setReferenceDistance(1000.f);
+    };    
 
     Portal** mPortal;
     SceneNode* mSegment;

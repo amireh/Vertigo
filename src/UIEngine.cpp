@@ -263,18 +263,24 @@ namespace Pixy {
 	};
 	void UIEngine::keyReleased( const OIS::KeyEvent &e ) {
 
-    if (GameManager::getSingleton().currentState()->getId() == STATE_GAME) {
+    // Level state specific bindings
+    if (_currentState->getId() == STATE_GAME) {
       switch (e.key) {
         case OIS::KC_F:
           if (mTrayMgr->areFrameStatsVisible())
             mTrayMgr->hideFrameStats();
           else
             mTrayMgr->showFrameStats(TL_TOPRIGHT);
-          break;      
+          break; 
+        case OIS::KC_U:
+          // toggle HUDs
+          (mHUDSheet->isVisible()) ? mHUDSheet->hide() : mHUDSheet->show();;
+          break;
       }
       return;
     }
 
+    // Intro state / menu specific bindings
 	  if (fShowingHelp && (e.key == OIS::KC_ESCAPE || e.key == OIS::KC_RETURN)) {
 
 	    mUIHelp->hide();
@@ -290,7 +296,9 @@ namespace Pixy {
     TrayLocation trayIdx;
     int widgIdx;
     switch (e.key) {
+      /* -- keyboard menu navigation -- */
       case OIS::KC_UP:
+        // mark the previous button in the current menu, if it's on the top, get the last one
         trayIdx = mCurrentButton->getTrayLocation();
         widgIdx = mTrayMgr->locateWidgetInTray(mCurrentButton);
         mCurrentButton->_stopFlashing();
@@ -302,6 +310,7 @@ namespace Pixy {
         mCurrentButton->_doFlash();
         break;
       case OIS::KC_DOWN:
+        // mark the next button, if it's the last, get the first one
         trayIdx = mCurrentButton->getTrayLocation();
         widgIdx = mTrayMgr->locateWidgetInTray(mCurrentButton);
         mCurrentButton->_stopFlashing();
@@ -315,6 +324,7 @@ namespace Pixy {
       case OIS::KC_RETURN:
         buttonHit(mCurrentButton);
         break;
+      // this only applies when we're in the zone screen
       case OIS::KC_RIGHT:
         if (inZoneScreen)
           _nextZone();
@@ -323,6 +333,7 @@ namespace Pixy {
         if (inZoneScreen)
           _prevZone();
         break;
+      // pressing ESC has different behaviour based on the current screen
       case OIS::KC_ESCAPE:
         if (inZoneScreen) {
           // going back from zones screen to the main menu
@@ -337,13 +348,14 @@ namespace Pixy {
             // show HUDs unless the game is over
             this->_refit(Level::getSingletonPtr());
             return GameManager::getSingleton().popState();
-          }
+          }		        
         } else if (inConfigMenu) {
           // going back from config screen to main menu
           _hideConfigMenu();
           _showMainMenu();
         }
         break;
+      // TODO: this is redundant, merge it with the level state's (common bindings)
       case OIS::KC_F:
         if (mTrayMgr->areFrameStatsVisible())
           mTrayMgr->hideFrameStats();
@@ -388,7 +400,7 @@ namespace Pixy {
 		mTrayMgr->createButton(TL_NONE, "Apply", "Apply Changes", button_width);
 		mTrayMgr->createButton(TL_NONE, "BackFromConfig", "Go Back", button_width);
 
-		// create configuration screen label and renderer menu
+		// create configuration screen and renderer menu
 		mTrayMgr->createLabel(TL_NONE, "ConfigLabel", "Video Settings");
 		mFxMenu = mTrayMgr->createLongSelectMenu(TL_NONE, "ConfigFxMenu", "Visual Effects", 340, 140, 3);
 		mFxMenu->addItem("Full");
@@ -427,7 +439,7 @@ namespace Pixy {
       if (mSfxButtonHit->isPlaying())
         mSfxButtonHit->stop();
       
-      mSfxButtonHit->play(true);      
+      mSfxButtonHit->play(true);
     }
       
 		if (b->getName() == "Configure")   // enter configuration screen
@@ -536,9 +548,9 @@ namespace Pixy {
     mUISheet->hide();
     
     // return everything to what it was
-    if (Level::getSingleton().running() && !Level::getSingleton().isGameOver()) {
+    /*if (Level::getSingleton().running() && !Level::getSingleton().isGameOver()) {
 	    Level::getSingleton()._showEverything();
-	  }
+	  }*/
 	  
 	  // and tell who's interested that we resumed the game
 	  EventManager::getSingleton().hook(EventManager::getSingleton().createEvt("GameShown"));
@@ -550,9 +562,9 @@ namespace Pixy {
     EventManager::getSingleton().hook(EventManager::getSingleton().createEvt("MenuShown"));
     
     // hide the scene
-    if (Level::getSingleton().running()) {
+    /*if (Level::getSingleton().running()) {
 	    Level::getSingleton()._hideEverything();
-	  }
+	  }*/
 	  
     mTrayMgr->showCursor();
 	  _showMainMenu();
@@ -1109,17 +1121,18 @@ namespace Pixy {
 	  
 	  if (!mSelectedZone) // this shouldn't happen
 	    return;
-	  
+
+    Intro::getSingleton().setSelectedZone(mSelectedZone->getZone());
+
+    // a zone was selected, engage it
+    // Level will check for the selected zone in reset() and handle it from there
+    //Level::getSingleton()._showEverything(); // we be nice and return everything to what it was
+    Level::getSingleton().reset();
+    	  
 	  // if this is the first zone the player wants to play, just switch to it
 	  if (!Level::getSingleton().running()) {
-	    Intro::getSingleton().setSelectedZone(mSelectedZone->getZone());
 	    return GameManager::getSingleton().changeState(Level::getSingletonPtr());
 	  } else {
-	    // a zone was selected, engage it
-	    // Level will check for the selected zone in reset() and handle it from there
-      Intro::getSingleton().setSelectedZone(mSelectedZone->getZone());
-      Level::getSingleton()._showEverything(); // we be nice and return everything to what it was
-      Level::getSingleton().reset();
       return GameManager::getSingleton().popState();
 		}
 		

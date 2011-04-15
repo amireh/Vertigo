@@ -19,11 +19,6 @@
 #ifndef H_InputManager_H
 #include "InputManager.h"
 #endif
-#ifdef _WIN32
-#include <CEGUI.h>
-#else
-#include <CEGUI/CEGUI.h>
-#endif
 
 namespace Pixy
 {
@@ -50,8 +45,6 @@ namespace Pixy
 		virtual void mouseMoved( const OIS::MouseEvent &e ) = 0;
 		virtual void mousePressed( const OIS::MouseEvent &e, OIS::MouseButtonID id )  = 0;
 		virtual void mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id ) = 0;
-		
-		virtual CEGUI::MouseButton convertButton(OIS::MouseButtonID buttonID);
 		
 		void changeState( GameState *state );
 		void pushState( GameState *state );

@@ -90,16 +90,8 @@ namespace Pixy
 		mUIEngine->keyReleased( e );
     mSfxEngine->keyReleased(e);
     
-		/*if (e.key == OIS::KC_Q) {
-		  return this->requestShutdown();
-		} else if (e.key == OIS::KC_ESCAPE) {
-		  if (Level::getSingleton().running())
-		    return GameManager::getSingleton().popState();
-		  //else
-		  //  return this->requestShutdown();
-		  
-		}
-*/
+		//if (e.key == OIS::KC_ESCAPE) 
+  
 		
 	}
 	

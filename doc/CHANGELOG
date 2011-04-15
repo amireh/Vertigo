@@ -1,3 +1,18 @@
+-- Rv8 --
+
+-- Rv7 --
+- implemented the UI: intro screen with main menu, config menu, and zone screen
+- implemented HUDs
+- switching between zones is allowed and fully functional now
+ 
+-- Rv6 --
+- added game modes:
+  # arcade
+  # survival
+  # dodgy
+  # nervebreak
+- implemented physical body for the terrain
+  
 -- Rv5 --
 - sound effects
 
