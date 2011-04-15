@@ -195,7 +195,6 @@ namespace Pixy
 		
 		// lTimeLastFrame remembers the last time that it was checked
 		// we use it to calculate the time since last frame
-		unsigned long lTimeLastFrame, lTimeCurrentFrame, lTimeSinceLastFrame;
 		
 		lTimeLastFrame = 0;
 		lTimeCurrentFrame = 0;
@@ -324,6 +323,8 @@ namespace Pixy
 		
 		mCurrentState = inState;
 		
+		//mRoot->getTimer()->reset();
+		
 		// Store and init the new state
 		mStates.push_back( inState );
 		mStates.back()->enter();
@@ -336,11 +337,16 @@ namespace Pixy
 		    mStates.pop_back();
 		}
 		
+		// reset our timer simply to prevent any fps bursts
+		mRoot->getTimer()->reset();
+		lTimeLastFrame = 0;
+		
 		// Resume previous state
 		if( !mStates.empty() ) {
 		    mCurrentState = mStates.back();
 		    mStates.back()->resume();
 		}
+		
 	}
 	
 	void GameManager::requestShutdown() {

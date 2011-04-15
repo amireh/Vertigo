@@ -178,9 +178,7 @@ namespace Pixy
 		InputManager		*mInputMgr;
 		
 		GameState* mCurrentState;
-		//GameState			*mStateGame;
-		//GameState			*mLobby;
-		//GameState			*mCombat;
+		unsigned long lTimeLastFrame, lTimeCurrentFrame, lTimeSinceLastFrame;
 		
 		//! do we want to shutdown?
 		bool fShutdown;

@@ -9,9 +9,8 @@
 
 #include "GfxEngine.h"
 #include "GameManager.h"
-//#include "OGRE/Terrain/OgreTerrain.h"
-//#include "OGRE/Terrain/OgreTerrainGroup.h"
 #include "Level.h"
+#include "Pause.h"
 #include "Procedural.h"
 #include "Geometry.h"
 
@@ -433,12 +432,19 @@ namespace Pixy {
 	  time_t seconds;
 		switch (e.key) {   
 		  case OIS::KC_K:
+		    // pause the game
+		    GameManager::getSingleton().pushState(Pause::getSingletonPtr());
+	      
 	      // take a screenshot
         seconds = time (NULL);
         fileName = "Screenshot_";
         fileName += stringify(seconds);
         fileName += ".png";
 		    mRenderWindow->writeContentsToFile(fileName);
+		    
+		    // resume the game
+		    GameManager::getSingleton().popState();
+		    
 		    break;
 		  case OIS::KC_1:
 		    setCameraMode(CAMERA_CHASE);

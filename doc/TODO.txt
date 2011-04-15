@@ -70,6 +70,7 @@
 
 * resolution starts @ 800x600 .. config screen is not accessible on that resolution
 * eliminate fps bursts when taking screenshots
-* UI toggling
+* HUD toggling (done)
 * preferred camera mode per game mode
 * win/loss sheets should be centered
+* windows installer: force directx installation

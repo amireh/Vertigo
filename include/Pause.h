@@ -1,5 +1,5 @@
 /* -----------------------------------------------
- *  Filename: StatePause.h
+ *  Filename: Pause.h
  *  Date Created: ??/2009
  *
  *  Original Author:
@@ -10,8 +10,8 @@
  *      By:     Ahmad Amireh
  * ----------------------------------------------- */
 
-#ifndef H_StatePause_H
-#define H_StatePause_H
+#ifndef H_Pause_H
+#define H_Pause_H
 
 #include <list>
 #include "GameState.h"
@@ -28,13 +28,13 @@
 using std::list;
 namespace Pixy
 {
-    /*! \class StatePause
+    /*! \class Pause
      *  \brief
      *  Main Menu state, handles non-Combat game tasks.
      */
 	
 	
-	class StatePause : public GameState, public EventListener {
+	class Pause : public GameState, public EventListener {
 	public:
 		
 		void enter( void );
@@ -51,8 +51,8 @@ namespace Pixy
 		void mousePressed( const OIS::MouseEvent &e, OIS::MouseButtonID id );
 		void mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id );
 		
-		static StatePause* getSingletonPtr( void );
-		static StatePause& getSingleton();
+		static Pause* getSingletonPtr( void );
+		static Pause& getSingleton();
 		
     virtual bool areFxEnabled();
     virtual bool areSfxEnabled();		
@@ -66,9 +66,9 @@ namespace Pixy
 		bool evtPortalSighted(Event* inEvt);
 		
 	private:
-		StatePause( void ) { }
-		StatePause( const StatePause& ) { }
-		StatePause & operator = ( const StatePause& );
+		Pause( void ) { }
+		Pause( const Pause& ) { }
+		Pause & operator = ( const Pause& );
 		
 		EventManager *mEvtMgr;
 		GfxEngine		*mGfxEngine;
@@ -80,7 +80,7 @@ namespace Pixy
 		std::list<Obstacle*> mObstaclePool;
 		std::list<Obstacle*> mDeadObstacles;
 		long nrObstacles;
-		static StatePause    *mStatePause;
+		static Pause    *mPause;
 		Ogre::Timer mTimer;
 		bool fSpawning; // are we spawning obstacles?
 		void spawnObstacle();

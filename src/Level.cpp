@@ -1,6 +1,6 @@
 #include "Level.h"
 #include "EventManager.h"
-#include "StatePause.h"
+#include "Pause.h"
 #include <cstdlib>
 #include <ctime> 
 #include "Intro.h"
@@ -196,7 +196,7 @@ namespace Pixy
 		mSphere->keyReleased(e);
 		switch (e.key) {
 		  case OIS::KC_P:
-		    GameManager::getSingleton().pushState(StatePause::getSingletonPtr());
+		    GameManager::getSingleton().pushState(Pause::getSingletonPtr());
 		    break;
 			case OIS::KC_EQUALS:
 				
@@ -475,7 +475,7 @@ namespace Pixy
     else {
       mLog->debugStream() << "game is over!";
       
-      //GameManager::getSingleton().pushState(StatePause::getSingletonPtr());
+      //GameManager::getSingleton().pushState(Pause::getSingletonPtr());
       return true;
     }*/
   };

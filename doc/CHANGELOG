@@ -1,28 +1,89 @@
 -- Rv8 --
+[Deployment]
+- renderer is no longer defined in the plugins sheet, but is instead probed in the code 
+- fallback mechanism is implemented for Windows platforms where if Direct3D renderer is not found, an automatic switch to OpenGL is performed
+- updated resource locating routines to be platform-aware
+- WINDOWS: created an MSI installer chaining the directx redistributable end user runtime and .NET 1.1 redistributable framework
+- WINDOWS: created a self-contained archive for those who don't have admin privilege to use the installer
+- WINDOWS: created an icon and attached it to the VS solution
+- OSX: created a bundle, no DMG yet
+
+[Graphics]
+- added 4 different camera modes:
+  # chase
+  # fixed
+  # lolly
+  # sticky
+- dropped usage of skyboxes, using a skydome with a vortex texture now
+
+[Engine]
+- visual effects are now configurable: low, medium (default) and high
+- sound and music can be turned off/on
+- implemented some nice keybindings:
+  # sound volume controlling
+  # toggling of HUDs
+  # screenshotting
+  # pausing the game
+- game states are sfx/fx-toggling aware now; configuring sound and visual effects can be done in realtime now
+
+[UI]
+- all overlays and HUDs scale with viewport / resolution now
+- all menus can be navigated using the keyboard and mouse now
+- loading of resources is now indicated with a nice bar in the beginning
+- skinned everything
 
 -- Rv7 --
-- implemented the UI: intro screen with main menu, config menu, and zone screen
+[UI]
+- introduced the UI engine using Ogre overlays instead of CEGUI
+- dropped any use of CEGUI
+- implemented the UI: 
+  # main menu
+  # config menu 
+  # zone screen
 - implemented HUDs
 - switching between zones is allowed and fully functional now
- 
+- help overlay, shows how to play the game, controls etc
+- preparation sheet that talks about the current zone prior to engaging
+- win & loss sheets
+
+[Engine]
+- Vertigo now has an external configuration sheet
+
+[Gameplay]
+- scoring system is functional; added "Accuracy" and time elapsed
+- introduced Zones
+- implemented a Zone parser, and zones can be fully defined in XML sheets
+- implemented over 8 factors that determine the gameplay of a certain zone and difficulty controllers
+- introduced 6 unique zones and tuned them
+
 -- Rv6 --
+[Gameplay]
 - added game modes:
   # arcade
   # survival
   # dodgy
   # nervebreak
-- implemented physical body for the terrain
-  
--- Rv5 --
-- sound effects
+- sphere navigation is implemented: movement to the left and right is valid now
 
+[Physics]
+- implemented physical body for the terrain
+
+-- Rv5 --
+[Audio]
+- the game now offers sounds through OpenAL
+- integrated an ogre wrapper for OpenAL; OgreOggSound
+- got a sound track for the game created by Job de Boer
+- introduced sound effects for various events: drone collision, teleporting, flipping shields and warning when shields get to a low threshold
 -- Rv4 --
 - visual effects
 - introduced portals
 - player travels between tunnels using portals now
 
+[Physics]
+- dropped usage of bullet collision system, now using very simple Ogre AABB tests
+
 -- Rv3 --
-[General]
+[Deployment]
 - the game now compiles on Linux and Mac OS X systems
 
 [Graphics]
