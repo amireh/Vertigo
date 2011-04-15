@@ -199,8 +199,10 @@ namespace Pixy
 
     // clamp to our portal position if it was further
 	  float portalZ = Level::getSingleton().getTunnel()->getExitPortal()->getPosition().z;
-	  if (z > portalZ)
+	  if (z > portalZ) {
 	    z = portalZ;
+	    mMoveSpeed /= 2; // slow things down when we're this close to the player
+	  }
 	  
 	  if (Level::getSingleton().currentZone()->getSettings().fFixedSpawnPosition)
 	    return Vector3(0,20,z);

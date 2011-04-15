@@ -439,8 +439,6 @@ namespace Pixy
       //mSphere->setMaxSpeed(mSphere->getMoveSpeed());
     //mLog->infoStream() << "Portal is reached, reducing velocity";
     
-
-		  
 		return true;
 
   };
@@ -525,6 +523,8 @@ namespace Pixy
   };
  
   bool Level::isGameOver() { return fGameOver; };
+  
+  // TODO: FIX THIS, completely wrong!!
   void Level::increaseSpawnRate(const int inFactor) {
     // increase the rate of obstacle spawning
     mSpawnTimer -= mSpawningThreshold / inFactor;
