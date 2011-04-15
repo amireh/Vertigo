@@ -648,6 +648,9 @@ namespace Pixy {
 	    mCurrentButton = static_cast<OgreBites::Button*>(mTrayMgr->getWidget("Play"));
 	  mCurrentButton->_doFlash();
 
+    mUISheet->show();
+    mUIScore->show();
+    mTextScoreCaption->show();
 	};
 	
 	void UIEngine::assignHandles() {
