@@ -264,7 +264,7 @@ namespace Pixy {
 	void UIEngine::keyReleased( const OIS::KeyEvent &e ) {
 
     // Level state specific bindings
-    if (_currentState->getId() == STATE_GAME) {
+    if (GameManager::getSingleton().currentState()->getId() == STATE_GAME) {
       switch (e.key) {
         case OIS::KC_F:
           if (mTrayMgr->areFrameStatsVisible())
