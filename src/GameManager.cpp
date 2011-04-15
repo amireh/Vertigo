@@ -310,8 +310,9 @@ namespace Pixy
 		mStates.push_back( inState );
 		mStates.back()->enter();
 		
-		// reset our frame timer to eliminate any burst glitches
+		// reset our frame timer to eliminate any frame bursts
 		//mRoot->getTimer()->reset();
+		//lTimeLastFrame = 0;
 	}
 	
 	void GameManager::pushState( GameState *inState ) {
@@ -323,11 +324,13 @@ namespace Pixy
 		
 		mCurrentState = inState;
 		
-		//mRoot->getTimer()->reset();
-		
 		// Store and init the new state
 		mStates.push_back( inState );
 		mStates.back()->enter();
+		
+		// reset our frame timer to eliminate any frame bursts
+		//mRoot->getTimer()->reset();
+		//lTimeLastFrame = 0;
 	}
 	
 	void GameManager::popState() {
@@ -337,16 +340,15 @@ namespace Pixy
 		    mStates.pop_back();
 		}
 		
-		// reset our timer simply to prevent any fps bursts
-		mRoot->getTimer()->reset();
-		lTimeLastFrame = 0;
-		
 		// Resume previous state
 		if( !mStates.empty() ) {
 		    mCurrentState = mStates.back();
 		    mStates.back()->resume();
 		}
 		
+		// reset our frame timer to eliminate any frame bursts
+		//mRoot->getTimer()->reset();
+		//lTimeLastFrame = 0;
 	}
 	
 	void GameManager::requestShutdown() {

@@ -13,6 +13,11 @@ namespace Pixy
 	
 	GAME_STATE Level::getId() const { return STATE_GAME; }
 	
+	Level::Level() {
+	  fRunning = false;
+	  fScreenshotTaken = false; // see Level::updateNothing() for info on this
+	};
+	
 	void Level::enter( void ) {
 		
 		fRunning = true;
@@ -74,6 +79,8 @@ namespace Pixy
 		bindToName("PortalEntered", this, &Level::evtPortalEntered);
 		bindToName("PortalReached", this, &Level::evtPortalReached);
 		bindToName("PortalSighted", this, &Level::evtPortalSighted);
+		bindToName("TakingScreenshot", this, &Level::evtTakingScreenshot);
+		bindToName("ScreenshotTaken", this, &Level::evtScreenshotTaken);
 
 		for (_itrEngines = mEngines.begin();
 		     _itrEngines != mEngines.end();
@@ -82,7 +89,7 @@ namespace Pixy
 		
 		
 		
-		mTimer.reset();
+		//mTimer.reset();
 
     mUpdater = &Level::updatePreparation;
     
@@ -317,6 +324,34 @@ namespace Pixy
 		}  
   };
   
+  void Level::updateNothing(unsigned long lTimeElapsed) {
+    /* WELCOME TO THE UGLIEST HACK OF MY LIFE
+     * i'm gonna write this so i can remember how to refactor it later:
+     *
+     * basically, taking a screenshot will lock the game out since we're not threaded
+     * and will cause a huge frame burst causing everything to go out of sync;
+     * resetting the frame timer in GameManager seems too much interference for good design
+     * and it's a very costly operation
+     *
+     * so what happens is: 
+     *  1) GfxEngine gets key event to take screenie
+     *  2) GfxEngine emits event "TakingScreenshot"
+     *  3) Level handles the event and:
+     *    a) sets the updater to &Level::updateNothing
+     *    b) sets fScreenshotTaken = false
+     *    c) manually updates GfxEngine with 0 time elapsed, to make it handle the event
+     *  4) GfxEngine handles the event and actually takes the screenshot
+     *  5) GfxEngine emits event "ScreenshotTaken"
+     *  6) Level handles the event and sets fScreenshotTaken = true
+     *  NOTE: we do NOT set back the updater immediately, because that would defeat the whole point
+     *  7) INSIDE Level::updateNothing(), it will be updated with a huge lTimeElapsed
+     *     and will redirect the updater back to Level::updateGame()
+     *  8) Screenie taken + world consistent = PROFIT
+    */
+    if (fScreenshotTaken)
+      mUpdater = &Level::updateGame;
+  };
+  
 	void Level::update( unsigned long lTimeElapsed ) {
 	  //mLog->debugStream() << " LTE : " << lTimeElapsed;
 		mEvtMgr->update();
@@ -504,7 +539,7 @@ namespace Pixy
     
     mLog->infoStream() << " ----- entered " << mZone->name() << " zone ----- ";
     mSfxEngine->playMusic();
-    //mZone->engage();
+    mZone->engage();
     mUIEngine->_refit(this);
     //reset();
     
@@ -558,9 +593,9 @@ namespace Pixy
     fGameOver = false;
     
     mLog->infoStream() << "engaging zone " << mZone->name();
-    mZone->engage();
+    //mZone->engage();
     
-    mTimer.reset();
+    //mTimer.reset();
     
     Event* mEvt = mEvtMgr->createEvt("ZoneEntered");
     //mEvt->setProperty("Path", Intro::getSingleton().getSelectedZone());
@@ -593,7 +628,34 @@ namespace Pixy
 	       _itr != mObstaclePool.end();
 	       ++_itr)
       (*_itr)->getMasterNode()->setVisible(true);
-      
-    mZone->currentTunnel()->getNode()->setVisible(true);  
+    
+    // in the case where the player is switching to a new zone, and was already playing one
+    // (Level is running), _showEverything() will be called on GameState::resume()
+    // and since our zone will not be engaged yet, the tunnel will never be shown anyway
+    // that's why we chekc if the tunnel exists.. otherwise, this applies to pausing / resuming the game
+    // which happens by toggling the menu
+    if (mZone->currentTunnel())
+      mZone->currentTunnel()->getNode()->setVisible(true);  
+  };
+  
+  bool Level::evtTakingScreenshot(Event* inEvt) {
+    mLog->debugStream() << "gfxengine says it's taking a screenie";
+    
+    mUpdater = &Level::updateNothing;
+    
+    mGfxEngine->update(0);
+    
+    fScreenshotTaken = false;
+    
+    return true;
+  };
+  
+  bool Level::evtScreenshotTaken(Event* inEvt) {
+    mLog->debugStream() << "gfxengine says it's done taking a screenie";
+    
+    fScreenshotTaken = true;
+    //mUpdater = &Level::updateGame;
+    
+    return true;
   };
 } // end of namespace

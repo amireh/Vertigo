@@ -145,6 +145,7 @@ namespace Pixy {
 	  bool evtPortalEntered(Event* inEvt);
 	  bool evtPortalReached(Event* inEvt);
 	  bool evtPortalSighted(Event* inEvt);
+	  bool evtTakingScreenshot(Event* inEvt);
     
     void loadResources();
     	  

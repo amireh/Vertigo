@@ -253,7 +253,7 @@ namespace Pixy {
       << mSphereNode->getPosition().z << 
       ". Portal reached? " << (fPortalReached ? "yes" : "no");*/
     
-
+    mLog->infoStream() << "---- is shown ----";
   };
   void Tunnel::hide() {
   
@@ -278,7 +278,7 @@ namespace Pixy {
       mPortalEffect->stop();
     }
         
-    mLog->infoStream() << "Tunnel" << idObject << " is hidden";
+    mLog->infoStream() << "---- is hidden ----";
   };
   
   void Tunnel::update(unsigned long lTimeElapsed) {
@@ -320,10 +320,10 @@ namespace Pixy {
 	bool Tunnel::evtPortalReached(Event* inEvt) {
 	  //hide();
 	  
-    if (fHasFx) {
+    //if (fHasFx) {
       //mPortalEffect->setFastForward(175, 2);
       mPortalEffect->stopFade();
-    }
+    //}
 
 	  return true;
 	};
@@ -334,6 +334,7 @@ namespace Pixy {
 	  if (mPortalEffect->isAttached())
 	    mPortalEffect->getParentSceneNode()->detachObject(mPortalEffect);
     mExit->attachObject(mPortalEffect);
+    mPortalEffect->stop();
     mPortalEffect->start();
     
     if (fHasSfx)

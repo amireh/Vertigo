@@ -88,6 +88,7 @@ namespace Pixy
     void updatePreparation(unsigned long lTimeElapsed);
     void updateGame(unsigned long lTimeElapsed);
     void updateGameOver(unsigned long lTimeElapsed);
+    void updateNothing(unsigned long lTimeElapsed);
     
     bool evtZoneEntered(Event* inEvt);
     bool evtPlayerWon(Event* inEvt);
@@ -95,16 +96,19 @@ namespace Pixy
 		bool evtPortalEntered(Event* inEvt);
 		bool evtPortalReached(Event* inEvt);
 		bool evtPortalSighted(Event* inEvt);
+		bool evtTakingScreenshot(Event* inEvt);
+		bool evtScreenshotTaken(Event* inEvt);
 		
 		//Tunnel *mTunnel;
 		//std::list<Tunnel*> mTunnels;
 		Zone* mZone;
 		std::list<Engine*> mEngines;
+		bool fScreenshotTaken;
 		
 		std::list<Obstacle*>::iterator _itrObstacles;
 		std::list<Engine*>::iterator _itrEngines;
 	private:
-		Level( void ) { fRunning = false; }
+		Level( void );
 		Level( const Level& ) { }
 		Level & operator = ( const Level& );
 		

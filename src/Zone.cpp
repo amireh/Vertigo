@@ -337,8 +337,8 @@ namespace Pixy {
     if (!mTunnel)
       mTunnel = mTunnels.front();
     
-    if (fForceReload)
-      mTunnel->hide();
+    //if (fForceReload)
+    //  mTunnel->hide();
     
     mTunnel->show();
     

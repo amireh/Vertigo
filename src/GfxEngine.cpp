@@ -143,6 +143,7 @@ namespace Pixy {
     //bindToName("ObstacleAlive", this, &GfxEngine::evtObstacleAlive);
     bindToName("ObstacleCollided", this, &GfxEngine::evtObstacleCollided);
     bindToName("PortalEntered", this, &GfxEngine::evtPortalEntered);
+    bindToName("TakingScreenshot", this, &GfxEngine::evtTakingScreenshot);
     //bindToName("PortalReached", this, &GfxEngine::evtPortalReached);
     //bindToName("PortalSighted", this, &GfxEngine::evtPortalSighted);
     
@@ -428,23 +429,9 @@ namespace Pixy {
 	
 	void GfxEngine::keyPressed( const OIS::KeyEvent &e )
 	{
-	  std::string fileName;
-	  time_t seconds;
 		switch (e.key) {   
 		  case OIS::KC_K:
-		    // pause the game
-		    GameManager::getSingleton().pushState(Pause::getSingletonPtr());
-	      
-	      // take a screenshot
-        seconds = time (NULL);
-        fileName = "Screenshot_";
-        fileName += stringify(seconds);
-        fileName += ".png";
-		    mRenderWindow->writeContentsToFile(fileName);
-		    
-		    // resume the game
-		    GameManager::getSingleton().popState();
-		    
+	      mEvtMgr->hook(mEvtMgr->createEvt("TakingScreenshot"));
 		    break;
 		  case OIS::KC_1:
 		    setCameraMode(CAMERA_CHASE);
@@ -779,5 +766,20 @@ namespace Pixy {
 	  return true;
 	};	
 
+  bool GfxEngine::evtTakingScreenshot(Event* inEvt) {
+    // take a screenshot
+    mLog->debugStream() << "taking screenshot now";
+    
+    time_t seconds = time(NULL);
+    std::string fileName = "Screenshot_";
+    fileName += stringify(seconds);
+    fileName += ".png";
+    mRenderWindow->writeContentsToFile(fileName);  
+    
+    mLog->debugStream() << "done taking screenshot, transmitting";
+    
+    mEvtMgr->hook(mEvtMgr->createEvt("ScreenshotTaken"));
+    return true;
+  }
 }
 
