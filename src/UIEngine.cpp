@@ -96,6 +96,7 @@ namespace Pixy {
 		
     mRoot = Ogre::Root::getSingletonPtr();
     mWindow = mRoot->getAutoCreatedWindow();
+    mViewport = mWindow->getViewport(0);
     mOverlayMgr = Ogre::OverlayManager::getSingletonPtr();
     
 		mDialogShade = (Ogre::OverlayContainer*)mOverlayMgr->createOverlayElement("Panel", "DialogShade");
@@ -280,14 +281,16 @@ namespace Pixy {
       return;
     }
 
-    // Intro state / menu specific bindings
-	  if (fShowingHelp && (e.key == OIS::KC_ESCAPE || e.key == OIS::KC_RETURN)) {
-
-	    mUIHelp->hide();
+    if (mTrayMgr->isDialogVisible()) {
+      mTrayMgr->closeDialog();
 	    mDialogShade->hide();
 	    mShadeLayer->hide();
-	    fShowingHelp = false;
-	    
+    }
+    
+    // Intro state / menu specific bindings
+	  if (fShowingHelp) {
+
+      _hideHelp();
 	    _showMainMenu();
 	    
 	    return;
@@ -366,10 +369,25 @@ namespace Pixy {
     
 	};	
 	
+	void UIEngine::_showHelp() {
+	  mTextHelp->setCaption(mHelpMsg);
+	  mDialogShade->show();
+	  mShadeLayer->show();
+	  
+	  mUIHelp->show();
+	  mTextHelp->show();
+	  fShowingHelp = true;
+
+	};
+	void UIEngine::_hideHelp() {
+    mUIHelp->hide();
+    mDialogShade->hide();
+    mShadeLayer->hide();
+    fShowingHelp = false;	
+	};
   void UIEngine::setupWidgets()
 	{
 	
-	  Ogre::Viewport* mViewport = mWindow->getViewport(0);
 	  Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
 		Ogre::MaterialPtr thumbMat = Ogre::MaterialManager::getSingleton().create("ZoneThumbnail", "Bootstrap");
 		thumbMat->getTechnique(0)->getPass(0)->createTextureUnitState();
@@ -515,7 +533,16 @@ namespace Pixy {
 		    }
 	    }
 
+		  mTrayMgr->moveWidgetToTray("ConfigSeparator2", TL_CENTER);
+		  mTrayMgr->moveWidgetToTray(mFxMenu, TL_CENTER);
+		  mTrayMgr->moveWidgetToTray(mMusicMenu, TL_CENTER);
+		  mTrayMgr->moveWidgetToTray(mSfxMenu, TL_CENTER);
     }
+  }
+  
+  void UIEngine::okDialogClosed(const Ogre::DisplayString& message) {
+    mShadeLayer->hide();
+    mDialogShade->hide();
   }
   
 	/*-----------------------------------------------------------------------------
@@ -532,8 +559,9 @@ namespace Pixy {
               
 		}
 		mRoot->saveConfig();
-    mRoot->setRenderSystem(rs);
-    
+    //mRoot->setRenderSystem(rs);
+    mShadeLayer->show();
+    mDialogShade->show();
     mTrayMgr->showOkDialog("Notice!", "Your new settings will be applied the next time you run Vertigo.");
 	}
 	
@@ -655,7 +683,6 @@ namespace Pixy {
 	void UIEngine::refitOverlays() {
 	  using Ogre::TextAreaOverlayElement;
 	  
-	  Ogre::Viewport* mViewport = mWindow->getViewport(0);
 		int width = mViewport->getActualWidth();
 		int height = mViewport->getActualHeight();
 		float aspect_ratio = width / height;
@@ -841,7 +868,6 @@ namespace Pixy {
 	  // if it's dodgy mode, we have to hide one of the shield HUDs since
 	  // the player will be using only one of them
 	  Sphere* mSphere = Level::getSingleton().getSphere();
-	  Ogre::Viewport* mViewport = mWindow->getViewport(0);
 
     // we divide by 1000 because the shield's normal starting value is 1000
     mHUDFireShield->getParent()->setWidth(mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
@@ -999,8 +1025,10 @@ namespace Pixy {
     inConfigMenu = true;
     
 		_hideMainMenu();
-		mTrayMgr->moveWidgetToTray("Apply", TL_BOTTOM);
-		mTrayMgr->moveWidgetToTray("BackFromConfig", TL_BOTTOM);
+		// if the viewport's height is any less than 600, we have to move these
+		// buttons to the bottom right corner
+		mTrayMgr->moveWidgetToTray("Apply", (mViewport->getActualHeight() <= 600) ? TL_BOTTOMRIGHT : TL_BOTTOM);
+		mTrayMgr->moveWidgetToTray("BackFromConfig", (mViewport->getActualHeight() <= 600) ? TL_BOTTOMRIGHT : TL_BOTTOM);
 
 		while (mTrayMgr->getTrayContainer(TL_CENTER)->isVisible())
 		{
@@ -1100,16 +1128,9 @@ namespace Pixy {
   // display an overlay with some info on how to play the game
   void UIEngine::evtClickHelp() { 
 	  
-	  mTextHelp->setCaption(mHelpMsg);
-	  mDialogShade->show();
-	  mShadeLayer->show();
-	  
-	  mUIHelp->show();
-	  mTextHelp->show();
-	  
+	  _showHelp();
 	  _hideMainMenu();
 	  
-	  fShowingHelp = true;
   };
   
   void UIEngine::evtClickQuit() {

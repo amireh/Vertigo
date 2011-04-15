@@ -155,6 +155,9 @@ namespace Pixy {
 		
 		void _hideConfigMenu();
 		void _showConfigMenu();
+		
+		void _showHelp();
+		void _hideHelp();
 	  
 	  // creates widgets for our menu
 	  virtual void setupWidgets();
@@ -164,6 +167,7 @@ namespace Pixy {
 
     Ogre::Root *mRoot;
     Ogre::RenderWindow *mWindow;
+    Ogre::Viewport* mViewport;
     SdkTrayManager *mTrayMgr;
 		Ogre::OverlayManager *mOverlayMgr;
 		//Sphere* mSphere;
@@ -215,6 +219,7 @@ namespace Pixy {
     virtual void itemSelected(SelectMenu* menu);
     virtual void buttonHit(Button* b);
     virtual void buttonOver(Button* b);
+    virtual void okDialogClosed(const Ogre::DisplayString& message);
     
     OgreOggISound *mSfxButtonOver, *mSfxButtonHit;
     

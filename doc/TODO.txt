@@ -68,8 +68,8 @@
 * pack resources
 * patcher
 
-* resolution starts @ 800x600 .. config screen is not accessible on that resolution
-* eliminate fps bursts when taking screenshots
+* resolution starts @ 800x600 .. config screen is not accessible on that resolution (FIXED)
+* eliminate fps bursts when taking screenshots (DONE)
 * HUD toggling (done)
 * preferred camera mode per game mode
 * win/loss sheets should be centered

@@ -82,7 +82,7 @@ namespace Pixy
     //Root* ogreRoot = Root::getSingletonPtr(); 
     bool rendererInstalled = false;
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32 
-    HRESULT hr; 
+/*    HRESULT hr; 
     DWORD dwDirectXVersion = 0; 
     TCHAR strDirectXVersion[10]; 
 
@@ -92,18 +92,19 @@ namespace Pixy
       dxinfoStream << "DirectX version: " << strDirectXVersion; 
       //LogManager::getSingleton().logMessage(dxinfoStream.str());
       mLog->infoStream() << dxinfoStream.str();  
-
-      if(dwDirectXVersion >= 0x00090000) { 
+*/
+      //if(dwDirectXVersion >= 0x00090000) { 
         try { 
           mRoot->loadPlugin("RenderSystem_Direct3D9"); 
           mRoot->setRenderSystem(mRoot->getRenderSystemByName("Direct3D9 Rendering Subsystem"));
           rendererInstalled = true;
-        } 
-        catch(Exception& e) { 
-          mLog->errorStream() << "Unable to create D3D9 RenderSystem: " << e.getFullDescription(); 
-        } 
-      } 
-    } 
+        } catch (Ogre::Exception& e) {
+          mLog->errorStream() << "Unable to create D3D9 RenderSystem: " << e.getFullDescription();
+        } catch(std::exception& e) { 
+          mLog->errorStream() << "Unable to create D3D9 RenderSystem: " << e.what(); 
+        }
+      //} 
+//    } 
 #endif
     try {
       std::string lPluginsPath;
@@ -228,7 +229,7 @@ namespace Pixy
 	
 	
 	bool GameManager::configureGame() {
-		
+				
 		// Load config settings from ogre.cfg
 		if( !mRoot->restoreConfig() ) {
 		    // If there is no config file, show the configuration dialog
