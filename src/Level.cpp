@@ -237,7 +237,8 @@ namespace Pixy
 	
 	void Level::resume( void ) {
 	  mLog->infoStream() << "---- Resuming ----";
-	  this->_showEverything();
+	  if (!fGameOver)
+	    this->_showEverything();
 	}
 		
 	Level* Level::getSingletonPtr( void ) {

@@ -72,5 +72,5 @@
 * eliminate fps bursts when taking screenshots (DONE)
 * HUD toggling (done)
 * preferred camera mode per game mode
-* win/loss sheets should be centered
+* win/loss sheets should be centered (DONE)
 * windows installer: force directx installation

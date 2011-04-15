@@ -648,9 +648,6 @@ namespace Pixy {
 	    mCurrentButton = static_cast<OgreBites::Button*>(mTrayMgr->getWidget("Play"));
 	  mCurrentButton->_doFlash();
 
-    mUISheet->show();
-    mUIScore->show();
-    mTextScoreCaption->show();
 	};
 	
 	void UIEngine::assignHandles() {
@@ -947,7 +944,8 @@ namespace Pixy {
 	          << "\n\nControls:"
 	          << "\n - Flip shields by pressing SPACE BAR."
 	          << "\n - You can move to the left and right"
-	          << "\n   by pushing A and D.";
+	          << "\n   by pushing A and D."
+	          << "\n - You can adjust the camera mode by pressing 1-4.";
 	      break;
 	    case DODGY:
 	      msg << "Dodgy"
@@ -957,7 +955,8 @@ namespace Pixy {
 	          << "\n you MUST dodge one kind of drones."
 	          << "\n\nControls:"
 	          << "\n - You can move to the left and right"
-	          << "\n   by pushing A and D.";
+	          << "\n   by pushing A and D."
+	          << "\n - You can adjust the camera mode by pressing 1-4.";
 	      break;
 	    case SURVIVAL:
 	      msg << "Survival"
@@ -969,7 +968,8 @@ namespace Pixy {
 	          << "\n\nControls:"
 	          << "\n - Flip shields by pressing SPACE BAR."
 	          << "\n - You can move to the left and right"
-	          << "\n   by pushing A and D.";
+	          << "\n   by pushing A and D."
+	          << "\n - You can adjust the camera mode by pressing 1-4.";
 	      break;
 	    case NERVEBREAK:
 	      msg << "Nervebreak"
@@ -980,7 +980,8 @@ namespace Pixy {
 	          << "\n opposite to its element."
 	          << "\n\nControls:"
 	          << "\n - Flip shields by pressing SPACE BAR."
-	          << "\n - You can also move as usual."
+	          << "\n - You can move as usual."
+	          << "\n - You can adjust the camera mode by pressing 1-4."
 	          << "\n\n** WARNING: brain stability might deteriorate **";
 	  }
 	  msg << "\n\nPress ENTER when ready!";

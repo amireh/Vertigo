@@ -737,6 +737,15 @@ namespace Pixy {
 	  
 	  Level::getSingleton().getSphere()->getMasterNode()->setVisible(true);
 	  
+	  switch (Level::getSingleton().currentZone()->getSettings().mMode) {
+	    case DODGY:
+	      setCameraMode(CAMERA_FIXED);
+	      break;
+	    default:
+	      setCameraMode(CAMERA_CHASE);
+	      break;
+	  };
+	  
 	  return true;
 	};
 	
