@@ -53,8 +53,9 @@
 * parse zones from external XML sheets (done)
 * refactor GfxEngine .. it's a bloody mess there (done)
 * THREAD IT (fuck it)
+*
 
-
+-- bugs --
 * portal effect shouldn't be started when the overlay is shown (DONE)
 * make sure WARNING sound is played beyond the first zone (DONE)
 * add survival mode (DONE)
@@ -71,6 +72,17 @@
 * resolution starts @ 800x600 .. config screen is not accessible on that resolution (FIXED)
 * eliminate fps bursts when taking screenshots (DONE)
 * HUD toggling (done)
-* preferred camera mode per game mode
+* preferred camera mode per game mode (DONE)
 * win/loss sheets should be centered (DONE)
-* windows installer: force directx installation
+* windows installer: force directx installation (done)
+
+-- cross-compatibility --
+* mac: use WAV instead of OGG
+* mac: explicitly reference OgreBites::Button, XCode keeps whining about it
+* win: change all the preprocessor macros for checking the platform from OGRE_PLATFORM_WINDOWS to OGRE_PLATFORM_WIN32
+* mac: use bundle path for taking screenies
+* 
+
+-- usability --
+* [HIGH] guide the user back to the main menu after the game is over / retry
+* [HIGH] physics goes out of sync on low FPS (talking about 30 fps, that's not really low) .. 
