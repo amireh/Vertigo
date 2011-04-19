@@ -31,8 +31,8 @@ namespace Pixy
       mCollide = 0;
       
 		  mCurrentShield = (rand() % 2 == 0) ? FIRE : ICE;
-		  mShields[FIRE] = 1000;
-		  mShields[ICE] = 1000;
+		  mShields[FIRE] = 0;
+		  mShields[ICE] = 0;
 		  
 		  mNrMisses = mNrHits = 0;
 
@@ -74,9 +74,7 @@ namespace Pixy
       mGhostObject->setCollisionShape(new btSphereShape(14));
       mGhostObject->setWorldTransform(trans);
       mGhostObject->setCollisionFlags(mGhostObject->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
-      PhyxEngine::getSingletonPtr()->world()->addCollisionObject(mGhostObject, COL_SPHERE, COL_WALLS | COL_OBSTACLES);
-      PhyxEngine::getSingletonPtr()->world()->
-      getBroadphase()->getOverlappingPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
+
       
       /* -- prepare sound effects -- */
       OgreOggSound::OgreOggSoundManager *mSoundMgr;
@@ -191,7 +189,9 @@ namespace Pixy
 
     //PhyxEngine::getSingletonPtr()->attachToWorld(this);
     PhyxEngine::getSingletonPtr()->world()->addRigidBody(mPhyxBody, COL_SPHERE, COL_WALLS | COL_OBSTACLES);
-    
+    PhyxEngine::getSingletonPtr()->world()->addCollisionObject(mGhostObject, COL_SPHERE, COL_WALLS | COL_OBSTACLES);
+    PhyxEngine::getSingletonPtr()->world()->
+      getBroadphase()->getOverlappingPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());    
     
     GfxEngine::getSingletonPtr()->getSM()->getRootSceneNode()->addChild(mMasterNode);
     
@@ -202,8 +202,16 @@ namespace Pixy
 	};
 	
 	void Sphere::die() {
+	
+    Event* mEvt = EventManager::getSingletonPtr()->createEvt("SphereDied");
+    EventManager::getSingletonPtr()->hook(mEvt);
+    mEvt = NULL;
+    
 	  PhyxEngine::getSingletonPtr()->detachFromWorld(this);
-	  
+	  PhyxEngine::getSingletonPtr()->world()->
+      getBroadphase()->getOverlappingPairCache()->setInternalGhostPairCallback(0); 
+	  PhyxEngine::getSingletonPtr()->world()->removeCollisionObject(mGhostObject);
+      
 	  GfxEngine::getSingletonPtr()->getSM()->getRootSceneNode()->removeChild(mMasterNode);
 
 	  mIceEffect->stop();
@@ -534,11 +542,7 @@ namespace Pixy
     UIEngine::getSingletonPtr()->_updateShields();
     
     if (mShields[mCurrentShield] <= 0) {
-      Event* mEvt = EventManager::getSingletonPtr()->createEvt("SphereDied");
-      EventManager::getSingletonPtr()->hook(mEvt);
-      mEvt = NULL;
       die();
-      mLog->debugStream() << "oops! i'm dead";
     };
 	  
 	  return true;
