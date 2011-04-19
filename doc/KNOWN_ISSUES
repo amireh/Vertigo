@@ -1,8 +1,10 @@
 * physics simulation is not normalized with FPS (FIXED)
 * sphere sometimes skips the portal when running too fast (FIXED)
-* for some reason, the flag fPortalReached in Tunnel.cpp is being set to true
-  mysteriously.. added temporary fix, but this doesn't make sense
-  
-* no explosion when sphere dies
-* music doesn't loop
-* sphere doesn't disappear when wins
+* no explosion when sphere dies (FIXED)
+* music doesn't loop (FIXED)
+* sphere doesn't disappear when wins (FIXED)
+* portal effect shouldn't be started when the overlay is shown (FIXED)
+* make sure WARNING sound is played beyond the first zone (FIXED)
+* resolution starts @ 800x600 .. config screen is not accessible on that resolution (FIXED)
+* eliminate fps bursts when taking screenshots (FIXED)
+* volume control doesn't affect sfx (FIXED)

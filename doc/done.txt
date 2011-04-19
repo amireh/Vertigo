@@ -1,0 +1,8 @@
+stuff done:
+
+* all OgreBites::Button* references in UIEngine do it explicitly
+* sfxengine no longer references or creates intro track
+* OGG sounds fall back to WAV on mac
+* loading scene is cleaned up in game manager
+* settings are no longer strings
+* taking screenshots on mac now stores them in the bundle under Contents/Resources

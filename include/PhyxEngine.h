@@ -58,7 +58,14 @@ namespace Pixy
 		
 		float getMaxSpeed() const;
 		
+		void pauseDynamics();
+		void resumeDynamics();
+		
 	protected:
+	  void (PhyxEngine::*mUpdater)(unsigned long);
+	  
+	  void updateNothing(unsigned long lTimeElapsed);
+	  void updateGame(unsigned long lTimeElapsed);
 	  
 		btBroadphaseInterface* mBroadphase;
 		btDefaultCollisionConfiguration* mCollisionConfig;

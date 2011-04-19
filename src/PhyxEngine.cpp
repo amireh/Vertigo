@@ -30,6 +30,8 @@ namespace Pixy {
 		mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "PhyxEngine");
 		mLog->infoStream() << "firing up";
 		fSetup = false;
+		
+		mUpdater = &PhyxEngine::updateNothing;
 	}
 	
 	PhyxEngine::~PhyxEngine() {
@@ -192,25 +194,34 @@ namespace Pixy {
 
     mLog->infoStream() << "set up!";
     
+    mUpdater = &PhyxEngine::updateGame;
+    
 		fSetup = true;
 		return fSetup;
 	}
 	
+	void PhyxEngine::updateNothing(unsigned long lTimeElapsed) {
 	
-	void PhyxEngine::update(unsigned long lTimeElapsed) {
-		mWorld->stepSimulation(lTimeElapsed, 7);
+	};
+	
+	void PhyxEngine::updateGame(unsigned long lTimeElapsed) {
+		mWorld->stepSimulation((float)(lTimeElapsed / 1000.0f), 7);
 		
 		//mWorld->debugDrawWorld();
 
     
     //mDbgdraw->step();
 	}
-		 
+	
+	void PhyxEngine::update(unsigned long lTimeElapsed) {
+	  (this->*mUpdater)(lTimeElapsed);
+	};
+	
 	bool PhyxEngine::deferredSetup() {
 		mSphere = Level::getSingleton().getSphere();
 		
 
-    		
+    
 		//mMaxSpeed = mSphere->getMaxSpeed();
 		
 		return true;
@@ -269,9 +280,18 @@ namespace Pixy {
     delete mBroadphase;
     
     fSetup = false;
+    mUpdater = &PhyxEngine::updateNothing; 
     
 		return true;
 	}
 	
 	btDiscreteDynamicsWorld* PhyxEngine::world() { return mWorld; };
+	
+	void PhyxEngine::pauseDynamics() {
+	  mUpdater = &PhyxEngine::updateNothing;
+	};
+	
+	void PhyxEngine::resumeDynamics() {
+	  mUpdater = &PhyxEngine::updateGame;
+	};
 }

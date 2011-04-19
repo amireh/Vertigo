@@ -24,7 +24,7 @@ namespace Pixy
 	  mMoveSpeed = 1.2f;
 	  mMaxSpeed = mMoveSpeed * 20;
 	  fDying = false;
-	  fHasFullFx = GameManager::getSingleton().getSettings()["Visual Detail"] == "Full";
+	  fHasFullFx = GameManager::getSingleton().getSettings().FX_LEVEL == FX_LEVEL_FULL;
     mDuetteTwin = 0;
     
 	  mClass = CHASE;
@@ -216,7 +216,7 @@ namespace Pixy
 	  
     mSphere = Level::getSingleton().getSphere();
 	  fHasFx = Level::getSingleton().areFxEnabled();
-	  fHasFullFx = GameManager::getSingleton().getSettings()["Visual Detail"] == "Full";
+	  fHasFullFx = GameManager::getSingleton().getSettings().FX_LEVEL == FX_LEVEL_FULL;
 	  fHasSfx = Level::getSingleton().areSfxEnabled();
     
 	  // parse zone settings
@@ -225,6 +225,9 @@ namespace Pixy
 	  mMoveSpeed = tZone->getSettings().mOMoveSpeed;
 	  mMaxSpeed = mMoveSpeed * tZone->getSettings().mOMaxSpeedFactor;
 	  mMaxSpeed += mMaxSpeed * (tZone->currentTunnelNr() * tZone->getSettings().mOMaxSpeedStep);
+	  
+	  mMoveSpeed *= 4;
+	  mMaxSpeed *= 4;
 	  
 	  mDirection = Vector3::ZERO;
 	  

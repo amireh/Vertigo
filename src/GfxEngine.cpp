@@ -780,7 +780,11 @@ namespace Pixy {
     mLog->debugStream() << "taking screenshot now";
     
     time_t seconds = time(NULL);
-    std::string fileName = "Screenshot_";
+    std::string fileName = "";
+#if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
+    fileName += GameManager::getSingleton().macBundlePath() + "Contents/Resources/";
+#endif
+    fileName += "Screenshot_";
     fileName += stringify(seconds);
     fileName += ".png";
     mRenderWindow->writeContentsToFile(fileName);  

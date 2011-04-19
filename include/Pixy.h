@@ -37,7 +37,7 @@
  * ------------- */
 #define PROJECT_ROOT ".."
 
-#if OGRE_PLATFORM == OGRE_PLATFORM_WINDOWS || defined(_WIN32)
+#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 #define PROJECT_LOG_DIR "..\\log"
 #define PROJECT_RESOURCES "\\resources"
 #define PROJECT_SCRIPTS "\\resources\\scripts"

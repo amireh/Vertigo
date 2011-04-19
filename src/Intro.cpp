@@ -142,8 +142,8 @@ namespace Pixy
 	}
 
   
-  bool Intro::areFxEnabled() { return GameManager::getSingleton().getSettings()["Visual Detail"] != "Low"; }
-  bool Intro::areSfxEnabled() { return GameManager::getSingleton().getSettings()["Sound Enabled"] == "Yes"; }
+  bool Intro::areFxEnabled() { return GameManager::getSingleton().getSettings().FX_LEVEL != FX_LEVEL_LOW; }
+  bool Intro::areSfxEnabled() { return GameManager::getSingleton().getSettings().SOUND_ENABLED; }
   void Intro::dontUpdateMe(Engine* inEngine) {
     mEngines.remove(inEngine);
   };

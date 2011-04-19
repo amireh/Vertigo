@@ -68,7 +68,7 @@ namespace Pixy
     
     
     // now prepare our obstacles
-		nrObstacles = 12;
+		nrObstacles = 20;
 		for (int i =0; i < nrObstacles; ++i)
 	    mObstaclePool.push_back(new Obstacle());
 		
@@ -233,12 +233,15 @@ namespace Pixy
 	void Level::pause( void ) {
 	  mLog->infoStream() << "---- Pausing ----";
 	  this->_hideEverything();
+	  mPhyxEngine->pauseDynamics();
 	}
 	
 	void Level::resume( void ) {
 	  mLog->infoStream() << "---- Resuming ----";
-	  if (!fGameOver)
+	  if (!fGameOver) {
 	    this->_showEverything();
+      mPhyxEngine->resumeDynamics();
+    }
 	}
 		
 	Level* Level::getSingletonPtr( void ) {
@@ -349,8 +352,10 @@ namespace Pixy
      *     and will redirect the updater back to Level::updateGame()
      *  8) Screenie taken + world consistent = PROFIT
     */
-    if (fScreenshotTaken)
+    if (fScreenshotTaken) {
       mUpdater = &Level::updateGame;
+      mTimer.reset(); // reset spawn timer
+    }
   };
   
 	void Level::update( unsigned long lTimeElapsed ) {
@@ -399,22 +404,27 @@ namespace Pixy
   
   void Level::spawnDuette() {
     Obstacle *mObs[2];
+    mObs[0] = 0;
+    mObs[1] = 0;
+    
     SHIELD lastShield = (rand() % 2 == 0) ? FIRE : ICE;
     for (int i=0;i<2;++i) {
       mObs[i] = spawnObstacle(DUMB);
-      mObs[i]->setClass(DUETTE);
       if (!mObs[i])
         break;
 
       // set one of them to go left and the other to the right
+      mObs[i]->setClass(DUETTE);
       mObs[i]->setDirection(Vector3((i == 0) ? 0.6f : -0.6f,-1,-1));
       mObs[i]->setShield(lastShield);
       
       // swap shields
       lastShield = (lastShield == FIRE) ? ICE : FIRE;
     }
-    mObs[0]->setDuetteTwin(mObs[1]);
-    mObs[1]->setDuetteTwin(mObs[0]);
+    if (mObs[0] && mObs[1]) {
+      mObs[0]->setDuetteTwin(mObs[1]);
+      mObs[1]->setDuetteTwin(mObs[0]);
+    }
   };
   
   void Level::releaseObstacle(Obstacle* inObs) {
@@ -480,8 +490,8 @@ namespace Pixy
     return mZone->currentTunnel();
   };
   
-  bool Level::areFxEnabled() { return GameManager::getSingleton().getSettings()["Visual Detail"] != "Low"; }
-  bool Level::areSfxEnabled() { return GameManager::getSingleton().getSettings()["Sound Enabled"] == "Yes"; }
+  bool Level::areFxEnabled() { return GameManager::getSingleton().getSettings().FX_LEVEL != FX_LEVEL_LOW; }
+  bool Level::areSfxEnabled() { return GameManager::getSingleton().getSettings().SOUND_ENABLED; }
   
   void Level::dontUpdateMe(Engine* inEngine) {
     mEngines.remove(inEngine);
@@ -539,9 +549,11 @@ namespace Pixy
   bool Level::evtZoneEntered(Event* inEvt) {
     
     mLog->infoStream() << " ----- entered " << mZone->name() << " zone ----- ";
+    mPhyxEngine->resumeDynamics();
     mSfxEngine->playMusic();
     mZone->engage();
     mUIEngine->_refit(this);
+    
     //reset();
     
     return true;

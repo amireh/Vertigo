@@ -48,10 +48,9 @@ namespace Pixy
     void lowerVolume();
     
     void toggleAudioState();
-    
-    void attachListener(Entity* inEntity);
-				
-		OgreOggSound::OgreOggSoundManager *getSoundMgr();
+
+		OgreOggSoundManager *getSoundMgr();
+		
 	protected:
     void (SfxEngine::*mUpdater)(unsigned long);
     bool (SfxEngine::*mSetup)();
@@ -59,24 +58,17 @@ namespace Pixy
     bool setupIntro();
     bool setupGame();
     
-    void updateIntro(unsigned long lTimeElapsed);
-    void updateGame(unsigned long lTimeElapsed);
-    
-    bool evtObstacleCollided(Event* inEvt);
-    bool evtPortalEntered(Event* inEvt);
     bool evtSettingsChanged(Event* inEvt);
-
     
 		OgreOggISound *mGameTrack, *mIntroTrack;
 		unsigned int idSound;
+		float mVolume;
 		
-		Sphere* mSphere;
-		Entity* mListener;
 		OgreOggSound::OgreOggSoundManager *mSoundMgr;
     
     bool fAudioStopped;		
 	private:
-		static SfxEngine* _mySfxEngine;
+		static SfxEngine* _instance;
 		SfxEngine();
 		SfxEngine(const SfxEngine& src);
 		SfxEngine& operator=(const SfxEngine& rhs);		
