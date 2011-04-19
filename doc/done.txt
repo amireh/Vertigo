@@ -6,3 +6,8 @@ stuff done:
 * loading scene is cleaned up in game manager
 * settings are no longer strings
 * taking screenshots on mac now stores them in the bundle under Contents/Resources
+
+* physics framerate independence (ugly code in GameManager)
+* chase obstacles no longer track the player's Z
+
+* fixed spawning/collision issue.. using vector for obstacle pool now instead of list

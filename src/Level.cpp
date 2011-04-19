@@ -20,6 +20,7 @@ namespace Pixy
 	
 	void Level::enter( void ) {
 		
+		mLastObstacleIdx = 0;
 		fRunning = true;
 		
 		srand((unsigned)time(0));
@@ -105,7 +106,7 @@ namespace Pixy
 	  
 	  fRunning = false;
 	  
-		for (std::list<Obstacle*>::iterator _itr = mObstaclePool.begin(); 
+		for (std::vector<Obstacle*>::iterator _itr = mObstaclePool.begin(); 
 		     _itr != mObstaclePool.end();
 		     ++_itr) {
 		    //mLog->debugStream() << "updating objects";
@@ -378,18 +379,34 @@ namespace Pixy
     Obstacle* mObs = NULL;// = mObstaclePool.front();
     
 		std::list<Obstacle*>::iterator _itr;
-		for (_itr = mObstaclePool.begin(); 
+		/*for (_itr = mObstaclePool.begin(); 
 		     _itr != mObstaclePool.end();
 		     ++_itr) {
 		    //mLog->debugStream() << "updating objects";
-		    if ((*_itr)->dead()) {
-		      mObs = *_itr;
+		    //if ((*_itr)->dead()) {
+		    if ((*_itr) == mObstacles.back()) {
+		      mObs = *(++_itr);
 		      break;
 		    };    
+		}*/
+		if (mLastObstacleIdx >= mObstaclePool.size()-1) {
+		  mLastObstacleIdx = 0;
 		}
+	  while (!mObs) {
+	    mObs = mObstaclePool[mLastObstacleIdx];
+	    if (mObs && mObs->dead())
+	      break;
+	    else {
+	      mObs = 0;
+	      ++mLastObstacleIdx;
+	    }
+	  }
+	
 		
-		if (!mObs)
+		if (!mObs) {
+		  mLog->errorStream() << "could not spawn obstacle!!";
 		  return NULL;
+		}
 		
 		mObs->live();
 		mObs->setClass(inClass);
@@ -415,7 +432,7 @@ namespace Pixy
 
       // set one of them to go left and the other to the right
       mObs[i]->setClass(DUETTE);
-      mObs[i]->setDirection(Vector3((i == 0) ? 0.6f : -0.6f,-1,-1));
+      mObs[i]->setDirection(Vector3((i == 0) ? 0.5f : -0.5f,-1,-1));
       mObs[i]->setShield(lastShield);
       
       // swap shields
@@ -461,7 +478,7 @@ namespace Pixy
     //mSphere->setMaxSpeed(0.0f);
     
     // clean up obstacles
-		std::list<Obstacle*>::iterator _itr;
+		std::vector<Obstacle*>::iterator _itr;
 		/*for (_itr = mObstacles.begin(); 
 		     _itr != mObstacles.end();)
 		{
@@ -582,7 +599,7 @@ namespace Pixy
       
       // kill our obstacles
       mLog->debugStream() << "I have " << mObstacles.size() << " obstacles alive, killng em";
-		  std::list<Obstacle*>::iterator _itr;
+		  std::vector<Obstacle*>::iterator _itr;
 		  for (_itr = mObstaclePool.begin(); 
 		       _itr != mObstaclePool.end();)
 		  {      
@@ -614,7 +631,7 @@ namespace Pixy
     //mEvt->setProperty("Path", Intro::getSingleton().getSelectedZone());
     //mEvt->setProperty("FirstZone", "True");
     mEvtMgr->hook(mEvt);  
-    
+    mLastObstacleIdx = 0;
     fFirstZone = false;  
   };
   
@@ -636,7 +653,7 @@ namespace Pixy
   
   void Level::_showEverything() {
     mSphere->getMasterNode()->setVisible(true);
-	  std::list<Obstacle*>::iterator _itr;
+	  std::vector<Obstacle*>::iterator _itr;
 	  for (_itr = mObstaclePool.begin(); 
 	       _itr != mObstaclePool.end();
 	       ++_itr)

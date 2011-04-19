@@ -70,6 +70,14 @@ namespace Pixy
 		  mPhyxBody = new btRigidBody(mPhyxBodyCI);
 		  mPhyxBody->proceedToTransform(trans);
 		
+		  mGhostObject = new btGhostObject();
+      mGhostObject->setCollisionShape(new btSphereShape(14));
+      mGhostObject->setWorldTransform(trans);
+      mGhostObject->setCollisionFlags(mGhostObject->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
+      PhyxEngine::getSingletonPtr()->world()->addCollisionObject(mGhostObject, COL_SPHERE, COL_WALLS | COL_OBSTACLES);
+      PhyxEngine::getSingletonPtr()->world()->
+      getBroadphase()->getOverlappingPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
+      
       /* -- prepare sound effects -- */
       OgreOggSound::OgreOggSoundManager *mSoundMgr;
       mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
@@ -155,6 +163,8 @@ namespace Pixy
     mSfxFlip = 0;
 
     // destroy physical component
+    PhyxEngine::getSingletonPtr()->world()->removeCollisionObject(mGhostObject);
+    delete mGhostObject;
 		delete mPhyxBody->getMotionState();
     delete mPhyxBody;
 		delete mPhyxShape;
@@ -179,7 +189,10 @@ namespace Pixy
 	
 	void Sphere::live() {
 
-    PhyxEngine::getSingletonPtr()->attachToWorld(this);
+    //PhyxEngine::getSingletonPtr()->attachToWorld(this);
+    PhyxEngine::getSingletonPtr()->world()->addRigidBody(mPhyxBody, COL_SPHERE, COL_WALLS | COL_OBSTACLES);
+    
+    
     GfxEngine::getSingletonPtr()->getSM()->getRootSceneNode()->addChild(mMasterNode);
     
     mScore = 0;
@@ -190,6 +203,7 @@ namespace Pixy
 	
 	void Sphere::die() {
 	  PhyxEngine::getSingletonPtr()->detachFromWorld(this);
+	  
 	  GfxEngine::getSingletonPtr()->getSM()->getRootSceneNode()->removeChild(mMasterNode);
 
 	  mIceEffect->stop();
@@ -364,7 +378,28 @@ namespace Pixy
 	    evt = 0;
       
       return;		
-	  };		
+	  };
+	  
+	  mGhostObject->setWorldTransform(mPhyxBody->getWorldTransform());
+	  
+	  
+    int numObjectsInGhost = mGhostObject->getNumOverlappingObjects(); //numObjectsInGhost is set to 0xcdcdcdcd
+    //czPrintf("number of objects inside ghost: %d\n", numObjectsInGhost);
+    for(int i=0; i<numObjectsInGhost;++i)
+    {
+      btCollisionObject* obj = mGhostObject->getOverlappingObject(i);
+      Obstacle* tObs = static_cast<Obstacle*>(obj->getUserPointer());
+      if (!tObs->dead()) {
+        //mLog->debugStream() << "sphere is colliding with Obstacle" << tObs->getObjectId();
+        Event* evt = EventManager::getSingleton().createEvt("ObstacleCollided");
+        evt->setAny(obj->getUserPointer());
+        EventManager::getSingleton().hook(evt);
+        evt = 0;
+        tObs->die();
+        break;
+      }
+    }
+    
   };
   
 	void Sphere::update(unsigned long lTimeElapsed) {
@@ -471,6 +506,10 @@ namespace Pixy
       
       ++mNrMisses;
       
+      /*mLog->debugStream() << "MISSED against: Obstacle" << mObs->getObjectId() 
+        << " whose shield was " << ((mObs->shield() == FIRE) ? "Fire" : "Ice")
+        << " and my shield was " << ((mCurrentShield == FIRE) ? "Fire" : "Ice")
+        << ". Obstacle's class is: " << ((mObs->getClass() == DUETTE) ? "Duette" : "Chase");*/  
       GfxEngine::getSingletonPtr()->applyMotionBlur(0.5f);
     }
     
@@ -584,8 +623,8 @@ namespace Pixy
 	  mMaxSpeed = mMoveSpeed * tZone->getSettings().mMaxSpeedFactor;
 	  mSpeedStep = tZone->getSettings().mSpeedStep;
 	  
-	  mMoveSpeed *= 4;
-	  mMaxSpeed *= 4;
+	  mMoveSpeed *= 10;
+	  mMaxSpeed *= 10;
 	  
 	  mTunnelLength = tZone->currentTunnel()->_getLength();
 	  mLastTunnelSegment = mTunnelLength - tZone->currentTunnel()->_getSegmentLength();

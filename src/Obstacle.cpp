@@ -122,7 +122,7 @@ namespace Pixy
     mPhyxShape = ourShape;
 	  mPhyxMS = new MotionState(trans, mMasterNode);
     btScalar mass = 1;
-    btVector3 fallInertia(0,0,1);
+    btVector3 fallInertia(0,0,-1);
 	
     mPhyxShape->calculateLocalInertia(mass,fallInertia);
         
@@ -226,8 +226,8 @@ namespace Pixy
 	  mMaxSpeed = mMoveSpeed * tZone->getSettings().mOMaxSpeedFactor;
 	  mMaxSpeed += mMaxSpeed * (tZone->currentTunnelNr() * tZone->getSettings().mOMaxSpeedStep);
 	  
-	  mMoveSpeed *= 4;
-	  mMaxSpeed *= 4;
+	  mMoveSpeed *= 10;
+	  mMaxSpeed *= 10;
 	  
 	  mDirection = Vector3::ZERO;
 	  
@@ -239,7 +239,8 @@ namespace Pixy
 	  mPosition = randomPosition();
 	  mMasterNode->setPosition(mPosition); 
 	  
-	  PhyxEngine::getSingletonPtr()->attachToWorld(this);
+	  //PhyxEngine::getSingletonPtr()->attachToWorld(this);
+	  PhyxEngine::getSingletonPtr()->world()->addRigidBody(mPhyxBody, COL_OBSTACLES, COL_WALLS | COL_SPHERE);
 	  
 	  mPhyxBody->activate(true);
 	  mPhyxBody->clearForces();
@@ -250,11 +251,14 @@ namespace Pixy
 	    )
 	  );
     
+    mClass = CHASE;
     mDuetteTwin = 0;
     
     render();
 	  //mSceneNode->setVisible(true);
 	  GfxEngine::getSingletonPtr()->getSM()->getRootSceneNode()->addChild(mMasterNode);
+	  
+	  mPhyxBody->setUserPointer(this);
 	  
 	  fDead = false;	  
 	  //mLog->debugStream() << mName << idObject << " is alive";
@@ -264,17 +268,19 @@ namespace Pixy
 	  //if (fDead)
 	  //  return;
 	  
-	  //mLog->debugStream() << mName << idObject << " is dead";
+	  
 	  
 	  // detach our physics body
-	  mPhyxBody->activate(true);
+	  /*mPhyxBody->activate(true);
 	  mPhyxBody->clearForces();
-	  mPhyxBody->setLinearVelocity(btVector3(0,0,0));
+	  mPhyxBody->setLinearVelocity(btVector3(0,0,0));*/
 	  
+	  fDead = true;
+	  //mLog->debugStream() << mName << idObject << " is dead";
 	  PhyxEngine::getSingletonPtr()->detachFromWorld(this);
 	  
 	  // hide our mesh and particle systems
-	  if (fHasFx || (mBlaze && mTide && mSteam && mMortar)) {
+	  if (fHasFullFx || fHasFx || (mBlaze && mTide && mSteam && mMortar)) {
 	    //if (mShield == FIRE) {
 	      mBlaze->stop();
 	      //mBlaze->setVisible(false);
@@ -293,7 +299,8 @@ namespace Pixy
 	  
 	  mUpdater = &Obstacle::updateNothing;
 	  
-	  fDead = true;
+	  
+	  
 	};
 	
 	void Obstacle::render() {
@@ -352,7 +359,7 @@ namespace Pixy
     }
     
     // colliding with the player?
-    if (mSceneNode->_getWorldAABB().intersects(mSphere->getSceneNode()->_getWorldAABB())) {
+    /*if (mSceneNode->_getWorldAABB().intersects(mSphere->getSceneNode()->_getWorldAABB())) {
       Event* evt = EventManager::getSingleton().createEvt("ObstacleCollided");
       evt->setAny((void*)this);
       EventManager::getSingleton().hook(evt);
@@ -364,7 +371,7 @@ namespace Pixy
       }
 
       return die();
-    }	
+    }	*/
 	};
 	
   void Obstacle::updateChase(unsigned long lTimeElapsed) {
@@ -377,7 +384,7 @@ namespace Pixy
 		mPhyxBody->setLinearVelocity(btVector3(
 		  mDirection.x * 2, 
 		  -1, 
-		  mDirection.z * 2
+		  -2
 		  ) * mMoveSpeed * lTimeElapsed);
 		/*
 		mPhyxBody->applyCentralForce(btVector3(
@@ -425,15 +432,21 @@ namespace Pixy
 	
 	void Obstacle::setClass(OBSTACLE_CLASS inClass) {
 	  mClass = inClass;
+	  Vector3 tScale;
 	  switch (mClass) {
 	    case CHASE:
 	      mUpdater = &Obstacle::updateChase;
+	      tScale = Vector3(1,1,1);
 	      //mMasterNode->setScale(1.0f, 1.0f, 1.0f);
 	      break;
 	    case DUMB:
+	      mUpdater = &Obstacle::updateDumb;
+	      tScale = Vector3(1,1,1);
+	      //mMasterNode->setScale(0.5f, 0.5f, 0.5f);
+	      break;
 	    case DUETTE:
 	      mUpdater = &Obstacle::updateDumb;
-	      //mMasterNode->setScale(0.5f, 0.5f, 0.5f);
+	      tScale = Vector3(1.2f,1.2f,1.2f); 
 	      break;
 	    /*case STATIONARY:
         mUpdater = &Obstacle::updateStationary;
@@ -442,6 +455,8 @@ namespace Pixy
           mPhyxBody->applyCentralForce(btVector3((rand() % 2 == 0) ? 700 : -700,0,0));
         break;*/
 	  };
+	  mPhyxShape->setLocalScaling(BtOgre::Convert::toBullet(tScale));
+    mMasterNode->setScale(tScale);
 	  mDirection = Vector3(0,0,-1); // set some default direction
 	};
 	
