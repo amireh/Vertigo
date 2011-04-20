@@ -11,3 +11,4 @@ stuff done:
 * chase obstacles no longer track the player's Z
 
 * fixed spawning/collision issue.. using vector for obstacle pool now instead of list
+* added retry/back to menu buttons in score screen

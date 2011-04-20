@@ -57,7 +57,7 @@
 ##==========================================================================
 
 # The pre-processor and compiler options.
-MY_CFLAGS = `pkg-config --cflags OGRE OIS CEGUI bullet` -Iinclude \
+MY_CFLAGS = -I/usr/include `pkg-config --cflags OGRE OIS CEGUI bullet`  -Iinclude \
 	-Imodules/include \
 	-Imodules/include/ogre \
 	-Imodules/include/ogre-procedural \
@@ -70,13 +70,28 @@ MY_CFLAGS = `pkg-config --cflags OGRE OIS CEGUI bullet` -Iinclude \
 	#-I/usr/include/ogg
 
 # The linker options.
-MY_LIBS   = -L/usr/local/lib -lOgreMain `pkg-config --libs OIS CEGUI bullet log4cpp` -lOgreOggSound -lCEGUIOgreRenderer -lPlugin_ParticleUniverse
-
+# dynamic build
+#MY_LIBS   = `pkg-config --libs OGRE OIS bullet log4cpp` -lOgreOggSound -lPlugin_ParticleUniverse
+# static build
+MY_LIBS = -Wl,-Bdynamic -L/usr/lib -L/usr/local/lib -lX11 -lXaw7  -lz -lXt -lXmu -lXrandr -lGL -lCg -lGLU -lopenal -lvorbisfile
+MY_STATIC_LIBS = --Wl,-Bsymbolic-functions -Wl,-Bstatic -L/usr/local/lib -L/usr/local/lib/OGRE    -L/home/kandie/Workspace/Deploy/Vertigo/lib \
+  lib/libOIS.a \
+  lib/liblog4cpp.a \
+  lib/libBulletDynamics.a \
+  lib/libBulletCollision.a \
+  lib/libBulletSoftBody.a \
+  lib/libLinearMath.a \
+  lib/libOgreOggSound.a \
+  lib/libRenderSystem_GLStatic.a \
+  lib/libPlugin_CgProgramManagerStatic.a \
+  lib/libParticleUniverse.a \
+  -lOgreMainStatic -lfreeimage -lfreetype -lzzip\
+  -Wl,-Bdynamic
 # The pre-processor options used by the cpp (man cpp for more).
 CPPFLAGS  = 
 
 # The options used in linking as well as in any direct use of ld.
-LDFLAGS   =
+LDFLAGS   = 
 
 # The directories in which source files reside.
 # If not specified, only the current directory will be serached.
@@ -89,7 +104,7 @@ SRCDIRS   = src \
 
 # The executable file name.
 # If not specified, current directory name or `a.out' will be used.
-PROGRAM   = bin/vertigo
+PROGRAM   = bin/vertigo_static
 
 ## Implicit Section: change the following only when necessary.
 ##==========================================================================
@@ -103,8 +118,8 @@ HDREXTS = .h .H .hh .hpp .HPP .h++ .hxx .hp
 
 # The pre-processor and compiler options.
 # Users can override those variables from the command line.
-CFLAGS  = -g -O2
-CXXFLAGS= -g -O2
+CFLAGS  = -O2
+CXXFLAGS= -O2
 
 # The C program compiler.
 #CC     = gcc
@@ -237,10 +252,10 @@ ctags: $(HEADERS) $(SOURCES)
 #-------------------------------------
 $(PROGRAM):$(OBJS)
 ifeq ($(SRC_CXX),)              # C program
-	$(LINK.c)   $(OBJS) $(MY_LIBS) -o $@
+	$(LINK.c)   $(OBJS) $(MY_LIBS) -o $@ $(MY_STATIC_LIBS)
 	@echo Type ./$@ to execute the program.
 else                            # C++ program
-	$(LINK.cxx) $(OBJS) $(MY_LIBS) -o $@
+	$(LINK.cxx) $(OBJS) $(MY_LIBS) -o $@ $(MY_STATIC_LIBS)
 	@echo Type ./$@ to execute the program.
 endif
 

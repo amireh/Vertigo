@@ -37,8 +37,6 @@ namespace Pixy
 		//mUIEngine->show();
 		mUIEngine->_refit(this);
 
-    mSfxEngine->playMusic();
-    
 		mLog->infoStream() << "Initialized successfully.";
 		
 	}

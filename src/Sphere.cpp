@@ -347,9 +347,9 @@ namespace Pixy
   };
   
   void Sphere::updateGame(unsigned long lTimeElapsed) {
-	  //mDirection.z += mMoveSpeed;
-	  //if (mMoveSpeed >= mMaxSpeed)
-	  //  mMoveSpeed = mMaxSpeed;
+	  mMoveSpeed += mSpeedStep;
+	  if (mMoveSpeed >= mMaxSpeed)
+	    mMoveSpeed = mMaxSpeed;
 	  
 		mPhyxBody->activate(true);
 		mPhyxBody->setLinearVelocity(
@@ -403,7 +403,7 @@ namespace Pixy
         evt->setAny(obj->getUserPointer());
         EventManager::getSingleton().hook(evt);
         evt = 0;
-        tObs->die();
+        tObs->collide(this);
         break;
       }
     }
@@ -580,9 +580,10 @@ namespace Pixy
     if (Level::getSingleton().currentZone()->getSettings().fResetVelocity) {
       PhyxEngine::getSingletonPtr()->detachFromWorld(this);
       PhyxEngine::getSingletonPtr()->attachToWorld(this);
-      //mPhyxBody->activate(true);
-      //mPhyxBody->clearForces();
-      //mPhyxBody->setLinearVelocity(btVector3(0,0,0));
+      mPhyxBody->activate(true);
+      mPhyxBody->clearForces();
+      mPhyxBody->setLinearVelocity(btVector3(0,0,0));
+      mPhyxBody->activate(false);
     }
     
     mTunnelLength = tZone->currentTunnel()->_getLength();
@@ -627,8 +628,8 @@ namespace Pixy
 	  mMaxSpeed = mMoveSpeed * tZone->getSettings().mMaxSpeedFactor;
 	  mSpeedStep = tZone->getSettings().mSpeedStep;
 	  
-	  mMoveSpeed *= 10;
-	  mMaxSpeed *= 10;
+	  //mMoveSpeed *= 10;
+	  //mMaxSpeed *= 10;
 	  
 	  mTunnelLength = tZone->currentTunnel()->_getLength();
 	  mLastTunnelSegment = mTunnelLength - tZone->currentTunnel()->_getSegmentLength();

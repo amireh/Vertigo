@@ -63,6 +63,8 @@ namespace Pixy
 	  virtual void setDirection(Vector3 inDirection);
 	  virtual void setClass(OBSTACLE_CLASS inClass);
 	  
+	  virtual void collide(Sphere* inSphere);
+	  
 	  OBSTACLE_CLASS getClass();
 	  
 		SHIELD shield();

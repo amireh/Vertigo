@@ -21,6 +21,7 @@ namespace Pixy {
 		idSound = 0;
 		mGameTrack = mIntroTrack = 0;
 		mSoundMgr = 0;
+		fAudioStopped = false;
 		
 		fSetup = false;		
 	}
@@ -76,9 +77,11 @@ namespace Pixy {
 
     mSoundMgr->setMasterVolume(mVolume);
     
-    fAudioStopped = false;
+    
     //toggleAudioState();
     
+	  if (GameManager::getSingleton().getSettings().MUSIC_ENABLED && !fAudioStopped)
+      this->playMusic();
     
     bindToName("SettingsChanged", this, &SfxEngine::evtSettingsChanged);
     
@@ -135,7 +138,7 @@ namespace Pixy {
 	  } else {
 	    mSoundMgr->resumeAllPausedSounds();
 	    mSoundMgr->unmuteAllSounds();
-	     mSoundMgr->setMasterVolume(mVolume);
+      mSoundMgr->setMasterVolume(mVolume);
 	  }
 	  
 	  fAudioStopped = !fAudioStopped;
