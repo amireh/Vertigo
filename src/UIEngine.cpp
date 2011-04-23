@@ -163,7 +163,6 @@ namespace Pixy {
     inMainMenu = false;
     inConfigMenu = false;
     fShowingHelp = false;
-    inScoreScreen = false;
     
     mLog->debugStream() << "set up!";
 		fSetup = true;
@@ -199,8 +198,8 @@ namespace Pixy {
 	
 	bool UIEngine::deferredSetup() {
 
-    //if (Level::getSingleton().running())
-    //  static_cast<OgreBites::Button*>(mTrayMgr->getWidget("Play"))->setCaption("Continue");
+    if (Level::getSingleton().running())
+      static_cast<OgreBites::Button*>(mTrayMgr->getWidget("Play"))->setCaption("Continue");
     
 		return true;
 	}
@@ -217,9 +216,7 @@ namespace Pixy {
 		  else {
 		    // show score
 		    mUISheet->show();
-		    _showScore();
-		    _hideHUDs();
-		    //mUIScore->show(); 
+		    mUIScore->show(); 
 		  }
 	  }
 	  
@@ -268,7 +265,7 @@ namespace Pixy {
 	void UIEngine::keyReleased( const OIS::KeyEvent &e ) {
 
     // Level state specific bindings
-    if (GameManager::getSingleton().currentState()->getId() == STATE_GAME && !inScoreScreen) {
+    if (GameManager::getSingleton().currentState()->getId() == STATE_GAME) {
       switch (e.key) {
         case OIS::KC_F:
           if (mTrayMgr->areFrameStatsVisible())
@@ -351,11 +348,9 @@ namespace Pixy {
             return GameManager::getSingleton().requestShutdown();
           else {
             // we're going back to the game
-            // unless the game is over
-            if (!Level::getSingleton().isGameOver()) {
-              this->_refit(Level::getSingletonPtr());
-              return GameManager::getSingleton().popState();
-            }
+            // show HUDs unless the game is over
+            this->_refit(Level::getSingletonPtr());
+            return GameManager::getSingleton().popState();
           }		        
         } else if (inConfigMenu) {
           // going back from config screen to main menu
@@ -374,6 +369,22 @@ namespace Pixy {
     
 	};	
 	
+	void UIEngine::_showHelp() {
+	  mTextHelp->setCaption(mHelpMsg);
+	  mDialogShade->show();
+	  mShadeLayer->show();
+	  
+	  mUIHelp->show();
+	  mTextHelp->show();
+	  fShowingHelp = true;
+
+	};
+	void UIEngine::_hideHelp() {
+    mUIHelp->hide();
+    mDialogShade->hide();
+    mShadeLayer->hide();
+    fShowingHelp = false;	
+	};
   void UIEngine::setupWidgets()
 	{
 	
@@ -385,10 +396,6 @@ namespace Pixy {
 
 
 		int button_width = mViewport->getActualWidth() / 5;
-		
-		// these buttons will be shown on score screen to guide the user back
-		mTrayMgr->createButton(TL_NONE, "Retry", "Retry", button_width);
-		mTrayMgr->createButton(TL_NONE, "BackFromScore", "Back to Menu", button_width);
 		
 		// create main navigation tray
 		mTrayMgr->createButton(TL_BOTTOM, "Play", "Play", button_width);
@@ -445,6 +452,100 @@ namespace Pixy {
 
 	}
 
+		
+  void UIEngine::buttonHit(Button* b) {
+    if (GameManager::getSingleton().getSettings().SOUND_ENABLED) {
+      if (mSfxButtonHit->isPlaying())
+        mSfxButtonHit->stop();
+      
+      mSfxButtonHit->play(true);
+    }
+      
+		if (b->getName() == "Configure")   // enter configuration screen
+		{
+		  evtClickConfigure();
+		}
+		else if (b->getName() == "BackFromConfig")   // leave configuration screen
+		{
+		  evtClickBackFromConfig();
+		}
+		else if (b->getName() == "Apply")   // apply any changes made in the configuration screen
+		{
+		  evtClickApply();
+		}
+		else if (b->getName() == "Play" || b->getName() == "ChangeZone")
+		  evtClickPlay();
+		else if (b->getName() == "Continue")
+		  evtClickContinue();
+		else if (b->getName() == "Quit") {
+		  evtClickQuit();
+		  
+		} else if(b->getName() == "Help") {
+		  evtClickHelp();
+		  
+		} else if (b->getName() == "Engage") {
+		  evtClickEngage();
+		} else if (b->getName() == "BackFromZones") {
+		  evtClickBackFromZones();
+		} else if (b->getName() == "PrevZone")
+		  _prevZone();
+		  else if (b->getName() == "NextZone")
+		  _nextZone();
+  };
+  
+  void UIEngine::buttonOver(Button* b) {
+    if (!GameManager::getSingleton().getSettings().SOUND_ENABLED)
+      return;
+      
+    if (mSfxButtonOver->isPlaying())
+      mSfxButtonOver->stop();
+    
+    mSfxButtonOver->startFade(true, 0.2f);
+  }
+  
+  void UIEngine::itemSelected(SelectMenu* menu) {
+    if (menu == mRendererMenu)    // renderer selected, so update all settings
+    {
+	    while (mTrayMgr->getNumWidgets(mRendererMenu->getTrayLocation()) > 3)
+	    {
+		    mTrayMgr->destroyWidget(mRendererMenu->getTrayLocation(), 3);
+	    }
+
+	    Ogre::ConfigOptionMap& options = mRoot->getRenderSystemByName(menu->getSelectedItem())->getConfigOptions();
+	    unsigned int i = 0;
+
+	    // create all the config option select menus
+	    for (Ogre::ConfigOptionMap::iterator it = options.begin(); it != options.end(); it++)
+	    {
+		    i++;
+		    SelectMenu* optionMenu = mTrayMgr->createLongSelectMenu
+			    (TL_CENTER, "ConfigOption" + Ogre::StringConverter::toString(i), it->first, 450, 240, 10);
+		    optionMenu->setItems(it->second.possibleValues);
+		
+		    // if the current config value is not in the menu, add it
+		    try
+		    {
+			    optionMenu->selectItem(it->second.currentValue);
+		    }
+		    catch (Ogre::Exception e)
+		    {
+			    optionMenu->addItem(it->second.currentValue);
+			    optionMenu->selectItem(it->second.currentValue);
+		    }
+	    }
+
+		  mTrayMgr->moveWidgetToTray("ConfigSeparator2", TL_CENTER);
+		  mTrayMgr->moveWidgetToTray(mFxMenu, TL_CENTER);
+		  mTrayMgr->moveWidgetToTray(mMusicMenu, TL_CENTER);
+		  mTrayMgr->moveWidgetToTray(mSfxMenu, TL_CENTER);
+    }
+  }
+  
+  void UIEngine::okDialogClosed(const Ogre::DisplayString& message) {
+    mShadeLayer->hide();
+    mDialogShade->hide();
+  }
+  
 	/*-----------------------------------------------------------------------------
 	| Extends reconfigure to save the view and the index of last sample run.
 	-----------------------------------------------------------------------------*/
@@ -465,7 +566,90 @@ namespace Pixy {
     mTrayMgr->showOkDialog("Notice!", "Your new settings will be applied the next time you run Vertigo.");
 	}
 	
+	void UIEngine::hideMenu() {
 
+	  mTrayMgr->hideCursor();
+	  _hideMainMenu();
+	  _hideZones();
+	  if (inConfigMenu)
+	    _hideConfigMenu();
+    
+    mUISheet->hide();
+    
+    // return everything to what it was
+    /*if (Level::getSingleton().running() && !Level::getSingleton().isGameOver()) {
+	    Level::getSingleton()._showEverything();
+	  }*/
+	  
+	  // and tell who's interested that we resumed the game
+	  EventManager::getSingleton().hook(EventManager::getSingleton().createEvt("GameShown"));
+	};
+	
+	void UIEngine::showMenu() {
+    
+    // tell who's interested that we paused the game
+    EventManager::getSingleton().hook(EventManager::getSingleton().createEvt("MenuShown"));
+    
+    // hide the scene
+    /*if (Level::getSingleton().running()) {
+	    Level::getSingleton()._hideEverything();
+	  }*/
+	  
+    mTrayMgr->showCursor();
+	  _showMainMenu();
+	  
+	  mDialogShade->hide();
+	  mShadeLayer->hide();
+	  mUISheet->show();
+	  mUIScore->hide();
+	  mUIPrepare->hide();
+	  mUIHelp->hide();
+	};
+	
+	void UIEngine::_hideMainMenu() {
+
+		
+		if (Level::getSingleton().running()) {
+		  mTrayMgr->removeWidgetFromTray("ChangeZone");
+		  mTrayMgr->removeWidgetFromTray("Continue");
+		} else
+		  mTrayMgr->removeWidgetFromTray("Play");
+		  
+		mTrayMgr->removeWidgetFromTray("Configure");
+		mTrayMgr->removeWidgetFromTray("Help");
+		mTrayMgr->removeWidgetFromTray("Quit");
+	  mUILogo->hide();
+	  mTextVersion->hide();
+	  
+		inMainMenu = false;
+	};
+	
+	void UIEngine::_showMainMenu() {
+	  inMainMenu = true;
+	  
+    mUILogo->show();
+    mTextVersion->show();
+		
+		if (Level::getSingleton().running()) {
+		  mTrayMgr->moveWidgetToTray("Continue", TL_BOTTOM);
+		  mTrayMgr->moveWidgetToTray("ChangeZone", TL_BOTTOM);
+		} else 
+		  mTrayMgr->moveWidgetToTray("Play", TL_BOTTOM);
+		mTrayMgr->moveWidgetToTray("Configure", TL_BOTTOM);
+		mTrayMgr->moveWidgetToTray("Help", TL_BOTTOM);
+		mTrayMgr->moveWidgetToTray("Quit", TL_BOTTOM);
+	  
+	  // assign a default button
+	  if (mCurrentButton)
+      mCurrentButton->_stopFlashing();
+    // flash Continue if a game is running, otherwise flash Play
+    if (Level::getSingleton().running())
+	    mCurrentButton = static_cast<OgreBites::Button*>(mTrayMgr->getWidget("Continue"));
+	  else
+	    mCurrentButton = static_cast<OgreBites::Button*>(mTrayMgr->getWidget("Play"));
+	  mCurrentButton->_doFlash();
+
+	};
 	
 	void UIEngine::assignHandles() {
 	  using Ogre::TextAreaOverlayElement;
@@ -527,8 +711,6 @@ namespace Pixy {
 	  mTrayMgr->getWidget("Configure")->getOverlayElement()->setHeight(height / 16);
 	  mTrayMgr->getWidget("Help")->getOverlayElement()->setHeight(height / 16);
 	  mTrayMgr->getWidget("Quit")->getOverlayElement()->setHeight(height / 16);
-	  mTrayMgr->getWidget("Retry")->getOverlayElement()->setHeight(height / 16);
-	  mTrayMgr->getWidget("BackFromScore")->getOverlayElement()->setHeight(height / 16);
 	  mTrayMgr->getWidget("Apply")->getOverlayElement()->setHeight(height / 16);
 	  mTrayMgr->getWidget("BackFromConfig")->getOverlayElement()->setHeight(height / 16);
 	  mTrayMgr->getWidget("Engage")->getOverlayElement()->setHeight(height / 16);
@@ -615,102 +797,7 @@ namespace Pixy {
     // update the player's score
     mHUDScore->setCaption(stringify(mSphere->score()));
 	};
-
-  /* ----------------------- *
-   * Togglers / Controllers
-   * ----------------------- */
-	void UIEngine::showMenu() {
-    
-    // tell who's interested that we paused the game
-    EventManager::getSingleton().hook(EventManager::getSingleton().createEvt("MenuShown"));
-    
-    // hide the scene
-    /*if (Level::getSingleton().running()) {
-	    Level::getSingleton()._hideEverything();
-	  }*/
-
-	  mDialogShade->hide();
-	  mShadeLayer->hide();
-	  mUISheet->show();
-	  _hideScore();
-	  //mUIScore->hide();
-	  mUIPrepare->hide();
-	  mUIHelp->hide();
-	  
-	  mTrayMgr->showCursor();
-	  _showMainMenu();
-	};
-
-	void UIEngine::hideMenu() {
-
-	  mTrayMgr->hideCursor();
-	  _hideMainMenu();
-	  _hideZones();
-	  if (inConfigMenu)
-	    _hideConfigMenu();
-    
-    mUISheet->hide();
-    
-    // return everything to what it was
-    /*if (Level::getSingleton().running() && !Level::getSingleton().isGameOver()) {
-	    Level::getSingleton()._showEverything();
-	  }*/
-	  
-	  // and tell who's interested that we resumed the game
-	  EventManager::getSingleton().hook(EventManager::getSingleton().createEvt("GameShown"));
-	};
 	
-	void UIEngine::_showMainMenu() {
-	  inMainMenu = true;
-	  
-    mUILogo->show();
-    mTextVersion->show();
-		
-		if (Level::getSingleton().running() && !Level::getSingleton().isGameOver()) {
-		  // don't show the Continue button if the game is over
-      mTrayMgr->moveWidgetToTray("Continue", TL_BOTTOM);
-		  mTrayMgr->moveWidgetToTray("ChangeZone", TL_BOTTOM);
-		} else 
-		  mTrayMgr->moveWidgetToTray("Play", TL_BOTTOM);
-
-		mTrayMgr->moveWidgetToTray("Configure", TL_BOTTOM);
-		mTrayMgr->moveWidgetToTray("Help", TL_BOTTOM);
-		mTrayMgr->moveWidgetToTray("Quit", TL_BOTTOM);
-	  
-	  // assign a default button
-	  if (mCurrentButton)
-      mCurrentButton->_stopFlashing();
-    // flash Continue if a game is running, otherwise flash Play
-    mCurrentButton = static_cast<OgreBites::Button*>(mTrayMgr->getWidget(TL_BOTTOM, 0));
-    /*if (Level::getSingleton().running())
-	    mCurrentButton = static_cast<OgreBites::Button*>(mTrayMgr->getWidget("Continue"));
-	  else
-	    mCurrentButton = static_cast<OgreBites::Button*>(mTrayMgr->getWidget("Play"));*/
-	  mCurrentButton->_doFlash();
-
-	};
-		
-	void UIEngine::_hideMainMenu() {
-
-				  
-		/*while (mTrayMgr->getNumWidgets(TL_BOTTOM) > 0)
-			mTrayMgr->destroyWidget(TL_BOTTOM, 0);*/
-		if (Level::getSingleton().running() && !Level::getSingleton().isGameOver()) {
-		  mTrayMgr->removeWidgetFromTray("ChangeZone");
-	    mTrayMgr->removeWidgetFromTray("Continue");
-		} else
-		  mTrayMgr->removeWidgetFromTray("Play");
-		  
-		mTrayMgr->removeWidgetFromTray("Configure");
-		mTrayMgr->removeWidgetFromTray("Help");
-		mTrayMgr->removeWidgetFromTray("Quit");
-	  mUILogo->hide();
-	  mTextVersion->hide();
-	  
-		inMainMenu = false;
-	};
-	
-
 	void UIEngine::_hideHUDs() {
 	  mHUDSheet->hide();
 	};
@@ -718,190 +805,7 @@ namespace Pixy {
 	void UIEngine::_showHUDs() {
 	  mHUDSheet->show();
 	};
-
-	void UIEngine::_showScore() {
-	  inScoreScreen = true;
-	  
-	  _hideHUDs();
-	  mUISheet->show();
-	  mDialogShade->show();
-	  mShadeLayer->show();
-	  mUIScore->show();
-	  
-	  mTrayMgr->moveWidgetToTray("Retry", TL_BOTTOM);
-	  mTrayMgr->moveWidgetToTray("BackFromScore", TL_BOTTOM);
-	  
-	  if (mCurrentButton)
-      mCurrentButton->_stopFlashing();
-    mCurrentButton = static_cast<OgreBites::Button*>(mTrayMgr->getWidget("Retry"));
-	  mCurrentButton->_doFlash();
-	};
 	
-	void UIEngine::_hideScore() {
-	  inScoreScreen = false;
-	  
-	  mDialogShade->hide();
-	  mShadeLayer->hide();
-	  mUIScore->hide();
-	  
-	  mTrayMgr->removeWidgetFromTray("Retry");
-	  mTrayMgr->removeWidgetFromTray("BackFromScore");
-	};
-
-  void UIEngine::_hideConfigMenu() {
-		mTrayMgr->removeWidgetFromTray(mSfxMenu);
-		mTrayMgr->removeWidgetFromTray(mMusicMenu);
-		mTrayMgr->removeWidgetFromTray(mFxMenu);
-		mTrayMgr->removeWidgetFromTray("ConfigSeparator2");
-		  
-		while (mTrayMgr->getNumWidgets(mRendererMenu->getTrayLocation()) > 3)
-		{
-			mTrayMgr->destroyWidget(mRendererMenu->getTrayLocation(), 3);
-		}
-
-		/*while (mTrayMgr->getNumWidgets(TL_NONE) != 0)
-		{
-			mTrayMgr->moveWidgetToTray(TL_NONE, 0, TL_CENTER);
-		}*/
-
-		mTrayMgr->removeWidgetFromTray("Apply");
-		mTrayMgr->removeWidgetFromTray("BackFromConfig");
-		mTrayMgr->removeWidgetFromTray("ConfigLabel");
-		mTrayMgr->removeWidgetFromTray(mRendererMenu);
-
-		mTrayMgr->removeWidgetFromTray("ConfigSeparator");
-		
-		
-		inConfigMenu = false;
-  };
-	
-	void UIEngine::toggleFPS() {
-	  if (mTrayMgr->areFrameStatsVisible())
-	    mTrayMgr->hideFrameStats();
-	  else
-	    mTrayMgr->showFrameStats(OgreBites::TL_TOPRIGHT);
-	};  
-
-	void UIEngine::_showHelp() {
-	  mTextHelp->setCaption(mHelpMsg);
-	  mDialogShade->show();
-	  mShadeLayer->show();
-	  
-	  mUIHelp->show();
-	  mTextHelp->show();
-	  fShowingHelp = true;
-
-	};
-	void UIEngine::_hideHelp() {
-    mUIHelp->hide();
-    mDialogShade->hide();
-    mShadeLayer->hide();
-    fShowingHelp = false;	
-	};
-	  
-  /* ----------------------- *
-   * UI Event Handlers
-   * ----------------------- */  
-  void UIEngine::buttonHit(Button* b) {
-    if (GameManager::getSingleton().getSettings().SOUND_ENABLED) {
-      if (mSfxButtonHit->isPlaying())
-        mSfxButtonHit->stop();
-      
-      mSfxButtonHit->play(true);
-    }
-      
-		if (b->getName() == "Configure")   // enter configuration screen
-		{
-		  evtClickConfigure();
-		}
-		else if (b->getName() == "BackFromConfig")   // leave configuration screen
-		{
-		  evtClickBackFromConfig();
-		}
-		else if (b->getName() == "Apply")   // apply any changes made in the configuration screen
-		{
-		  evtClickApply();
-		}
-		else if (b->getName() == "Play" || b->getName() == "ChangeZone")
-		  evtClickPlay();
-		else if (b->getName() == "Continue")
-		  evtClickContinue();
-		else if (b->getName() == "Quit")
-		  evtClickQuit();
-		else if(b->getName() == "Help")
-	    evtClickHelp();
-		else if (b->getName() == "Engage")
-	    evtClickEngage();
-		else if (b->getName() == "BackFromZones")
-	    evtClickBackFromZones();
-		else if (b->getName() == "PrevZone")
-	    _prevZone();
-	  else if (b->getName() == "NextZone")
-	    _nextZone();
-	  else if (b->getName() == "BackFromScore")
-	    evtClickBackFromScore();
-	  else if (b->getName() == "Retry") {
-	    evtClickEngage();
-	  }
-		  
-  };
-  
-  void UIEngine::buttonOver(Button* b) {
-    if (!GameManager::getSingleton().getSettings().SOUND_ENABLED)
-      return;
-      
-    if (mSfxButtonOver->isPlaying())
-      mSfxButtonOver->stop();
-    
-    mSfxButtonOver->startFade(true, 0.2f);
-  }
-  
-  void UIEngine::itemSelected(SelectMenu* menu) {
-    if (menu == mRendererMenu)    // renderer selected, so update all settings
-    {
-	    while (mTrayMgr->getNumWidgets(mRendererMenu->getTrayLocation()) > 3)
-	    {
-		    mTrayMgr->destroyWidget(mRendererMenu->getTrayLocation(), 3);
-	    }
-
-	    Ogre::ConfigOptionMap& options = mRoot->getRenderSystemByName(menu->getSelectedItem())->getConfigOptions();
-	    unsigned int i = 0;
-
-	    // create all the config option select menus
-	    for (Ogre::ConfigOptionMap::iterator it = options.begin(); it != options.end(); it++)
-	    {
-		    i++;
-		    SelectMenu* optionMenu = mTrayMgr->createLongSelectMenu
-			    (TL_CENTER, "ConfigOption" + Ogre::StringConverter::toString(i), it->first, 450, 240, 10);
-		    optionMenu->setItems(it->second.possibleValues);
-		
-		    // if the current config value is not in the menu, add it
-		    try
-		    {
-			    optionMenu->selectItem(it->second.currentValue);
-		    }
-		    catch (Ogre::Exception e)
-		    {
-			    optionMenu->addItem(it->second.currentValue);
-			    optionMenu->selectItem(it->second.currentValue);
-		    }
-	    }
-
-		  mTrayMgr->moveWidgetToTray("ConfigSeparator2", TL_CENTER);
-		  mTrayMgr->moveWidgetToTray(mFxMenu, TL_CENTER);
-		  mTrayMgr->moveWidgetToTray(mMusicMenu, TL_CENTER);
-		  mTrayMgr->moveWidgetToTray(mSfxMenu, TL_CENTER);
-    }
-  }
-  
-  void UIEngine::okDialogClosed(const Ogre::DisplayString& message) {
-    mShadeLayer->hide();
-    mDialogShade->hide();
-  }
-    
-  /* ----------------------- *
-   * Game Event Handlers
-   * ----------------------- */
 	bool UIEngine::evtSphereDied(Event* inEvt) {
 	  mTextScoreCaption->setCaption("You have LOST");
 
@@ -919,10 +823,10 @@ namespace Pixy {
     << ", hits " << mSphere->getNrHits()
     << ", accuracy: " << accuracy;
 
-    _showScore();
-	      
-    //mUISheet->show();
-	  //mUIScore->show();
+	  mDialogShade->show();
+	  mShadeLayer->show();    
+    mUISheet->show();
+	  mUIScore->show();
 	  return true;
 	};
 	
@@ -944,22 +848,21 @@ namespace Pixy {
 	  mLog->debugStream() << "sphere misses: " << mSphere->getNrMisses()
     << ", hits " << mSphere->getNrHits()
     << ", accuracy: " << accuracy;
-  
-    _showScore();
+
 	  //mDialogShade->show();
 	  //mShadeLayer->show();
-
+	  mUISheet->show();
+	  mUIScore->show();
+	  _hideHUDs();
 	  
 	  return true;
 	};
 	
-
 	bool UIEngine::evtGameStarted(Event* inEvt) {  
 	  mDialogShade->hide();
 	  mShadeLayer->hide();
 	  mUIPrepare->hide();
-	  _hideScore();
-	  //mUIScore->hide();
+	  mUIScore->hide();
 	  
 	  
 	  
@@ -1098,6 +1001,14 @@ namespace Pixy {
 	  
 	  return true;
 	};
+	
+	void UIEngine::toggleFPS() {
+	  if (mTrayMgr->areFrameStatsVisible())
+	    mTrayMgr->hideFrameStats();
+	  else
+	    mTrayMgr->showFrameStats(OgreBites::TL_TOPRIGHT);
+	};
+	
   
   // shifts from main menu to zones screen
   void UIEngine::evtClickPlay() {
@@ -1182,7 +1093,32 @@ namespace Pixy {
 		GameManager::getSingleton().applyNewSettings(settings);
   };
   
+  void UIEngine::_hideConfigMenu() {
+		mTrayMgr->removeWidgetFromTray(mSfxMenu);
+		mTrayMgr->removeWidgetFromTray(mMusicMenu);
+		mTrayMgr->removeWidgetFromTray(mFxMenu);
+		mTrayMgr->removeWidgetFromTray("ConfigSeparator2");
+		  
+		while (mTrayMgr->getNumWidgets(mRendererMenu->getTrayLocation()) > 3)
+		{
+			mTrayMgr->destroyWidget(mRendererMenu->getTrayLocation(), 3);
+		}
 
+		/*while (mTrayMgr->getNumWidgets(TL_NONE) != 0)
+		{
+			mTrayMgr->moveWidgetToTray(TL_NONE, 0, TL_CENTER);
+		}*/
+
+		mTrayMgr->removeWidgetFromTray("Apply");
+		mTrayMgr->removeWidgetFromTray("BackFromConfig");
+		mTrayMgr->removeWidgetFromTray("ConfigLabel");
+		mTrayMgr->removeWidgetFromTray(mRendererMenu);
+
+		mTrayMgr->removeWidgetFromTray("ConfigSeparator");
+		
+		
+		inConfigMenu = false;
+  };
   void UIEngine::evtClickBackFromConfig() {
 
     _hideConfigMenu();
@@ -1223,11 +1159,7 @@ namespace Pixy {
 	  // if this is the first zone the player wants to play, just switch to it
 	  if (!Level::getSingleton().running()) {
 	    return GameManager::getSingleton().changeState(Level::getSingletonPtr());
-	  } else if (GameManager::getSingleton().currentState()->getId() == STATE_GAME) {
-	    // we're in the score screen and we want to retry the same zone
-	    return;
 	  } else {
-	    // we're in intro scene, and we changed the zone
       return GameManager::getSingleton().popState();
 		}
 		
@@ -1238,16 +1170,7 @@ namespace Pixy {
     _showMainMenu();
     
   }
-  void UIEngine::evtClickBackFromScore() {
-    _hideScore();
-    return GameManager::getSingleton().pushState(Intro::getSingletonPtr());
-    
-    //_showMainMenu();
-  }
   
-  /* ----------------------- *
-   * Zones Screen
-   * ----------------------- */
   // show the zones screen
   void UIEngine::_showZones() {
 		//mUILogo->hide();
