@@ -859,12 +859,6 @@ namespace Pixy {
   void UIEngine::itemSelected(SelectMenu* menu) {
     if (menu == mRendererMenu)    // renderer selected, so update all settings
     {
-    
-		  mTrayMgr->moveWidgetToTray("ConfigSeparator2", TL_NONE);
-		  mTrayMgr->moveWidgetToTray(mFxMenu, TL_NONE);
-		  mTrayMgr->moveWidgetToTray(mMusicMenu, TL_NONE);
-		  mTrayMgr->moveWidgetToTray(mSfxMenu, TL_NONE);
-		      
 	    while (mTrayMgr->getNumWidgets(mRendererMenu->getTrayLocation()) > 3)
 	    {
 		    mTrayMgr->destroyWidget(mRendererMenu->getTrayLocation(), 3);
