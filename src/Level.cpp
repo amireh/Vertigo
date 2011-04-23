@@ -197,10 +197,6 @@ namespace Pixy
 		if (e.key == OIS::KC_ESCAPE) {
 		  //return this->requestShutdown();
 		  return GameManager::getSingleton().pushState(Intro::getSingletonPtr());
-		} else if (e.key == OIS::KC_H) {
-		  return mEvtMgr->hook(mEvtMgr->createEvt("PlayerWon"));
-		} else if (e.key == OIS::KC_G) {
-		  mSphere->die();
 		}
 		
 		//mUISystem->injectKeyUp(e.key);
@@ -532,9 +528,6 @@ namespace Pixy
     //  mTimer.reset();
     fGameOver = true;
     mUpdater = &Level::updateGameOver;
-    
-    mPhyxEngine->pauseDynamics();
-    
     return true;     
     //}
     /*
@@ -551,8 +544,6 @@ namespace Pixy
   bool Level::evtPlayerWon(Event* inEvt) {
     mUpdater = &Level::updateGameOver;
     fGameOver = true;
-    
-    mPhyxEngine->pauseDynamics();
     
     _hideEverything();
     
@@ -579,7 +570,7 @@ namespace Pixy
     mSfxEngine->playMusic();
     mZone->engage();
     mUIEngine->_refit(this);
-    this->_showEverything();
+    
     //reset();
     
     return true;
