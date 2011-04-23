@@ -14,7 +14,6 @@
 #define H_Level_H
 
 #include <list>
-#include <vector>
 #include <map>
 #include "GameState.h"
 #include "EventManager.h"
@@ -121,7 +120,7 @@ namespace Pixy
 		//CEGUI::System	*mUISystem;
 		Sphere			  *mSphere;
 		std::list<Obstacle*> mObstacles;
-		std::vector<Obstacle*> mObstaclePool;
+		std::list<Obstacle*> mObstaclePool;
 		std::list<Obstacle*> mDeadObstacles;
 		
 		
@@ -133,7 +132,6 @@ namespace Pixy
 		static Level    *mLevel;
 		Ogre::Timer mTimer;
 		
-		int mLastObstacleIdx;
 		bool fGameStarted;
 		bool fGameOver;
 		bool fSpawning; // are we spawning obstacles?

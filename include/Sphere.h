@@ -22,8 +22,6 @@
 #include "InputManager.h"
 #include "EventListener.h"
 #include "ParticleUniverseSystemManager.h"
-#include <btBulletCollisionCommon.h>
-#include "BulletCollision/CollisionDispatch/btGhostObject.h"
 
 using std::list;
 using std::map;
@@ -87,8 +85,6 @@ namespace Pixy
 		bool evtPortalSighted(Event* inEvt);
 		bool evtObstacleCollided(Event* inEvt);
 		bool evtSettingsChanged(Event* inEvt);
-		
-		btGhostObject* mGhostObject;
 		
 		void locateNextWaypoint();
 		

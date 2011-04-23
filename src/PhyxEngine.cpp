@@ -94,8 +94,8 @@ namespace Pixy {
     
     /*mDbgdraw = new BtOgre::DebugDrawer(mSceneMgr->getRootSceneNode(), mWorld);
     mWorld->setDebugDrawer(mDbgdraw);
-    mDbgdraw->setDebugMode(true);*/
-    
+    mDbgdraw->setDebugMode(true);
+    */
     int wallsCollideWith = COL_SPHERE | COL_OBSTACLES;
     
     //mObstacleShape = new btSphereShape(12);
@@ -190,7 +190,7 @@ namespace Pixy {
     mTunnelRBCI.m_friction = 1000.0f;    
     mTunnelBody = new btRigidBody(mTunnelRBCI);
     
-    mWorld->addRigidBody(mTunnelBody, COL_WALLS, wallsCollideWith);	    
+    mWorld->addRigidBody(mTunnelBody);	    
 
     mLog->infoStream() << "set up!";
     
@@ -205,9 +205,11 @@ namespace Pixy {
 	};
 	
 	void PhyxEngine::updateGame(unsigned long lTimeElapsed) {
-		mWorld->stepSimulation((float)(lTimeElapsed / 1000.0f), 10);
+		mWorld->stepSimulation((float)(lTimeElapsed / 1000.0f), 7);
 		
-		//mWorld->debugDrawWorld();   
+		//mWorld->debugDrawWorld();
+
+    
     //mDbgdraw->step();
 	}
 	
@@ -227,7 +229,6 @@ namespace Pixy {
 	
 	float PhyxEngine::getMaxSpeed() const { return mSphere->getMaxSpeed(); };
 	
-	// DEPRECATED
 	void PhyxEngine::attachToWorld(Entity* inEntity) {
 		mWorld->addRigidBody(inEntity->getRigidBody());
     inEntity->getRigidBody()->activate(true);
