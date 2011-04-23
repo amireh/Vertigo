@@ -112,6 +112,7 @@ material Vertigo/Tunnel/Rose
 		pass
 		{
 			ambient 1 1 1
+			scene_blend dest zero
 			//depth_write off
 			cull_software none
 			cull_hardware none
@@ -138,6 +139,7 @@ material Vertigo/Tunnel/Rose/Translucent
 		pass
 		{
 			ambient 0.5 0.5 0.5
+			scene_blend multiply
 			cull_software none
 			cull_hardware none
 
@@ -165,6 +167,7 @@ material Vertigo/Tunnel/Ruby
 		pass
 		{
 			ambient 1 1 1
+			scene_blend multiply
 			//depth_write off
 			cull_software none
 			cull_hardware none
@@ -191,6 +194,7 @@ material Vertigo/Tunnel/Ruby/Translucent
 		pass
 		{
 			ambient 1 1 1
+			scene_blend multiply
 			//depth_write off
 			cull_software none
 			cull_hardware none
@@ -217,6 +221,7 @@ material Vertigo/Tunnel/Toxicity/0
 		pass
 		{
 			ambient 1 1 1
+			scene_blend dest zero
 			//depth_write off
 			cull_software none
 			cull_hardware none
@@ -243,6 +248,7 @@ material Vertigo/Tunnel/Toxicity/1
 		pass
 		{
 			ambient 1 1 1
+			scene_blend dest zero
 			//depth_write off
 			cull_software none
 			cull_hardware none
@@ -296,6 +302,7 @@ material Vertigo/Tunnel/Toxicity/3
 		pass
 		{
 			ambient 1 1 1
+			scene_blend dest zero
 			//depth_write off
 			cull_software none
 			cull_hardware none
@@ -405,6 +412,7 @@ material Vertigo/Tunnel/Pandemonium/3
 				texture Melted_Jello_Shots.jpg
 				//rotate_anim 0.1
 				tex_address_mode clamp
+				texture_mode wrap
 				scroll_anim 0.5 0
 			}
 
@@ -436,6 +444,7 @@ material Vertigo/Tunnel/Hysteria/0
 			ambient 1 1 1
 			cull_software none
 			cull_hardware none
+			scene_blend zero
 
 			texture_unit
 			{
@@ -461,6 +470,7 @@ material Vertigo/Tunnel/Hysteria/1
 			ambient 1 1 1
 			cull_software none
 			cull_hardware none
+			scene_blend zero
 
 			texture_unit
 			{

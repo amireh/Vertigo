@@ -11,7 +11,7 @@ system Vertigo/FX/Steam
     technique 
     {
         visual_particle_quota                   60
-        //scale 0.2 0.2 0.2
+        scale 0.2 0.2 0.2
         material                                mp_smoke_04
         renderer                                Billboard
         {
