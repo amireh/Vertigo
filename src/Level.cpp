@@ -576,6 +576,7 @@ namespace Pixy
     
     mLog->infoStream() << " ----- entered " << mZone->name() << " zone ----- ";
     mPhyxEngine->resumeDynamics();
+    mSfxEngine->playMusic();
     mZone->engage();
     mUIEngine->_refit(this);
     this->_showEverything();

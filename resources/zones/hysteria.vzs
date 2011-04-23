@@ -5,11 +5,11 @@
   <Settings>
     <Property Name="Mode" Value="Arcade" />
     <Property Name="Skybox" Value="Vertigo/Sky/Vortex" />
-    <Property Name="MoveSpeed" Value="45" />
-    <Property Name="MaxSpeedFactor" Value="2" />
-    <Property Name="SpeedStep" Value="0.005" />
-    <Property Name="ResetVelocity" Value="Yes" />
-    <Property Name="MaxSpeedStep" Value="0.2" />
+    <Property Name="MoveSpeed" Value="4" />
+    <Property Name="MaxSpeedFactor" Value="1" />
+    <Property Name="SpeedStep" Value="1" />
+    <Property Name="ResetVelocity" Value="No" />
+    <Property Name="MaxSpeedStep" Value="0.1" />
   </Settings>
 
   <!-- Obstacle Settings -->
@@ -17,9 +17,9 @@
     <Property Name="SpawnRate" Value="800" />
     <Property Name="FixedSpawnRate" Value="No" />
     <Property Name="ObstacleCap" Value="12" />
-    <Property Name="MoveSpeed" Value="205" />
-    <Property Name="MaxSpeed" Value="0" />
-    <Property Name="MaxSpeedStep" Value="2" />
+    <Property Name="MoveSpeed" Value="5" />
+    <Property Name="MaxSpeed" Value="8" />
+    <Property Name="MaxSpeedStep" Value="0.5" />
     <Property Name="FixedSpawnPosition" Value="No" />
     <Class Name="Chase" />
     <Class Name="Duette" Dominant="Yes" />

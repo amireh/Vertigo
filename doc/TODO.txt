@@ -72,6 +72,6 @@
 * proper logging for debug / release (done)
 
 [ usability ]
-* [HIGH] guide the user back to the main menu after the game is over / retry (done)
+* [HIGH] guide the user back to the main menu after the game is over / retry
 * [HIGH] physics goes out of sync on low FPS (talking about 30 fps, that's not really low) .. 
 * [LOW] wait a second after the game starts before spawning obstacles

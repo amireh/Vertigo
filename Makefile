@@ -70,7 +70,7 @@ MY_CFLAGS = `pkg-config --cflags OGRE OIS CEGUI bullet` -Iinclude \
 	#-I/usr/include/ogg
 
 # The linker options.
-MY_LIBS   = -L/usr/local/lib -lOgreMain `pkg-config --libs OIS CEGUI bullet log4cpp` -lOgreOggSound -lCEGUIOgreRenderer -lPlugin_ParticleUniverse
+MY_LIBS   = `pkg-config --libs OGRE OIS CEGUI bullet log4cpp` -lOgreOggSound -lCEGUIOgreRenderer -lPlugin_ParticleUniverse
 
 # The pre-processor options used by the cpp (man cpp for more).
 CPPFLAGS  = 

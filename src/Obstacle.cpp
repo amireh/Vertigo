@@ -226,8 +226,8 @@ namespace Pixy
 	  mMaxSpeed = mMoveSpeed * tZone->getSettings().mOMaxSpeedFactor;
 	  mMaxSpeed += mMaxSpeed * (tZone->currentTunnelNr() * tZone->getSettings().mOMaxSpeedStep);
 	  
-	  //mMoveSpeed *= 35;
-	  //mMaxSpeed *= 35;
+	  mMoveSpeed *= 10;
+	  mMaxSpeed *= 10;
 	  
 	  mDirection = Vector3::ZERO;
 	  
@@ -240,7 +240,7 @@ namespace Pixy
 	  mMasterNode->setPosition(mPosition); 
 	  
 	  //PhyxEngine::getSingletonPtr()->attachToWorld(this);
-	  PhyxEngine::getSingletonPtr()->world()->addRigidBody(mPhyxBody, COL_OBSTACLES, COL_WALLS | COL_OBSTACLES | COL_SPHERE);
+	  PhyxEngine::getSingletonPtr()->world()->addRigidBody(mPhyxBody, COL_OBSTACLES, COL_WALLS | COL_SPHERE);
 	  
 	  mPhyxBody->activate(true);
 	  mPhyxBody->clearForces();
@@ -268,7 +268,7 @@ namespace Pixy
 	  //if (fDead)
 	  //  return;
 	  
-    	  
+	  
 	  
 	  // detach our physics body
 	  /*mPhyxBody->activate(true);
@@ -446,7 +446,7 @@ namespace Pixy
 	      break;
 	    case DUETTE:
 	      mUpdater = &Obstacle::updateDumb;
-	      tScale = Vector3(1.5f,1.5f,1.5f); 
+	      tScale = Vector3(1.2f,1.2f,1.2f); 
 	      break;
 	    /*case STATIONARY:
         mUpdater = &Obstacle::updateStationary;
@@ -456,7 +456,7 @@ namespace Pixy
         break;*/
 	  };
 	  mPhyxShape->setLocalScaling(BtOgre::Convert::toBullet(tScale));
-    //mMasterNode->setScale(tScale);
+    mMasterNode->setScale(tScale);
 	  mDirection = Vector3(0,0,-1); // set some default direction
 	};
 	
@@ -477,14 +477,4 @@ namespace Pixy
 	Obstacle* Obstacle::getDuetteTwin() { return mDuetteTwin; }; 
 	
 	OBSTACLE_CLASS Obstacle::getClass() { return mClass; };
-	
-	void Obstacle::collide(Sphere* inSphere) {
-	
-	  if (fHasSfx) {
-      (*mSfx)->stop();
-      (*mSfx)->play(true);
-    }
-    
-    die();
-	};
 } // end of namespace

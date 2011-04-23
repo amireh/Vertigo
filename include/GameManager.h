@@ -21,14 +21,6 @@
 #include <OgreWindowEventUtilities.h>
 #include <OgreException.h>
 
-// PLUGINS; we load them within the code on linux since we statically compile them
-#if OGRE_PLATFORM == OGRE_PLATFORM_LINUX && defined(VERTIGO_RELEASE)
-#include "OGRE/Plugins/ParticleUniverse/ParticleUniversePlugin.h"
-#include "OGRE/Plugins/CgProgramManager/OgreCgPlugin.h"
-#include "OGRE/RenderSystems/GL/OgreGLPlugin.h"
-#include "OgreOggSoundPlugin.h"
-#endif
-
 #if OGRE_PLATFORM == OGRE_PLATFORM_APPLE || OGRE_PLATFORM == OGRE_PLATFORM_IPHONE
 #include "OSX/macUtils.h"
 #endif
@@ -200,13 +192,6 @@ namespace Pixy
 		Ogre::Root			*mRoot;
 		Ogre::RenderWindow	*mRenderWindow;
 		InputManager		*mInputMgr;
-
-#if OGRE_PLATFORM == OGRE_PLATFORM_LINUX && defined(VERTIGO_RELEASE)	
-		ParticleUniverse::ParticleUniversePlugin *mPUPlugin;
-		Ogre::GLPlugin *mGLPlugin;
-		Ogre::CgPlugin *mCgPlugin;
-		OgreOggSound::OgreOggSoundPlugin* mOggPlugin;
-#endif
 		
 		GameState* mCurrentState;
 		unsigned long lTimeLastFrame, lTimeCurrentFrame, lTimeSinceLastFrame;
@@ -219,7 +204,7 @@ namespace Pixy
 		
 		t_PixySettings mSettings;
 		
-		std::string mConfigPath, mPluginsPath;
+		std::string mConfigPath;
 	};
 } // end of namespace
 

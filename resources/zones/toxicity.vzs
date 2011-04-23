@@ -5,7 +5,7 @@
   <Settings>
     <Property Name="Mode" Value="Dodgy" />
     <Property Name="Skybox" Value="Vertigo/Sky/NBL" />
-    <Property Name="MoveSpeed" Value="3" />
+    <Property Name="MoveSpeed" Value="6" />
     <Property Name="MaxSpeedFactor" Value="3" />
     <Property Name="SpeedStep" Value="0.1" />
     <Property Name="MaxSpeedStep" Value="0.05" />
@@ -17,7 +17,7 @@
     <Property Name="SpawnRate" Value="650" />
     <Property Name="FixedSpawnRate" Value="Yes" />
     <Property Name="ObstacleCap" Value="10" />
-    <Property Name="MoveSpeed" Value="5.5" />
+    <Property Name="MoveSpeed" Value="7.5" />
     <Property Name="MaxSpeedFactor" Value="4" />
     <Property Name="MaxSpeedStep" Value="1" />
     <Property Name="FixedSpawnPosition" Value="Yes" />

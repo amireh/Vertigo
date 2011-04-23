@@ -41,14 +41,7 @@ namespace Pixy
 
 		if( mRoot )
 		    delete mRoot;
-
-#if OGRE_PLATFORM == OGRE_PLATFORM_LINUX && defined(VERTIGO_RELEASE)
-		delete mGLPlugin;
-		delete mCgPlugin;
-		delete mPUPlugin;
-		delete mOggPlugin;
-#endif
-
+		
 		mLog->infoStream() << "++++++ Vertigo cleaned up successfully ++++++";
 		if (mLog)
 		  delete mLog;
@@ -113,24 +106,16 @@ namespace Pixy
       //} 
 //    } 
 #endif
-
-    std::string lPluginsPath;
-#if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
-    lPluginsPath = macBundlePath() + "Contents/Plugins/";
-#elif OGRE_PLATFORM == OGRE_PLATFORM_WIN32
-    lPluginsPath = ".\\";
-#else
-    lPluginsPath = "./";
-#endif
-
     try {
-
-#if OGRE_PLATFORM == OGRE_PLATFORM_LINUX && defined(VERTIGO_RELEASE)
-      mGLPlugin = new GLPlugin();
-      mRoot->installPlugin(mGLPlugin);
+      std::string lPluginsPath;
+#if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
+      lPluginsPath = macBundlePath() + "Contents/Plugins/";
+#elif OGRE_PLATFORM == OGRE_PLATFORM_WIN32
+      lPluginsPath = ".\\";
 #else
-      mRoot->loadPlugin(lPluginsPath + "RenderSystem_GL");
+      lPluginsPath = "./";
 #endif
+      mRoot->loadPlugin(lPluginsPath + "RenderSystem_GL");
       if (!rendererInstalled) {
         mRoot->setRenderSystem(mRoot->getRenderSystemByName("OpenGL Rendering Subsystem"));
         rendererInstalled = true;
@@ -140,26 +125,12 @@ namespace Pixy
       mLog->errorStream() << "Unable to create OpenGL RenderSystem: " << e.getFullDescription(); 
     } 
 
-    try {
-#if OGRE_PLATFORM == OGRE_PLATFORM_LINUX && defined(VERTIGO_RELEASE)
-      mCgPlugin = new CgPlugin();
-      mRoot->installPlugin(mCgPlugin);
-#else
-      mRoot->loadPlugin(lPluginsPath + "Plugin_CgProgramManager");
-#endif     
+    try { 
+      mRoot->loadPlugin("./Plugin_CgProgramManager");  
     } 
     catch(Ogre::Exception& e) { 
       mLog->errorStream() << "Unable to create CG Program manager RenderSystem: " << e.getFullDescription(); 
-    }
-    
-#if OGRE_PLATFORM == OGRE_PLATFORM_LINUX && defined(VERTIGO_RELEASE)
-      mPUPlugin = new ParticleUniverse::ParticleUniversePlugin();
-      mRoot->installPlugin(mPUPlugin);
-      
-      mOggPlugin = new OgreOggSound::OgreOggSoundPlugin();
-      mRoot->installPlugin(mOggPlugin);
-#endif
-
+    } 
   }
 	void GameManager::startGame() {
 		// init logger
@@ -187,7 +158,7 @@ namespace Pixy
 #endif
     
     mConfigPath = lPathCfg.str();
-    mPluginsPath = lPathPlugins.str();
+    
     
 		mRoot = OGRE_NEW Root(lPathPlugins.str(), lPathOgreCfg.str(), lPathLog.str());
 		if (!mRoot) {
@@ -232,7 +203,7 @@ namespace Pixy
 
     ///TickMs is the amount of time that our internal fixed clock runs at, I use 32ms
     /* This is not the same as the Bullet internal clock, but instead specific to our gameplay */
-    const unsigned int TickMs = 1;
+    const unsigned int TickMs = 4;
 
     /// The physics clock is just used to run the physics and runs asynchronously with the gameclock
     unsigned long time_physics_prev, time_physics_curr;
