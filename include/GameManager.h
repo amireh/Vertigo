@@ -35,18 +35,7 @@
 
 namespace Pixy
 {
-  struct t_PixySettings {
-    bool MUSIC_ENABLED;
-    bool SOUND_ENABLED;
-    int FX_LEVEL;
-  };
-  
-  enum {
-    FX_LEVEL_LOW,
-    FX_LEVEL_MEDIUM,
-    FX_LEVEL_FULL
-  };
-  
+  typedef std::map<std::string, std::string> tPixySettings;
 	class GameState;
 	/*! \class GameManager
 	 *  \brief
@@ -106,15 +95,10 @@ namespace Pixy
 		
 		GameState* currentState();
 		
-		t_PixySettings& getSettings();
-		void applyNewSettings(t_PixySettings& inSettings);
+		tPixySettings& getSettings();
+		void applyNewSettings(tPixySettings& inSettings);
 		
 		bool shuttingDown();
-		
-#if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
-  std::string macBundlePath();
-#endif		
-
 	private:
 		GameManager();
 		GameManager(const GameManager&) {}
@@ -202,7 +186,7 @@ namespace Pixy
 		static GameManager *mGameManager;
 		log4cpp::Category* mLog;
 		
-		t_PixySettings mSettings;
+		tPixySettings mSettings;
 		
 		std::string mConfigPath;
 	};

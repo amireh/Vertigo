@@ -4,23 +4,25 @@
 
 using std::map;
 namespace Pixy {
-	SfxEngine* SfxEngine::_instance = NULL;
+	SfxEngine* SfxEngine::_mySfxEngine = NULL;
 	
 	SfxEngine* SfxEngine::getSingletonPtr() {
-		if( !_instance ) {
-		    _instance = new SfxEngine();
+		if( !_mySfxEngine ) {
+		    _mySfxEngine = new SfxEngine();
 		}
 		
-		return _instance;
+		return _mySfxEngine;
 	}
 	
 	SfxEngine::SfxEngine() {
 		mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "SfxEngine");
 		mLog->infoStream() << "firing up";
+		
 
+    		
 		idSound = 0;
-		mGameTrack = mIntroTrack = 0;
-		mSoundMgr = 0;
+		mGameTrack = mIntroTrack = NULL;
+		mSoundMgr = NULL;
 		
 		fSetup = false;		
 	}
@@ -43,8 +45,8 @@ namespace Pixy {
 			fSetup = false;
 		}
 		
-		if (_instance)
-		  _instance = NULL;
+		if (_mySfxEngine)
+		  _mySfxEngine = NULL;
 	}
 
   
@@ -53,66 +55,224 @@ namespace Pixy {
     
 		if (!fSetup) {
       
-      mVolume = 1.0f;
       
       if (!mSoundMgr) {
         mSoundMgr = OgreOggSound::OgreOggSoundManager::getSingletonPtr();
         mSoundMgr->init();
         mSoundMgr->setSceneManager(GfxEngine::getSingletonPtr()->getSM());
       }
-
+ 
    	  if (!mGameTrack) {
-   	    // we can't use OGG on mac, we use WAV instead
-#if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
-        mGameTrack = mSoundMgr->createSound("MusicTrack", "music.wav", true, false, true);
-#else
         mGameTrack = mSoundMgr->createSound("MusicTrack", "music.ogg", true, false, true);
-#endif
         mGameTrack->loop(true);
-        mGameTrack->setVolume(mVolume / 2.0f);
+        mGameTrack->setVolume(0.5f);
+      }
+      if (!mIntroTrack) {
+        mIntroTrack = mSoundMgr->createSound("IntroTrack", "intro.ogg", true, false, true);
+        mIntroTrack->loop(true);
+        mIntroTrack->setVolume(0.5f);
       }
       
+      mSoundMgr->setMasterVolume(mSoundMgr->getMasterVolume() * 10);
+      
+      fAudioStopped = false;
+      //toggleAudioState();
+      
+      mUpdater = &SfxEngine::updateIntro;
+      
+      fSetup = true;
     }
 
-    mSoundMgr->setMasterVolume(mVolume);
-    
-    fAudioStopped = false;
-    //toggleAudioState();
-    
-    
     bindToName("SettingsChanged", this, &SfxEngine::evtSettingsChanged);
     
     mLog->infoStream() << "set up!";
-    
-    fSetup = true;
 		return fSetup;
 	}
+	
+	bool SfxEngine::setupIntro() {
+	
+	  mUpdater = &SfxEngine::updateIntro;
+	  
+	  //if (mIntroTrack)
+	  //  mIntroTrack->play();
+	  return true;
+	};
+	
+	bool SfxEngine::setupGame() {
+	  mLog->infoStream() << "loading sound track";
+
+	  mSphere = Level::getSingletonPtr()->getSphere();
+	  	  
+    /*if (mIntroTrack)
+      mIntroTrack->stop();*/
+      
+ 	  //if (mGameTrack)
+	  // mGameTrack->play();
+	           
+    //bindToName("ObstacleCollided", this, &SfxEngine::evtObstacleCollided);
+    //bindToName("PortalEntered", this, &SfxEngine::evtPortalEntered);
+    
+    mUpdater = &SfxEngine::updateGame;
+    
+    return true;	
+	};
 	
 	bool SfxEngine::deferredSetup() {
 	  if (!fSetup)
 	    return false;
-    
-	  return fSetup;
+
+    GameState *currentState = (GameManager::getSingleton().currentState());
+    /*if ( !currentState->areSfxEnabled() ) {
+      currentState->dontUpdateMe(this);
+      return true;
+    }   */ 
+    if (currentState->getId() == STATE_INTRO)
+      fSetup = setupIntro();
+    else 
+      fSetup = setupGame();
+	  
+	  return true;
 	};
 	
 	void SfxEngine::update(unsigned long lTimeElapsed) {
 	  processEvents();
 	  
+	  (this->*mUpdater)(lTimeElapsed);
+	};
+	
+	void SfxEngine::updateIntro(unsigned long lTimeElapsed) {
 	  mSoundMgr->update(lTimeElapsed);
 	};
+	
+	void SfxEngine::updateGame(unsigned long lTimeElapsed) {
+		
+		mSoundMgr->update(lTimeElapsed);
+		//mSoundMgr->getListener()->setPosition(mSphere->getPosition());
+		//mGameTrack->update(lTimeElapsed);
+    /*mSoundMgr->setListenerPosition( mListener->getMasterNode()->getPosition(),
+                                    Ogre::Vector3::ZERO, 
+                                    mListener->getMasterNode()->getOrientation() );	*/	
+	}
+
+  void SfxEngine::attachListener(Entity* inEntity) {
+    /*SceneNode* mNode = inEntity->getMasterNode();
+    // Set our LISTENER Location (i.e. the ears)
+    // The listener is what hears the sounds emitted by audio sources.
+    // Note: you only have ONE set of ears - i.e. there is only ONE listener.
+    mSoundMgr->setListenerPosition( mNode->getPosition(),
+                                    Ogre::Vector3::ZERO, 
+                                    mNode->getOrientation() );
+
+    mListener = inEntity;*/
+  };
   
 	bool SfxEngine::cleanup() {
 	  if (!fSetup)
 	    return true;
 
-    mLog->infoStream() << "cleaning up";
+    mLog->debugStream() << "cleaning up";
+    
+    GameState *currentState = (GameManager::getSingleton().currentState());
+    if (currentState->getId() == STATE_GAME) {
+      if (mGameTrack) {
+        mGameTrack->stop();
+        
+      }
+    }
+    
     fSetup = false;
     
 		return true;
 	}
 	
-	OgreOggSoundManager* SfxEngine::getSoundMgr() { return mSoundMgr; };
-
+	bool SfxEngine::evtObstacleCollided(Event* inEvt) {
+	  Obstacle* mObs = static_cast<Obstacle*>(inEvt->getAny());
+	  
+	  /*if (mObs->shield() == FIRE)
+	    mSoundMgr->getSound("Explosion")->play();
+	    //playEffect(SFX_EXPLOSION, mObs->getMasterNode());
+	  else
+	    mSoundMgr->getSound("Shatter")->play();
+	    //playEffect(SFX_SHATTER, mObs->getMasterNode());*/
+	  
+	  return true;
+	};
+	
+	bool SfxEngine::evtPortalEntered(Event* inEvt) {
+	
+	  //playEffect(SFX_SHATTER, Level::getSingletonPtr()->getTunnel()->getEntrancePortal());
+	  
+	  return true;
+	};
+	
+	OgreOggSound::OgreOggSoundManager* SfxEngine::getSoundMgr() { return mSoundMgr; };
+	
+	void SfxEngine::toggleAudioState() {
+	  if (!fAudioStopped) {
+	    mSoundMgr->pauseAllSounds();
+	    mSoundMgr->muteAllSounds();
+	  } else {
+	    mSoundMgr->resumeAllPausedSounds();
+	    mSoundMgr->unmuteAllSounds(); 
+	  }
+	  
+	  fAudioStopped = !fAudioStopped;
+	};
+	
+	void SfxEngine::playMusic() {
+	  if (GameManager::getSingleton().getSettings()["Music Enabled"] == "No")
+	    return;
+	  
+	  if (mGameTrack->isPlaying())
+	    return;
+	  
+	  mGameTrack->loop(true);
+    mGameTrack->play();
+	  /*if (GameManager::getSingleton().currentState()->getId() == STATE_INTRO) {
+	    if (mIntroTrack->isPlaying())
+	      return;
+	      
+	    if (mGameTrack->isPlaying())
+	      mGameTrack->stop();
+	    
+	    mIntroTrack->loop(true);
+	    mIntroTrack->play();
+	  } else {
+	    if (mGameTrack->isPlaying())
+	      return;
+	  
+	    if (mIntroTrack->isPlaying())
+	      mIntroTrack->startFade(false, 1.0f);
+	    
+	    mGameTrack->loop(true);
+	    mGameTrack->play();
+	  }*/
+	};
+	
+	void SfxEngine::stopMusic() {
+	  if (mIntroTrack->isPlaying())
+	    mIntroTrack->stop(true);
+	  if (mGameTrack->isPlaying())
+	    mGameTrack->stop(true);
+	};
+	
+	bool SfxEngine::evtSettingsChanged(Event* inEvt) {
+	  if (GameManager::getSingleton().getSettings()["Music Enabled"] == "No")
+      this->stopMusic();
+    else
+      this->playMusic();
+      
+    return true;
+	};
+	
+	void SfxEngine::raiseVolume() {
+	  mSoundMgr->setMasterVolume(mSoundMgr->getMasterVolume() + 0.1f);
+	};
+	
+	void SfxEngine::lowerVolume() {
+	  mSoundMgr->setMasterVolume(mSoundMgr->getMasterVolume() - 0.1f);
+	};
+	
 	void SfxEngine::keyReleased( const OIS::KeyEvent &e ) {
 	  switch (e.key) {
 	    case OIS::KC_MINUS:
@@ -125,61 +285,5 @@ namespace Pixy {
 	      toggleAudioState();
 	      break;
 	  }
-	}
-		
-	void SfxEngine::toggleAudioState() {
-	  if (!fAudioStopped) {
-	    mSoundMgr->pauseAllSounds();
-	    mSoundMgr->muteAllSounds();
-	    mSoundMgr->setMasterVolume(0);
-	  } else {
-	    mSoundMgr->resumeAllPausedSounds();
-	    mSoundMgr->unmuteAllSounds();
-	     mSoundMgr->setMasterVolume(mVolume);
-	  }
-	  
-	  fAudioStopped = !fAudioStopped;
-	};
-	
-	void SfxEngine::playMusic() {
-	  if (!GameManager::getSingleton().getSettings().MUSIC_ENABLED)
-	    return;
-	  
-	  if (mGameTrack->isPlaying())
-	    return;
-	  
-	  mGameTrack->loop(true);
-    mGameTrack->play();
-	};
-	
-	void SfxEngine::stopMusic() {
-	  
-	  if (mGameTrack->isPlaying())
-	    mGameTrack->stop(true);
-	};
-	
-	bool SfxEngine::evtSettingsChanged(Event* inEvt) {
-	  if (!GameManager::getSingleton().getSettings().MUSIC_ENABLED)
-      this->stopMusic();
-    else
-      this->playMusic();
-      
-    return true;
-	};
-	
-	void SfxEngine::raiseVolume() {
-	  if (mVolume != 1.0f)
-	    mVolume += 0.1f;
-	    
-	  mSoundMgr->setMasterVolume(mVolume);
-	};
-	
-	void SfxEngine::lowerVolume() {
-	  if (mVolume != 0)
-	    mVolume -= 0.1f;
-	    
-	  mSoundMgr->setMasterVolume(mVolume);
-	};
-	
-
+	}	
 }

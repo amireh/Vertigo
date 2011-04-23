@@ -56,7 +56,7 @@ namespace Pixy
 	// This function will locate the path to our application on OS X,
 	// unlike windows you cannot rely on the current working directory
 	// for locating your configuration files and resources.
-	std::string GameManager::macBundlePath()
+	std::string macBundlePath()
 	{
 		char path[1024];
 		CFBundleRef mainBundle = CFBundleGetMainBundle();
@@ -137,7 +137,7 @@ namespace Pixy
 		initLogger();
 		using std::ostringstream;
 		ostringstream lPathResources, lPathPlugins, lPathCfg, lPathOgreCfg, lPathLog;
-#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
+#if OGRE_PLATFORM == OGRE_PLATFORM_WINDOWS
 		lPathResources << PROJECT_ROOT << PROJECT_RESOURCES << "\\config\\resources_win32.cfg";
     lPathPlugins << PROJECT_ROOT << PROJECT_RESOURCES << "\\config\\plugins.cfg";
     lPathCfg << PROJECT_ROOT << PROJECT_RESOURCES << "\\config\\";
@@ -201,58 +201,26 @@ namespace Pixy
 		lTimeCurrentFrame = 0;
 		lTimeSinceLastFrame = 0;
 
-    ///TickMs is the amount of time that our internal fixed clock runs at, I use 32ms
-    /* This is not the same as the Bullet internal clock, but instead specific to our gameplay */
-    const unsigned int TickMs = 4;
-
-    /// The physics clock is just used to run the physics and runs asynchronously with the gameclock
-    unsigned long time_physics_prev, time_physics_curr;
-
-    /// There's an inner loop in here where things happen once every TickMs. These variables are for that.
-    unsigned long time_gameclock;
-
-    /// Reset all of our timers
     mRoot->getTimer()->reset();
-    time_physics_prev = time_physics_curr = mRoot->getTimer()->getMilliseconds();
-    time_gameclock = mRoot->getTimer()->getMilliseconds();
-
-    
     
 		// main game loop
 		while( !fShutdown ) {
 			
-			WindowEventUtilities::messagePump();	    
-	    // render next frame
-		  mRoot->renderOneFrame();
-		  
-		  time_physics_curr = mRoot->getTimer()->getMilliseconds();
-		  PhyxEngine::getSingletonPtr()->update((float)(time_physics_curr - time_physics_prev));
-		  time_physics_prev = time_physics_curr;
-		  
-		   // Game Clock part of the loop
-      /*  This ticks once every TickMs milliseconds on average */
-      long long dt = mRoot->getTimer()->getMilliseconds() - time_gameclock;
-      while(dt >= TickMs) {
-          dt -= TickMs;
-          time_gameclock += TickMs;
-
-          // Pulse the input every TickMs milliseconds
-          // update input manager
-          mInputMgr->capture();
-
-          // Everything on your system that needs to happen once every game tick should be processed here
-	        mStates.back()->update( TickMs );
-
-      }
 	    // calculate time since last frame and remember current time for next frame
-	    /*lTimeCurrentFrame = mRoot->getTimer()->getMilliseconds();
+	    lTimeCurrentFrame = mRoot->getTimer()->getMilliseconds();
 	    lTimeSinceLastFrame = lTimeCurrentFrame - lTimeLastFrame;
-	    lTimeLastFrame = lTimeCurrentFrame;*/
+	    lTimeLastFrame = lTimeCurrentFrame;
 		
-	    
+	    // update input manager
+	    mInputMgr->capture();
+		
+	    // cpdate current state
+	    mStates.back()->update( lTimeSinceLastFrame );
 
+			WindowEventUtilities::messagePump();
 
-			
+			// render next frame
+		  mRoot->renderOneFrame();
 
 		}
 		
@@ -311,21 +279,21 @@ namespace Pixy
 		        ++itSetting;
 		    }
 		}
-		
-		// initialise resources, show loading bar / scene
+		// Initialise resources
 		ResourceGroupManager::getSingleton().initialiseResourceGroup("Bootstrap");
 		OgreBites::SdkTrayManager *mTrayMgr = 
 		  new OgreBites::SdkTrayManager("Vertigo/UI/Loader", mRenderWindow, InputManager::getSingletonPtr()->getMouse(), 0);
+		//mTrayMgr->showAll();
 		mTrayMgr->showLoadingBar(1,1, 1);
+		//ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 		ResourceGroupManager::getSingleton().initialiseResourceGroup("General");
 		this->loadConfig();
 		mTrayMgr->hideLoadingBar();
 		delete mTrayMgr;
 		
-		// clean up our loading scene
-		mRenderWindow->removeViewport(-1);
-		mRoot->getSceneManager("LoadingScene")->destroyCamera("LoadingCamera");
-		mRoot->destroySceneManager(mRoot->getSceneManager("LoadingScene"));
+		//mRenderWindow->removeViewport(-1);
+		//mRoot->getSceneManager("LoadingScene")->destroyCamera("LoadingCamera");
+		//mRoot->destroySceneManager(mRoot->getSceneManager("LoadingScene"));
 
 	}
 	
@@ -443,7 +411,7 @@ namespace Pixy
 
 
 		std::string lLogPath = PROJECT_LOG_DIR;
-#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
+#if OGRE_PLATFORM == OGRE_PLATFORM_WINDOWS || defined(_WIN32)
 		lLogPath += "\\Pixy.log";
 #elif OGRE_PLATFORM == OGRE_PLATFORM_APPLE
 		lLogPath = macBundlePath() + "/Contents/Logs/Pixy.log";
@@ -486,7 +454,7 @@ namespace Pixy
 	
 	bool GameManager::shuttingDown() { return fShutdown; };
 	
-	t_PixySettings& GameManager::getSettings() {
+	tPixySettings& GameManager::getSettings() {
 	  return mSettings;
 	};
 	
@@ -499,41 +467,29 @@ namespace Pixy
 	    mLog->infoStream() << "found existing configuration, parsing...";
 	    
 	    Ogre::ConfigFile *mCfg = new Ogre::ConfigFile();
-	    std::string tSetting = "";
-	    
 	    mCfg->loadFromResourceSystem("vertigo.cfg", "General");
-
-      // parse visual effects level
-	    tSetting = mCfg->getSetting("Visual Detail", Ogre::StringUtil::BLANK, "Medium");
-	    if (tSetting == "Medium")
-	      mSettings.FX_LEVEL = FX_LEVEL_MEDIUM;
-	    else if (tSetting == "Low")
-	      mSettings.FX_LEVEL = FX_LEVEL_LOW;
-	    else if (tSetting == "Full")
-	      mSettings.FX_LEVEL = FX_LEVEL_FULL;
-	    else // force a default
-	      mSettings.FX_LEVEL = FX_LEVEL_MEDIUM;
+	    mSettings.insert(std::make_pair<std::string,std::string>(
+	      "Visual Detail", 
+	      mCfg->getSetting("Visual Detail", Ogre::StringUtil::BLANK, "Medium")
+	    ));
 	    
-	    tSetting = mCfg->getSetting("Music Enabled", Ogre::StringUtil::BLANK, "Yes");
-	    if (tSetting == "No")
-	      mSettings.MUSIC_ENABLED = false;
-	    else
-	      mSettings.MUSIC_ENABLED = true;
+	    mSettings.insert(std::make_pair<std::string,std::string>(
+	      "Music Enabled", 
+	      mCfg->getSetting("Music Enabled", Ogre::StringUtil::BLANK, "Yes")
+	    ));
 	    
-	    tSetting = mCfg->getSetting("Sound Enabled", Ogre::StringUtil::BLANK, "Yes");
-	    if (tSetting == "No")
-	      mSettings.SOUND_ENABLED = false;
-	    else
-	      mSettings.SOUND_ENABLED = true;
-
-      tSetting = "";	    
+	    mSettings.insert(std::make_pair<std::string,std::string>(
+	      "Sound Enabled", 
+	      mCfg->getSetting("Sound Enabled", Ogre::StringUtil::BLANK, "Yes")
+	    ));
+	    
 	    delete mCfg;
 	    
 	  } else {
 	    // default values
-	    mSettings.FX_LEVEL = FX_LEVEL_MEDIUM;
-	    mSettings.MUSIC_ENABLED = true;
-	    mSettings.SOUND_ENABLED = true;
+	    mSettings.insert(std::make_pair<std::string,std::string>("Visual Detail", "Medium"));
+	    mSettings.insert(std::make_pair<std::string,std::string>("Sound Enabled", "Yes"));
+	    mSettings.insert(std::make_pair<std::string,std::string>("Music Enabled", "Yes"));
 	  }
 	  
     this->saveConfig();
@@ -549,18 +505,14 @@ namespace Pixy
 	    return;
 	  }
 	  
-	  of << "Visual Detail=" << 
-	     ((mSettings.FX_LEVEL == FX_LEVEL_LOW) ? "Low" :
-	     (mSettings.FX_LEVEL == FX_LEVEL_MEDIUM) ? "Medium" : "Full")
-	     << std::endl;
-	  of << "Music Enabled=" << (mSettings.MUSIC_ENABLED ? "Yes" : "No") << std::endl;
-	  of << "Sound Enabled=" << (mSettings.SOUND_ENABLED ? "Yes" : "No") << std::endl;
-	  
+	  of << "Visual Detail=" << mSettings["Visual Detail"] << std::endl;
+	  of << "Music Enabled=" << mSettings["Music Enabled"] << std::endl;
+	  of << "Sound Enabled=" << mSettings["Sound Enabled"] << std::endl;
 	  of.close();
 	  
 	};
 	
-	void GameManager::applyNewSettings(t_PixySettings& inSettings) {
+	void GameManager::applyNewSettings(tPixySettings& inSettings) {
 	  mSettings = inSettings;
 	  this->saveConfig();
 	  EventManager* mEvtMgr = EventManager::getSingletonPtr();

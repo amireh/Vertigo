@@ -1,4 +1,4 @@
-[ gameplay ]
+-- Features --
 * sphere: flip shields (DONE)
 * sphere: track shield state (DONE)
 * obstacles: collision (DONE)
@@ -7,23 +7,27 @@
 * obstacles: track player (done)
 * terrain: multi tunnels (revised)
 * add portals (done)
-* implement adjustable difficulty (revisited)
+* implement adjustable difficulty
+* create UI... (DONE)
 * implement events (done)
 * implement states:
   # intro (done)
   # transition (done)
   # game (done)
-  # score (revisited)
+  # score
 * install sound effects (DONE)
-* patcher
-* game modes:
-  # arcade: reach last portal with shields intact, type of obstacles: chase and duettes (done)
-  # survival: survive for as long as possible, obstacles: chase and duettes and possibly spinners (done)
-  # dodge: reach the last portal, type of obstacles: dumb, no flipping is allowed, only movement is allowed (done)
-  # nervebreak (done)
-* reimplement collision to use Ogre's Ray queries instead of Bullet (done)
+* UI features:
+  # difficulty
+  # music on/off
   
-[ enhancements ]
+-- Gameplay --
+* game modes:
+  # arcade: reach last portal with shields intact, type of obstacles: chase and duettes
+  # survival: survive for as long as possible, obstacles: chase and duettes and possibly spinners
+  # dodge: reach the last portal, type of obstacles: dumb, no flipping is allowed, sphere gets 2shotted, only movement is allowed
+
+-- Enhancements --
+* reimplement collision to use Ogre's Ray queries instead of Bullet (done)
 * effects: motion blur (DONE)
 * effects: screen shake on bad collision (dropped)
 * normalize FPS across Gfx and Phyx (done)
@@ -31,47 +35,54 @@
 * bump map the material of the sphere (done)
 * add collision effects (done)
 * linear increase in sphere velocity (done)
-* preferred camera mode per game mode (DONE)
+
+-- compatibility --
+* proper logging for debug / release (done)
 * add some configuration:
+  # slow down the game / speed up
   # toggle FPS frame (done)
   # pause the game (done)
 
-[ refactoring / maintenance ]
+-- maintenance --
+* strip away unused procedural geometry files (done)
+* clean up unused media (done)
+
+-- code --
 * create Tunnel objects that encapsulate the creation of a tunnel and its portal (done)
 * create zones that contain a nr of tunnels (done)
 * parse zones from external XML sheets (done)
 * refactor GfxEngine .. it's a bloody mess there (done)
 * THREAD IT (fuck it)
-* use consistent name of Updaters across the classes
-* use ENUM instead of strings for settings (done)
-* clean up unused materials, scripts etc
-* strip away unused procedural geometry files (done)
-* clean up unused media (done)
+*
 
-[ UI ]
+-- bugs --
+* portal effect shouldn't be started when the overlay is shown (DONE)
+* make sure WARNING sound is played beyond the first zone (DONE)
+* add survival mode (DONE)
+* add nervebreak mode (DONE)
 * add score / accuracy (DONE)
 * add text logo (scratched) 
 * add version (done)
 * add resume / choose new zone button (done)
+* clean up unused materials, scripts etc
 * change ogre's config panel on first run (done)
-* HUD toggling (done)
-* win/loss sheets should be centered (DONE)
-* controllers
-  # music on/off (done)
-  # volume control (done)
-
-[ cross-compatibility ]
-* mac: use WAV instead of OGG (done)
-* mac: explicitly reference OgreBites::Button, XCode keeps whining about it (done)
-* win: change all the preprocessor macros for checking the platform from OGRE_PLATFORM_WINDOWS to OGRE_PLATFORM_WIN32 (done)
-* mac: use bundle path for taking screenies (done)
-
-[ deployment ] 
 * pack resources
-* win: installer: force directx installation (done)
-* proper logging for debug / release (done)
+* patcher
 
-[ usability ]
+* resolution starts @ 800x600 .. config screen is not accessible on that resolution (FIXED)
+* eliminate fps bursts when taking screenshots (DONE)
+* HUD toggling (done)
+* preferred camera mode per game mode (DONE)
+* win/loss sheets should be centered (DONE)
+* windows installer: force directx installation (done)
+
+-- cross-compatibility --
+* mac: use WAV instead of OGG
+* mac: explicitly reference OgreBites::Button, XCode keeps whining about it
+* win: change all the preprocessor macros for checking the platform from OGRE_PLATFORM_WINDOWS to OGRE_PLATFORM_WIN32
+* mac: use bundle path for taking screenies
+* 
+
+-- usability --
 * [HIGH] guide the user back to the main menu after the game is over / retry
 * [HIGH] physics goes out of sync on low FPS (talking about 30 fps, that's not really low) .. 
-* [LOW] wait a second after the game starts before spawning obstacles

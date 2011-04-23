@@ -306,9 +306,9 @@ namespace Pixy {
         widgIdx = mTrayMgr->locateWidgetInTray(mCurrentButton);
         mCurrentButton->_stopFlashing();
         if (widgIdx == 0) {
-          mCurrentButton = static_cast<OgreBites::Button*>(mTrayMgr->getWidget(trayIdx, mTrayMgr->getNumWidgets(trayIdx)-1));
+          mCurrentButton = static_cast<Button*>(mTrayMgr->getWidget(trayIdx, mTrayMgr->getNumWidgets(trayIdx)-1));
         } else {
-          mCurrentButton = static_cast<OgreBites::Button*>(mTrayMgr->getWidget(trayIdx, widgIdx -1));
+          mCurrentButton = static_cast<Button*>(mTrayMgr->getWidget(trayIdx, widgIdx -1));
         }
         mCurrentButton->_doFlash();
         break;
@@ -318,9 +318,9 @@ namespace Pixy {
         widgIdx = mTrayMgr->locateWidgetInTray(mCurrentButton);
         mCurrentButton->_stopFlashing();
         if (widgIdx == mTrayMgr->getNumWidgets(trayIdx)-1) {
-          mCurrentButton = static_cast<OgreBites::Button*>(mTrayMgr->getWidget(trayIdx, 0));
+          mCurrentButton = static_cast<Button*>(mTrayMgr->getWidget(trayIdx, 0));
         } else {
-          mCurrentButton = static_cast<OgreBites::Button*>(mTrayMgr->getWidget(trayIdx, widgIdx+1));
+          mCurrentButton = static_cast<Button*>(mTrayMgr->getWidget(trayIdx, widgIdx+1));
         }
         mCurrentButton->_doFlash();
         break;
@@ -424,18 +424,17 @@ namespace Pixy {
 		mFxMenu->addItem("Full");
 		mFxMenu->addItem("Medium");
 		mFxMenu->addItem("Low");
-		int tFxLevel = GameManager::getSingleton().getSettings().FX_LEVEL;
-		mFxMenu->selectItem((tFxLevel == FX_LEVEL_LOW) ? "Low" : (tFxLevel == FX_LEVEL_MEDIUM) ? "Medium" : "Full");
+		mFxMenu->selectItem(GameManager::getSingleton().getSettings()["Visual Detail"]);
 		
 		mMusicMenu = mTrayMgr->createLongSelectMenu(TL_NONE, "ConfigMusicMenu", "Music", 340, 140, 2);
 		mMusicMenu->addItem("On");
 		mMusicMenu->addItem("Off");
-		mMusicMenu->selectItem(GameManager::getSingleton().getSettings().MUSIC_ENABLED ? "On" : "Off");
+		mMusicMenu->selectItem(GameManager::getSingleton().getSettings()["Music Enabled"] == "Yes" ? "On" : "Off");
 		
 		mSfxMenu = mTrayMgr->createLongSelectMenu(TL_NONE, "ConfigSfxMenu", "Sound Effects", 340, 140, 2);
 		mSfxMenu->addItem("On");
 		mSfxMenu->addItem("Off");
-		mSfxMenu->selectItem(GameManager::getSingleton().getSettings().SOUND_ENABLED ? "On" : "Off");
+		mSfxMenu->selectItem(GameManager::getSingleton().getSettings()["Sound Enabled"] == "Yes" ? "On" : "Off");
 		
 		mRendererMenu = mTrayMgr->createLongSelectMenu(TL_NONE, "RendererMenu", "Render System", 450, 240, 10);
 		mTrayMgr->createSeparator(TL_NONE, "ConfigSeparator");
@@ -454,7 +453,7 @@ namespace Pixy {
 
 		
   void UIEngine::buttonHit(Button* b) {
-    if (GameManager::getSingleton().getSettings().SOUND_ENABLED) {
+    if (GameManager::getSingleton().getSettings()["Sound Enabled"] == "Yes") {
       if (mSfxButtonHit->isPlaying())
         mSfxButtonHit->stop();
       
@@ -494,7 +493,7 @@ namespace Pixy {
   };
   
   void UIEngine::buttonOver(Button* b) {
-    if (!GameManager::getSingleton().getSettings().SOUND_ENABLED)
+    if (GameManager::getSingleton().getSettings()["Sound Enabled"] != "Yes")
       return;
       
     if (mSfxButtonOver->isPlaying())
@@ -1084,11 +1083,10 @@ namespace Pixy {
 		// reset with new settings if necessary
 		if (reset) reconfigure(mRendererMenu->getSelectedItem(), newOptions);
 		
-		t_PixySettings settings;
-		std::string tFxLevel = mFxMenu->getSelectedItem();
-		settings.FX_LEVEL = (tFxLevel == "Low") ? FX_LEVEL_LOW : (tFxLevel == "Medium") ? FX_LEVEL_MEDIUM : FX_LEVEL_FULL;
-		settings.MUSIC_ENABLED = (mMusicMenu->getSelectedItem() == "On");
-		settings.SOUND_ENABLED = (mSfxMenu->getSelectedItem() == "On");
+		tPixySettings settings;
+		settings["Visual Detail"] = mFxMenu->getSelectedItem();
+		settings["Music Enabled"] = (mMusicMenu->getSelectedItem() == "On") ? "Yes" : "No";
+		settings["Sound Enabled"] = (mSfxMenu->getSelectedItem() == "On") ? "Yes" : "No";
 		
 		GameManager::getSingleton().applyNewSettings(settings);
   };

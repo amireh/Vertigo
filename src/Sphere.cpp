@@ -21,7 +21,7 @@ namespace Pixy
 		  mName = "Sphere";
 		  mType = SPHERE;
 		  mMesh = "SphereMesh";
-		  mMoveSpeed = 0;
+		  mMoveSpeed = 0; // speed is set in evtPortalEntered
 		  mMaxSpeed = 0;
       mScore = 0;
       mSpeedStep = 0;
@@ -46,8 +46,11 @@ namespace Pixy
 		  Geometry::createSphere(mMesh, 14, 32, 32);
 		
 		  GfxEngine::getSingletonPtr()->attachToScene(this);
+		  //mSceneObject->setCastShadows(true);
       mMasterNode = GfxEngine::getSingletonPtr()->getSM()->createSceneNode("SphereMasterNode");
+      //mSceneNode->getParent()->removeChild(mSceneNode);
       mMasterNode->addChild(mSceneNode);
+      //mMasterNode->setVisible(false);
 
       // preload our materials
       static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Sphere/Ice");
@@ -70,48 +73,50 @@ namespace Pixy
 		  mPhyxBody = new btRigidBody(mPhyxBodyCI);
 		  mPhyxBody->proceedToTransform(trans);
 		
-      /* -- prepare sound effects -- */
-      OgreOggSound::OgreOggSoundManager *mSoundMgr;
-      mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
-
-      //mMasterNode->attachObject(mSfxBeep);
-
-      mSfxBeep = mSoundMgr->createSound("SphereBeep" + stringify(idObject), "beep.wav", false, false, true);        
-      mSfxBeep->setRolloffFactor(2.f);
-      mSfxBeep->setReferenceDistance(1000.f);
-      mSfxBeep->setVolume(0.5f);
+		  // prepare our sound effects
+      //if (fHasSfx) {
+        OgreOggSound::OgreOggSoundManager *mSoundMgr;
+        mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
+        mSfxBeep = mSoundMgr->createSound("SphereBeep" + stringify(idObject), "beep.wav", false, false, true);
+        mSfxWarning = mSoundMgr->createSound("SphereWarning" + stringify(idObject), "warning_siren.ogg", false, false, true);
+        mSfxFlip = mSoundMgr->createSound("SphereFlipShield" + stringify(idObject), "flip.wav", false, false, true);
+        //mMasterNode->attachObject(mSfxBeep);
+        
+        mSfxBeep->setRolloffFactor(2.f);
+        mSfxBeep->setReferenceDistance(1000.f);
+        mSfxBeep->setVolume(0.5f);
+        
+        mSfxWarning->disable3D(true);
+        mSfxWarning->setVolume(1);
+        
+        mSfxFlip->disable3D(true);
+        mSfxFlip->setVolume(1);
+        //mSfxWarning->setRolloffFactor(2.f);
+        //mSfxWarning->setReferenceDistance(1000.f);
+        
+        mLog->debugStream() << "created sound effect";
+      //}
       
-      // we don't use OGG on Mac, we use WAV instead
-#if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
-      mSfxWarning = mSoundMgr->createSound("SphereWarning" + stringify(idObject), "warning_siren.wav", false, false, true);
-#else      
-      mSfxWarning = mSoundMgr->createSound("SphereWarning" + stringify(idObject), "warning_siren.ogg", false, false, true);
-#endif
-      mSfxWarning->disable3D(true);
-      mSfxWarning->setVolume(1);
-      
-      mSfxFlip = mSoundMgr->createSound("SphereFlipShield" + stringify(idObject), "flip.wav", false, false, true);
-      mSfxFlip->disable3D(true);
-      mSfxFlip->setVolume(1);
-      
-      // prepare our particle systems
-      ParticleUniverse::ParticleSystemManager* fxMgr = 
-      ParticleUniverse::ParticleSystemManager::getSingletonPtr();
-      
-      mFireEffect = fxMgr->createParticleSystem(
-        Ogre::String("FxSphereFireEffect" + stringify(idObject)),
-        "Vertigo/FX/Blaze",
-        GfxEngine::getSingletonPtr()->getSM());
-      mFireEffect->prepare();
-               
-      mIceEffect = fxMgr->createParticleSystem(
-        Ogre::String("FxSphereIceEffect" + stringify(idObject)),
-        "Vertigo/FX/Steam",
-        GfxEngine::getSingletonPtr()->getSM());
-      mIceEffect->prepare();
-         
-      mMasterNode->attachObject(mFireEffect);
-      mMasterNode->attachObject(mIceEffect);
+      // prepare our visual effects
+      //if (fHasFx) {
+	      ParticleUniverse::ParticleSystemManager* fxMgr = 
+        ParticleUniverse::ParticleSystemManager::getSingletonPtr();
+        
+        mFireEffect = fxMgr->createParticleSystem(
+          Ogre::String("FxSphereFireEffect" + stringify(idObject)),
+          "Vertigo/FX/Blaze",
+          GfxEngine::getSingletonPtr()->getSM());
+        mFireEffect->prepare();
+                 
+        mIceEffect = fxMgr->createParticleSystem(
+          Ogre::String("FxSphereIceEffect" + stringify(idObject)),
+          "Vertigo/FX/Steam",
+          GfxEngine::getSingletonPtr()->getSM());
+        mIceEffect->prepare();
+           
+        mMasterNode->attachObject(mFireEffect);
+        mMasterNode->attachObject(mIceEffect);
+      //}
       
       fDead = true;
   
@@ -130,44 +135,48 @@ namespace Pixy
 	Sphere::~Sphere()
 	{
 	  mLog->infoStream() <<"destructed";
+			
+		//if (fHasFx) {
+		  ParticleUniverse::ParticleSystemManager* fxMgr = 
+      ParticleUniverse::ParticleSystemManager::getSingletonPtr();
+      
+      fxMgr->destroyParticleSystem(mFireEffect,GfxEngine::getSingletonPtr()->getSM());
+      fxMgr->destroyParticleSystem(mIceEffect,GfxEngine::getSingletonPtr()->getSM());
+      
+		  mFireEffect = NULL;
+		  mIceEffect = NULL;
+		//};
 		
-		// destroy particle systems
-	  ParticleUniverse::ParticleSystemManager* fxMgr = 
-    ParticleUniverse::ParticleSystemManager::getSingletonPtr();
+		//if (fHasSfx) {
+      OgreOggSound::OgreOggSoundManager *mSoundMgr;
+      mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
+      
+      mSoundMgr->destroySound(mSfxBeep);
+      mSoundMgr->destroySound(mSfxWarning);
+      mSoundMgr->destroySound(mSfxFlip);
+      
+      mSoundMgr = NULL;
+      mSfxBeep = NULL;
+      mSfxWarning = 0;
+      mSfxFlip = 0;
+    //}
     
-    fxMgr->destroyParticleSystem(mFireEffect,GfxEngine::getSingletonPtr()->getSM());
-    fxMgr->destroyParticleSystem(mIceEffect,GfxEngine::getSingletonPtr()->getSM());
-    
-	  mFireEffect = 0;
-	  mIceEffect = 0;
-		
-		// destroy the sound effects
-    OgreOggSound::OgreOggSoundManager *mSoundMgr;
-    mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
-    
-    mSoundMgr->destroySound(mSfxBeep);
-    mSoundMgr->destroySound(mSfxWarning);
-    mSoundMgr->destroySound(mSfxFlip);
-    
-    mSoundMgr = 0;
-    mSfxBeep = 0;
-    mSfxWarning = 0;
-    mSfxFlip = 0;
-
-    // destroy physical component
 		delete mPhyxBody->getMotionState();
     delete mPhyxBody;
+
 		delete mPhyxShape;
+
+    GfxEngine::getSingletonPtr()->detachFromScene(this);
+    
     mPhyxShape = 0;
     mPhyxBody = 0;
-
-    // destroy our ogre entity and scene nodes
-    GfxEngine::getSingletonPtr()->getSM()->destroySceneNode(mMasterNode);
-    GfxEngine::getSingletonPtr()->detachFromScene(this);
-
+    // these r handled by ogre
     mMasterNode = 0;
     mSceneNode = 0;
     mSceneObject = 0;
+    //GfxEngine::getSingletonPtr()->getSM()->destroyMovableObject(mSceneObject);
+    
+    //GfxEngine::getSingletonPtr()->getSM()->destroySceneNode(mMasterNode);
     
 		if (mLog) {
 			delete mLog;
@@ -583,9 +592,6 @@ namespace Pixy
 	  mMoveSpeed = tZone->getSettings().mMoveSpeed;
 	  mMaxSpeed = mMoveSpeed * tZone->getSettings().mMaxSpeedFactor;
 	  mSpeedStep = tZone->getSettings().mSpeedStep;
-	  
-	  mMoveSpeed *= 4;
-	  mMaxSpeed *= 4;
 	  
 	  mTunnelLength = tZone->currentTunnel()->_getLength();
 	  mLastTunnelSegment = mTunnelLength - tZone->currentTunnel()->_getSegmentLength();
