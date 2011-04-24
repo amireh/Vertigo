@@ -9,7 +9,7 @@
 system Vertigo/FX/Mortar
 {
     scale_velocity                              0.3
-    scale                                       1 1 1
+    scale                                       0.6 0.6 0.6
     technique TrailTechnique
     {
         visual_particle_quota                   400
