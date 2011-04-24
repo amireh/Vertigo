@@ -120,6 +120,7 @@ namespace Pixy {
 	  void evtClickBackFromZones();
 	  // based on the selected zone, switches to Level state and starts the game
 	  void evtClickEngage();
+	  void evtClickBackFromScore();
 	  
 	  // show the zones screen
 	  void _showZones();
@@ -133,10 +134,14 @@ namespace Pixy {
 	  // hide zones screen
 	  void _hideZones();
 	  
+	  void _showScore();
+	  void _hideScore();
+	  
 	  OgreBites::Button* mCurrentButton;
 	  
 	  bool inMainMenu;
 	  bool inZoneScreen;
+	  bool inScoreScreen;
 	  UIZone *mSelectedZone;
 	  
 	  // prompts Ogre::OverlayManager for the overlays we're gonna use

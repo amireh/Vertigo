@@ -7,7 +7,7 @@
     <Property Name="Skybox" Value="Vertigo/Sky/Vortex" />
     <Property Name="MoveSpeed" Value="4" />
     <Property Name="MaxSpeedFactor" Value="2.5" />
-    <Property Name="SpeedStep" Value="1" />
+    <Property Name="SpeedStep" Value="0.05" />
     <Property Name="ResetVelocity" Value="Yes" />
     <Property Name="MaxSpeedStep" Value="0.1" />
   </Settings>
