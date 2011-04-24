@@ -207,7 +207,14 @@ namespace Pixy
 		    break;
 			case OIS::KC_EQUALS:
 				
-				break;			
+				break;	
+			/*case OIS::KC_G:
+			  mEvtMgr->hook(mEvtMgr->createEvt("SphereDied"));
+			  mSphere->die();
+			  break;
+			case OIS::KC_H:
+			  mEvtMgr->hook(mEvtMgr->createEvt("PlayerWon"));
+			  break;		*/
 
 		}
 		
@@ -614,8 +621,8 @@ namespace Pixy
     // hide our tunnel, obstacles, and sphere
     mSphere->getMasterNode()->setVisible(false);
 	  std::list<Obstacle*>::iterator _itr;
-	  for (_itr = mObstacles.begin(); 
-	       _itr != mObstacles.end();
+	  for (_itr = mObstaclePool.begin(); 
+	       _itr != mObstaclePool.end();
 	       ++_itr)
       (*_itr)->getMasterNode()->setVisible(false);
       
