@@ -57,7 +57,7 @@
 ##==========================================================================
 
 # The pre-processor and compiler options.
-MY_CFLAGS = `pkg-config --cflags OGRE OIS CEGUI bullet` -Iinclude \
+MY_CFLAGS = `pkg-config --cflags OGRE OIS bullet` -Iinclude \
 	-Imodules/include \
 	-Imodules/include/ogre \
 	-Imodules/include/ogre-procedural \
@@ -70,7 +70,7 @@ MY_CFLAGS = `pkg-config --cflags OGRE OIS CEGUI bullet` -Iinclude \
 	#-I/usr/include/ogg
 
 # The linker options.
-MY_LIBS   = `pkg-config --libs OGRE OIS CEGUI bullet log4cpp` -lOgreOggSound -lCEGUIOgreRenderer -lPlugin_ParticleUniverse
+MY_LIBS   = `pkg-config --libs OGRE OIS bullet log4cpp` -lOgreOggSound -lPlugin_ParticleUniverse
 
 # The pre-processor options used by the cpp (man cpp for more).
 CPPFLAGS  = 
@@ -103,8 +103,8 @@ HDREXTS = .h .H .hh .hpp .HPP .h++ .hxx .hp
 
 # The pre-processor and compiler options.
 # Users can override those variables from the command line.
-CFLAGS  = -g -O2
-CXXFLAGS= -g -O2
+CFLAGS  = -O2
+CXXFLAGS= -O2
 
 # The C program compiler.
 #CC     = gcc
