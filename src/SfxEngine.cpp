@@ -19,7 +19,7 @@ namespace Pixy {
 		mLog->infoStream() << "firing up";
 		
 
-    		
+    mVolume = 0;
 		idSound = 0;
 		mGameTrack = mIntroTrack = NULL;
 		mSoundMgr = NULL;
@@ -73,7 +73,8 @@ namespace Pixy {
         mIntroTrack->setVolume(0.5f);
       }
       
-      mSoundMgr->setMasterVolume(mSoundMgr->getMasterVolume() * 10);
+      mVolume = 1.0f;
+      mSoundMgr->setMasterVolume(mVolume);
       
       fAudioStopped = false;
       //toggleAudioState();
@@ -209,11 +210,13 @@ namespace Pixy {
 	
 	void SfxEngine::toggleAudioState() {
 	  if (!fAudioStopped) {
-	    mSoundMgr->pauseAllSounds();
-	    mSoundMgr->muteAllSounds();
+	    //mSoundMgr->pauseAllSounds();
+	    //mSoundMgr->muteAllSounds();
+	    mSoundMgr->setMasterVolume(mVolume);
 	  } else {
-	    mSoundMgr->resumeAllPausedSounds();
-	    mSoundMgr->unmuteAllSounds(); 
+	    //mSoundMgr->resumeAllPausedSounds();
+	    //mSoundMgr->unmuteAllSounds(); 
+	    mSoundMgr->setMasterVolume(0);
 	  }
 	  
 	  fAudioStopped = !fAudioStopped;
@@ -266,11 +269,15 @@ namespace Pixy {
 	};
 	
 	void SfxEngine::raiseVolume() {
-	  mSoundMgr->setMasterVolume(mSoundMgr->getMasterVolume() + 0.1f);
+	  if (mVolume < 1.0f)
+	    mVolume += 0.1f;
+	  mSoundMgr->setMasterVolume(mVolume);
 	};
 	
 	void SfxEngine::lowerVolume() {
-	  mSoundMgr->setMasterVolume(mSoundMgr->getMasterVolume() - 0.1f);
+	  if (mVolume > 0)
+	    mVolume -= 0.1f;
+	  mSoundMgr->setMasterVolume(mVolume);
 	};
 	
 	void SfxEngine::keyReleased( const OIS::KeyEvent &e ) {

@@ -70,6 +70,7 @@ namespace Pixy
 		OgreOggISound *mGameTrack, *mIntroTrack;
 		unsigned int idSound;
 		
+		float mVolume;
 		Sphere* mSphere;
 		Entity* mListener;
 		OgreOggSound::OgreOggSoundManager *mSoundMgr;
