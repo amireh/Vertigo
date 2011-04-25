@@ -34,26 +34,13 @@ using std::map;
 namespace Pixy
 {
 	
-	typedef enum {
-		EVT_DEFAULT = 1,
-		EVT_MSG,
-		EVT_UI_REGISTER,
-		EVT_UI_LOGIN,
-		EVT_UI_CREATE_PROFILE,
-		EVT_UI_LOAD_PROFILE,
-		EVT_UI_EDIT_PROFILE,
-		EVT_UI_DELETE_PROFILE,
-		EVT_UI_LOAD_ALL_PROFILES,
-		EVT_MATCH_SEARCH,
-		EVT_MATCH_FOUND,
-		EVT_SPELL_CAST
-	} EVENT_UID;
-	
+  // obsolete, is only needed for a networked environment
 	typedef enum {
 		EVT_REQ,
 		EVT_RESP
 	} EVENT_TYPE;
 	
+	// obsolete, is only needed for a networked environment
 	typedef enum {
 		EVT_OK,
 		EVT_ERROR,

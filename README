@@ -2,9 +2,7 @@
  *  This file is part of Vertigo.
  *
  *  Vertigo - a cross-platform arcade game powered by Ogre3D.
- *  Copyright (C) 2011 
- *    Philip Allgaier <spacegaier@ogre3d.org>, 
- *    Ahmad Amireh <ahmad@amireh.net>
+ *  Copyright (C) 2011  Ahmad Amireh <ahmad@amireh.net>
  * 
  *  Vertigo is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -21,25 +19,10 @@
  *
  */
  
-#include "GameState.h"
+Vertigo is an arcade game that puts your reflexes to a test. For more info about the game itself, please refer to the web site http://www.vertigo-game.com
 
-namespace Pixy
-{
+Vertigo is a completely free and open-source project licensed under the GNU GPL. The game is written in C++, and built with Ogre3D, BulletPhysics, and OpenAL.
 
-	void GameState::changeState( GameState *state ) {
-		GameManager::getSingletonPtr()->changeState( state );
-	}
-
-	void GameState::pushState( GameState *state ) {
-		GameManager::getSingletonPtr()->pushState( state );
-	}
-
-	void GameState::popState( void ) {
-		GameManager::getSingletonPtr()->popState();
-	}
-
-	void GameState::requestShutdown( void ) {
-		GameManager::getSingletonPtr()->requestShutdown();
-	}
-	
-} // end of namespace Pixy
+For technical support, feedback, or discussion you can contact me by:
+* Email: support@vertigo-game.com or ahmad@amireh.net
+* IRC: irc.freenode.org #vertigo - I'm known as kandie

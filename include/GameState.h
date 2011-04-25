@@ -2,7 +2,9 @@
  *  This file is part of Vertigo.
  *
  *  Vertigo - a cross-platform arcade game powered by Ogre3D.
- *  Copyright (C) 2011  spacegaier, Ahmad Amireh <ahmad@amireh.net>
+ *  Copyright (C) 2011 
+ *    Philip Allgaier <spacegaier@ogre3d.org>, 
+ *    Ahmad Amireh <ahmad@amireh.net>
  * 
  *  Vertigo is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by

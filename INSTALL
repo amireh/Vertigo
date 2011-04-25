@@ -1,0 +1,63 @@
+/*
+ *  This file is part of Vertigo.
+ *
+ *  Vertigo - a cross-platform arcade game powered by Ogre3D.
+ *  Copyright (C) 2011  Ahmad Amireh <ahmad@amireh.net>
+ * 
+ *  Vertigo is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  Vertigo is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Vertigo.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+ 
+-= Windows =-
+  
+  Run the installer (Vertigo.exe) and install to your prefered location, then
+  launch the game from the Start Menu.
+  
+  For troubleshooting Windows installations, please see below.
+  
+-= Mac OS X =-
+
+  Mount the .DMG and copy the Vertigo bundle to your Applications folder, then double click it to run the game.
+
+-= Linux =-
+
+  a) USING THE PRECOMPILED PACKAGE
+
+  Simply change directory to the bin folder and run play_vertigo.sh:
+    cd bin/ && ./play_vertigo.sh
+    
+  You can create a launcher for the game by creating a softlink to the script:
+    sudo ln -s $PWD/bin/play_vertigo.sh /usr/local/bin/vertigo
+  Then you can run the game from anywhere by typing:
+    vertigo
+
+  b) BUILDING FROM SOURCE
+  
+  To build Vertigo from source, you need the following libraries:
+    * Ogre3D v1.7.2 without boost-threads (http://www.ogre3d.org) which depends on:
+      * zzip, freetype, and freeimage development libraries
+      * OpenGL and GLUT development headers
+    * BulletPhysics v1.7.7 (http://www.bulletphysics.org/)
+    * OgreOggSound v1.21 (http://sourceforge.net/projects/ogreoggsound/) which depends on:
+      * OpenAL development libraries
+      * Ogg development libraries
+      * Vorbis development libraries
+    * ParticleUniverse plugin (dynamic library is provided, you don't need to build this)
+    
+  Make sure Ogre and Bullet can be found by pkg-config, if not, refer to their manuals. Once ready, just type:
+    make
+
+-= Troubleshooting & Support =-
+
+  For help with installation, please refer to the online manual found at http://www.vertigo-game.com/installation or contact me directly by email: support@vertigo-game.com
