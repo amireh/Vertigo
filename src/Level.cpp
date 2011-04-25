@@ -168,13 +168,13 @@ namespace Pixy
 		  case OIS::KC_P:
 		    GameManager::getSingleton().pushState(Pause::getSingletonPtr());
 		    break;
-			case OIS::KC_G:
+			/*case OIS::KC_G:
 			  mEvtMgr->hook(mEvtMgr->createEvt("ProbeDied"));
 			  mProbe->die();
 			  break;
 			case OIS::KC_H:
 			  mEvtMgr->hook(mEvtMgr->createEvt("PlayerWon"));
-			  break;
+			  break;*/
 		}
 	}
 	

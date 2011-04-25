@@ -159,7 +159,6 @@ namespace Pixy
 	   *  Called by Level when spawning Duettes to oppose their directions.
 	   */
 	  inline void setDirection(Vector3 inDirection) {
-	    mLog->debugStream() << "setting direction to " << inDirection.x << ", " << inDirection.y << ", " << inDirection.z;
 	    mDirection = inDirection;
 	  };
 	  
