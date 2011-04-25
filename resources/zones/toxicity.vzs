@@ -12,17 +12,17 @@
     <Property Name="ResetVelocity" Value="No" />
   </Settings>
 
-  <!-- Obstacle Settings -->
-  <Obstacles>
+  <!-- Drone Settings -->
+  <Drones>
     <Property Name="SpawnRate" Value="650" />
     <Property Name="FixedSpawnRate" Value="Yes" />
-    <Property Name="ObstacleCap" Value="10" />
+    <Property Name="DroneCap" Value="10" />
     <Property Name="MoveSpeed" Value="7.5" />
     <Property Name="MaxSpeedFactor" Value="4" />
     <Property Name="MaxSpeedStep" Value="1" />
     <Property Name="FixedSpawnPosition" Value="Yes" />
     <Class Name="Duette" />
-  </Obstacles>
+  </Drones>
 
   <Geometry>
     <Tunnel>

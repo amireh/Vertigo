@@ -33,13 +33,12 @@
 namespace Pixy
 {
 	
-	class Sphere;
+	class Probe;
 	
 	/*! \class PhyxEngine
 	 *	\brief
-	 *	Binds physics functionality in game Entity objects, handles collision 
-	 *	events, manages all Physics-related resources, and acts as a wrapper
-	 *	over nVidia's PhyX system.
+	 *	Wrapper over BulletPhysics, handles the dynamics world and everything 
+	 *  related to it.
 	 */
   class PhyxEngine : public Engine
 	{
@@ -48,26 +47,48 @@ namespace Pixy
 		virtual ~PhyxEngine();
 		static PhyxEngine* getSingletonPtr();
 		
-		
+		/*! \brief
+		 *  Creates the world and physical geometry.
+		 */
 		virtual bool setup();
-		virtual bool deferredSetup();
-		virtual void update(unsigned long lTimeElapsed);
-		virtual bool cleanup();
-
-		/*
-		void mouseMoved( const OIS::MouseEvent &e );
-		void mousePressed( const OIS::MouseEvent &e, OIS::MouseButtonID id );
-		void mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id );
-		*/
 		
-		btDiscreteDynamicsWorld* world();
+		/*! \brief
+		 *  Grabs a handle to the Probe so it can regulate its velocity.
+		 */
+		virtual bool deferredSetup();
+		
+		/*! \brief
+		 *  Steps the world.
+		 */
+		virtual void update(unsigned long lTimeElapsed);
+		
+		/*! \brief
+		 *  Destroys the world and cleans up all the resources.
+		 */
+		virtual bool cleanup();
+		
+		/*btDiscreteDynamicsWorld* getWorld() {
+		  return mWorld;
+		};*/
 		
 		void attachToWorld(Pixy::Entity* inEntity);
 		void detachFromWorld(Pixy::Entity* inEntity);
 		
+		/*! \brief
+		 *  Regulates the velocity of the Probe to not exceed Probe::mMaxSpeed.
+		 *
+		 *  \note
+		 *  Adapted from BulletPhysics Wiki.
+		 */
 		static void myTickCallback(btDynamicsWorld *world, btScalar timeStep);
 		
-		float getMaxSpeed() const;
+		/*! \brief
+		 *  Convenience method for getting the Probe's mMaxSpeed;
+		 *
+		 *  \note
+		 *  Called internally by myTickCallback();
+		 */
+		float _getMaxSpeed() const;
 		
 	protected:
 	  
@@ -78,19 +99,13 @@ namespace Pixy
 		btDiscreteDynamicsWorld *mWorld;
 		btCollisionWorld* mCWorld;
 		
-		/*btCollisionObject *mFloor, *mCeiling, *mLWall, *mRWall, *mBWall;
-		btCollisionShape *mFloorShape, *mCeilingShape, *mLWallShape, *mRWallShape, *mBWallShape;
-		btDefaultMotionState *mFloorMS, *mCeilingMS, *mLWallMS, *mRWallMS, *mBWallMS;
-		btRigidBody *mFloorBody, *mCeilingBody, *mLWallBody, *mRWallBody, *mBWallBody;*/
 		Ogre::Entity *mTunnelEntity;
     btRigidBody *mTunnelBody;
     btCollisionShape *mTunnelShape, *mObstacleShape;
     
     BtOgre::DebugDrawer *mDbgdraw;
 		
-		Sphere* mSphere;
-		
-		//btScalar mMaxSpeed;
+		Probe* mProbe;
 	private:
 		static PhyxEngine* _myPhyxEngine;
 		PhyxEngine();

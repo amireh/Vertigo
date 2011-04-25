@@ -38,12 +38,10 @@
 using std::list;
 namespace Pixy
 {
-    /*! \class Intro
-     *  \brief
-     *  Main Menu state, handles non-Combat game tasks.
-     */
-	
-	
+  /*! \class Intro
+   *  \brief
+   *  Main Menu state, handles the UI for configuring the game and starting the game.
+   */
 	class Intro : public GameState, public EventListener {
 	public:
 		
@@ -64,54 +62,43 @@ namespace Pixy
 		static Intro* getSingletonPtr( void );
 		static Intro& getSingleton();
 		
-		virtual GAME_STATE getId() const;
+		inline virtual GAME_STATE getId() const {
+		  return STATE_INTRO;
+		};
     
-    virtual bool areFxEnabled();
-    virtual bool areSfxEnabled();
-    virtual void dontUpdateMe(Engine* inEngine);
+    /*! \brief
+     *  Returns handle to the zone selected by the player to engage.
+     *
+     *  \note
+     *  This is cloned by Level whenever a zone is requested to be played.
+     */
+    inline Zone* getSelectedZone() {
+      return mSelectedZone;
+    };
     
-    Zone* getSelectedZone();
-    void setSelectedZone(Zone* inZone);
+    /*! \brief
+     *  Assigns the zone to be played. This is called by the UIEngine whenever
+     *  the player previews a zone in the Zone screen.
+     */
+    inline void setSelectedZone(Zone* inZone) {
+      mSelectedZone = inZone;
+    };
     
 	protected:
 	  bool evtSettingsChanged(Event* inEvt);
-	  // contains the path of the Zone sheet, this is set by the UIEngine
-	  // when a player chooses a zone thumb from the menu
 	  Zone* mSelectedZone;
-    /*
-    virtual void setupWidgets();
-    //virtual bool keyPressed(const OIS::KeyEvent& evt);
-    virtual void itemSelected(SelectMenu* menu);
-    virtual void buttonHit(Button* b);
-    virtual void reconfigure(const Ogre::String& renderer, Ogre::NameValuePairList& options);
-    
-    Ogre::String mHelpMsg;
-    SelectMenu* mRendererMenu;                     // render system selection menu
-    Ogre::Root *mRoot;
-    Ogre::RenderWindow *mWindow;
-    SdkTrayManager *mTrayMgr;
-    */
-    
-		std::list<Engine*> mEngines;
-		
-		std::list<Engine*>::iterator _itrEngines;
+
 	private:
 		Intro( void ) { fRunning = false; }
 		Intro( const Intro& ) { }
 		Intro & operator = ( const Intro& );
 		
-		EventManager *mEvtMgr;
-		GfxEngine		*mGfxEngine;
-		UIEngine		*mUIEngine;
+		EventManager  *mEvtMgr;
+		GfxEngine		  *mGfxEngine;
+		UIEngine		  *mUIEngine;
 		PhyxEngine		*mPhyxEngine;
-		SfxEngine *mSfxEngine;
-		Sphere			  *mFireSphere, *mIceSphere;
-		std::list<Obstacle*> mObstacles;
-		Ogre::OverlayContainer *mDialogShade;
-		Ogre::OverlayManager *mOverlayMgr;
-		Ogre::Overlay *mShadeLayer;
-		
-		
+		SfxEngine     *mSfxEngine;
+
 		static Intro   *mIntro;
 		
 	};

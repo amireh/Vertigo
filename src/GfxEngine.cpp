@@ -42,26 +42,14 @@ namespace Pixy {
 		mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "GfxEngine");
 		mLog->infoStream() << "firing up";
 		fSetup = false;
-		//mPlayers.clear();
-		//mCameraMan = 0;
-		//mFallVelocity = 0;
-		//mSceneLoader = 0;
-		//mMoveSpeed = 0.1;
-		//mDirection = Ogre::Vector3::ZERO;
-		//fPortalReached = false;
-		
 	}
 	
 	GfxEngine::~GfxEngine() {
 		mLog->infoStream() << "shutting down";
 		if (fSetup) {
 
-
 			delete mLog;
 			mLog = 0;
-
-			//if (mSceneLoader)
-			//	delete mSceneLoader;
 
 			fSetup = false;
 		}
@@ -69,56 +57,35 @@ namespace Pixy {
 		_myGfxEngine = NULL;
 	}
 	
-	void GfxEngine::loadResources() {
-
-	  
-	};
 	bool GfxEngine::setup() {
 		if (fSetup)
 			return true;
 		
-		mRoot         = Ogre::Root::getSingletonPtr();
-		mOverlayMgr   = Ogre::OverlayManager::getSingletonPtr();
+		mRoot = Ogre::Root::getSingletonPtr();
+		mOverlayMgr = Ogre::OverlayManager::getSingletonPtr();
 		if (mRoot->hasSceneManager("GameScene"))
-			mSceneMgr     = mRoot->getSceneManager( "GameScene" );
+			mSceneMgr = mRoot->getSceneManager( "GameScene" );
 		else
 		mSceneMgr = mRoot->createSceneManager(Ogre::ST_GENERIC, "GameScene");
 		
-		if (mSceneMgr->hasCamera("Sphere_Camera"))
-		  mCamera = mSceneMgr->getCamera("Sphere_Camera");
+		if (mSceneMgr->hasCamera("Probe_Camera"))
+		  mCamera = mSceneMgr->getCamera("Probe_Camera");
 		else
-		  mCamera       = mSceneMgr->createCamera("Sphere_Camera");
+		  mCamera       = mSceneMgr->createCamera("Probe_Camera");
 
 		mRenderWindow = mRoot->getAutoCreatedWindow();
-		
-		//mRenderWindow->reposition(1920 - mRenderWindow->getWidth(), 50);
-		//mViewport     = mRenderWindow->addViewport( mCamera );
-
-		//mRenderWindow->getViewport(<#unsigned short index#>)
-		
+				
 		mEvtMgr = EventManager::getSingletonPtr();
-		/*
-		 if (GameManager::getSingleton().gameState() == STATE_COMBAT)
-			setupCombat();
-		*/
+
 		setupSceneManager();
-    setupViewports();
+    setupViewport();
     setupCamera();
-    setupTerrain();
-    // set up sky only in game state
-    if (GameManager::getSingleton().currentState()->getId() == STATE_GAME) {
-      
-    } else if (GameManager::getSingleton().currentState()->getId() == STATE_INTRO) {
-      // set up a nice intro scene
-      
-    };
+    setupSky();
     setupLights();
-    setupNodes();
     setupParticles();
 		
 		mDirection = Vector3(0,0,1);
 		mMoveSpeed = 0;
-    //mCameraMan = new OgreBites::SdkCameraMan(mCamera);
     //mRenderWindow->setActive(true);
 
     
@@ -131,18 +98,18 @@ namespace Pixy {
 	
 	bool GfxEngine::deferredSetup() {
 		
-		//mCamera->setAutoTracking (true, mSphere->getSceneNode());
+		//mCamera->setAutoTracking (true, mProbe->getSceneNode());
 		//mCamera->setPosition(Vector3(200, 200, 200));
-		//mCamera->lookAt(mSphere->getSceneNode()->getPosition());
-		//mCamera->lookAt(mSphere->getSceneNode()->getPosition());
+		//mCamera->lookAt(mProbe->getSceneNode()->getPosition());
+		//mCamera->lookAt(mProbe->getSceneNode()->getPosition());
 		
 		GameState *currentState = (GameManager::getSingleton().currentState());
 		if (currentState->getId() == STATE_INTRO) {
-		  mUpdate = &GfxEngine::updateIntro;
+		  mUpdate = &GfxEngine::updateNothing;
 		  return true;
 		}
 		
-		mSphere = Level::getSingleton().getSphere();
+		mProbe = Level::getSingleton().getProbe();
 		mUpdate = &GfxEngine::updateGame;
 				
 		mCamera->setPosition(Vector3(0,75, -200));
@@ -151,39 +118,14 @@ namespace Pixy {
     bindToName("ZoneEntered", this, &GfxEngine::evtZoneEntered);
     bindToName("GameStarted", this, &GfxEngine::evtGameStarted);
     bindToName("PlayerWon", this, &GfxEngine::evtPlayerWon);
-    bindToName("SphereDied", this, &GfxEngine::evtSphereDied);    
-    //bindToName("ObstacleAlive", this, &GfxEngine::evtObstacleAlive);
-    bindToName("ObstacleCollided", this, &GfxEngine::evtObstacleCollided);
+    bindToName("ProbeDied", this, &GfxEngine::evtProbeDied);    
+    bindToName("DroneCollided", this, &GfxEngine::evtDroneCollided);
     bindToName("PortalEntered", this, &GfxEngine::evtPortalEntered);
     bindToName("TakingScreenshot", this, &GfxEngine::evtTakingScreenshot);
-    //bindToName("PortalReached", this, &GfxEngine::evtPortalReached);
-    //bindToName("PortalSighted", this, &GfxEngine::evtPortalSighted);
-    
+        
 		return true;
 	}
-	
-	void GfxEngine::setCamera(const Ogre::String& inCameraName) {
-		mCamera = mSceneMgr->createCamera(inCameraName);
-	}
-	
-	/*SdkCameraMan* GfxEngine::getCameraMan() {
-		return mCameraMan;
-	}*/
-	Ogre::Camera* GfxEngine::getCamera() {
-		return mCamera;
-	}
-	
-	Ogre::Root* GfxEngine::getRoot() {
-		return mRoot;
-	}
-	
-	Ogre::SceneManager* GfxEngine::getSM() {
-		return mSceneMgr;
-	}
-	
-	Ogre::Viewport* GfxEngine::getViewport() {
-		return mViewport;
-	}
+
 	
 	bool GfxEngine::cleanup() {		
     if (!fSetup)
@@ -206,238 +148,187 @@ namespace Pixy {
 	}
 	
 	
-    void GfxEngine::setupSceneManager()
-    {
-		  mLog->debugStream() << "setting up SceneManager";
-          //mSceneMgr->setAmbientLight(Ogre::ColourValue(1,1,1));
+  void GfxEngine::setupSceneManager()
+  {
+	  mLog->debugStream() << "setting up SceneManager";
 
-		  //mCamera = mSceneMgr->getCamera("Sphere_Camera");
-		
-		  //mViewport = mCamera->getViewport();
-		  mViewport = mRenderWindow->addViewport(mCamera);
-		  if (!mViewport) {
-			  mLog->errorStream() << "Viewport doesn't exist!!!";
-		  }
-		
-		  //mSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_TEXTURE_MODULATIVE);
-    };
+	  mViewport = mRenderWindow->addViewport(mCamera);
+	  if (!mViewport) {
+		  mLog->errorStream() << "Viewport doesn't exist!!!";
+	  }
 	
-    void GfxEngine::setupViewports()
-    {
-		  mLog->debugStream() << "setting up viewports";
-      mViewport->setBackgroundColour(Ogre::ColourValue(0,0,0));
-      
-      Ogre::CompositorManager::getSingleton().addCompositor(mViewport, "Radial Blur");
-      
-      // Alter the camera aspect ratio to match the viewport	
-      mCamera->setAspectRatio(Ogre::Real(mViewport->getActualWidth()) / Ogre::Real(mViewport->getActualHeight()));
-		
-    };
+	  //mSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_TEXTURE_MODULATIVE);
+  };
+
+  void GfxEngine::setupViewport()
+  {
+	  mLog->debugStream() << "setting up the viewport";
+    mViewport->setBackgroundColour(Ogre::ColourValue(0,0,0));
+    
+    Ogre::CompositorManager::getSingleton().addCompositor(mViewport, "Radial Blur");
+    
+    // Alter the camera aspect ratio to match the viewport	
+    mCamera->setAspectRatio(Ogre::Real(mViewport->getActualWidth()) / Ogre::Real(mViewport->getActualHeight()));
 	
-	  void GfxEngine::applyMotionBlur(float duration) {
-	    mEffect = "Radial Blur";
-	    mEffectTimer.reset();
-	    mEffectDuration = duration;
-	    mEffectEnabled = true;
-	    mLog->debugStream() << "applying motion blur"; 
-	    Ogre::CompositorManager::getSingleton().setCompositorEnabled(mViewport, mEffect, mEffectEnabled);
-	  };
+  };
+
+  void GfxEngine::applyMotionBlur(float duration) {
+    mEffect = "Radial Blur";
+    mEffectTimer.reset();
+    mEffectDuration = duration;
+    mEffectEnabled = true;
+    mLog->debugStream() << "applying motion blur"; 
+    Ogre::CompositorManager::getSingleton().setCompositorEnabled(mViewport, mEffect, mEffectEnabled);
+  };
+  
+
+  
+  
+  void GfxEngine::setupCamera()
+  {
+    mLog->debugStream() << "setting up the camera";
+
+    mCamera->setNearClipDistance( 10 );
+    mCamera->setFarClipDistance( 10000 );
+    mCamera->setPosition(Vector3(0,70,-200));
+    mCamera->lookAt(Ogre::Vector3(0, 70, 0));
+    
+    setCameraMode(CAMERA_CHASE);
+  };
+
+  void GfxEngine::setupSky()
+  {
+    mLog->noticeStream() << "setting up sky";
+	  mSceneMgr->setSkyDome(true, "Vertigo/Sky", 2, 1);
+	  //mSceneMgr->setSkyBox(true, "Vertigo/Sky/Vortex", 5000, true);				
+  };
+
+  void GfxEngine::setupLights()
+  {
+	  mLog->debugStream() << "setting up lights";
+    mSceneMgr->setAmbientLight(Ogre::ColourValue(0.2f, 0.2f, 0.2f));
+
+    Ogre::Light *light;
+    light = mSceneMgr->createLight("Light2");
+    light->setType(Ogre::Light::LT_DIRECTIONAL);
+    light->setDirection(Vector3(0,0,-1));
+    light->setDiffuseColour(0.9f, 0.9f, 0.9f);
+    light->setSpecularColour(0.9f, 0.9f, 0.9f);
+
+    light = mSceneMgr->createLight("Light3");
+    light->setType(Ogre::Light::LT_DIRECTIONAL);
+    light->setDirection(Vector3(0,-0.5f,1));
+    light->setDiffuseColour(0.9f, 0.9f, 0.9f);
+    light->setSpecularColour(0.6f, 0.6f, 0.6f);
+	 
+    /* now let's setup our light so we can see the shizzle */
+    mSpotLight = mSceneMgr->createLight("TunnelLight0");
+    mSpotLight->setType(Ogre::Light::LT_POINT);
+    mSpotLight->setPosition(Vector3(0, 60, 30));
+    mSpotLight->setDiffuseColour(0.3f, 0.3f, 0.3f);
+    mSpotLight->setSpecularColour(0.3f, 0.3f, 0.3f);
+    
+    mSpotLight = mSceneMgr->createLight("TunnelLight1");
+    mSpotLight->setType(Ogre::Light::LT_POINT);
+    mSpotLight->setPosition(Vector3(0, 20, 500));
+    mSpotLight->setDiffuseColour(0.5f, 0.5f, 0.5f);
+    mSpotLight->setSpecularColour(0.5f, 0.5f, 0.5f);
 	  
-
-	  
-	  
-    void GfxEngine::setupCamera()
-    {
-	    mLog->debugStream() << "setting up cameras";
+	  mSpotLight = mSceneMgr->createLight("TunnelLight2");
+    mSpotLight->setType(Ogre::Light::LT_POINT);
+    mSpotLight->setPosition(Vector3(30, 0, 2500));
+    mSpotLight->setDiffuseColour(0.9f, 0.9f, 0.9f);
+    mSpotLight->setSpecularColour(0.3f, 0.3f, 0.3f);
+    
+    mSpotLight = mSceneMgr->createLight("TunnelLight3");
+    mSpotLight->setType(Ogre::Light::LT_POINT);
+    mSpotLight->setPosition(Vector3(0, 30, 4500));
+    mSpotLight->setDiffuseColour(0.1f, 0.1f, 0.1f);
+    mSpotLight->setSpecularColour(0.9f, 0.9f, 0.9f);  
+	 
+    //Ogre::ColourValue fadeColour(0.0f, 0.0f, 0.0f);
+    //mViewport->setBackgroundColour(fadeColour);
+    //mSceneMgr->setFog(Ogre::FOG_LINEAR, fadeColour, 0.0, 300, 800);
+  };
 	
-      mCamera->setNearClipDistance( 10 );
-      mCamera->setFarClipDistance( 10000 );
-      mCamera->setPosition(Vector3(0,70,-200));
-	    mCamera->lookAt(Ogre::Vector3(0, 70, 0));
-	    
-	    setCameraMode(CAMERA_CHASE);
-	  };
-	
-    void GfxEngine::setupTerrain()
-    {
-		
-		/*
-        mLog->noticeStream() << "Setting world geometry";
-        mSceneMgr->setWorldGeometry("terrain.cfg");
-		 */
-        // skyz0rs
-        mLog->noticeStream() << "Setting up sky";
-		  mSceneMgr->setSkyDome(true, "Vertigo/Sky", 2, 1);
-		  //mSceneMgr->setSkyBox(true, "Vertigo/Sky/Vortex", 5000, true);				
-		 
-
-		
-    };
-	
-    void GfxEngine::setupLights()
-    {
-		  mLog->debugStream() << "setting up lights";
-      mSceneMgr->setAmbientLight(Ogre::ColourValue(0.2f, 0.2f, 0.2f));
-      Ogre::Light *light;
-
-     light = mSceneMgr->createLight("Light2");
-		 light->setType(Ogre::Light::LT_DIRECTIONAL);
-		 //light->setPosition(Vector3(0, 0, 1000));
-		 light->setDirection(Vector3(0,0,-1));
-		 light->setDiffuseColour(0.9f, 0.9f, 0.9f);
-		 light->setSpecularColour(0.9f, 0.9f, 0.9f);
-
-     light = mSceneMgr->createLight("Light3");
-		 light->setType(Ogre::Light::LT_DIRECTIONAL);
-		 //light->setPositiontion(Vector3(0, 0, 1000));
-		 light->setDirection(Vector3(0,-0.5f,1));
-		 light->setDiffuseColour(0.9f, 0.9f, 0.9f);
-		 light->setSpecularColour(0.6f, 0.6f, 0.6f);
-		 
-
-      /* now let's setup our light so we can see the shizzle */
-
-      mSpotLight = mSceneMgr->createLight("TunnelLight0");
-      mSpotLight->setType(Ogre::Light::LT_POINT);
-      mSpotLight->setPosition(Vector3(0, 60, 30));
-      mSpotLight->setDiffuseColour(0.3f, 0.3f, 0.3f);
-      mSpotLight->setSpecularColour(0.3f, 0.3f, 0.3f);
-      
-      mSpotLight = mSceneMgr->createLight("TunnelLight1");
-      mSpotLight->setType(Ogre::Light::LT_POINT);
-      mSpotLight->setPosition(Vector3(0, 20, 500));
-      mSpotLight->setDiffuseColour(0.5f, 0.5f, 0.5f);
-      mSpotLight->setSpecularColour(0.5f, 0.5f, 0.5f);
-		  
-		  mSpotLight = mSceneMgr->createLight("TunnelLight2");
-      mSpotLight->setType(Ogre::Light::LT_POINT);
-      mSpotLight->setPosition(Vector3(30, 0, 2500));
-      mSpotLight->setDiffuseColour(0.9f, 0.9f, 0.9f);
-      mSpotLight->setSpecularColour(0.3f, 0.3f, 0.3f);
-      
-      mSpotLight = mSceneMgr->createLight("TunnelLight3");
-      mSpotLight->setType(Ogre::Light::LT_POINT);
-      mSpotLight->setPosition(Vector3(0, 30, 4500));
-      mSpotLight->setDiffuseColour(0.1f, 0.1f, 0.1f);
-      mSpotLight->setSpecularColour(0.9f, 0.9f, 0.9f);
-      
-      /* now let's setup our light so we can see the shizzle */
-      /*mSpotLight = mSceneMgr->createLight("PlayerLight2");
-      mSpotLight->setType(Ogre::Light::LT_DIRECTIONAL);
-      mSpotLight->setDirection(Vector3(1,1,-1));
-      mSpotLight->setDiffuseColour(0.6f, 0.6f, 0.6f);
-      mSpotLight->setSpecularColour(0.8f, 0.8f, 0.8f);*/		  
-		 
-		 Ogre::ColourValue fadeColour(0.0f, 0.0f, 0.0f);
-     //mViewport->setBackgroundColour(fadeColour);
-		 //mSceneMgr->setFog(Ogre::FOG_LINEAR, fadeColour, 0.0, 300, 800);
-    };
-	
-    void GfxEngine::setupNodes()
-    {
-		  //mLog->debugStream() << "setting up nodes";
-		
-    };
-
-	
-    Ogre::SceneNode* 
+  Ogre::SceneNode* 
 	GfxEngine::createNode(std::string& inName, 
 						  const Vector3& inPosition, 
 						  const Vector3& inScale, 
 						  const Vector3& inDirection, 
 						  Ogre::SceneNode* inParent)
-    {
-        Ogre::SceneNode* mNode;
-        if (!inParent) {
-          mNode = mSceneMgr->createSceneNode(inName);
-          mNode->setPosition(inPosition);
-        } else
-          mNode = inParent->createChildSceneNode(inName, inPosition);
-        
-        mNode->setScale(inScale);
-        mNode->lookAt(inDirection, Ogre::Node::TS_WORLD);
-    	  //mNode->showBoundingBox(true);
-		
-        //mNode = NULL;
-        return mNode;
-    };
-	
-    Ogre::SceneNode* 
-	  GfxEngine::renderEntity(Pixy::Entity* inEntity, Ogre::SceneNode* inNode)
-    {
-		  //mLog->debugStream() << "rendering entity " << inEntity->getName();
-      Ogre::Entity* mEntity;
-		
-      String entityName = "Entity";
-		  entityName += inEntity->getName();
-		  entityName += stringify(inEntity->getObjectId());
-		
-		  //mLog->debugStream() << "Creating an Entity with name " << entityName;
-		  mEntity = mSceneMgr->createEntity(entityName, inEntity->getMesh());
-		  //inNode->setUserAny(Ogre::Any(inEntity));
-		  inNode->attachObject(mEntity);
-		
-		
-		  inEntity->attachSceneNode(inNode);
-		  inEntity->attachSceneObject(mEntity);
-		
-		  return inNode;// create aureola around ogre head perpendicular to the ground
-    };
-	
-	
-    bool GfxEngine::attachToScene(Pixy::Entity* inEntity)
-    {
-      /*if (inEntity->getSceneNode() && inEntity->getSceneObject()) {
-        inEntity->getSceneNode()->setVisible(true);
-        return true;
-      }*/
-      
-		  Ogre::String nodeName = "Node";
-		  nodeName += inEntity->getName();
-		  nodeName += stringify(inEntity->getObjectId());
-		  //mLog->debugStream() << "Creating a SceneNode with name " << nodeName;
-		  return renderEntity(inEntity, createNode(nodeName, 
-												   Vector3::ZERO, 
-												   Vector3(1.0,1.0,1.0), 
-												   Vector3::ZERO,
-												   NULL)) && true;
-    };
-	
-	
-	
-    void GfxEngine::detachFromScene(Pixy::Entity* inEntity)
-    {
-        Ogre::SceneNode* mTmpNode = NULL;
-		    //inEntity->getSceneNode()->setVisible(false);
-		    mTmpNode = inEntity->getSceneNode();
-
-		    //mLog->debugStream() << "I'm detaching Entity '" << inEntity->getName() << "' from SceneNode : " + mTmpNode->getName();
-		    //mTmpNode->showBoundingBox(false);
-		    mTmpNode->detachObject(inEntity->getSceneObject());
-		
-		    mSceneMgr->destroyEntity((Ogre::Entity*)inEntity->getSceneObject());
-		    mSceneMgr->destroySceneNode(inEntity->getSceneNode());
-	      
-    }
-
-	
-	void GfxEngine::mouseMoved( const OIS::MouseEvent &e )
-	{
-		//if (mCameraMan)
-		//	mCameraMan->injectMouseMove(e);
-	}
-	
-	void GfxEngine::mousePressed( const OIS::MouseEvent &e, OIS::MouseButtonID id ) 
-	{
-		//if (mCameraMan)
-		//	mCameraMan->injectMouseDown(e, id);
-	}
-	
-	void GfxEngine::mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id ) 
   {
-  
-	}
+      Ogre::SceneNode* mNode;
+      if (!inParent) {
+        mNode = mSceneMgr->createSceneNode(inName);
+        mNode->setPosition(inPosition);
+      } else
+        mNode = inParent->createChildSceneNode(inName, inPosition);
+      
+      mNode->setScale(inScale);
+      mNode->lookAt(inDirection, Ogre::Node::TS_WORLD);
+  	  //mNode->showBoundingBox(true);
 	
+      //mNode = NULL;
+      return mNode;
+  };
+	
+  Ogre::SceneNode* 
+  GfxEngine::renderEntity(Pixy::Entity* inEntity, Ogre::SceneNode* inNode)
+  {
+	  //mLog->debugStream() << "rendering entity " << inEntity->getName();
+    Ogre::Entity* mEntity;
+	
+    String entityName = "Entity";
+	  entityName += inEntity->getName();
+	  entityName += stringify(inEntity->getObjectId());
+	
+	  //mLog->debugStream() << "Creating an Entity with name " << entityName;
+	  mEntity = mSceneMgr->createEntity(entityName, inEntity->getMesh());
+	  //inNode->setUserAny(Ogre::Any(inEntity));
+	  inNode->attachObject(mEntity);
+
+	  inEntity->_attachSceneNode(inNode);
+	  inEntity->_attachSceneObject(mEntity);
+	
+	  return inNode;
+  };
+
+
+  bool GfxEngine::attachToScene(Pixy::Entity* inEntity)
+  {
+    /*if (inEntity->getSceneNode() && inEntity->getSceneObject()) {
+      inEntity->getSceneNode()->setVisible(true);
+      return true;
+    }*/
+    
+	  Ogre::String nodeName = "Node";
+	  nodeName += inEntity->getName();
+	  nodeName += stringify(inEntity->getObjectId());
+	  //mLog->debugStream() << "Creating a SceneNode with name " << nodeName;
+	  return renderEntity(inEntity, createNode(nodeName, 
+											   Vector3::ZERO, 
+											   Vector3(1.0,1.0,1.0), 
+											   Vector3::ZERO,
+											   NULL)) && true;
+  };
+
+
+
+  void GfxEngine::detachFromScene(Pixy::Entity* inEntity)
+  {
+      Ogre::SceneNode* mTmpNode = NULL;
+	    //inEntity->getSceneNode()->setVisible(false);
+	    mTmpNode = inEntity->getSceneNode();
+
+	    //mLog->debugStream() << "I'm detaching Entity '" << inEntity->getName() << "' from SceneNode : " + mTmpNode->getName();
+	    //mTmpNode->showBoundingBox(false);
+	    mTmpNode->detachObject(inEntity->getSceneObject());
+	
+	    mSceneMgr->destroyEntity((Ogre::Entity*)inEntity->getSceneObject());
+	    mSceneMgr->destroySceneNode(inEntity->getSceneNode());
+      
+  }
 	
 	void GfxEngine::keyPressed( const OIS::KeyEvent &e )
 	{
@@ -459,20 +350,11 @@ namespace Pixy {
 		    break;
 		}
 	}
-	
-	void GfxEngine::keyReleased( const OIS::KeyEvent &e ) {
-			//mCameraMan->injectKeyUp(e);
-	}
-	
-	
 
 	void GfxEngine::update(unsigned long lTimeElapsed) {
 	  processEvents();
 	  
 	  (this->*mUpdate)(lTimeElapsed);
-	};
-	
-	void GfxEngine::updateIntro(unsigned long lTimeElapsed) {
 	};
 	
 	void GfxEngine::updateNothing(unsigned long lTimeElapsed) {
@@ -487,7 +369,7 @@ namespace Pixy {
 		  Ogre::CompositorManager::getSingleton().setCompositorEnabled(mViewport, mEffect, mEffectEnabled);
 		}
 		
-		mSpherePos = mSphere->getPosition();
+		mProbePos = mProbe->getPosition();
 		
 		(this->*mUpdateCamera)();
 		
@@ -515,65 +397,65 @@ namespace Pixy {
 	}
 	
 	void GfxEngine::updateCameraChase() {
-		mSpherePos = mSphere->getPosition();
+		mProbePos = mProbe->getPosition();
 		
 		mCamera->setPosition(
-		  mSpherePos.x,
-		  mSpherePos.y + 35,
-      mSpherePos.z-120
+		  mProbePos.x,
+		  mProbePos.y + 35,
+      mProbePos.z-120
     );
     
 	  mCamera->lookAt(
-	    mSpherePos.x,
-	    mSpherePos.y + 20,
-	    mSpherePos.z
+	    mProbePos.x,
+	    mProbePos.y + 20,
+	    mProbePos.z
 	  );	
 	}
 	
 	void GfxEngine::updateCameraFixed() {
-		mSpherePos = mSphere->getPosition();
+		mProbePos = mProbe->getPosition();
 		
 		mCamera->setPosition(
 		  0,
 		  35,
-      mSpherePos.z-120
+      mProbePos.z-120
     );
     
 	  mCamera->lookAt(
 	    0,
 	    35,
-	    mSpherePos.z
+	    mProbePos.z
 	  );	
 	}
 	void GfxEngine::updateCameraSticky() {
-		mSpherePos = mSphere->getPosition();
+		mProbePos = mProbe->getPosition();
 		
 		mCamera->setPosition(
-		  mSpherePos.x,
-		  mSpherePos.y + 35,
-      mSpherePos.z-120
+		  mProbePos.x,
+		  mProbePos.y + 35,
+      mProbePos.z-120
     );
     
 	  mCamera->lookAt(
-	    mSpherePos.x,
+	    mProbePos.x,
 	    35,
-	    mSpherePos.z
+	    mProbePos.z
 	  );	
 	}
 	
 	void GfxEngine::updateCameraLolly() {
-		mSpherePos = mSphere->getPosition();
+		mProbePos = mProbe->getPosition();
 		
 		mCamera->setPosition(
-		  mSpherePos.x,
+		  mProbePos.x,
 		  35,
-      mSpherePos.z-120
+      mProbePos.z-120
     );
     
 	  mCamera->lookAt(
 	    0,
-	    mSpherePos.y+35,
-	    mSpherePos.z
+	    mProbePos.y+35,
+	    mProbePos.z
 	  );	
 	}
 	
@@ -613,13 +495,6 @@ namespace Pixy {
     effect->prepare();
     effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("Mortar", effect));    
 
-    /*effect = fxMgr->createParticleSystem(
-      "FxSpawnPoint",
-      "Vertigo/FX/SpawnPoint", 
-      mSceneMgr);
-    effect->prepare();
-    effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("SpawnPoint", effect));  */
-
     effect = fxMgr->createParticleSystem(
       "FxDespawn",
       "Vertigo/FX/Despawn", 
@@ -628,11 +503,11 @@ namespace Pixy {
     effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("Despawn", effect));  
 
     effect = fxMgr->createParticleSystem(
-      "FxSphereExplosion",
-      "Vertigo/FX/SphereExplosion", 
+      "FxProbeExplosion",
+      "Vertigo/FX/ProbeExplosion", 
       mSceneMgr);
     effect->prepare();
-    effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("SphereExplosion", effect));
+    effects.insert(std::make_pair<std::string, ParticleUniverse::ParticleSystem*>("ProbeExplosion", effect));
           
     effectMap::iterator itr;
     for (itr = effects.begin(); itr != effects.end(); ++itr) {
@@ -641,17 +516,11 @@ namespace Pixy {
       effect->setScaleVelocity(0.2f);
     }
     
-    effects["SphereExplosion"]->setScale(Ogre::Vector3(1.0f, 1.0f, 1.0f));
-    effects["SphereExplosion"]->setScaleVelocity(1.0f);
+    effects["ProbeExplosion"]->setScale(Ogre::Vector3(1.0f, 1.0f, 1.0f));
+    effects["ProbeExplosion"]->setScaleVelocity(1.0f);
     effect = NULL;
-    //mSphere->getMasterNode()->attachObject(effectExplosion);
-    //effectExplosion->start();
-
-    
-    mPortableEffect = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-    //mSpawnPoint = mSceneMgr->getRootSceneNode()->createChildSceneNode("NodeSpawnPoint");
-    //mSpawnPoint->attachObject(effects["Despawn"]);
-    
+        
+    mPortableEffect = mSceneMgr->getRootSceneNode()->createChildSceneNode();    
 	}
 	
 	void GfxEngine::playEffect(std::string inEffect, Entity* inEntity) {
@@ -681,48 +550,24 @@ namespace Pixy {
         effect->start();
 	  }	
 	};
-	
-	
-	bool GfxEngine::evtObstacleAlive(Event* inEvt) {
+		
+	bool GfxEngine::evtDroneCollided(Event* inEvt) {
+	  Drone* mObs = static_cast<Drone*>(inEvt->getAny());
+	  this->playEffect( (mObs->getShield() == FIRE) ? "Explosion" : "Shatter", mProbe); 
 
-	  return true;
-	};
-	
-	bool GfxEngine::evtObstacleCollided(Event* inEvt) {
-	  Obstacle* mObs = static_cast<Obstacle*>(inEvt->getAny());
-	  playEffect( (mObs->shield() == FIRE) ? "Explosion" : "Shatter", mSphere); 
-
-    //if (mSphere->shield() != mObs->shield())
-	      
-	  
 	  return true;
 	};
 	
 
 	
 	bool GfxEngine::evtPortalEntered(Event* inEvt) {
-	  //mSphere->getMasterNode()->setVisible(true);
-	  //fPortalReached = false;
-	  
-	  this->playEffect("Despawn", Level::getSingleton().getSphere());
+	  this->playEffect("Despawn", Level::getSingleton().getProbe());
 	  
 	  return true;
 	};
 	
-	bool GfxEngine::evtPortalReached(Event* inEvt) {
-		//mSphere->getMasterNode()->setVisible(false);
-		//fPortalReached = true;
-		
-	
-		return true;	  
-	};
-	
-	bool GfxEngine::evtPortalSighted(Event* inEvt) {
-		return true;	  
-	};
-	
-	bool GfxEngine::evtSphereDied(Event* inEvt) {
-	  this->playEffect("SphereExplosion", Level::getSingleton().getSphere()->getMasterNode()->getPosition());
+	bool GfxEngine::evtProbeDied(Event* inEvt) {
+	  this->playEffect("ProbeExplosion", Level::getSingleton().getProbe()->getMasterNode()->getPosition());
 	 
 	  return true;
 	};
@@ -731,9 +576,9 @@ namespace Pixy {
 	bool GfxEngine::evtPlayerWon(Event* inEvt) {
 	  mUpdate = &GfxEngine::updateNothing;
 	  
-	  Level::getSingleton().getSphere()->getMasterNode()->setVisible(false);
+	  Level::getSingleton().getProbe()->getMasterNode()->setVisible(false);
 	  
-	  Vector3 camPos = Level::getSingleton().getSphere()->getMasterNode()->getPosition();
+	  Vector3 camPos = Level::getSingleton().getProbe()->getMasterNode()->getPosition();
 	  camPos.z += 30;
 	  Vector3 effectPos = Vector3(camPos);
 	  effectPos.z += 50;
@@ -745,9 +590,10 @@ namespace Pixy {
 	};
 	
 	bool GfxEngine::evtGameStarted(Event* inEvt) {
+	  
 	  mUpdate = &GfxEngine::updateGame;
 	  
-	  Level::getSingleton().getSphere()->getMasterNode()->setVisible(true);
+	  Level::getSingleton().getProbe()->getMasterNode()->setVisible(true);
 	  
 	  switch (Level::getSingleton().currentZone()->getSettings().mMode) {
 	    case DODGY:
@@ -775,14 +621,14 @@ namespace Pixy {
 	  // don't start updating the game if it hasn't started yet
 	  // this event is triggered whenever the menu is hidden, even if it's at
 	  // entering a zone
-	  if (mUpdate == &GfxEngine::updateIntro)
+	  if (mUpdate == &GfxEngine::updateNothing)
 	    mUpdate = &GfxEngine::updateGame;
 	  
 	  return true;
 	};	
 
 	bool GfxEngine::evtMenuShown(Event* inEvt) {
-	  mUpdate = &GfxEngine::updateIntro;
+	  mUpdate = &GfxEngine::updateNothing;
 	  
 	  return true;
 	};	
@@ -796,9 +642,7 @@ namespace Pixy {
     fileName += stringify(seconds);
     fileName += ".png";
     mRenderWindow->writeContentsToFile(fileName);  
-    
-    mLog->debugStream() << "done taking screenshot, transmitting";
-    
+        
     mEvtMgr->hook(mEvtMgr->createEvt("ScreenshotTaken"));
     return true;
   }

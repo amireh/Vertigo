@@ -25,9 +25,7 @@
 namespace Pixy
 {
 	
-	Pause* Pause::mPause;
-	
-	GAME_STATE Pause::getId() const { return STATE_PAUSE; }
+	Pause* Pause::mPause = 0;
 	
 	void Pause::enter( void ) {
 	}
@@ -39,7 +37,8 @@ namespace Pixy
 	}
 	
 	void Pause::keyReleased( const OIS::KeyEvent &e ) {
-		switch (e.key) {	 
+		switch (e.key) {
+		  case OIS::KC_ESCAPE:
 			case OIS::KC_P:
 				  GameManager::getSingleton().popState();
 				break;
@@ -75,8 +74,4 @@ namespace Pixy
 	void Pause::update( unsigned long lTimeElapsed ) {
 	}
 	
-	bool Pause::areFxEnabled() { return true; }
-  bool Pause::areSfxEnabled() { return true; }
-  
-  void Pause::dontUpdateMe(Engine* inEngine) { };
 } // end of namespace

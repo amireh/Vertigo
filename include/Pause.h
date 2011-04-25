@@ -22,28 +22,17 @@
 #ifndef H_Pause_H
 #define H_Pause_H
 
-#include <list>
 #include "GameState.h"
-#include "EventManager.h"
-#include "EventListener.h"
-//#include "UIEngine.h"
-#include "GfxEngine.h"
-#include "PhyxEngine.h"
-#include <map>
-#include "Sphere.h"
-#include "Obstacle.h"
-
 
 using std::list;
 namespace Pixy
 {
-    /*! \class Pause
-     *  \brief
-     *  Main Menu state, handles non-Combat game tasks.
-     */
-	
-	
-	class Pause : public GameState, public EventListener {
+  /*! \class Pause
+   *  \brief
+   *  Pause state; does literally nothing. Returns flow back to Level state
+   *  when ESCAPE or P is pressed.
+   */
+	class Pause : public GameState {
 	public:
 		
 		void enter( void );
@@ -62,38 +51,18 @@ namespace Pixy
 		
 		static Pause* getSingletonPtr( void );
 		static Pause& getSingleton();
-		
-    virtual bool areFxEnabled();
-    virtual bool areSfxEnabled();		
-		virtual GAME_STATE getId() const;
-    virtual void dontUpdateMe(Engine* inEngine);
-		Sphere* getSphere();
+				
+		inline virtual GAME_STATE getId() const {
+		  return STATE_PAUSE;
+		};
 
 	protected:
-		void fireLoginEvt();
-		bool evtPortalReached(Event* inEvt);
-		bool evtPortalSighted(Event* inEvt);
 		
 	private:
+	  static Pause* mPause;
 		Pause( void ) { }
 		Pause( const Pause& ) { }
 		Pause & operator = ( const Pause& );
-		
-		EventManager *mEvtMgr;
-		GfxEngine		*mGfxEngine;
-		//UIEngine		*mUIEngine;
-		PhyxEngine		*mPhyxEngine;
-		//CEGUI::System	*mUISystem;
-		Sphere			  *mSphere;
-		std::list<Obstacle*> mObstacles;
-		std::list<Obstacle*> mObstaclePool;
-		std::list<Obstacle*> mDeadObstacles;
-		long nrObstacles;
-		static Pause    *mPause;
-		Ogre::Timer mTimer;
-		bool fSpawning; // are we spawning obstacles?
-		void spawnObstacle();
-		void releaseObstacle(Obstacle* inObs);
 	};
 } // end of namespace
 #endif

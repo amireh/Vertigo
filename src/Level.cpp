@@ -32,8 +32,6 @@ namespace Pixy
 	
 	Level* Level::mLevel;
 	
-	GAME_STATE Level::getId() const { return STATE_GAME; }
-	
 	Level::Level() {
 	  fRunning = false;
 	  fScreenshotTaken = false; // see Level::updateNothing() for info on this
@@ -49,7 +47,6 @@ namespace Pixy
 		
 		mEvtMgr = EventManager::getSingletonPtr();
 		
-		//mEngines.clear();
 		
 		// init engines
 		mGfxEngine = GfxEngine::getSingletonPtr();
@@ -59,120 +56,67 @@ namespace Pixy
 		
 		mLog->debugStream() << "igniting engines";
 		
-		mEngines.push_back(mGfxEngine);
-		mEngines.back()->setup();
-		
-		mEngines.push_back(mPhyxEngine);
-		mEngines.back()->setup();
-		
-		mEngines.push_back(mSfxEngine);
-		mEngines.back()->setup();		
-		
-		mEngines.push_back(mUIEngine);
+		mGfxEngine->setup();
+		mPhyxEngine->setup();
+		mSfxEngine->setup();
 		mUIEngine->setup();
-		//mUIEngine->hide();
-		
-		/*mEngines.push_back(mUIEngine);
-		mEngines.back()->setup();*/
 
     fFirstZone = true;
     
     mZone = new Zone(Intro::getSingleton().getSelectedZone()->filePath());
     
+    // prepare our probe
     mLog->debugStream() << "creating sphere";
-    // prepare our sphere
-		mSphere = new Sphere();
-		mSphere->live();
-
-    // create our level
-    //mZone = new Zone(Intro::getSingleton().getSelectedZone());
-    
+		mProbe = new Probe();
+		mProbe->live();    
     
     // now prepare our obstacles
-		nrObstacles = 12;
-		for (int i =0; i < nrObstacles; ++i)
-	    mObstaclePool.push_back(new Obstacle());
+		nrDrones = 12;
+		for (int i =0; i < nrDrones; ++i)
+	    mDronePool.push_back(new Drone());
 		
     // event handlers
     bindToName("ZoneEntered", this, &Level::evtZoneEntered);
     bindToName("PlayerWon", this, &Level::evtPlayerWon);
-		bindToName("SphereDied", this, &Level::evtSphereDied);
+		bindToName("ProbeDied", this, &Level::evtProbeDied);
 		bindToName("PortalEntered", this, &Level::evtPortalEntered);
-		bindToName("PortalReached", this, &Level::evtPortalReached);
 		bindToName("PortalSighted", this, &Level::evtPortalSighted);
 		bindToName("TakingScreenshot", this, &Level::evtTakingScreenshot);
 		bindToName("ScreenshotTaken", this, &Level::evtScreenshotTaken);
 
-		for (_itrEngines = mEngines.begin();
-		     _itrEngines != mEngines.end();
-		     ++_itrEngines)
-		    (*_itrEngines)->deferredSetup();
-		
-		
-		
-		//mTimer.reset();
+		mGfxEngine->deferredSetup();
+		mPhyxEngine->deferredSetup();
+		mSfxEngine->deferredSetup();
+		mUIEngine->deferredSetup();
 
     mUpdater = &Level::updatePreparation;
     
-        		
-		mLog->infoStream() << "Initialized successfully.";
+		mLog->infoStream() << "initialized successfully.";
 		reset();
 	}
 
-
-	
 	void Level::exit( void ) {
-	  
-	  
 	  fRunning = false;
 	  
-		for (std::list<Obstacle*>::iterator _itr = mObstaclePool.begin(); 
-		     _itr != mObstaclePool.end();
+		for (std::list<Drone*>::iterator _itr = mDronePool.begin(); 
+		     _itr != mDronePool.end();
 		     ++_itr) {
-		    //mLog->debugStream() << "updating objects";
 		  delete *_itr;
 		}
-
-		/*for (std::list<Tunnel*>::iterator _itr = mTunnels.begin(); 
-		     _itr != mTunnels.end();
-		     ++_itr) {
-		    //mLog->debugStream() << "updating objects";
-		  delete *_itr;
-		}*/
 				
-		mObstacles.clear();
-		//mTunnels.clear();
+		mDrones.clear();
 		
-		mLog->infoStream() << "---- Exiting Level State ----";
+		mLog->infoStream() << "---- exiting Level State ----";
 		
 		delete mZone;
-		delete mSphere;
+		delete mProbe;
 		
 		mEngines.clear();
 		
-		bool fShuttingDown = GameManager::getSingleton().shuttingDown();
-		
 		mUIEngine->cleanup();
-		//if (fShuttingDown)
-		//  delete mUIEngine;
-				     
 		mSfxEngine->cleanup();
-		//if (fShuttingDown)
-		//  delete mSfxEngine;
-		
 		mPhyxEngine->cleanup();
-		//if (fShuttingDown)
-  	//	delete mPhyxEngine;
-		
 		mGfxEngine->cleanup();
-		//if (fShuttingDown)
-  	//	delete mGfxEngine;
-		
-		//EventManager::shutdown();
-		
-		
-		
-		mUIEngine->_refit(Intro::getSingletonPtr());
 		
 		mGfxEngine = 0;
 		mPhyxEngine = 0;
@@ -188,14 +132,13 @@ namespace Pixy
 	void Level::keyPressed( const OIS::KeyEvent &e )
 	{
 	
-	  mUIEngine->keyPressed( e );
+	  mUIEngine->keyPressed(e);
 	
 		if (!fGameStarted)
-		  return;	
-		/*mUISystem->injectKeyDown(e.key);
-		mUISystem->injectChar(e.text);*/
+		  return;
+		
 		mGfxEngine->keyPressed(e);
-		mSphere->keyPressed(e);
+		mProbe->keyPressed(e);
 		
 		switch (e.key) {
 		}
@@ -205,7 +148,8 @@ namespace Pixy
 		
 		mSfxEngine->keyReleased(e);
 		mUIEngine->keyReleased( e );
-		// start the game when a key is released
+		
+		// start the game when the ENTER key is released
 		if (!fGameStarted) {
 		  if ( e.key == OIS::KC_RETURN) {
 		    fGameStarted = true;
@@ -214,48 +158,34 @@ namespace Pixy
 		  return;
 		}
 		
+		// show the menu
 		if (e.key == OIS::KC_ESCAPE) {
-		  //return this->requestShutdown();
 		  return GameManager::getSingleton().pushState(Intro::getSingletonPtr());
 		}
 		
-		//mUISystem->injectKeyUp(e.key);
-		mGfxEngine->keyReleased(e);
-		mSphere->keyReleased(e);
+		mProbe->keyReleased(e);
 		switch (e.key) {
 		  case OIS::KC_P:
 		    GameManager::getSingleton().pushState(Pause::getSingletonPtr());
 		    break;
-			case OIS::KC_EQUALS:
-				
-				break;	
-			/*case OIS::KC_G:
-			  mEvtMgr->hook(mEvtMgr->createEvt("SphereDied"));
-			  mSphere->die();
+			case OIS::KC_G:
+			  mEvtMgr->hook(mEvtMgr->createEvt("ProbeDied"));
+			  mProbe->die();
 			  break;
 			case OIS::KC_H:
 			  mEvtMgr->hook(mEvtMgr->createEvt("PlayerWon"));
-			  break;		*/
-
+			  break;
 		}
-		
 	}
 	
 	void Level::mouseMoved( const OIS::MouseEvent &e )
 	{
-		//mUIEngine->mouseMoved(e);
-		//mSphere->mouseMoved(e);
-		mGfxEngine->mouseMoved(e);
 	}
 	
 	void Level::mousePressed( const OIS::MouseEvent &e, OIS::MouseButtonID id ) {
-    //mUIEngine->mousePressed(e, id);
-		mGfxEngine->mousePressed(e, id);
 	}
 	
 	void Level::mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id ) {
-		//mUIEngine->mouseReleased(e, id);
-		mGfxEngine->mouseReleased(e, id);
 	}
 	
 	void Level::pause( void ) {
@@ -280,8 +210,6 @@ namespace Pixy
 		return *getSingletonPtr();
 	}
 	
-	Sphere* Level::getSphere() { return mSphere; };
-
   void Level::updatePreparation(unsigned long lTimeElapsed) {
     if (fGameStarted) {
       mUpdater = &Level::updateGame;
@@ -292,65 +220,51 @@ namespace Pixy
     mGfxEngine->update(lTimeElapsed);
     mPhyxEngine->update(lTimeElapsed);
     mSfxEngine->update(lTimeElapsed);
-    mSphere->update(lTimeElapsed);
-    //mZone->update(lTimeElapsed);
+    mProbe->update(lTimeElapsed);
   };
 
   void Level::updateGameOver(unsigned long lTimeElapsed) {
-		/*for (_itrEngines = mEngines.begin();
-		     _itrEngines != mEngines.end();
-		     ++_itrEngines)
-		    (*_itrEngines)->update(lTimeElapsed);  */
+    // we don't update the Physics engine here since we want
+    // everything to stop
+    
 		mUIEngine->update(lTimeElapsed);
 		mSfxEngine->update(lTimeElapsed);
 		mGfxEngine->update(lTimeElapsed);
-		mSphere->update(lTimeElapsed);
+		mProbe->update(lTimeElapsed);
 		mZone->update(lTimeElapsed);
   };
   
   void Level::updateGame(unsigned long lTimeElapsed) {
-
-		/*for (_itrEngines = mEngines.begin();
-		     _itrEngines != mEngines.end();
-		     ++_itrEngines)
-		    (*_itrEngines)->update(lTimeElapsed);*/
-		
+	
 		mSfxEngine->update(lTimeElapsed);
 		mGfxEngine->update(lTimeElapsed);
 		mUIEngine->update(lTimeElapsed);
 		mPhyxEngine->update(lTimeElapsed);
 
     mZone->update(lTimeElapsed);
-		mSphere->update(lTimeElapsed);
+		mProbe->update(lTimeElapsed);
 		
-		//std::list<Obstacle*>::iterator _itr;
-		for (_itrObstacles = mObstacles.begin(); 
-		     _itrObstacles != mObstacles.end();
+		for (_itrDrones = mDrones.begin(); 
+		     _itrDrones != mDrones.end();
 		     ) {
-		    //mLog->debugStream() << "updating objects";
 		    // release the dead obstacles
-		    if ((*_itrObstacles)->dead()) {
+		    if ((*_itrDrones)->dead()) {
 		      
-		      Obstacle *mObs = *_itrObstacles;
-		      ++_itrObstacles;
-		      releaseObstacle(mObs);
+		      Drone *mDrone = *_itrDrones;
+		      ++_itrDrones;
+		      releaseDrone(mDrone);
 		      continue;
 		    };
 		  // and update the living ones	  
-		  (*_itrObstacles)->update(lTimeElapsed);
-		  ++_itrObstacles;
+		  (*_itrDrones)->update(lTimeElapsed);
+		  ++_itrDrones;
 		}
 		
-		if (fSpawning && mTimer.getMilliseconds() > mSpawnTimer) {
-		  //
-		  spawnObstacle(mZone->getSettings().mRegisteredObstacleClasses[rand() % mZone->getSettings().mRegisteredObstacleClasses.size()]);
-		  /*if (rand() % 3 == 0)
-		    spawnDuette();
-		  else
-		    spawnObstacle(CHASE);*/
-		    
-		  mTimer.reset();
-		}  
+		if (fSpawning && mSpawnTimer.getMilliseconds() > mSpawnRate) {
+		  // spawn a random class of obstacles per the registered ones
+		  spawnDrone(mZone->getSettings().mRegisteredDroneClasses[rand() % mZone->getSettings().mRegisteredDroneClasses.size()]);
+		  mSpawnTimer.reset();
+		}
   };
   
   void Level::updateNothing(unsigned long lTimeElapsed) {
@@ -382,7 +296,6 @@ namespace Pixy
   };
   
 	void Level::update( unsigned long lTimeElapsed ) {
-	  //mLog->debugStream() << " LTE : " << lTimeElapsed;
 		mEvtMgr->update();
 		processEvents();
 		
@@ -390,156 +303,92 @@ namespace Pixy
     
 	}
 	
-  Obstacle* Level::spawnObstacle(OBSTACLE_CLASS inClass) {
-    //mLog->debugStream() << "obstacle is pulled from the pool";
+  Drone* Level::spawnDrone(DRONE_CLASS inClass) {
     
     if (inClass == DUETTE) {
       spawnDuette();
       return NULL;
     }
       
-    Obstacle* mObs = NULL;// = mObstaclePool.front();
+    Drone* mDrone = NULL;
     
-		std::list<Obstacle*>::iterator _itr;
-		for (_itr = mObstaclePool.begin(); 
-		     _itr != mObstaclePool.end();
+    // find a dead drone
+		std::list<Drone*>::iterator _itr;
+		for (_itr = mDronePool.begin(); 
+		     _itr != mDronePool.end();
 		     ++_itr) {
-		    //mLog->debugStream() << "updating objects";
 		    if ((*_itr)->dead()) {
-		      mObs = *_itr;
+		      mDrone = *_itr;
 		      break;
 		    };    
 		}
 		
-		if (!mObs)
+		if (!mDrone)
 		  return NULL;
 		
-		mObs->live();
-		mObs->setClass(inClass);
-	  mObstacles.push_back(mObs);
-	  
-	  /*Event* evt = mEvtMgr->createEvt("ObstacleAlive");
-	  evt->setAny((void*)mObs);
-	  mEvtMgr->hook(evt);*/
-	  
-	  return mObs;  
+		mDrone->live();
+		mDrone->setClass(inClass);
+	  mDrones.push_back(mDrone);
+	  	  
+	  return mDrone;  
   }
   
   void Level::spawnDuette() {
-    Obstacle *mObs[2];
+    // spawn two obstacles of opposing shields, and opposing directions
+    Drone *mDrone[2];
     SHIELD lastShield = (rand() % 2 == 0) ? FIRE : ICE;
     for (int i=0;i<2;++i) {
-      mObs[i] = spawnObstacle(DUMB);
-      mObs[i]->setClass(DUETTE);
-      if (!mObs[i])
+      mDrone[i] = spawnDrone(DUMB);
+      mDrone[i]->setClass(DUETTE);
+      if (!mDrone[i]) {
+        mLog->errorStream() << "could not spawn duettes!! aborting";
         break;
+      }
 
       // set one of them to go left and the other to the right
-      mObs[i]->setDirection(Vector3((i == 0) ? 0.6f : -0.6f,-1,-1));
-      mObs[i]->setShield(lastShield);
+      mLog->debugStream() << "setting duette drone direction";
+      mDrone[i]->setDirection(Vector3((i == 0) ? 0.6f : -0.6f,-1,-1));
+      mDrone[i]->setShield(lastShield);
       
       // swap shields
       lastShield = (lastShield == FIRE) ? ICE : FIRE;
     }
-    mObs[0]->setDuetteTwin(mObs[1]);
-    mObs[1]->setDuetteTwin(mObs[0]);
+    // we need to link them for some score counting, see Probe.cpp
+    mDrone[0]->setDuetteTwin(mDrone[1]);
+    mDrone[1]->setDuetteTwin(mDrone[0]);
   };
   
-  void Level::releaseObstacle(Obstacle* inObs) {
-    //mLog->debugStream() << "obstacle is released into the pool";
-    mObstacles.remove(inObs);
-    //inObs->die();
-    //mObstaclePool.push_back(inObs);
+  void Level::releaseDrone(Drone* inDrone) {
+    mDrones.remove(inDrone);
   }
   
   bool Level::evtPortalEntered(Event* inEvt) {
+    // resume spawning drones
     
-    
-    mTimer.reset();
+    mSpawnTimer.reset();
 	  fSpawning = true;
 		
     return true;
   };
-  
-  bool Level::evtPortalReached(Event* inEvt) {
-    
-    //if (mZone->getSettings().fResetVelocity)
-      
-      //mSphere->setMaxSpeed(mSphere->getMoveSpeed());
-    //mLog->infoStream() << "Portal is reached, reducing velocity";
-    
-		return true;
 
-  };
-  
   bool Level::evtPortalSighted(Event* inEvt) {
-    fSpawning = false;
-    //mSphere->getRigidBody()->clearForces();
-    //mSphere->getRigidBody()->setLinearVelocity(btVector3(0,0,0));
-    //mSphere->setMaxSpeed(0.0f);
-    
-    // clean up obstacles
-		std::list<Obstacle*>::iterator _itr;
-		/*for (_itr = mObstacles.begin(); 
-		     _itr != mObstacles.end();)
-		{
-      Obstacle *mObs = *_itr;
-      ++_itr;
-      mObs->die();
-      releaseObstacle(mObs);
-      continue;
-		}*/
-		
+    fSpawning = false; // stop spawning
+
 		// raise the speed of all obstacles
-		for (_itr = mObstaclePool.begin(); 
-		     _itr != mObstaclePool.end();
+		std::list<Drone*>::iterator _itr;
+		for (_itr = mDronePool.begin(); 
+		     _itr != mDronePool.end();
 		     ++_itr)
-		{ 
 		  (*_itr)->setMaxSpeed((*_itr)->getMaxSpeed() + (*_itr)->getMaxSpeed() * mZone->getSettings().mMaxSpeedStep);
-	  }    
-    
-    mLog->infoStream() << "Portal is in sight";
     
     return true;
   };
   
-  Tunnel* Level::getTunnel() {
-    //return mTunnel;
-    return mZone->currentTunnel();
-  };
-  
-  bool Level::areFxEnabled() { return GameManager::getSingleton().getSettings()["Visual Detail"] != "Low"; }
-  bool Level::areSfxEnabled() { return GameManager::getSingleton().getSettings()["Sound Enabled"] == "Yes"; }
-  
-  void Level::dontUpdateMe(Engine* inEngine) {
-    mEngines.remove(inEngine);
-  };
-  
-  Obstacle* Level::lastObstacleAlive() {
-    
-    return (!mObstacles.empty()) ? mObstacles.back() : NULL;
-  };
-  
-  const std::list<Obstacle*>& Level::getObstacles() {
-    return mObstacles;
-  };
-  
-  bool Level::evtSphereDied(Event* inEvt) {
-    //if (!fGameOver) {
-    //  mTimer.reset();
+  bool Level::evtProbeDied(Event* inEvt) {
     fGameOver = true;
     mUpdater = &Level::updateGameOver;
+
     return true;     
-    //}
-    /*
-    if (mTimer.getMilliseconds() < 1000)
-      return false;
-    else {
-      mLog->debugStream() << "game is over!";
-      
-      //GameManager::getSingleton().pushState(Pause::getSingletonPtr());
-      return true;
-    }*/
   };
   
   bool Level::evtPlayerWon(Event* inEvt) {
@@ -550,100 +399,72 @@ namespace Pixy
     
     return true;
   };
- 
-  bool Level::isGameOver() { return fGameOver; };
   
   // TODO: FIX THIS, completely wrong!!
   void Level::increaseSpawnRate(const int inFactor) {
     // increase the rate of obstacle spawning
-    mSpawnTimer -= mSpawningThreshold / inFactor;
-    if (mSpawnTimer <= mSpawningThreshold)
-      mSpawnTimer = mSpawningThreshold; // shouldn't be faster than this, really  
-  };
-  int Level::currentSpawnRate() const {
-    return mSpawnTimer;
+    mSpawnRate -= mSpawningThreshold / inFactor;
+    if (mSpawnRate <= mSpawningThreshold)
+      mSpawnRate = mSpawningThreshold; // shouldn't be faster than this, really  
   };
   
   bool Level::evtZoneEntered(Event* inEvt) {
-    
     mLog->infoStream() << " ----- entered " << mZone->name() << " zone ----- ";
+
     mSfxEngine->playMusic();
     mZone->engage();
     mUIEngine->_refit(this);
-    //reset();
     
     return true;
   };
+
   void Level::reset() {
     if (!fRunning)
       return;
     
     mLog->infoStream() << "loading a new zone, resetting the game";
-    //mEvtMgr->_clearQueue();
-    
-    
+
     // this class is the one who emits the first "ZoneEntered" event and thus
     // does not have to handle it
     if (!fFirstZone) {
 
       mZone->disengage();
       delete mZone;
-      
-      //mSphere->live();
-      
+            
       // load the new zone
       mZone = new Zone(Intro::getSingleton().getSelectedZone()->filePath());
-      
-      
-      
-      // kill our obstacles
-      mLog->debugStream() << "I have " << mObstacles.size() << " obstacles alive, killng em";
-		  std::list<Obstacle*>::iterator _itr;
-		  for (_itr = mObstaclePool.begin(); 
-		       _itr != mObstaclePool.end();)
-		  {      
-        Obstacle *mObs = *_itr;
-        //++_itr;
-        mObs->die();
-        ++_itr;
-        //releaseObstacle(mObs);
-		  }
+
+      // kill our obstacles and clear the queue
+      //mLog->debugStream() << "I have " << mDrones.size() << " obstacles alive, killng em";
+		  std::list<Drone*>::iterator _itr;
+		  for (_itr = mDronePool.begin(); 
+		       _itr != mDronePool.end();
+		       ++_itr)
+        (*_itr)->die();
 		  
-		  mObstacles.clear();
-    }
+		  mDrones.clear();
+    } else
+      fFirstZone = false;
     
-    nrMaxAliveObstacles = mZone->getSettings().mObstacleCap;
-    mSpawnTimer = mZone->getSettings().mSpawnRate;
-		mSpawningThreshold = mSpawnTimer / 2;
-		
-    mUpdater = &Level::updatePreparation;
+    mSpawnRate = mZone->getSettings().mSpawnRate;
+		mSpawningThreshold = mSpawnRate / 2;
+	  
     fSpawning = false;
     fGameStarted = false;
     fGameOver = false;
+
+    mUpdater = &Level::updatePreparation;
+
+    mEvtMgr->hook(mEvtMgr->createEvt("ZoneEntered"));
     
-    mLog->infoStream() << "engaging zone " << mZone->name();
-    //mZone->engage();
-    
-    //mTimer.reset();
-    
-    Event* mEvt = mEvtMgr->createEvt("ZoneEntered");
-    //mEvt->setProperty("Path", Intro::getSingleton().getSelectedZone());
-    //mEvt->setProperty("FirstZone", "True");
-    mEvtMgr->hook(mEvt);  
-    
-    fFirstZone = false;  
-  };
-  
-  Zone* Level::currentZone() {
-    return mZone;
   };
   
   void Level::_hideEverything() {
-    // hide our tunnel, obstacles, and sphere
-    mSphere->getMasterNode()->setVisible(false);
-	  std::list<Obstacle*>::iterator _itr;
-	  for (_itr = mObstaclePool.begin(); 
-	       _itr != mObstaclePool.end();
+    // hide our tunnel, drones, and probe
+    mProbe->getMasterNode()->setVisible(false);
+	  std::list<Drone*>::iterator _itr;
+	  for (_itr = mDronePool.begin(); 
+	       _itr != mDronePool.end();
 	       ++_itr)
       (*_itr)->getMasterNode()->setVisible(false);
       
@@ -651,10 +472,10 @@ namespace Pixy
   };
   
   void Level::_showEverything() {
-    mSphere->getMasterNode()->setVisible(true);
-	  std::list<Obstacle*>::iterator _itr;
-	  for (_itr = mObstaclePool.begin(); 
-	       _itr != mObstaclePool.end();
+    mProbe->getMasterNode()->setVisible(true);
+	  std::list<Drone*>::iterator _itr;
+	  for (_itr = mDronePool.begin(); 
+	       _itr != mDronePool.end();
 	       ++_itr)
       (*_itr)->getMasterNode()->setVisible(true);
     
@@ -672,6 +493,7 @@ namespace Pixy
     
     mUpdater = &Level::updateNothing;
     
+    // step the gfxengine so it could process the event
     mGfxEngine->update(0);
     
     fScreenshotTaken = false;
@@ -683,7 +505,6 @@ namespace Pixy
     mLog->debugStream() << "gfxengine says it's done taking a screenie";
     
     fScreenshotTaken = true;
-    //mUpdater = &Level::updateGame;
     
     return true;
   };

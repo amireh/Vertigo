@@ -19,61 +19,58 @@
  *
  */
  
-// Obstacle.cpp
-#include "Obstacle.h"
+#include <cstdlib>
+#include "Drone.h"
 #include "Utility.h"
 #include "GfxEngine.h"
 #include "Level.h"
 #include "PhyxEngine.h"
-#include <cstdlib>
 #include "SfxEngine.h"
 #include "Geometry.h"
 
 namespace Pixy
 {
 	
-	bool Obstacle::ourMeshCreated = false;
-	btCollisionShape* Obstacle::ourShape = NULL;
+	bool Drone::ourMeshCreated = false;
+	btCollisionShape* Drone::ourShape = NULL;
 	 
-  Obstacle::Obstacle() {
-	  mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "Obstacle");
-    //mLog->infoStream() << "created";
+  Drone::Drone() {
+	  mLog = new log4cpp::FixedContextCategory(CLIENT_LOG_CATEGORY, "Drone");
+    //mLog->debugStream() << "created";
 
-    mName = "Obstacle";
-	  mType = OBSTACLE;
-	  mMesh = "ObstacleMesh";
-	  mMoveSpeed = 1.2f;
-	  mMaxSpeed = mMoveSpeed * 20;
-	  fDying = false;
+    mName = "Drone";
+	  mMesh = "DroneMesh";
+	  mMoveSpeed = 0;
+	  mMaxSpeed = 0;
 	  fHasFullFx = GameManager::getSingleton().getSettings()["Visual Detail"] == "Full";
     mDuetteTwin = 0;
     
+    // set a default class
 	  mClass = CHASE;
 	  
-	  if (!ourMeshCreated)
-	    Geometry::createSphere("ObstacleMesh", 12, 16, 16);
+	  if (!ourMeshCreated) {
+	    Geometry::createSphere("DroneMesh", 12, 16, 16);
+	    ourMeshCreated = true;
+	  }
+	  
     if (!ourShape)
       ourShape = new btSphereShape(12);
 
 	  int qualifier = rand();
 	  mShield = (qualifier % 2 == 0) ? ICE : FIRE;
 	  
-	  
+	  // prepare our renderable component
 	  GfxEngine::getSingletonPtr()->attachToScene(this);
-	  
-	  //mSceneNode->setPosition(mPosition);
-
     mMasterNode = GfxEngine::getSingletonPtr()->getSM()->createSceneNode();
-    //mSceneNode->getParent()->removeChild(mSceneNode);
     mMasterNode->addChild(mSceneNode);
-    //mMasterNode->setPosition(mPosition);
 	  
-	  // create visual effects; particle systems
+	  // prepare our visual effects; particle systems
 	  mBlaze = 0;
 	  mMortar = 0;
 	  mSteam = 0;
 	  mTide = 0;
-	  //if (fHasFx) {
+
+    {
 	    ParticleUniverse::ParticleSystemManager* fxMgr = 
       ParticleUniverse::ParticleSystemManager::getSingletonPtr();
       
@@ -101,42 +98,31 @@ namespace Pixy
         GfxEngine::getSingletonPtr()->getSM());
       mSteam->prepare();
       
-      //mTide->stop();
-      //mBlaze->stop();
-         
       mMasterNode->attachObject(mBlaze);
       mMasterNode->attachObject(mSteam);
       mMasterNode->attachObject(mMortar);
       mMasterNode->attachObject(mTide);
-      
-    //}
+    }
     
-    // create sound effects
-    //if (fHasSfx) {
-      //if (!fSfxCreated) {
-        OgreOggSound::OgreOggSoundManager *mSoundMgr;
-        mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
-        mSfxExplosion = mSoundMgr->createSound(Ogre::String("Explosion" + stringify(idObject)), "explosion.wav", false, false, true) ;
-        mSfxShatter = mSoundMgr->createSound(Ogre::String("Shatter" + stringify(idObject)), "shatter3.wav", false, false, true) ;
-        //mMasterNode->attachObject(mSfxExplosion);
-        //mMasterNode->attachObject(mSfxShatter);
-        
-        mSfxExplosion->setRolloffFactor(2.f);
-        mSfxExplosion->setReferenceDistance(1000.f);
-        mSfxShatter->setRolloffFactor(2.f);
-        mSfxShatter->setReferenceDistance(1000.f);
-        
-        mLog->debugStream() << "created sound effect";
+    // prepare our sound effects
+    {
+      OgreOggSound::OgreOggSoundManager *mSoundMgr;
+      mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
+      mSfxExplosion = mSoundMgr->createSound(Ogre::String("Explosion" + stringify(idObject)), "explosion.wav", false, false, true) ;
+      mSfxShatter = mSoundMgr->createSound(Ogre::String("Shatter" + stringify(idObject)), "shatter3.wav", false, false, true) ;
       
-        fSfxCreated = true;
-      //}    
+      mSfxExplosion->setRolloffFactor(2.f);
+      mSfxExplosion->setReferenceDistance(1000.f);
+      mSfxShatter->setRolloffFactor(2.f);
+      mSfxShatter->setReferenceDistance(1000.f);
+      
+      //mLog->debugStream() << "created sound effect";
+
       if (mShield == FIRE)
         mSfx = &mSfxExplosion;
       else
         mSfx = &mSfxShatter;
-
-    //}    
-	  //render();
+    }
 	 
 	  btTransform trans = btTransform(btQuaternion(0,0,0,1), btVector3(0,0,0));
 	      
@@ -153,15 +139,12 @@ namespace Pixy
 	  mPhyxBody = new btRigidBody(mPhyxBodyCI);
     mPhyxBody->proceedToTransform(trans);
 	      
-    //mSceneNode->setVisible(false);
-    fSfxCreated = false;
-    
     setClass(CHASE);
     
 	  fDead = true;
   };
 
-	Obstacle::~Obstacle()
+	Drone::~Drone()
 	{
     //mLog->infoStream() << "destructed";
 
@@ -172,7 +155,8 @@ namespace Pixy
 		delete mPhyxBody->getMotionState();
     delete mPhyxBody;
     
-    //if (fHasSfx && fSfxCreated) {
+    // clean up our sound effects
+    {
       OgreOggSound::OgreOggSoundManager *mSoundMgr;
         mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
       
@@ -182,9 +166,10 @@ namespace Pixy
       mSoundMgr = 0;
       mSfxExplosion = 0;
       mSfxShatter = 0;
-    //}
+    }
     
-	  //if (fHasFx) {
+	  // clean up our particle systems
+	  {
       ParticleUniverse::ParticleSystemManager* fxMgr = 
         ParticleUniverse::ParticleSystemManager::getSingletonPtr();
       
@@ -198,7 +183,7 @@ namespace Pixy
       mMortar = 0;
       mTide = 0;
       fxMgr = 0;
-	  //}
+	  }
 	  
 		if (ourShape) {
 		  mLog->debugStream() << "deleted our physics shape";
@@ -212,17 +197,21 @@ namespace Pixy
 		}
 	};
 	
-	Vector3 Obstacle::randomPosition() {
+	Vector3 Drone::randomPosition() {
 	  int qualifier = rand();
+	  
+	  // move to the left or right?
 	  int sign = (qualifier % 2 == 0) ? 1 : -1;
 
-	  float z = mSphere->getPosition().z + 1200;
+    // fixed distance from the probe
+	  float z = mProbe->getPosition().z + 1200;
 
     // clamp to our portal position if it was further
+    // & reduce our speed if we're this close to the portal
 	  float portalZ = Level::getSingleton().getTunnel()->getExitPortal()->getPosition().z;
 	  if (z > portalZ) {
 	    z = portalZ;
-	    mMoveSpeed /= 2; // slow things down when we're this close to the player
+	    mMoveSpeed /= 2;
 	  }
 	  
 	  if (Level::getSingleton().currentZone()->getSettings().fFixedSpawnPosition)
@@ -231,11 +220,10 @@ namespace Pixy
 	    return Vector3( (qualifier % 30) * sign, (qualifier % 70), z); 
 	  
 	}
-	void Obstacle::live() {
-	  //if (!fDead)
-	  //  return;
+	void Drone::live() {
+
 	  
-    mSphere = Level::getSingleton().getSphere();
+    mProbe = Level::getSingleton().getProbe();
 	  fHasFx = Level::getSingleton().areFxEnabled();
 	  fHasFullFx = GameManager::getSingleton().getSettings()["Visual Detail"] == "Full";
 	  fHasSfx = Level::getSingleton().areSfxEnabled();
@@ -271,16 +259,13 @@ namespace Pixy
     mDuetteTwin = 0;
     
     render();
-	  //mSceneNode->setVisible(true);
 	  GfxEngine::getSingletonPtr()->getSM()->getRootSceneNode()->addChild(mMasterNode);
 	  
 	  fDead = false;	  
 	  //mLog->debugStream() << mName << idObject << " is alive";
 	};
 	
-	void Obstacle::die() {
-	  //if (fDead)
-	  //  return;
+	void Drone::die() {
 	  
 	  //mLog->debugStream() << mName << idObject << " is dead";
 	  
@@ -293,85 +278,72 @@ namespace Pixy
 	  
 	  // hide our mesh and particle systems
 	  if (fHasFx || (mBlaze && mTide && mSteam && mMortar)) {
-	    //if (mShield == FIRE) {
-	      mBlaze->stop();
-	      //mBlaze->setVisible(false);
-	    //} else {
-	      mTide->stop();
-	      mMortar->stop();
-	      mSteam->stop();
-	      //mTide->setVisible(false);
-	    //}
+      mBlaze->stop();
+      mTide->stop();
+      mMortar->stop();
+      mSteam->stop();
 	  }
-	  //mSceneNode->setVisible(false);
-	  
-	  
-	  
+	  	  
 	  GfxEngine::getSingletonPtr()->getSM()->getRootSceneNode()->removeChild(mMasterNode);
 	  
-	  mUpdater = &Obstacle::updateNothing;
+	  mUpdater = &Drone::updateNothing;
 	  
 	  fDead = true;
 	};
 	
-	void Obstacle::render() {
+	void Drone::render() {
 	  // switch our materials and visual effects based on our shield
 		if (mShield == FIRE) {
-		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Obstacle/Fire");
+		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Drone/Fire");
 		  
 		  if (fHasFx) {
-		    //if (mTide->isAttached()) {
-		      ///mTide->setVisible(false);
-		      if (fHasFullFx)
-		        mSteam->stop();
-		    //}
+	      if (fHasFullFx)
+	        mSteam->stop();
 
-		    //mBlaze->setVisible(true);
 		    if (fHasFullFx)
 		      mMortar->start();
 		    mBlaze->start();
 		  }
 		} else {
-		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Obstacle/Ice");
+		  static_cast<Ogre::Entity*>(mSceneObject)->setMaterialName("Drone/Ice");
 		  if (fHasFx) {
-		    //if (mBlaze->isAttached()) {
-		      //mBlaze->setVisible(false);
-		      mBlaze->stop();
-		    //}
+	      mBlaze->stop();
 
-        //mTide->setVisible(true);
         mTide->start();
         if (fHasFullFx)
           mSteam->start();
 		  }
 		}
+		
+		mSceneNode->setVisible(true);
+		mMasterNode->setVisible(true);
 	};
 	
-	void Obstacle::copyFrom(const Obstacle& src) {
+	void Drone::copyFrom(const Drone& src) {
 	  
 	};
 	
-	void Obstacle::updateNothing(unsigned long lTimeElapsed) {
+	void Drone::updateNothing(unsigned long lTimeElapsed) {
 	
 	};
 	
-	void Obstacle::update(unsigned long lTimeElapsed) {
+	void Drone::update(unsigned long lTimeElapsed) {
+	  updateCommon(lTimeElapsed);
+	  
 	  (this->*mUpdater)(lTimeElapsed);
 	};
 	
-	void Obstacle::updateCommon(unsigned long lTimeElapsed) {
-    //if (fHasSfx)
-    //  (*mSfx)->update(lTimeElapsed);
+	void Drone::updateCommon(unsigned long lTimeElapsed) {
     	
 	  // have i passed the player? then kill me
-    if (mSphere->getPosition().z > mMasterNode->getPosition().z + 100) {
+    if (mProbe->getPosition().z > mMasterNode->getPosition().z + 100) {
       die();
       return;
     }
     
     // colliding with the player?
-    if (mSceneNode->_getWorldAABB().intersects(mSphere->getSceneNode()->_getWorldAABB())) {
-      Event* evt = EventManager::getSingleton().createEvt("ObstacleCollided");
+    if (mSceneNode->_getWorldAABB().intersects(mProbe->getSceneNode()->_getWorldAABB())) {
+      Event* evt = EventManager::getSingleton().createEvt("DroneCollided");
       evt->setAny((void*)this);
       EventManager::getSingleton().hook(evt);
       evt = 0;
@@ -385,10 +357,9 @@ namespace Pixy
     }	
 	};
 	
-  void Obstacle::updateChase(unsigned long lTimeElapsed) {
-    updateCommon(lTimeElapsed);
+  void Drone::updateChase(unsigned long lTimeElapsed) {
     
-    mDirection = mSphere->getPosition() - mMasterNode->getPosition();
+    mDirection = mProbe->getPosition() - mMasterNode->getPosition();
     mDirection.normalise();
     
 		mPhyxBody->activate(true);
@@ -397,87 +368,43 @@ namespace Pixy
 		  -1, 
 		  mDirection.z * 2
 		  ) * mMoveSpeed * lTimeElapsed);
-		/*
-		mPhyxBody->applyCentralForce(btVector3(
-		  mDirection.x * mMoveSpeed * lTimeElapsed, 
-		  mDirection.y * mMoveSpeed * lTimeElapsed, 
-		  mDirection.z * mMoveSpeed * lTimeElapsed
-		  )
-		);*/
 
 	};
 	
-	void Obstacle::updateDumb(unsigned long lTimeElapsed) {
-	  updateCommon(lTimeElapsed);
+	void Drone::updateDumb(unsigned long lTimeElapsed) {
 	  
+	  //mLog->debugStream() << "I'm dumb and my x direction is : " << mDirection.x << ", y: " << mDirection.y;
 	  mPhyxBody->activate(true);
-	  //mDirection = Vector3(0,-1,-1) * lTimeElapsed * mMoveSpeed;
 	  mPhyxBody->setLinearVelocity(btVector3(
 	    mDirection.x, mDirection.y, mDirection.z * 2
 		) * mMoveSpeed * lTimeElapsed);
-		/*mPhyxBody->applyCentralForce(btVector3(
-		  mDirection.x, mDirection.y, mDirection.z
-		) * lTimeElapsed * mMoveSpeed);*/
 		
 	};
 
-	void Obstacle::updateStationary(unsigned long lTimeElapsed) {
-	  updateCommon(lTimeElapsed);
-	  
+  // not functional, and not used
+	void Drone::updateStationary(unsigned long lTimeElapsed) {
+ 
 	  mPhyxBody->activate(true);
-	  //mDirection = Vector3(mDirection.x * -1,0,0);// * lTimeElapsed * mMoveSpeed;
-	  /*mPhyxBody->setLinearVelocity(btVector3(
-	  mDirection.x, mDirection.y, mDirection.z
-		  ));*/
 		mPhyxBody->applyCentralForce(btVector3(
 		  mDirection.x, mDirection.y, mDirection.z
 		) * lTimeElapsed * mMoveSpeed);
 		
 	};	
-	/*
-	bool Obstacle::evtObstacleCollided(Event* inEvt) {
-	  die();
-	  
-	  return true;
-	};*/
 	
-	void Obstacle::setClass(OBSTACLE_CLASS inClass) {
+	void Drone::setClass(DRONE_CLASS inClass) {
+	  
 	  mClass = inClass;
 	  switch (mClass) {
 	    case CHASE:
-	      mUpdater = &Obstacle::updateChase;
-	      //mMasterNode->setScale(1.0f, 1.0f, 1.0f);
+	      mUpdater = &Drone::updateChase;
 	      break;
 	    case DUMB:
 	    case DUETTE:
-	      mUpdater = &Obstacle::updateDumb;
-	      //mMasterNode->setScale(0.5f, 0.5f, 0.5f);
+	      mUpdater = &Drone::updateDumb;
 	      break;
-	    /*case STATIONARY:
-        mUpdater = &Obstacle::updateStationary;
-        // push me into a whirl
-        if (!fDead)
-          mPhyxBody->applyCentralForce(btVector3((rand() % 2 == 0) ? 700 : -700,0,0));
-        break;*/
 	  };
-	  mDirection = Vector3(0,0,-1); // set some default direction
+	  if (mClass == DUMB)
+      mDirection = Vector3(0,-1,-1); // set some default direction
 	};
-	
-	void Obstacle::setDirection(Vector3 inDirection) {
-	  mDirection = inDirection;
-	};
-  SHIELD Obstacle::shield() { return mShield; }
-	void Obstacle::setShield(const SHIELD inShield) { 
-	  mShield = inShield; 
-	  render();
-	  mSfx = (mShield == FIRE) ? &mSfxExplosion : &mSfxShatter;
-	};
-	
-	void Obstacle::setDuetteTwin(Obstacle* inObs) {
-	  mDuetteTwin = inObs;
-	};
-	
-	Obstacle* Obstacle::getDuetteTwin() { return mDuetteTwin; }; 
-	
-	OBSTACLE_CLASS Obstacle::getClass() { return mClass; };
+
 } // end of namespace

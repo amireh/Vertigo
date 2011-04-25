@@ -31,8 +31,6 @@ namespace Pixy
 	
 	Intro* Intro::mIntro;
 	
-	GAME_STATE Intro::getId() const { return STATE_INTRO; }
-	
 	void Intro::enter( void ) {
 		fRunning = true;
 		
@@ -55,37 +53,20 @@ namespace Pixy
     mSfxEngine->deferredSetup();
     mGfxEngine->deferredSetup();
 
-		//mUIEngine->show();
 		mUIEngine->_refit(this);
 
     mSfxEngine->playMusic();
     
 		mLog->infoStream() << "Initialized successfully.";
-		
 	}
 
 
 	
 	void Intro::exit( void ) {
 	  
-	  
-	  
 		fRunning = false;
 		bool fShuttingDown = GameManager::getSingleton().shuttingDown();
 		
-		//mUIEngine->cleanup();
-		//mUIEngine->hide();
-		/*mSfxEngine->cleanup();
-		mPhyxEngine->cleanup();
-		mGfxEngine->cleanup();*/
-		
-		
-		
-		if (!fShuttingDown);
-		  //mUIEngine->_refit(Level::getSingletonPtr());
-		else {
-		  mSelectedZone = 0;
-		}
 		mLog->infoStream() << "---- Exiting Intro State ----";
 		
     mEvtMgr = 0;
@@ -101,9 +82,7 @@ namespace Pixy
 	
 	void Intro::keyPressed( const OIS::KeyEvent &e )
 	{
-	
 	  mUIEngine->keyPressed( e );
-	
 	}
 	
 	void Intro::keyReleased( const OIS::KeyEvent &e ) {
@@ -111,27 +90,19 @@ namespace Pixy
 		mUIEngine->keyReleased( e );
     mSfxEngine->keyReleased(e);
     
-		//if (e.key == OIS::KC_ESCAPE) 
-  
-		
 	}
 	
 	void Intro::mouseMoved( const OIS::MouseEvent &e )
 	{
-		mUIEngine->mouseMoved(e);
-		//mSphere->mouseMoved(e);
-		//mGfxEngine->mouseMoved(e);
-		
+		mUIEngine->mouseMoved(e);		
 	}
 	
 	void Intro::mousePressed( const OIS::MouseEvent &e, OIS::MouseButtonID id ) {
 	  mUIEngine->mousePressed(e, id);
-		//mGfxEngine->mousePressed(e, id);
 	}
 	
 	void Intro::mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id ) {
 	  mUIEngine->mouseReleased(e, id);
-		//mGfxEngine->mouseReleased(e, id);
 	}
 	
 	void Intro::pause( void ) {
@@ -151,9 +122,7 @@ namespace Pixy
 		return *getSingletonPtr();
 	}
 	
-  
 	void Intro::update( unsigned long lTimeElapsed ) {
-	  //mLog->debugStream() << " LTE : " << lTimeElapsed;
 		mEvtMgr->update();
 		processEvents();
 		
@@ -161,16 +130,4 @@ namespace Pixy
     mSfxEngine->update(lTimeElapsed);
     mGfxEngine->update(lTimeElapsed);
 	}
-
-  
-  bool Intro::areFxEnabled() { return GameManager::getSingleton().getSettings()["Visual Detail"] != "Low"; }
-  bool Intro::areSfxEnabled() { return GameManager::getSingleton().getSettings()["Sound Enabled"] == "Yes"; }
-  void Intro::dontUpdateMe(Engine* inEngine) {
-    mEngines.remove(inEngine);
-  };
-  
-  Zone* Intro::getSelectedZone() { return mSelectedZone; };
-  
-  void Intro::setSelectedZone(Zone* inZone) { mSelectedZone = inZone; };
-  
 } // end of namespace

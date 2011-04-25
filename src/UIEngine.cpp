@@ -169,7 +169,7 @@ namespace Pixy {
     bindToName("ZoneEntered", this, &UIEngine::evtZoneEntered);
     bindToName("GameStarted", this, &UIEngine::evtGameStarted);
     bindToName("PlayerWon", this, &UIEngine::evtPlayerWon);
-    bindToName("SphereDied", this, &UIEngine::evtSphereDied);
+    bindToName("ProbeDied", this, &UIEngine::evtProbeDied);
     
     inZoneScreen = false;
     inMainMenu = false;
@@ -594,18 +594,18 @@ namespace Pixy {
 	void UIEngine::_updateShields() {
 	
     using namespace Ogre;
-    Sphere* mSphere = Level::getSingleton().getSphere();
+    Probe* mProbe = Level::getSingleton().getProbe();
     
     // in the Dodgy game mode, there is only 1 bar and it's centered
     // so we don't need to tune the left positioning of the ice shield
     // nor update them both
     // TODO: why am i updating both shields??
     if (Level::getSingleton().currentZone()->getSettings().mMode == DODGY) {
-      OverlayElement* mElement = (mSphere->shield() == FIRE) 
+      OverlayElement* mElement = (mProbe->getShield() == FIRE) 
         ? mHUDFireShield
         : mHUDIceShield;
       
-      mElement->setWidth(mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
+      mElement->setWidth(mShieldBarWidth * (mProbe->getShieldState() / 1000.0f));
 
     } else {
       for (int i=0; i < 2; ++i) {
@@ -615,7 +615,7 @@ namespace Pixy {
           ? mHUDFireShield
           : mHUDIceShield;
         
-        mElement->setWidth(mShieldBarWidth * (mSphere->getShieldState(tShield) / 1000.0f));
+        mElement->setWidth(mShieldBarWidth * (mProbe->getShieldState(tShield) / 1000.0f));
         
         // adjust the iceshield's left position
         if (mElement->getHorizontalAlignment() == Ogre::GHA_RIGHT)
@@ -624,7 +624,7 @@ namespace Pixy {
     }
     
     // update the player's score
-    mHUDScore->setCaption(stringify(mSphere->score()));
+    mHUDScore->setCaption(stringify(mProbe->getScore()));
 	};
 
   /* ----------------------- *
@@ -919,21 +919,21 @@ namespace Pixy {
   /* ----------------------- *
    * Game Event Handlers
    * ----------------------- */
-	bool UIEngine::evtSphereDied(Event* inEvt) {
+	bool UIEngine::evtProbeDied(Event* inEvt) {
 	  mTextScoreCaption->setCaption("You have LOST");
 
-	  Sphere *mSphere = Level::getSingleton().getSphere();
-	  double accuracy = (mSphere->getNrHits() * 1.0f / (mSphere->getNrMisses() + mSphere->getNrHits()) ) * 100.f;
+	  Probe *mProbe = Level::getSingleton().getProbe();
+	  double accuracy = (mProbe->getNrHits() * 1.0f / (mProbe->getNrMisses() + mProbe->getNrHits()) ) * 100.f;
 	  std::ostringstream msg;
-	  msg << "\n\nScore: " << stringify(mSphere->score())
+	  msg << "\n\nScore: " << stringify(mProbe->getScore())
 	      << "\nAccuracy: " << stringify( accuracy ) << "%"
 	      << "\nTime survived: "
 	      << stringify( Level::getSingleton().currentZone()->getTimeElapsed() )
 	      << " seconds";
 	  mTextScoreStats->setCaption(msg.str());
     
-    mLog->debugStream() << "sphere misses: " << mSphere->getNrMisses()
-    << ", hits " << mSphere->getNrHits()
+    mLog->debugStream() << "sphere misses: " << mProbe->getNrMisses()
+    << ", hits " << mProbe->getNrHits()
     << ", accuracy: " << accuracy;
 
     _showScore();
@@ -947,19 +947,19 @@ namespace Pixy {
 	bool UIEngine::evtPlayerWon(Event* inEvt) {
 	  mTextScoreCaption->setCaption("Congratulations! You have WON");
 	  
-	  Sphere *mSphere = Level::getSingleton().getSphere();
-	  double accuracy = (mSphere->getNrHits() * 1.0f / (mSphere->getNrMisses() + mSphere->getNrHits()) ) * 100.f;
+	  Probe *mProbe = Level::getSingleton().getProbe();
+	  double accuracy = (mProbe->getNrHits() * 1.0f / (mProbe->getNrMisses() + mProbe->getNrHits()) ) * 100.f;
 	  
 	  std::ostringstream msg;
-	  msg << "\n\nScore: " << stringify(mSphere->score())
+	  msg << "\n\nScore: " << stringify(mProbe->getScore())
 	      << "\nAccuracy: " << stringify( accuracy ) << "%"
 	      << "\nTime survived: "
 	      << stringify( Level::getSingleton().currentZone()->getTimeElapsed() )
 	      << " seconds";
 	  mTextScoreStats->setCaption(msg.str());
 	  
-	  mLog->debugStream() << "sphere misses: " << mSphere->getNrMisses()
-    << ", hits " << mSphere->getNrHits()
+	  mLog->debugStream() << "sphere misses: " << mProbe->getNrMisses()
+    << ", hits " << mProbe->getNrHits()
     << ", accuracy: " << accuracy;
   
     _showScore();
@@ -982,17 +982,17 @@ namespace Pixy {
 	  
 	  // if it's dodgy mode, we have to hide one of the shield HUDs since
 	  // the player will be using only one of them
-	  Sphere* mSphere = Level::getSingleton().getSphere();
+	  Probe* mProbe = Level::getSingleton().getProbe();
 
     // we divide by 1000 because the shield's normal starting value is 1000
-    mHUDFireShield->getParent()->setWidth(mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
-    mHUDIceShield->getParent()->setWidth(mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
+    mHUDFireShield->getParent()->setWidth(mShieldBarWidth * (mProbe->getShieldState() / 1000.0f));
+    mHUDIceShield->getParent()->setWidth(mShieldBarWidth * (mProbe->getShieldState() / 1000.0f));
 
     // if it's dodgy mode, we have to hide one of the bars, and center the other
     // keep in mind that each bar has 2 elements: the background and the foreground
 	  if (Level::getSingleton().currentZone()->getSettings().mMode == DODGY) {
 	    
-	    if (mSphere->shield() == FIRE) {
+	    if (mProbe->getShield() == FIRE) {
 	      // hide the ice shield HUD
 	      mHUDIceShield->getParent()->hide();
 	      mHUDIceShield->hide();
@@ -1029,8 +1029,8 @@ namespace Pixy {
 	    mHUDFireShield->getParent()->setLeft(0);
 	    mHUDFireShield->setLeft(0);
 	    
-	    mHUDIceShield->getParent()->setLeft(-1 * mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
-	    mHUDIceShield->setLeft(-1 * mShieldBarWidth * (mSphere->getShieldState() / 1000.0f));
+	    mHUDIceShield->getParent()->setLeft(-1 * mShieldBarWidth * (mProbe->getShieldState() / 1000.0f));
+	    mHUDIceShield->setLeft(-1 * mShieldBarWidth * (mProbe->getShieldState() / 1000.0f));
 	    
 	    // and show them
 	    mHUDFireShield->getParent()->show();

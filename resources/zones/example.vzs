@@ -27,12 +27,13 @@
     
     <!-- Name of the SkyBox material to use for this zone -->
     <!-- Skyboxes are defined under media/materials/scripts/Sky.material -->
+    <!-- DEPRECATED -->
     <Property Name="Skybox" Value="Vertigo/Sky/BLU" />
     
     <!-- 
       Object Movement Settings
       
-      Obstacles move at a linear speed to keep things consistent except for Spinners.
+      Drones move at a linear speed to keep things consistent except for Spinners.
       
       The Sphere, however, starts out with MoveSpeed and accelerates until MaxSpeed
       is reached. Everytime the player performs a proper collision, this cap is
@@ -55,8 +56,8 @@
     <Property Name="MaxSpeedStep" Value="0.25" />
   </Settings>
 
-  <!-- Obstacle Settings -->
-  <Obstacles>
+  <!-- Drone Settings -->
+  <Drones>
     <!-- 1 obstacle is spawned every SpawnRate milliseconds -->
     <Property Name="SpawnRate" Value="500" />
     
@@ -70,8 +71,9 @@
     <!--
       There can be no more obstacles at one time than the number below 
       Accepted range: [3-8]
+      !!DEPRECATED!!
     --> 
-    <Property Name="ObstacleCap" Value="4" />
+    <Property Name="DroneCap" Value="4" />
     
     <!-- 
       There are 4 obstacle classes:
@@ -93,7 +95,7 @@
     -->
     <Class Name="Chase" Dominant="Yes" />
     <Class Name="Duette" />
-  </Obstacles>
+  </Drones>
 
   <Geometry>
     <Tunnel>

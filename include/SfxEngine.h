@@ -24,7 +24,7 @@
 
 #include "Pixy.h"
 #include "Engine.h"
-#include "Sphere.h"
+#include "Probe.h"
 #include "OgreOggSound.h"
 #include <map>
 
@@ -73,7 +73,7 @@ namespace Pixy
     void updateIntro(unsigned long lTimeElapsed);
     void updateGame(unsigned long lTimeElapsed);
     
-    bool evtObstacleCollided(Event* inEvt);
+    bool evtDroneCollided(Event* inEvt);
     bool evtPortalEntered(Event* inEvt);
     bool evtSettingsChanged(Event* inEvt);
 
@@ -82,7 +82,7 @@ namespace Pixy
 		unsigned int idSound;
 		
 		float mVolume;
-		Sphere* mSphere;
+		Probe* mProbe;
 		Entity* mListener;
 		OgreOggSound::OgreOggSoundManager *mSoundMgr;
     

@@ -40,7 +40,6 @@ namespace Pixy {
     mSettings.fResetVelocity = false;
     mSettings.mSpawnRate = 900;
     mSettings.fFixedSpawnRate = false;
-    mSettings.mObstacleCap = 4;
     mSettings.mOMoveSpeed = 2;
     mSettings.mOMaxSpeedFactor = 3;
     mSettings.mOMaxSpeedStep = 0.25f;
@@ -53,10 +52,9 @@ namespace Pixy {
     mLevel = Level::getSingletonPtr();
     
     // if the sphere isn't created yet, we'll check again in engage()
-    mSphere = mLevel->getSphere();
+    mProbe = mLevel->getProbe();
     
 		bindToName("PortalReached", this, &Zone::evtPortalReached);
-		//bindToName("PortalSighted", this, &Zone::evtPortalSighted);
 		
     mTunnels.clear();
     mTunnel = 0;
@@ -130,25 +128,25 @@ namespace Pixy {
     }
     
     // parse obstacle settings
-    TiXmlElement* xObstacleSetting = mHandler.FirstChild("Obstacles").FirstChild().ToElement();
-    while (xObstacleSetting) {
-      if (std::string(xObstacleSetting->Value()) == "Class")
-        _registerObstacleClass(xObstacleSetting->Attribute("Name"), xObstacleSetting->Attribute("Dominant") != NULL);
-      else if (std::string(xObstacleSetting->Value()) == "Property")
-        _parseObstacleSetting(xObstacleSetting->Attribute("Name"), xObstacleSetting->Attribute("Value"));
+    TiXmlElement* xDroneSetting = mHandler.FirstChild("Drones").FirstChild().ToElement();
+    while (xDroneSetting) {
+      if (std::string(xDroneSetting->Value()) == "Class")
+        _registerDroneClass(xDroneSetting->Attribute("Name"), xDroneSetting->Attribute("Dominant") != NULL);
+      else if (std::string(xDroneSetting->Value()) == "Property")
+        _parseDroneSetting(xDroneSetting->Attribute("Name"), xDroneSetting->Attribute("Value"));
       else
         mLog->errorStream() << "invalid obstacle setting!! " << 
-          "<" << xObstacleSetting->Value() <<
-          " " << xObstacleSetting->FirstAttribute()->Name() <<
-          "=\"" << xObstacleSetting->FirstAttribute()->Value() << "\">";
+          "<" << xDroneSetting->Value() <<
+          " " << xDroneSetting->FirstAttribute()->Name() <<
+          "=\"" << xDroneSetting->FirstAttribute()->Value() << "\">";
       
-      xObstacleSetting = xObstacleSetting->NextSiblingElement();
+      xDroneSetting = xDroneSetting->NextSiblingElement();
     }
     
     // if there were no obstacle classes registered, register a default dumb one
-    if (mSettings.mRegisteredObstacleClasses.empty()) {
-      mSettings.mRegisteredObstacleClasses.push_back(DUMB);
-      mSettings.mDominantObstacleClass = DUMB;
+    if (mSettings.mRegisteredDroneClasses.empty()) {
+      mSettings.mRegisteredDroneClasses.push_back(DUMB);
+      mSettings.mDominantDroneClass = DUMB;
     }
      
     // loop through the tunnel definitions
@@ -202,14 +200,13 @@ namespace Pixy {
     msg << "MaxSpeedStep: " << mSettings.mMaxSpeedStep << "\n";
     msg << "Reset velocity? " << (mSettings.fResetVelocity ? "Yes" : "No") << "\n";
     
-    msg << "-- Obstacle Settings --\n";
+    msg << "-- Drone Settings --\n";
     msg << "Spawn Rate: " << mSettings.mSpawnRate << "\n";
     msg << "Fixed spawn rate?: " << (mSettings.fFixedSpawnRate ? "Yes" : "No") << "\n";
-    msg << "Obstacle cap: " << mSettings.mObstacleCap << "\n";
     msg << "Registered obstacle classes:\n";
-    for (int i =0; i <mSettings.mRegisteredObstacleClasses.size(); ++i) {
+    for (int i =0; i <mSettings.mRegisteredDroneClasses.size(); ++i) {
       std::string _oc;
-      switch (mSettings.mRegisteredObstacleClasses[i]) {
+      switch (mSettings.mRegisteredDroneClasses[i]) {
         case CHASE:
           _oc = "Chase";
           break;
@@ -223,8 +220,8 @@ namespace Pixy {
           _oc = "Duette";
           break;
       }
-      msg << "\t[" << i+1 << "] Obstacle class: " << _oc;
-      if (mSettings.mDominantObstacleClass == mSettings.mRegisteredObstacleClasses[i])
+      msg << "\t[" << i+1 << "] Drone class: " << _oc;
+      if (mSettings.mDominantDroneClass == mSettings.mRegisteredDroneClasses[i])
         msg << " and is dominant";
       
       msg << "\n";
@@ -274,7 +271,7 @@ namespace Pixy {
     }
   };
   
-  void Zone::_parseObstacleSetting(const char* inCName, const char* inCValue) {
+  void Zone::_parseDroneSetting(const char* inCName, const char* inCValue) {
     std::string inName(inCName);
     std::string inValue(inCValue);
     
@@ -282,8 +279,6 @@ namespace Pixy {
       mSettings.mSpawnRate = convertTo<int>(inValue);
     else if (inName == "FixedSpawnRate")
       mSettings.fFixedSpawnRate = (inValue == "Yes") ? true : false;
-    else if (inName == "ObstacleCap")
-      mSettings.mObstacleCap = convertTo<int>(inValue);
     else if (inName == "MoveSpeed")
       mSettings.mOMoveSpeed = convertTo<float>(inValue);
     else if (inName == "MaxSpeedFactor")
@@ -294,32 +289,32 @@ namespace Pixy {
       mSettings.fFixedSpawnPosition = (inValue == "Yes") ? true : false;
   };
   
-  void Zone::_registerObstacleClass(const char* inCName, bool fDominant) {
+  void Zone::_registerDroneClass(const char* inCName, bool fDominant) {
     std::string inName(inCName);
     
     if (inName == "Dumb") {
-      mSettings.mRegisteredObstacleClasses.push_back(DUMB);
+      mSettings.mRegisteredDroneClasses.push_back(DUMB);
       if (fDominant)
-        mSettings.mDominantObstacleClass = DUMB;
+        mSettings.mDominantDroneClass = DUMB;
     } else if (inName == "Chase") {
-      mSettings.mRegisteredObstacleClasses.push_back(CHASE);
+      mSettings.mRegisteredDroneClasses.push_back(CHASE);
       if (fDominant)
-        mSettings.mDominantObstacleClass = CHASE;    
+        mSettings.mDominantDroneClass = CHASE;    
     } else if (inName == "Duette") {
-      mSettings.mRegisteredObstacleClasses.push_back(DUETTE);
+      mSettings.mRegisteredDroneClasses.push_back(DUETTE);
       if (fDominant)
-        mSettings.mDominantObstacleClass = DUETTE;
+        mSettings.mDominantDroneClass = DUETTE;
     } else if (inName == "Spinner") {
-      mSettings.mRegisteredObstacleClasses.push_back(SPINNER);
+      mSettings.mRegisteredDroneClasses.push_back(SPINNER);
       if (fDominant)
-        mSettings.mDominantObstacleClass = SPINNER;
+        mSettings.mDominantDroneClass = SPINNER;
     }
     
     // if there was a dominant class, add more instances of it to our queue thus
     // increasing the chance of it spawning
     if (fDominant)
       for (int i=0; i<2;++i)
-        mSettings.mRegisteredObstacleClasses.push_back(mSettings.mDominantObstacleClass);
+        mSettings.mRegisteredDroneClasses.push_back(mSettings.mDominantDroneClass);
   }
   
   bool Zone::load() {
@@ -350,8 +345,8 @@ namespace Pixy {
     //if (mTunnel)
     //  return;
       
-    //if (!mSphere)
-    mSphere = mLevel->getSphere();
+    //if (!mProbe)
+    mProbe = mLevel->getProbe();
     
     mLog->debugStream() << " I have " << mTunnels.size() << " tunnels";
     // show our first tunnel
@@ -420,8 +415,8 @@ namespace Pixy {
 	  // relocate the player
 	  Vector3 pos = mTunnel->getNode()->getPosition();
 	  btTransform trans = btTransform(btQuaternion(0,0,0,1),btVector3(pos.x,pos.y+35,pos.z));
-	  mSphere->getRigidBody()->proceedToTransform(trans);
-	  mSphere->getMasterNode()->setPosition(pos);
+	  mProbe->getRigidBody()->proceedToTransform(trans);
+	  mProbe->getMasterNode()->setPosition(pos);
 	  mLog->debugStream() << "relocating sphere to " << pos.x << ", " << pos.y << ", " << pos.z;
 	  
 	  // and show the shizzle

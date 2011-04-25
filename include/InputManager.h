@@ -27,7 +27,7 @@
 #endif
 
 // OIS
-#if OGRE_PLATFORM == OGRE_PLATFORM_WINDOWS || defined(_WIN32)
+#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32 || defined(_WIN32)
 #include <OIS.h>
 #include <OISMouse.h>
 #include <OISKeyboard.h>

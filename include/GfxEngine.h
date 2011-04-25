@@ -22,20 +22,13 @@
 #ifndef H_GfxEngine_H
 #define H_GfxEngine_H
 
+#include <Ogre.h>
+
 #include "Engine.h"
 #include "EventListener.h"
 #include "Entity.h"
-#include <Ogre.h>
-//#include <OgreSample.h>
-//#include <OgreSdkTrays.h>
-/*#include <OgreOverlay.h>
-#include <OgreOverlayElement.h>
-#include <OgreOverlayManager.h>
-#include <OgreParticle.h>*/
-//#include "UIEngine.h"
 #include "InputManager.h"
-#include "SdkCameraMan.h"
-#include "Sphere.h"
+#include "Probe.h"
 #include "ParticleUniverseSystemManager.h"
 #include <map>
 #include <vector>
@@ -44,7 +37,6 @@ using Ogre::Vector3;
 using Ogre::Real;
 using Ogre::SceneNode;
 using Ogre::String;
-using OgreBites::SdkCameraMan;
 using std::map;
 using std::pair;
 using std::vector;
@@ -57,6 +49,7 @@ namespace Pixy {
     CAMERA_STICKY,
     CAMERA_LOLLY
   } CAMERA_MODE;
+  
 	/*! \class GfxEngine
 	 *	\brief
 	 *	Handles all graphics related features of the game, acts as the immediate
@@ -68,7 +61,6 @@ namespace Pixy {
 	public:
 		virtual ~GfxEngine();
 		static GfxEngine* getSingletonPtr();
-
 		
 		virtual bool setup();
 		virtual bool deferredSetup();
@@ -78,68 +70,67 @@ namespace Pixy {
 		void setCamera(const Ogre::String& inCameraName);
 		void setCameraMode(CAMERA_MODE inMode);
 		
-		//! Attaches a Pixy::Entity to an SceneNode and renders it
-		/*!
-		 * Called upon by CombatManager::createUnit();
-		 * Determines the appropriate empty SceneNode in which to render
-		 * the given inEntity. Moreover, "attaches" Pixy::Entity
-		 * to the given Ogre::Entity for later retrieval, thus,
-		 * linking the GameObject with SceneObject.
+		/*! \brief
+		 *  Creates a SceneNode and an Ogre::Entity using the mesh specified by
+		 *  Pixy::Entity's mMesh. If successful, the handles will be assigned to
+		 *  the Entity.
+		 *
+		 *  \note
+		 *  Called internally upon Entity::live();
 		 */
 		bool attachToScene(Entity* inEntity);
 		
-		//! Detaches a Pixy::Entity from an SceneNode and removes it from Scene
-		/*!
-		 * Called upon by CombatManager::destroyUnit();
-		 * Detaches the Ogre::Entity from SceneNode;
-		 * stops rendering it. Also detaches Pixy::Entity
-		 * from the Ogre::Entity.
+		/*! \brief
+		 *  Detaches a Pixy::Entity from a SceneNode and removes it from the scene.
+		 *
+		 *  \note
+		 *  This is called internally by all Entities upon destruction.
 		 */
 		void detachFromScene(Entity* inEntity);
+	
+	  inline Ogre::Camera* getCamera() {
+		  return mCamera;
+	  };
+	
+	  inline Ogre::Root* getRoot() {
+		  return mRoot;
+	  };
+	
+	  inline Ogre::SceneManager* getSM() {
+		  return mSceneMgr;
+	  };
+	
+	  inline Ogre::Viewport* getViewport() {
+		  return mViewport;
+	  };
 		
-		//! Moves a SceneNode to a destination using a Waypoint
-		/*!
-		 * Moves a matching SceneNode to inDestination.
-		 * @return true the node is still moving
-		 * @return false the node is done moving
+		/*! \brief
+		 *  Bindings for switching camera mode and taking screenies.
 		 */
-		//bool moveUnit(Unit* inUnit, int inDestination);
-		
-		//SdkCameraMan* getCameraMan();
-		Ogre::Camera* getCamera();
-		Ogre::Root* getRoot();
-		Ogre::SceneManager* getSM();
-		Ogre::Viewport* getViewport();
-		
-
-		
-		
-		void mouseMoved( const OIS::MouseEvent &e );
-		void mousePressed( const OIS::MouseEvent &e, OIS::MouseButtonID id );
-		void mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id );
-		
 		void keyPressed( const OIS::KeyEvent &e );
-		void keyReleased( const OIS::KeyEvent &e );
 		
-		
+		/*! \brief
+		 *  Activates the RadialBlur compositor on the current viewport for duration
+		 *  seconds.
+		 *
+		 *  \note
+		 *  Called by Probe on a miss collision.
+		 */
 		void applyMotionBlur(float duration);
-    
-    void playEffect(std::string inEffect, Entity* inEntity);
-    void playEffect(std::string inEffect, const Vector3& pos);
-        
-    /*void updateUIShields();
-    
-    void hideUI();
-    void showUI();*/
     
 	protected:
 	  void (GfxEngine::*mUpdate)(unsigned long);
 	  void (GfxEngine::*mUpdateCamera)();
 	  
-	  void updateIntro(unsigned long lTimeElapsed);
+	  /*! \brief
+	   *  Updates the camera according to its mode, and activates compositor
+	   *  effects if requested.
+	   */
 	  void updateGame(unsigned long lTimeElapsed);
+	  /*! \brief
+	   *  Switched to when in Intro state or the menu is shown.
+	   */
 	  void updateNothing(unsigned long lTimeElapsed);
-	  
 	  
 	  void updateCameraChase();
 	  void updateCameraFixed();
@@ -151,34 +142,31 @@ namespace Pixy {
 	  bool evtZoneEntered(Event* inEvt);
 	  bool evtGameStarted(Event* inEvt);
 	  bool evtPlayerWon(Event* inEvt);
-	  bool evtSphereDied(Event* inEvt);
-	  bool evtObstacleAlive(Event* inEvt);
-	  bool evtObstacleCollided(Event* inEvt);
+	  bool evtProbeDied(Event* inEvt);
+	  bool evtDroneCollided(Event* inEvt);
 	  bool evtPortalEntered(Event* inEvt);
-	  bool evtPortalReached(Event* inEvt);
-	  bool evtPortalSighted(Event* inEvt);
 	  bool evtTakingScreenshot(Event* inEvt);
     
-    void loadResources();
-    	  
 		//! Sets up OGRE SceneManager
 		void setupSceneManager();
 		
 		//! Sets up OGRE Viewport to which our Camera will be attached
-		void setupViewports();
+		void setupViewport();
 		
 		//! Sets up OGRE Camera, attaches it to Viewport, and fixes it position
 		void setupCamera();
 		
 		//! Sets up OGRE Terrain, using terrain.cfg file for config
-		void setupTerrain();
+		void setupSky();
 		
 		//! Sets up OGRE Lights, attaches 2 spotlights, each for a Puppet respectively
 		void setupLights();
 		
-		void setupNodes();
 		void setupParticles();
-	  
+
+    void playEffect(std::string inEffect, Entity* inEntity);
+    void playEffect(std::string inEffect, const Vector3& pos);
+    	  
 	  bool fPortalReached;
 	  bool fPortalSighted;
 	  
@@ -188,23 +176,19 @@ namespace Pixy {
 		Ogre::Viewport       *mViewport;
 		Ogre::RenderWindow	 *mRenderWindow;
 		Ogre::OverlayManager *mOverlayMgr;
-		//Ogre::Overlay        *mUISheet, *mUISheetLoss, *mUISheetWin, *mUISheetPrepare;
 		EventManager		 *mEvtMgr;
-		SdkCameraMan		 *mCameraMan;
-		//DotSceneLoader		 *mSceneLoader;
 		
 		Ogre::Entity* sphereEntity;
 		Ogre::SceneNode* sphereNode;
 		Ogre::Light *mSpotLight;
-		//OgreBites::SdkTrayManager*	        mTrayMgr;
 		
 		//! used for setting Objects' direction in Scene
-		Vector3 mDirection, mSpherePos;
+		Vector3 mDirection, mProbePos;
 
 		//! regulates the movement speed by (mWalkSpeed * mTimeElapsed) keeping it consistent
 		Real mMoveSpeed;
 		
-		Pixy::Sphere* mSphere;
+		Pixy::Probe* mProbe;
 		
 		/*!
 		 * \brief Creates an Ogre::Entity and renders it in an

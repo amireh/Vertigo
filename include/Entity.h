@@ -36,136 +36,168 @@ using Ogre::Vector3;
 using Ogre::Real;
 namespace Pixy
 {
-	
-  enum collisiontypes {
-    COL_NOTHING = 0, // collide with nothing (for our terrain)
-    COL_SPHERE = BIT(0), // collide with the sphere
-    COL_OBSTACLES = BIT(1), // collide with obstacles
-    COL_WALLS = BIT(2) // collide with walls
-  };
   
   typedef enum {
     FIRE,
     ICE
   } SHIELD;
-
-  typedef enum {
-    SPHERE,
-    OBSTACLE
-  } ENTITY_TYPE;
 	
 	/*! \class Entity Entity.h "src/Entity.h"
 	 *
-	 * \brief Defines base attributes and actions for GameObjects.
-	 *
-	 * \note Please note that for the creation of GameObjects 
-	 * refer to their respective Factories, do NOT use this
-	 * directly.
+	 * \brief 
+	 *  Defines base attributes and actions for Entities.
 	 */
-	class Entity/* : public btCollisionObject*/
+	class Entity
 	{
 		
 	public:
+	
 		/*! Default ctor.
-		 *!  Initializes all attributes with default settings.
+		 *  Initializes all attributes with default settings and allocates
+		 *  any resources that this entity will need.
+		 *
+		 *  \remark
+		 *  Some resources such as particle systems and sound effects will be
+		 *  allocated and initialised here. However, their state remains idle
+		 *  until the Entity becomes alive with live().
 		 */
 		Entity();
 		Entity& operator=(const Entity& rhs);
 		Entity(const Entity& src);
+		
+		/*! \brief
+		 *  Cleans up any allocated resources.
+		 */
 		virtual ~Entity();
 
-		virtual void live();
-		virtual void die();
-
-		//! Sets the id of the entity.
-		/*!
-		 * @param inIdEntity Entity id
+    /*! \brief
+     *  Fires up the Entity's physical and graphical components and changes
+     *  state to alive.
+     */
+		virtual void live()=0;
+		/*! \brief
+		 *  Possibly unplugs the Entity's physical and renderable components.
+		 *  Behaviour can differ between children.
 		 */
-		void setObjectId(const int inIdEntity);
+		virtual void die()=0;
 		
-		//! Sets entity in-game name.
-		/*!
+		/*! \brief
+		 *  Returns the state of this Entity.
+		 */
+		inline bool dead() const {
+		  return fDead;
+		};
+				
+		virtual void update(unsigned long lTimeElapsed)=0;
+		
+		/*! \brief
+		 *  Defines how the Entity reacts when it collides with another.
+		 */
+		virtual void collide(Entity* obj);
+		
+		/*! \brief
+		 *  Entity names are not unique and are no identifiers, mainly used for debugging.
+     *
 		 * @param inName Entity name to set.
 		 */
-		void setName(const std::string inName);
+		inline void setName(const std::string inName) {
+		  mName = inName;
+		};
 				
-		//! Sets entity health points.
-		/*!
-		 * @param inHealth Entity health stat to set.
-		 */
-		void setHP(const int inHealth);
-
-		
 		/*!
 		 * @return Entity's id.
 		 */
-		int getObjectId() const;
+		inline int getObjectId() const {
+		  return idObject;
+		};
 		
-		
-		virtual void update(unsigned long lTimeElapsed)=0;
-		
-		/*!
+		/*! \brief
+		 *  Entity names are not unique and are no identifiers, mainly used for debugging.
+		 *
 		 * @return Entity's in-game name.
 		 */
-		std::string& getName();
+		inline std::string& getName() {
+		  return mName;
+		};
 		
-		
-		/*!
-		 * @return Entity's current health points.
+		/*! \brief
+		 *  An Entity's master node is the parent of all the renderable parts:
+		 *  the mesh, particle systems, and anything else.
 		 */
-		int getHP() const;
+		inline Ogre::SceneNode* getMasterNode() {
+		  return mMasterNode;
+		};
 		
-		bool dead();
+		/*! \brief
+		 *  The Entity's SceneNode is the node that contains the Ogre::Entity and its mesh.
+		 */
+		inline void _attachSceneNode(Ogre::SceneNode* inNode) {
+		  mSceneNode = inNode;
+		};
+		inline Ogre::SceneNode* getSceneNode() {
+		  return mSceneNode;
+		};
 		
-				
-		//! Prints out information about this Entity to Log ofstream; used for debugging
-		virtual void printInfo();
+		/*! \brief
+		 *  Every Pixy::Entity has an Ogre::Entity that defines its mesh. 
+		 */
+		inline void _attachSceneObject(Ogre::MovableObject* inObject) {
+		  mSceneObject = inObject;
+		};
+		inline Ogre::MovableObject* getSceneObject() {
+		  return mSceneObject;
+		};
 		
-		virtual Ogre::SceneNode* getMasterNode();
+		/*! \brief
+		 *  Returns the name of the mesh resource used by this Entity.
+		 */
+		inline std::string& getMesh() {
+		  return mMesh;
+		};
 		
-		virtual void attachSceneNode(Ogre::SceneNode* inNode);
-		virtual Ogre::SceneNode* getSceneNode();
+		/*! \brief
+	   *  Called by Level when spawning Duettes to oppose their directions.
+	   */
+	  inline void setDirection(Vector3 inDirection) {
+	    mLog->debugStream() << "setting direction to " << inDirection.x << ", " << inDirection.y << ", " << inDirection.z;
+	    mDirection = inDirection;
+	  };
+	  
+		inline Vector3& getDirection() {
+		  return mDirection;
+		};
+		inline void setMoveSpeed(const Real inSpeed) {
+		  mMoveSpeed = inSpeed;
+		};
+		inline void setMaxSpeed(const float inSpeed) {
+		  mMaxSpeed = inSpeed;
+		};
+		inline Real getMoveSpeed() const {
+		  return mMoveSpeed;
+		};
+		inline float getMaxSpeed() const {
+		  return mMaxSpeed;
+		};
 		
-		virtual void attachSceneObject(Ogre::MovableObject* inObject);
-		virtual Ogre::MovableObject* getSceneObject();
-		
-		virtual void setMesh(std::string inMesh);
-		virtual std::string getMesh();
-		
-		Vector3& getDirection();
-		Real getMoveSpeed() const;
-		void setMoveSpeed(const Real inSpeed);
-		void setMaxSpeed(const float inSpeed);
-		float getMaxSpeed() const;
-		
-		//virtual btCollisionObject* getObject();
-		virtual btRigidBody* getRigidBody();
-		virtual MotionState* getMotionState();
-		virtual btCollisionShape* getCollisionShape();
-		
-		ENTITY_TYPE type();
-		
-		virtual void collide(Entity* obj);
+		inline btRigidBody* getRigidBody() {
+		  return mPhyxBody;
+		};
 		
 	protected:
 
     static long idCounter;
+    
 		int idObject;                       //! Unique entity id
 		std::string mName;					//! Entity's in-game name
-		int mHP;                            //! Entity's health stat
 		bool fDead;
 		
 		bool fHasSfx; // toggler for sound effects
 		bool fHasFx; // toggler for visual effects
 		
-		ENTITY_TYPE mType;
 		std::string mMesh;					//! Entity's in-game name		
 		Ogre::SceneNode         *mSceneNode, *mMasterNode;
 		Ogre::MovableObject     *mSceneObject;
-    Ogre::ParticleSystem* mFireTrail;
-    Ogre::ParticleSystem* mIceSteam;
 		btCollisionShape		*mPhyxShape;
-		//btCollisionObject   *mObject;
 		MotionState				*mPhyxMS;
 		btRigidBody				*mPhyxBody;
 		
@@ -177,9 +209,6 @@ namespace Pixy
 		//! helper method for copy/assignment methods
 		//! copies all data from src and sets it into this entity
 		virtual void copyFrom(const Entity& src);
-
-    static int sphereCollidesWith;
-    static int obstacleCollidesWith;
 		
 		log4cpp::Category* mLog;
 	}; // end of Entity class

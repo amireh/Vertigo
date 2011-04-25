@@ -33,8 +33,8 @@
 #include "PhyxEngine.h"
 #include "SfxEngine.h"
 
-#include "Sphere.h"
-#include "Obstacle.h"
+#include "Probe.h"
+#include "Drone.h"
 #include "Zone.h"
 
 using std::list;
@@ -66,26 +66,31 @@ namespace Pixy
 		static Level* getSingletonPtr( void );
 		static Level& getSingleton();
 		
-		virtual GAME_STATE getId() const;
+		inline GAME_STATE getId() const {
+		  return STATE_GAME;
+		};
 
-		Sphere* getSphere();
-    Tunnel* getTunnel();
-    Zone* currentZone();
+		inline Probe* getProbe() const { 
+		  return mProbe;
+		};
+    inline Tunnel* getTunnel() const {
+      return mZone->currentTunnel();
+    };
+    inline Zone* currentZone() const {
+      return mZone;
+    };
     
-    const std::list<Obstacle*>& getObstacles();
-    
-    virtual bool areFxEnabled();
-    virtual bool areSfxEnabled();
-    bool isGameOver();
+    inline bool isGameOver() {
+      return fGameOver;
+    };
     
     // spawn rate will be increased by (mSpawnThreshold / inFactor) milliseconds
     // NOTE: called internally by Zone each time the player enters a portal
     void increaseSpawnRate(const int inFactor);
-    int currentSpawnRate() const;
-    
-    void dontUpdateMe(Engine* inEngine);
-    Obstacle* lastObstacleAlive();
-    
+    inline int currentSpawnRate() const {
+      return mSpawnRate;
+    };
+        
     void reset();
     
     void _hideEverything();
@@ -101,9 +106,8 @@ namespace Pixy
     
     bool evtZoneEntered(Event* inEvt);
     bool evtPlayerWon(Event* inEvt);
-    bool evtSphereDied(Event* inEvt);
+    bool evtProbeDied(Event* inEvt);
 		bool evtPortalEntered(Event* inEvt);
-		bool evtPortalReached(Event* inEvt);
 		bool evtPortalSighted(Event* inEvt);
 		bool evtTakingScreenshot(Event* inEvt);
 		bool evtScreenshotTaken(Event* inEvt);
@@ -114,44 +118,39 @@ namespace Pixy
 		std::list<Engine*> mEngines;
 		bool fScreenshotTaken;
 		
-		std::list<Obstacle*>::iterator _itrObstacles;
+		std::list<Drone*>::iterator _itrDrones;
 		std::list<Engine*>::iterator _itrEngines;
 	private:
 		Level( void );
 		Level( const Level& ) { }
 		Level & operator = ( const Level& );
 		
-		EventManager *mEvtMgr;
-		GfxEngine		*mGfxEngine;
-		UIEngine		*mUIEngine;
+		EventManager  *mEvtMgr;
+		GfxEngine		  *mGfxEngine;
+		UIEngine		  *mUIEngine;
 		PhyxEngine		*mPhyxEngine;
-		SfxEngine *mSfxEngine;
-		//CEGUI::System	*mUISystem;
-		Sphere			  *mSphere;
-		std::list<Obstacle*> mObstacles;
-		std::list<Obstacle*> mObstaclePool;
-		std::list<Obstacle*> mDeadObstacles;
+		SfxEngine     *mSfxEngine;
+		Probe			    *mProbe;
+		std::list<Drone*> mDrones;
+		std::list<Drone*> mDronePool;
 		
-		
-		
-		long nrObstacles;
-		int nrMaxAliveObstacles;
+		long nrDrones;
 		//int nrTunnels;
 		
-		static Level    *mLevel;
-		Ogre::Timer mTimer;
+		static Level *mLevel;
+		Ogre::Timer mSpawnTimer;
 		
 		bool fGameStarted;
 		bool fGameOver;
-		bool fSpawning; // are we spawning obstacles?
-		int mSpawnTimer; // how often?
+		bool fSpawning; //! are we spawning drones?
+		int mSpawnRate; //! how often in milliseconds do we spawn drones?
 		int mSpawningThreshold; // spawn rate can't drop below this, original rate / 2
 		
 		bool fFirstZone;
 		
-		Obstacle* spawnObstacle(OBSTACLE_CLASS inClass);
+		Drone* spawnDrone(DRONE_CLASS inClass);
 		void spawnDuette();
-		void releaseObstacle(Obstacle* inObs);
+		void releaseDrone(Drone* inObs);
 	};
 } // end of namespace
 #endif

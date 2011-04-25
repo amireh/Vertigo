@@ -30,7 +30,7 @@
      profiles ps_1_1 arbfp1 fp20
  }
  
- material Sphere/Ice
+ material Probe/Ice
  { 
  
      // this is the preferred technique which uses both vertex and
@@ -223,7 +223,7 @@
      }
  }
  
- material Sphere/Fire
+ material Probe/Fire
  { 
  
      // this is the preferred technique which uses both vertex and

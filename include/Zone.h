@@ -23,8 +23,8 @@
 #define H_Zone_H
 
 #include "Tunnel.h"
-#include "Obstacle.h"
-#include "Sphere.h"
+#include "Drone.h"
+#include "Probe.h"
 #include <list>
 #include "TinyXMLResource.h"
 #include "TinyXMLResourceManager.h"
@@ -53,14 +53,13 @@ namespace Pixy {
     // obstacle settings
     int mSpawnRate;
     bool fFixedSpawnRate;
-    int mObstacleCap;
     float mOMoveSpeed;
     float mOMaxSpeedFactor;
     float mOMaxSpeedStep;
     bool fFixedSpawnPosition;
     
-    std::vector<OBSTACLE_CLASS> mRegisteredObstacleClasses;
-    OBSTACLE_CLASS mDominantObstacleClass;
+    std::vector<DRONE_CLASS> mRegisteredDroneClasses;
+    DRONE_CLASS mDominantDroneClass;
   };
 
 	/*! \class Zone
@@ -110,9 +109,9 @@ namespace Pixy {
 	protected:
 	  void parseFile();
 	  void _parseSetting(const char* inName, const char* inValue);
-	  void _parseObstacleSetting(const char* inName, const char* inValue);
+	  void _parseDroneSetting(const char* inName, const char* inValue);
 	  void _parseTunnel(const char* inName, const char* inValue);
-	  void _registerObstacleClass(const char* inName, bool fDominant);
+	  void _registerDroneClass(const char* inName, bool fDominant);
 	  
 	  bool fLoaded;
 	  bool fParsed;
@@ -124,7 +123,7 @@ namespace Pixy {
 	  EventManager *mEvtMgr;
 	  Level* mLevel;
 		log4cpp::Category* mLog;
-		Sphere* mSphere;
+		Probe* mProbe;
 		
 		Tunnel *mTunnel;
     list<Tunnel*> mTunnels;

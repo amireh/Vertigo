@@ -24,7 +24,7 @@
 
 #include "EventManager.h"
 #include "EventListener.h"
-#include "Sphere.h"
+#include "Probe.h"
 #include <Ogre.h>
 #include "Procedural.h"
 #include "ParticleUniverseSystemManager.h"
@@ -44,20 +44,22 @@ namespace Pixy {
   
 	/*! \class Tunnel
 	 *	\brief
+	 *  A tunnel is made of a number of segments, and is capped at one side with
+	 *  a portal.
 	 */
 	class GfxEngine;
 	class Tunnel : public EventListener {
 		
 	public:
-	  /*
-	   * A tunnel is made of a number of segments, and is capped at one side with
-	   * a portal, or capped on both ends.
+	  /*! \brief
+	   *  Constructor for creating the tunnels, allows for defining all related
+	   *  attributes.
 	   *
-	   *  inNrSegments: the number of tubes to make up this tunnel
-	   *  inSegmentLength: the length of each of these segments
-	   *  inRadius: the radius of each of these segments
-	   *  inAutoShow: will render the moment it's created and start its portal effect
-	   *  inCapped: if true, there will be portals placed at both ends of the tunnel
+	   *  @param inNrSegments: the number of tubes to make up this tunnel
+	   *  @param inSegmentLength: the length of each of these segments
+	   *  @param inRadius: the radius of each of these segments
+	   *  @param inAutoShow: will render the moment it's created and start its portal effect
+	   *  @param inCapped: if true, there will be portals placed at both ends of the tunnel
 	   */
     Tunnel(const String inMaterial,
            const int inNrSegments = 10, 
@@ -69,28 +71,64 @@ namespace Pixy {
     
     void update(unsigned long lTimeElapsed);
     
+    /*! \brief
+     *  Emits the "PortalEntered" event, renders the tunnel and binds its
+     *  event handlers.
+     */
     void show();
     
-    // changes the materials of all the segments in this tunnel
-    //void applyMaterial(Ogre::String inMaterial);
-    
-    SceneNode* getNode();
-    
-    SceneNode* getEntrancePortal();
-    SceneNode* getExitPortal();
-    
-    Real& _getLength();
-    Real& _getSegmentLength();
-    
-    /*
-     * Remove the tunnel from the scene and stop its effects.
+    /*! \brief
+     *  Remove the tunnel from the scene and stops its particle effects and unbinds
+     *  its event handlers.
      */
     void hide();
+        
+    /*! \brief
+     *  Returns the Ogre::SceneNode that is the parent of all the segment
+     *  SceneNodes.
+     *
+     *  \note
+     *  Useful for finding out the length of the whole tunnel. 
+     *  Called by the Probe to find out whether it has reached the portal or not.
+     */
+    inline SceneNode* getNode() {
+      return mNode;
+    };
+    
+    /*! \brief
+     *  Returns the SceneNode that contains the Portal of the tunnel.
+     *
+     *  \note
+     *  Called by the Probe on evtPortalSighted to calculate a direction vector
+     *  so the Probe moves to the center of the portal.
+     */
+    inline SceneNode* getExitPortal() {
+      return mExit;
+    };
+    
+    inline Real& _getLength() {
+      return mLength;
+    };
+    inline Real& _getSegmentLength() {
+      return mSegmentLength;
+    };
+    
+    
     
 	protected:
-	  bool evtPortalSighted(Event* inEvt);
+    /*! \brief
+     *  Stops the PortalEffect.
+     */
 	  bool evtPortalReached(Event* inEvt);
+	  
+	  /*! \brief
+	   *  Relocates the PortalEffect particle system to the Exit node of the tunnel
+	   *  and plays the effect.
+	   */
 	  bool evtPortalEntered(Event* inEvt);
+	  /*! \brief
+	   *  Toggles sound effects playability according to settings.
+	   */
 	  bool evtSettingsChanged(Event* inEvt);
 	  
 	  EventManager *mEvtMgr;
@@ -118,9 +156,6 @@ namespace Pixy {
     
     typedef Ogre::SceneNode Portal;
     Portal *mEntrance, *mExit;
-    
-    //Sphere* mSphere;
-    //SceneNode* mSphereNode;
     
     void generateSegments();
     void generatePortals();

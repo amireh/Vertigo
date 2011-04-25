@@ -329,7 +329,7 @@ namespace Pixy {
 		
 		
 		 // destroy!!
-		mLog->debugStream() << "destroying " << inEvt;
+		//mLog->debugStream() << "destroying " << inEvt;
 		delete inEvt;
 		
 		//mLog->debugStream() << "EventPool size: " << mEventPool.size() << " Events queue size: " << mEvents.size();

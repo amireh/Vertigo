@@ -31,7 +31,7 @@
  }
  
 
- material Obstacle/Ice
+ material Drone/Ice
  { 
  
      // this is the preferred technique which uses both vertex and
@@ -224,7 +224,7 @@
      }
  }
  
- material Obstacle/Fire
+ material Drone/Fire
  { 
  
      // this is the preferred technique which uses both vertex and
@@ -418,7 +418,7 @@
  }
  
 /*
-material Obstacle/Fire
+material Drone/Fire
 {
 	technique
 	{
@@ -431,7 +431,7 @@ material Obstacle/Fire
 		}
 	}
 } 
-material Obstacle/Ice
+material Drone/Ice
 {
 	technique
 	{

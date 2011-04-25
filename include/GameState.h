@@ -59,12 +59,19 @@ namespace Pixy
 		void pushState( GameState *state );
 		void popState( void );
 		void requestShutdown( void );
-		
-    virtual bool areFxEnabled()=0;
-    virtual bool areSfxEnabled()=0;
+
 		virtual GAME_STATE getId() const=0;
-		virtual void dontUpdateMe(Engine* inEngine)=0;
-		virtual bool running();
+		inline virtual bool running() {
+		  return fRunning;
+		};
+		
+		inline virtual bool areFxEnabled() { 
+		  return GameManager::getSingleton().getSettings()["Visual Detail"] != "Low";
+		};
+    inline virtual bool areSfxEnabled() { 
+      return GameManager::getSingleton().getSettings()["Sound Enabled"] == "Yes";
+    };
+    
 	protected:
 		GameState(){ };
 		log4cpp::Category* mLog;

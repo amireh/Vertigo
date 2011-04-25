@@ -27,7 +27,7 @@
 #include "Event.h"
 #include "EventManager.h"
 #include "EventListener.h"
-#include "Sphere.h"
+#include "Probe.h"
 #include "Zone.h"
 
 #include "InputManager.h"
@@ -89,10 +89,10 @@ namespace Pixy {
 		void mouseReleased( const OIS::MouseEvent &e, OIS::MouseButtonID id );
 		
 		/* \brief
-		 *  updates HUDs according to the Sphere's state of shields and score
+		 *  updates HUDs according to the Probe's state of shields and score
 		 *
 		 *  NOTE:
-		 *  This is called internally by Sphere on collision events.
+		 *  This is called internally by Probe on collision events.
 		 */
 		void _updateShields();
 		
@@ -118,7 +118,7 @@ namespace Pixy {
     bool evtZoneEntered(Event* inEvt);
 	  bool evtGameStarted(Event* inEvt);
 	  bool evtPlayerWon(Event* inEvt);
-	  bool evtSphereDied(Event* inEvt);
+	  bool evtProbeDied(Event* inEvt);
 	  
 	  // shifts from main menu to zone screen
 	  void evtClickPlay();
@@ -190,7 +190,7 @@ namespace Pixy {
     Ogre::Viewport* mViewport;
     SdkTrayManager *mTrayMgr;
 		Ogre::OverlayManager *mOverlayMgr;
-		//Sphere* mSphere;
+		//Probe* mProbe;
 
     // this message is shown to the player in a dialogue
     Ogre::String mHelpMsg;

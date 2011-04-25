@@ -123,7 +123,7 @@ namespace Pixy {
 	bool SfxEngine::setupGame() {
 	  mLog->infoStream() << "loading sound track";
 
-	  mSphere = Level::getSingletonPtr()->getSphere();
+	  mProbe = Level::getSingletonPtr()->getProbe();
 	  	  
     /*if (mIntroTrack)
       mIntroTrack->stop();*/
@@ -131,7 +131,7 @@ namespace Pixy {
  	  //if (mGameTrack)
 	  // mGameTrack->play();
 	           
-    //bindToName("ObstacleCollided", this, &SfxEngine::evtObstacleCollided);
+    //bindToName("DroneCollided", this, &SfxEngine::evtDroneCollided);
     //bindToName("PortalEntered", this, &SfxEngine::evtPortalEntered);
     
     mUpdater = &SfxEngine::updateGame;
@@ -144,10 +144,6 @@ namespace Pixy {
 	    return false;
 
     GameState *currentState = (GameManager::getSingleton().currentState());
-    /*if ( !currentState->areSfxEnabled() ) {
-      currentState->dontUpdateMe(this);
-      return true;
-    }   */ 
     if (currentState->getId() == STATE_INTRO)
       fSetup = setupIntro();
     else 
@@ -169,7 +165,7 @@ namespace Pixy {
 	void SfxEngine::updateGame(unsigned long lTimeElapsed) {
 		
 		mSoundMgr->update(lTimeElapsed);
-		//mSoundMgr->getListener()->setPosition(mSphere->getPosition());
+		//mSoundMgr->getListener()->setPosition(mProbe->getPosition());
 		//mGameTrack->update(lTimeElapsed);
     /*mSoundMgr->setListenerPosition( mListener->getMasterNode()->getPosition(),
                                     Ogre::Vector3::ZERO, 
@@ -207,8 +203,8 @@ namespace Pixy {
 		return true;
 	}
 	
-	bool SfxEngine::evtObstacleCollided(Event* inEvt) {
-	  Obstacle* mObs = static_cast<Obstacle*>(inEvt->getAny());
+	bool SfxEngine::evtDroneCollided(Event* inEvt) {
+	  Drone* mObs = static_cast<Drone*>(inEvt->getAny());
 	  
 	  /*if (mObs->shield() == FIRE)
 	    mSoundMgr->getSound("Explosion")->play();
