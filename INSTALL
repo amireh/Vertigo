@@ -48,16 +48,23 @@
     * Ogre3D v1.7.2 without boost-threads (http://www.ogre3d.org) which depends on:
       * zzip, freetype, and freeimage development libraries
       * OpenGL and GLUT development headers
+			* nVidia CG
     * BulletPhysics v1.7.7 (http://www.bulletphysics.org/)
     * OgreOggSound v1.21 (http://sourceforge.net/projects/ogreoggsound/) which depends on:
       * OpenAL development libraries
       * Ogg development libraries
       * Vorbis development libraries
     * ParticleUniverse plugin (dynamic library is provided, you don't need to build this)
-    
+		* log4cpp
+		* tinyxml
+
+	NOTE: ParticleUniverse is closed-source and NOT GPL compliant. Sadly, there's no workaround for the time being and that prevents the game from redistribution. The plan is to port the current scripts to use the free ParticleFX plugin instead. Please visit http://blog.vertigo-game.com for updates on the topic.
+
   Make sure Ogre and Bullet can be found by pkg-config, if not, refer to their manuals. Once ready, just type:
     make
 
 -= Troubleshooting & Support =-
 
-  For help with installation, please refer to the online manual found at http://www.vertigo-game.com/installation or contact me directly by email: support@vertigo-game.com
+  For help with installation, please refer to the online manual found at http://www.vertigo-game.com/installation or contact me directly by:
+		Email: support@vertigo-game.com
+		IRC: irc.freenode.net#vertigo - I'm known as kandie
