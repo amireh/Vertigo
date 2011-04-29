@@ -7,6 +7,78 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		372856FB136AAA8F00A944A2 /* Drone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 372856E7136AAA8F00A944A2 /* Drone.cpp */; };
+		372856FC136AAA8F00A944A2 /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 372856E8136AAA8F00A944A2 /* Entity.cpp */; };
+		372856FD136AAA8F00A944A2 /* Event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 372856E9136AAA8F00A944A2 /* Event.cpp */; };
+		372856FE136AAA8F00A944A2 /* EventListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 372856EA136AAA8F00A944A2 /* EventListener.cpp */; };
+		372856FF136AAA8F00A944A2 /* EventManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 372856EB136AAA8F00A944A2 /* EventManager.cpp */; };
+		37285700136AAA8F00A944A2 /* GameManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 372856EC136AAA8F00A944A2 /* GameManager.cpp */; };
+		37285701136AAA8F00A944A2 /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 372856ED136AAA8F00A944A2 /* GameState.cpp */; };
+		37285702136AAA8F00A944A2 /* Geometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 372856EE136AAA8F00A944A2 /* Geometry.cpp */; };
+		37285703136AAA8F00A944A2 /* GfxEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 372856EF136AAA8F00A944A2 /* GfxEngine.cpp */; };
+		37285704136AAA8F00A944A2 /* InputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 372856F0136AAA8F00A944A2 /* InputManager.cpp */; };
+		37285705136AAA8F00A944A2 /* Intro.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 372856F1136AAA8F00A944A2 /* Intro.cpp */; };
+		37285706136AAA8F00A944A2 /* Level.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 372856F2136AAA8F00A944A2 /* Level.cpp */; };
+		37285707136AAA8F00A944A2 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 372856F3136AAA8F00A944A2 /* main.cpp */; };
+		37285708136AAA8F00A944A2 /* Pause.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 372856F4136AAA8F00A944A2 /* Pause.cpp */; };
+		37285709136AAA8F00A944A2 /* PhyxEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 372856F5136AAA8F00A944A2 /* PhyxEngine.cpp */; };
+		3728570A136AAA8F00A944A2 /* Probe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 372856F6136AAA8F00A944A2 /* Probe.cpp */; };
+		3728570B136AAA8F00A944A2 /* SfxEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 372856F7136AAA8F00A944A2 /* SfxEngine.cpp */; };
+		3728570C136AAA8F00A944A2 /* Tunnel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 372856F8136AAA8F00A944A2 /* Tunnel.cpp */; };
+		3728570D136AAA8F00A944A2 /* UIEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 372856F9136AAA8F00A944A2 /* UIEngine.cpp */; };
+		3728570E136AAA8F00A944A2 /* Zone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 372856FA136AAA8F00A944A2 /* Zone.cpp */; };
+		37285739136AB65500A944A2 /* libOgreOggSound.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37285738136AB65500A944A2 /* libOgreOggSound.dylib */; };
+		37285740136AB67F00A944A2 /* TinyXMLResource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3728573E136AB67F00A944A2 /* TinyXMLResource.cpp */; };
+		37285741136AB67F00A944A2 /* TinyXMLResourceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3728573F136AB67F00A944A2 /* TinyXMLResourceManager.cpp */; };
+		3728574A136AB6A100A944A2 /* tinystr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285746136AB6A100A944A2 /* tinystr.cpp */; };
+		3728574B136AB6A100A944A2 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285747136AB6A100A944A2 /* tinyxml.cpp */; };
+		3728574C136AB6A100A944A2 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285748136AB6A100A944A2 /* tinyxmlerror.cpp */; };
+		3728574D136AB6A100A944A2 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285749136AB6A100A944A2 /* tinyxmlparser.cpp */; };
+		37285796136AB70000A944A2 /* AbortAppender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3728576A136AB70000A944A2 /* AbortAppender.cpp */; };
+		37285797136AB70000A944A2 /* Appender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3728576B136AB70000A944A2 /* Appender.cpp */; };
+		37285798136AB70000A944A2 /* AppendersFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3728576C136AB70000A944A2 /* AppendersFactory.cpp */; };
+		37285799136AB70000A944A2 /* AppenderSkeleton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3728576D136AB70000A944A2 /* AppenderSkeleton.cpp */; };
+		3728579A136AB70000A944A2 /* BasicConfigurator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3728576E136AB70000A944A2 /* BasicConfigurator.cpp */; };
+		3728579B136AB70000A944A2 /* BasicLayout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3728576F136AB70000A944A2 /* BasicLayout.cpp */; };
+		3728579C136AB70000A944A2 /* BufferingAppender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285770136AB70000A944A2 /* BufferingAppender.cpp */; };
+		3728579D136AB70000A944A2 /* Category.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285771136AB70000A944A2 /* Category.cpp */; };
+		3728579E136AB70000A944A2 /* CategoryStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285772136AB70000A944A2 /* CategoryStream.cpp */; };
+		3728579F136AB70000A944A2 /* Configurator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285773136AB70000A944A2 /* Configurator.cpp */; };
+		372857A0136AB70000A944A2 /* DllMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285774136AB70000A944A2 /* DllMain.cpp */; };
+		372857A1136AB70000A944A2 /* DummyThreads.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285775136AB70000A944A2 /* DummyThreads.cpp */; };
+		372857A2136AB70000A944A2 /* FactoryParams.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285776136AB70000A944A2 /* FactoryParams.cpp */; };
+		372857A3136AB70000A944A2 /* FileAppender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285777136AB70000A944A2 /* FileAppender.cpp */; };
+		372857A4136AB70000A944A2 /* Filter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285778136AB70000A944A2 /* Filter.cpp */; };
+		372857A5136AB70000A944A2 /* FixedContextCategory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285779136AB70000A944A2 /* FixedContextCategory.cpp */; };
+		372857A6136AB70000A944A2 /* HierarchyMaintainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3728577A136AB70000A944A2 /* HierarchyMaintainer.cpp */; };
+		372857A7136AB70000A944A2 /* IdsaAppender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3728577B136AB70000A944A2 /* IdsaAppender.cpp */; };
+		372857A8136AB70000A944A2 /* LayoutAppender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3728577C136AB70000A944A2 /* LayoutAppender.cpp */; };
+		372857A9136AB70000A944A2 /* LayoutsFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3728577D136AB70000A944A2 /* LayoutsFactory.cpp */; };
+		372857AA136AB70000A944A2 /* LevelEvaluator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3728577E136AB70000A944A2 /* LevelEvaluator.cpp */; };
+		372857AB136AB70000A944A2 /* Localtime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3728577F136AB70000A944A2 /* Localtime.cpp */; };
+		372857AC136AB70000A944A2 /* LoggingEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285780136AB70000A944A2 /* LoggingEvent.cpp */; };
+		372857AD136AB70000A944A2 /* NDC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285781136AB70000A944A2 /* NDC.cpp */; };
+		372857AE136AB70000A944A2 /* NTEventLogAppender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285782136AB70000A944A2 /* NTEventLogAppender.cpp */; };
+		372857AF136AB70000A944A2 /* OmniThreads.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285783136AB70000A944A2 /* OmniThreads.cpp */; };
+		372857B0136AB70000A944A2 /* OstreamAppender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285784136AB70000A944A2 /* OstreamAppender.cpp */; };
+		372857B1136AB70000A944A2 /* PassThroughLayout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285785136AB70000A944A2 /* PassThroughLayout.cpp */; };
+		372857B2136AB70000A944A2 /* PatternLayout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285786136AB70000A944A2 /* PatternLayout.cpp */; };
+		372857B3136AB70000A944A2 /* PortabilityImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285787136AB70000A944A2 /* PortabilityImpl.cpp */; };
+		372857B4136AB70000A944A2 /* Priority.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285788136AB70000A944A2 /* Priority.cpp */; };
+		372857B5136AB70000A944A2 /* Properties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285789136AB70000A944A2 /* Properties.cpp */; };
+		372857B6136AB70000A944A2 /* PropertyConfigurator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3728578A136AB70000A944A2 /* PropertyConfigurator.cpp */; };
+		372857B7136AB70000A944A2 /* PropertyConfiguratorImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3728578B136AB70000A944A2 /* PropertyConfiguratorImpl.cpp */; };
+		372857B8136AB70000A944A2 /* PThreads.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3728578C136AB70000A944A2 /* PThreads.cpp */; };
+		372857B9136AB70000A944A2 /* RemoteSyslogAppender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3728578D136AB70000A944A2 /* RemoteSyslogAppender.cpp */; };
+		372857BA136AB70000A944A2 /* RollingFileAppender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3728578E136AB70000A944A2 /* RollingFileAppender.cpp */; };
+		372857BB136AB70000A944A2 /* SimpleConfigurator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3728578F136AB70000A944A2 /* SimpleConfigurator.cpp */; };
+		372857BC136AB70000A944A2 /* SimpleLayout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285790136AB70000A944A2 /* SimpleLayout.cpp */; };
+		372857BD136AB70000A944A2 /* StringQueueAppender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285791136AB70000A944A2 /* StringQueueAppender.cpp */; };
+		372857BE136AB70000A944A2 /* StringUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285792136AB70000A944A2 /* StringUtil.cpp */; };
+		372857BF136AB70000A944A2 /* SyslogAppender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285793136AB70000A944A2 /* SyslogAppender.cpp */; };
+		372857C0136AB70000A944A2 /* TimeStamp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285794136AB70000A944A2 /* TimeStamp.cpp */; };
+		372857C1136AB70000A944A2 /* TriggeringEventEvaluatorFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37285795136AB70000A944A2 /* TriggeringEventEvaluatorFactory.cpp */; };
+		372857C9136AB73B00A944A2 /* libOgreOggSound.dylib in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 37285738136AB65500A944A2 /* libOgreOggSound.dylib */; };
 		377C32FD1348815C0026E68E /* libOgreRTShaderSystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 377C32FC1348815C0026E68E /* libOgreRTShaderSystem.dylib */; };
 		377C32FF1348815C0026E68E /* Plugin_CgProgramManager.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 377C32FE1348815C0026E68E /* Plugin_CgProgramManager.dylib */; };
 		377C3300134881720026E68E /* libOgreRTShaderSystem.dylib in Copy Components */ = {isa = PBXBuildFile; fileRef = 377C32FC1348815C0026E68E /* libOgreRTShaderSystem.dylib */; };
@@ -22,29 +94,10 @@
 		377C49FF13488DAB0026E68E /* config in Resources */ = {isa = PBXBuildFile; fileRef = 377C451213488DAA0026E68E /* config */; };
 		377C4A0013488DAB0026E68E /* media in Resources */ = {isa = PBXBuildFile; fileRef = 377C451A13488DAA0026E68E /* media */; };
 		377CC98A1347A09300A7AE73 /* PixyLogLayout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9891347A09300A7AE73 /* PixyLogLayout.cpp */; };
-		377CC9EC1347A0E400A7AE73 /* AudioEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9DA1347A0E400A7AE73 /* AudioEngine.cpp */; };
-		377CC9ED1347A0E400A7AE73 /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9DB1347A0E400A7AE73 /* Entity.cpp */; };
-		377CC9EE1347A0E400A7AE73 /* Event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9DC1347A0E400A7AE73 /* Event.cpp */; };
-		377CC9EF1347A0E400A7AE73 /* EventListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9DD1347A0E400A7AE73 /* EventListener.cpp */; };
-		377CC9F01347A0E400A7AE73 /* EventManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9DE1347A0E400A7AE73 /* EventManager.cpp */; };
-		377CC9F11347A0E400A7AE73 /* GameManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9DF1347A0E400A7AE73 /* GameManager.cpp */; };
-		377CC9F21347A0E400A7AE73 /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9E01347A0E400A7AE73 /* GameState.cpp */; };
-		377CC9F31347A0E400A7AE73 /* Geometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9E11347A0E400A7AE73 /* Geometry.cpp */; };
-		377CC9F41347A0E400A7AE73 /* GfxEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9E21347A0E400A7AE73 /* GfxEngine.cpp */; };
-		377CC9F51347A0E400A7AE73 /* InputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9E31347A0E400A7AE73 /* InputManager.cpp */; };
-		377CC9F61347A0E400A7AE73 /* Level.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9E41347A0E400A7AE73 /* Level.cpp */; };
-		377CC9F71347A0E400A7AE73 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9E51347A0E400A7AE73 /* main.cpp */; };
-		377CC9F81347A0E400A7AE73 /* Obstacle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9E61347A0E400A7AE73 /* Obstacle.cpp */; };
-		377CC9F91347A0E400A7AE73 /* PhyxEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9E71347A0E400A7AE73 /* PhyxEngine.cpp */; };
-		377CC9FA1347A0E400A7AE73 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9E81347A0E400A7AE73 /* Sphere.cpp */; };
-		377CC9FB1347A0E400A7AE73 /* StatePause.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9E91347A0E400A7AE73 /* StatePause.cpp */; };
-		377CC9FC1347A0E400A7AE73 /* Tunnel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9EA1347A0E400A7AE73 /* Tunnel.cpp */; };
 		377CCA001347A10E00A7AE73 /* BtOgre.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377CC9FF1347A10E00A7AE73 /* BtOgre.cpp */; };
 		377CCAA81347B48400A7AE73 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 377CCAA71347B48400A7AE73 /* OpenAL.framework */; };
 		379BCDCE13489E5000A76237 /* Pixy.log in Resources */ = {isa = PBXBuildFile; fileRef = 379BCDCD13489E5000A76237 /* Pixy.log */; };
 		379BCDE613489E9400A76237 /* Pixy.log in Logs */ = {isa = PBXBuildFile; fileRef = 379BCDCD13489E5000A76237 /* Pixy.log */; };
-		379BCE3B1348A5B700A76237 /* Plugin_OgreOggSound.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 379BCE3A1348A5B700A76237 /* Plugin_OgreOggSound.dylib */; };
-		379BCE3C1348A5C300A76237 /* Plugin_OgreOggSound.dylib in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 379BCE3A1348A5B700A76237 /* Plugin_OgreOggSound.dylib */; };
 		379BCE5D1348A68000A76237 /* Ogg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 379BCE5C1348A68000A76237 /* Ogg.framework */; };
 		379BCE5F1348A68000A76237 /* Vorbis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 379BCE5E1348A68000A76237 /* Vorbis.framework */; };
 		379BCE6B1348A68800A76237 /* Ogg.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 379BCE5C1348A68000A76237 /* Ogg.framework */; };
@@ -105,7 +158,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				379BCE3C1348A5C300A76237 /* Plugin_OgreOggSound.dylib in Copy Plugins */,
+				372857C9136AB73B00A944A2 /* libOgreOggSound.dylib in Copy Plugins */,
 				377C373213488C520026E68E /* Plugin_ParticleUniverse.dylib in Copy Plugins */,
 				377C371E13488BC70026E68E /* Plugin_OgreProcedural.dylib in Copy Plugins */,
 				377C3301134881720026E68E /* Plugin_CgProgramManager.dylib in Copy Plugins */,
@@ -129,6 +182,88 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		372856E7136AAA8F00A944A2 /* Drone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Drone.cpp; path = ../../src/Drone.cpp; sourceTree = SOURCE_ROOT; };
+		372856E8136AAA8F00A944A2 /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Entity.cpp; path = ../../src/Entity.cpp; sourceTree = SOURCE_ROOT; };
+		372856E9136AAA8F00A944A2 /* Event.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Event.cpp; path = ../../src/Event.cpp; sourceTree = SOURCE_ROOT; };
+		372856EA136AAA8F00A944A2 /* EventListener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EventListener.cpp; path = ../../src/EventListener.cpp; sourceTree = SOURCE_ROOT; };
+		372856EB136AAA8F00A944A2 /* EventManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EventManager.cpp; path = ../../src/EventManager.cpp; sourceTree = SOURCE_ROOT; };
+		372856EC136AAA8F00A944A2 /* GameManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameManager.cpp; path = ../../src/GameManager.cpp; sourceTree = SOURCE_ROOT; };
+		372856ED136AAA8F00A944A2 /* GameState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameState.cpp; path = ../../src/GameState.cpp; sourceTree = SOURCE_ROOT; };
+		372856EE136AAA8F00A944A2 /* Geometry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Geometry.cpp; path = ../../src/Geometry.cpp; sourceTree = SOURCE_ROOT; };
+		372856EF136AAA8F00A944A2 /* GfxEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GfxEngine.cpp; path = ../../src/GfxEngine.cpp; sourceTree = SOURCE_ROOT; };
+		372856F0136AAA8F00A944A2 /* InputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InputManager.cpp; path = ../../src/InputManager.cpp; sourceTree = SOURCE_ROOT; };
+		372856F1136AAA8F00A944A2 /* Intro.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Intro.cpp; path = ../../src/Intro.cpp; sourceTree = SOURCE_ROOT; };
+		372856F2136AAA8F00A944A2 /* Level.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Level.cpp; path = ../../src/Level.cpp; sourceTree = SOURCE_ROOT; };
+		372856F3136AAA8F00A944A2 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../src/main.cpp; sourceTree = SOURCE_ROOT; };
+		372856F4136AAA8F00A944A2 /* Pause.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Pause.cpp; path = ../../src/Pause.cpp; sourceTree = SOURCE_ROOT; };
+		372856F5136AAA8F00A944A2 /* PhyxEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PhyxEngine.cpp; path = ../../src/PhyxEngine.cpp; sourceTree = SOURCE_ROOT; };
+		372856F6136AAA8F00A944A2 /* Probe.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Probe.cpp; path = ../../src/Probe.cpp; sourceTree = SOURCE_ROOT; };
+		372856F7136AAA8F00A944A2 /* SfxEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SfxEngine.cpp; path = ../../src/SfxEngine.cpp; sourceTree = SOURCE_ROOT; };
+		372856F8136AAA8F00A944A2 /* Tunnel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Tunnel.cpp; path = ../../src/Tunnel.cpp; sourceTree = SOURCE_ROOT; };
+		372856F9136AAA8F00A944A2 /* UIEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UIEngine.cpp; path = ../../src/UIEngine.cpp; sourceTree = SOURCE_ROOT; };
+		372856FA136AAA8F00A944A2 /* Zone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Zone.cpp; path = ../../src/Zone.cpp; sourceTree = SOURCE_ROOT; };
+		3728570F136AAAAF00A944A2 /* Drone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Drone.h; path = ../../include/Drone.h; sourceTree = SOURCE_ROOT; };
+		37285710136AAAAF00A944A2 /* Intro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Intro.h; path = ../../include/Intro.h; sourceTree = SOURCE_ROOT; };
+		37285711136AAAAF00A944A2 /* Pause.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Pause.h; path = ../../include/Pause.h; sourceTree = SOURCE_ROOT; };
+		37285712136AAAAF00A944A2 /* Probe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Probe.h; path = ../../include/Probe.h; sourceTree = SOURCE_ROOT; };
+		37285713136AAAAF00A944A2 /* SfxEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SfxEngine.h; path = ../../include/SfxEngine.h; sourceTree = SOURCE_ROOT; };
+		37285714136AAAAF00A944A2 /* UIEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIEngine.h; path = ../../include/UIEngine.h; sourceTree = SOURCE_ROOT; };
+		37285715136AAAAF00A944A2 /* Zone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Zone.h; path = ../../include/Zone.h; sourceTree = SOURCE_ROOT; };
+		37285738136AB65500A944A2 /* libOgreOggSound.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libOgreOggSound.dylib; path = ../../../../Build/ogreoggsound/build/libOgreOggSound.dylib; sourceTree = SOURCE_ROOT; };
+		3728573E136AB67F00A944A2 /* TinyXMLResource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TinyXMLResource.cpp; path = ../../modules/src/tinyxmlresource/TinyXMLResource.cpp; sourceTree = SOURCE_ROOT; };
+		3728573F136AB67F00A944A2 /* TinyXMLResourceManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TinyXMLResourceManager.cpp; path = ../../modules/src/tinyxmlresource/TinyXMLResourceManager.cpp; sourceTree = SOURCE_ROOT; };
+		37285742136AB68A00A944A2 /* TinyXMLResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TinyXMLResource.h; path = ../../modules/include/tinyxmlresource/TinyXMLResource.h; sourceTree = SOURCE_ROOT; };
+		37285743136AB68A00A944A2 /* TinyXMLResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TinyXMLResourceManager.h; path = ../../modules/include/tinyxmlresource/TinyXMLResourceManager.h; sourceTree = SOURCE_ROOT; };
+		37285744136AB69400A944A2 /* tinystr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tinystr.h; path = ../../modules/include/tinyxml/tinystr.h; sourceTree = SOURCE_ROOT; };
+		37285745136AB69400A944A2 /* tinyxml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tinyxml.h; path = ../../modules/include/tinyxml/tinyxml.h; sourceTree = SOURCE_ROOT; };
+		37285746136AB6A100A944A2 /* tinystr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tinystr.cpp; path = ../../modules/src/tinyxml/tinystr.cpp; sourceTree = SOURCE_ROOT; };
+		37285747136AB6A100A944A2 /* tinyxml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tinyxml.cpp; path = ../../modules/src/tinyxml/tinyxml.cpp; sourceTree = SOURCE_ROOT; };
+		37285748136AB6A100A944A2 /* tinyxmlerror.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tinyxmlerror.cpp; path = ../../modules/src/tinyxml/tinyxmlerror.cpp; sourceTree = SOURCE_ROOT; };
+		37285749136AB6A100A944A2 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tinyxmlparser.cpp; path = ../../modules/src/tinyxml/tinyxmlparser.cpp; sourceTree = SOURCE_ROOT; };
+		3728576A136AB70000A944A2 /* AbortAppender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AbortAppender.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/AbortAppender.cpp"; sourceTree = SOURCE_ROOT; };
+		3728576B136AB70000A944A2 /* Appender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Appender.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/Appender.cpp"; sourceTree = SOURCE_ROOT; };
+		3728576C136AB70000A944A2 /* AppendersFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AppendersFactory.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/AppendersFactory.cpp"; sourceTree = SOURCE_ROOT; };
+		3728576D136AB70000A944A2 /* AppenderSkeleton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AppenderSkeleton.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/AppenderSkeleton.cpp"; sourceTree = SOURCE_ROOT; };
+		3728576E136AB70000A944A2 /* BasicConfigurator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BasicConfigurator.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/BasicConfigurator.cpp"; sourceTree = SOURCE_ROOT; };
+		3728576F136AB70000A944A2 /* BasicLayout.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BasicLayout.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/BasicLayout.cpp"; sourceTree = SOURCE_ROOT; };
+		37285770136AB70000A944A2 /* BufferingAppender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BufferingAppender.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/BufferingAppender.cpp"; sourceTree = SOURCE_ROOT; };
+		37285771136AB70000A944A2 /* Category.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Category.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/Category.cpp"; sourceTree = SOURCE_ROOT; };
+		37285772136AB70000A944A2 /* CategoryStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CategoryStream.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/CategoryStream.cpp"; sourceTree = SOURCE_ROOT; };
+		37285773136AB70000A944A2 /* Configurator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Configurator.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/Configurator.cpp"; sourceTree = SOURCE_ROOT; };
+		37285774136AB70000A944A2 /* DllMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DllMain.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/DllMain.cpp"; sourceTree = SOURCE_ROOT; };
+		37285775136AB70000A944A2 /* DummyThreads.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DummyThreads.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/DummyThreads.cpp"; sourceTree = SOURCE_ROOT; };
+		37285776136AB70000A944A2 /* FactoryParams.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FactoryParams.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/FactoryParams.cpp"; sourceTree = SOURCE_ROOT; };
+		37285777136AB70000A944A2 /* FileAppender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FileAppender.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/FileAppender.cpp"; sourceTree = SOURCE_ROOT; };
+		37285778136AB70000A944A2 /* Filter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Filter.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/Filter.cpp"; sourceTree = SOURCE_ROOT; };
+		37285779136AB70000A944A2 /* FixedContextCategory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FixedContextCategory.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/FixedContextCategory.cpp"; sourceTree = SOURCE_ROOT; };
+		3728577A136AB70000A944A2 /* HierarchyMaintainer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HierarchyMaintainer.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/HierarchyMaintainer.cpp"; sourceTree = SOURCE_ROOT; };
+		3728577B136AB70000A944A2 /* IdsaAppender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = IdsaAppender.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/IdsaAppender.cpp"; sourceTree = SOURCE_ROOT; };
+		3728577C136AB70000A944A2 /* LayoutAppender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LayoutAppender.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/LayoutAppender.cpp"; sourceTree = SOURCE_ROOT; };
+		3728577D136AB70000A944A2 /* LayoutsFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LayoutsFactory.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/LayoutsFactory.cpp"; sourceTree = SOURCE_ROOT; };
+		3728577E136AB70000A944A2 /* LevelEvaluator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LevelEvaluator.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/LevelEvaluator.cpp"; sourceTree = SOURCE_ROOT; };
+		3728577F136AB70000A944A2 /* Localtime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Localtime.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/Localtime.cpp"; sourceTree = SOURCE_ROOT; };
+		37285780136AB70000A944A2 /* LoggingEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LoggingEvent.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/LoggingEvent.cpp"; sourceTree = SOURCE_ROOT; };
+		37285781136AB70000A944A2 /* NDC.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NDC.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/NDC.cpp"; sourceTree = SOURCE_ROOT; };
+		37285782136AB70000A944A2 /* NTEventLogAppender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NTEventLogAppender.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/NTEventLogAppender.cpp"; sourceTree = SOURCE_ROOT; };
+		37285783136AB70000A944A2 /* OmniThreads.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OmniThreads.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/OmniThreads.cpp"; sourceTree = SOURCE_ROOT; };
+		37285784136AB70000A944A2 /* OstreamAppender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OstreamAppender.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/OstreamAppender.cpp"; sourceTree = SOURCE_ROOT; };
+		37285785136AB70000A944A2 /* PassThroughLayout.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PassThroughLayout.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/PassThroughLayout.cpp"; sourceTree = SOURCE_ROOT; };
+		37285786136AB70000A944A2 /* PatternLayout.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PatternLayout.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/PatternLayout.cpp"; sourceTree = SOURCE_ROOT; };
+		37285787136AB70000A944A2 /* PortabilityImpl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PortabilityImpl.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/PortabilityImpl.cpp"; sourceTree = SOURCE_ROOT; };
+		37285788136AB70000A944A2 /* Priority.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Priority.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/Priority.cpp"; sourceTree = SOURCE_ROOT; };
+		37285789136AB70000A944A2 /* Properties.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Properties.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/Properties.cpp"; sourceTree = SOURCE_ROOT; };
+		3728578A136AB70000A944A2 /* PropertyConfigurator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PropertyConfigurator.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/PropertyConfigurator.cpp"; sourceTree = SOURCE_ROOT; };
+		3728578B136AB70000A944A2 /* PropertyConfiguratorImpl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PropertyConfiguratorImpl.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/PropertyConfiguratorImpl.cpp"; sourceTree = SOURCE_ROOT; };
+		3728578C136AB70000A944A2 /* PThreads.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PThreads.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/PThreads.cpp"; sourceTree = SOURCE_ROOT; };
+		3728578D136AB70000A944A2 /* RemoteSyslogAppender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RemoteSyslogAppender.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/RemoteSyslogAppender.cpp"; sourceTree = SOURCE_ROOT; };
+		3728578E136AB70000A944A2 /* RollingFileAppender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RollingFileAppender.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/RollingFileAppender.cpp"; sourceTree = SOURCE_ROOT; };
+		3728578F136AB70000A944A2 /* SimpleConfigurator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SimpleConfigurator.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/SimpleConfigurator.cpp"; sourceTree = SOURCE_ROOT; };
+		37285790136AB70000A944A2 /* SimpleLayout.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SimpleLayout.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/SimpleLayout.cpp"; sourceTree = SOURCE_ROOT; };
+		37285791136AB70000A944A2 /* StringQueueAppender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StringQueueAppender.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/StringQueueAppender.cpp"; sourceTree = SOURCE_ROOT; };
+		37285792136AB70000A944A2 /* StringUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StringUtil.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/StringUtil.cpp"; sourceTree = SOURCE_ROOT; };
+		37285793136AB70000A944A2 /* SyslogAppender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SyslogAppender.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/SyslogAppender.cpp"; sourceTree = SOURCE_ROOT; };
+		37285794136AB70000A944A2 /* TimeStamp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TimeStamp.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/TimeStamp.cpp"; sourceTree = SOURCE_ROOT; };
+		37285795136AB70000A944A2 /* TriggeringEventEvaluatorFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TriggeringEventEvaluatorFactory.cpp; path = "../../../../../Downloads/Development/Game/Tools/log4cpp-1.0/src/TriggeringEventEvaluatorFactory.cpp"; sourceTree = SOURCE_ROOT; };
 		3739F9461326D5D800FA5092 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		3739F94D1326D60000FA5092 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		3739FA621326D96C00FA5092 /* liblog4cpp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblog4cpp.a; path = /usr/local/lib/liblog4cpp.a; sourceTree = "<absolute>"; };
@@ -143,25 +278,7 @@
 		377C451213488DAA0026E68E /* config */ = {isa = PBXFileReference; lastKnownFileType = folder; name = config; path = ../../resources/config; sourceTree = SOURCE_ROOT; };
 		377C451A13488DAA0026E68E /* media */ = {isa = PBXFileReference; lastKnownFileType = folder; name = media; path = ../../resources/media; sourceTree = SOURCE_ROOT; };
 		377CC9891347A09300A7AE73 /* PixyLogLayout.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PixyLogLayout.cpp; path = ../../modules/src/log4cpp/PixyLogLayout.cpp; sourceTree = SOURCE_ROOT; };
-		377CC9DA1347A0E400A7AE73 /* AudioEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AudioEngine.cpp; path = ../../src/AudioEngine.cpp; sourceTree = SOURCE_ROOT; };
-		377CC9DB1347A0E400A7AE73 /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Entity.cpp; path = ../../src/Entity.cpp; sourceTree = SOURCE_ROOT; };
-		377CC9DC1347A0E400A7AE73 /* Event.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Event.cpp; path = ../../src/Event.cpp; sourceTree = SOURCE_ROOT; };
-		377CC9DD1347A0E400A7AE73 /* EventListener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EventListener.cpp; path = ../../src/EventListener.cpp; sourceTree = SOURCE_ROOT; };
-		377CC9DE1347A0E400A7AE73 /* EventManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EventManager.cpp; path = ../../src/EventManager.cpp; sourceTree = SOURCE_ROOT; };
-		377CC9DF1347A0E400A7AE73 /* GameManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameManager.cpp; path = ../../src/GameManager.cpp; sourceTree = SOURCE_ROOT; };
-		377CC9E01347A0E400A7AE73 /* GameState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameState.cpp; path = ../../src/GameState.cpp; sourceTree = SOURCE_ROOT; };
-		377CC9E11347A0E400A7AE73 /* Geometry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Geometry.cpp; path = ../../src/Geometry.cpp; sourceTree = SOURCE_ROOT; };
-		377CC9E21347A0E400A7AE73 /* GfxEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GfxEngine.cpp; path = ../../src/GfxEngine.cpp; sourceTree = SOURCE_ROOT; };
-		377CC9E31347A0E400A7AE73 /* InputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InputManager.cpp; path = ../../src/InputManager.cpp; sourceTree = SOURCE_ROOT; };
-		377CC9E41347A0E400A7AE73 /* Level.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Level.cpp; path = ../../src/Level.cpp; sourceTree = SOURCE_ROOT; };
-		377CC9E51347A0E400A7AE73 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../src/main.cpp; sourceTree = SOURCE_ROOT; };
-		377CC9E61347A0E400A7AE73 /* Obstacle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Obstacle.cpp; path = ../../src/Obstacle.cpp; sourceTree = SOURCE_ROOT; };
-		377CC9E71347A0E400A7AE73 /* PhyxEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PhyxEngine.cpp; path = ../../src/PhyxEngine.cpp; sourceTree = SOURCE_ROOT; };
-		377CC9E81347A0E400A7AE73 /* Sphere.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Sphere.cpp; path = ../../src/Sphere.cpp; sourceTree = SOURCE_ROOT; };
-		377CC9E91347A0E400A7AE73 /* StatePause.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StatePause.cpp; path = ../../src/StatePause.cpp; sourceTree = SOURCE_ROOT; };
-		377CC9EA1347A0E400A7AE73 /* Tunnel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Tunnel.cpp; path = ../../src/Tunnel.cpp; sourceTree = SOURCE_ROOT; };
 		377CC9FF1347A10E00A7AE73 /* BtOgre.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BtOgre.cpp; path = ../../modules/src/btogre/BtOgre.cpp; sourceTree = SOURCE_ROOT; };
-		377CCA011347A11A00A7AE73 /* AudioEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioEngine.h; path = ../../include/AudioEngine.h; sourceTree = SOURCE_ROOT; };
 		377CCA021347A11A00A7AE73 /* Engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Engine.h; path = ../../include/Engine.h; sourceTree = SOURCE_ROOT; };
 		377CCA031347A11A00A7AE73 /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Entity.h; path = ../../include/Entity.h; sourceTree = SOURCE_ROOT; };
 		377CCA041347A11A00A7AE73 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Event.h; path = ../../include/Event.h; sourceTree = SOURCE_ROOT; };
@@ -177,19 +294,14 @@
 		377CCA0E1347A11A00A7AE73 /* Level.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Level.h; path = ../../include/Level.h; sourceTree = SOURCE_ROOT; };
 		377CCA0F1347A11A00A7AE73 /* Listener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Listener.h; path = ../../include/Listener.h; sourceTree = SOURCE_ROOT; };
 		377CCA101347A11A00A7AE73 /* MotionState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MotionState.h; path = ../../include/MotionState.h; sourceTree = SOURCE_ROOT; };
-		377CCA111347A11A00A7AE73 /* Obstacle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Obstacle.h; path = ../../include/Obstacle.h; sourceTree = SOURCE_ROOT; };
 		377CCA121347A11A00A7AE73 /* PhyxEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhyxEngine.h; path = ../../include/PhyxEngine.h; sourceTree = SOURCE_ROOT; };
 		377CCA131347A11A00A7AE73 /* Pixy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Pixy.h; path = ../../include/Pixy.h; sourceTree = SOURCE_ROOT; };
 		377CCA141347A11A00A7AE73 /* PixyLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PixyLog.h; path = ../../include/PixyLog.h; sourceTree = SOURCE_ROOT; };
-		377CCA151347A11A00A7AE73 /* SdkCameraMan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SdkCameraMan.h; path = ../../include/SdkCameraMan.h; sourceTree = SOURCE_ROOT; };
-		377CCA161347A11A00A7AE73 /* Sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sphere.h; path = ../../include/Sphere.h; sourceTree = SOURCE_ROOT; };
-		377CCA171347A11A00A7AE73 /* StatePause.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StatePause.h; path = ../../include/StatePause.h; sourceTree = SOURCE_ROOT; };
 		377CCA181347A11A00A7AE73 /* Tunnel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Tunnel.h; path = ../../include/Tunnel.h; sourceTree = SOURCE_ROOT; };
 		377CCA1A1347A11A00A7AE73 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utility.h; path = ../../include/Utility.h; sourceTree = SOURCE_ROOT; };
 		377CCAA71347B48400A7AE73 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		377CCABB1347B4D000A7AE73 /* Debug-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Debug-Info.plist"; sourceTree = "<group>"; };
 		379BCDCD13489E5000A76237 /* Pixy.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Pixy.log; path = ../../log/Pixy.log; sourceTree = SOURCE_ROOT; };
-		379BCE3A1348A5B700A76237 /* Plugin_OgreOggSound.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Plugin_OgreOggSound.dylib; path = /Volumes/kandie/Workspace/Build/ogreoggsound/build/Plugin_OgreOggSound.dylib; sourceTree = "<absolute>"; };
 		379BCE5C1348A68000A76237 /* Ogg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Ogg.framework; path = /Library/Frameworks/Ogg.framework; sourceTree = "<absolute>"; };
 		379BCE5E1348A68000A76237 /* Vorbis.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Vorbis.framework; path = /Library/Frameworks/Vorbis.framework; sourceTree = "<absolute>"; };
 		379BD1E31348AEF600A76237 /* Ogre.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Ogre.framework; path = "/Volumes/kandie/Workspace/Build/Ogre-1.7.2/lib/Release/Ogre.framework"; sourceTree = "<absolute>"; };
@@ -230,10 +342,10 @@
 				377C32FF1348815C0026E68E /* Plugin_CgProgramManager.dylib in Frameworks */,
 				377C371C13488BBF0026E68E /* Plugin_OgreProcedural.dylib in Frameworks */,
 				377C373113488C4F0026E68E /* Plugin_ParticleUniverse.dylib in Frameworks */,
-				379BCE3B1348A5B700A76237 /* Plugin_OgreOggSound.dylib in Frameworks */,
 				379BCE5D1348A68000A76237 /* Ogg.framework in Frameworks */,
 				379BCE5F1348A68000A76237 /* Vorbis.framework in Frameworks */,
 				379BD1E41348AEF600A76237 /* Ogre.framework in Frameworks */,
+				37285739136AB65500A944A2 /* libOgreOggSound.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,23 +372,26 @@
 		08FB7795FE84155DC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				377CC9DA1347A0E400A7AE73 /* AudioEngine.cpp */,
-				377CC9DB1347A0E400A7AE73 /* Entity.cpp */,
-				377CC9DC1347A0E400A7AE73 /* Event.cpp */,
-				377CC9DD1347A0E400A7AE73 /* EventListener.cpp */,
-				377CC9DE1347A0E400A7AE73 /* EventManager.cpp */,
-				377CC9DF1347A0E400A7AE73 /* GameManager.cpp */,
-				377CC9E01347A0E400A7AE73 /* GameState.cpp */,
-				377CC9E11347A0E400A7AE73 /* Geometry.cpp */,
-				377CC9E21347A0E400A7AE73 /* GfxEngine.cpp */,
-				377CC9E31347A0E400A7AE73 /* InputManager.cpp */,
-				377CC9E41347A0E400A7AE73 /* Level.cpp */,
-				377CC9E51347A0E400A7AE73 /* main.cpp */,
-				377CC9E61347A0E400A7AE73 /* Obstacle.cpp */,
-				377CC9E71347A0E400A7AE73 /* PhyxEngine.cpp */,
-				377CC9E81347A0E400A7AE73 /* Sphere.cpp */,
-				377CC9E91347A0E400A7AE73 /* StatePause.cpp */,
-				377CC9EA1347A0E400A7AE73 /* Tunnel.cpp */,
+				372856E7136AAA8F00A944A2 /* Drone.cpp */,
+				372856E8136AAA8F00A944A2 /* Entity.cpp */,
+				372856E9136AAA8F00A944A2 /* Event.cpp */,
+				372856EA136AAA8F00A944A2 /* EventListener.cpp */,
+				372856EB136AAA8F00A944A2 /* EventManager.cpp */,
+				372856EC136AAA8F00A944A2 /* GameManager.cpp */,
+				372856ED136AAA8F00A944A2 /* GameState.cpp */,
+				372856EE136AAA8F00A944A2 /* Geometry.cpp */,
+				372856EF136AAA8F00A944A2 /* GfxEngine.cpp */,
+				372856F0136AAA8F00A944A2 /* InputManager.cpp */,
+				372856F1136AAA8F00A944A2 /* Intro.cpp */,
+				372856F2136AAA8F00A944A2 /* Level.cpp */,
+				372856F3136AAA8F00A944A2 /* main.cpp */,
+				372856F4136AAA8F00A944A2 /* Pause.cpp */,
+				372856F5136AAA8F00A944A2 /* PhyxEngine.cpp */,
+				372856F6136AAA8F00A944A2 /* Probe.cpp */,
+				372856F7136AAA8F00A944A2 /* SfxEngine.cpp */,
+				372856F8136AAA8F00A944A2 /* Tunnel.cpp */,
+				372856F9136AAA8F00A944A2 /* UIEngine.cpp */,
+				372856FA136AAA8F00A944A2 /* Zone.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -287,6 +402,81 @@
 				37B5D6C013277FE900BFC358 /* Vertigo.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		3728573C136AB66A00A944A2 /* tinyxml */ = {
+			isa = PBXGroup;
+			children = (
+				37285746136AB6A100A944A2 /* tinystr.cpp */,
+				37285747136AB6A100A944A2 /* tinyxml.cpp */,
+				37285748136AB6A100A944A2 /* tinyxmlerror.cpp */,
+				37285749136AB6A100A944A2 /* tinyxmlparser.cpp */,
+				37285744136AB69400A944A2 /* tinystr.h */,
+				37285745136AB69400A944A2 /* tinyxml.h */,
+			);
+			name = tinyxml;
+			sourceTree = "<group>";
+		};
+		3728573D136AB66F00A944A2 /* TinyXMLResource */ = {
+			isa = PBXGroup;
+			children = (
+				37285742136AB68A00A944A2 /* TinyXMLResource.h */,
+				37285743136AB68A00A944A2 /* TinyXMLResourceManager.h */,
+				3728573E136AB67F00A944A2 /* TinyXMLResource.cpp */,
+				3728573F136AB67F00A944A2 /* TinyXMLResourceManager.cpp */,
+			);
+			name = TinyXMLResource;
+			sourceTree = "<group>";
+		};
+		37285769136AB6C400A944A2 /* log4cpp */ = {
+			isa = PBXGroup;
+			children = (
+				3728576A136AB70000A944A2 /* AbortAppender.cpp */,
+				3728576B136AB70000A944A2 /* Appender.cpp */,
+				3728576C136AB70000A944A2 /* AppendersFactory.cpp */,
+				3728576D136AB70000A944A2 /* AppenderSkeleton.cpp */,
+				3728576E136AB70000A944A2 /* BasicConfigurator.cpp */,
+				3728576F136AB70000A944A2 /* BasicLayout.cpp */,
+				37285770136AB70000A944A2 /* BufferingAppender.cpp */,
+				37285771136AB70000A944A2 /* Category.cpp */,
+				37285772136AB70000A944A2 /* CategoryStream.cpp */,
+				37285773136AB70000A944A2 /* Configurator.cpp */,
+				37285774136AB70000A944A2 /* DllMain.cpp */,
+				37285775136AB70000A944A2 /* DummyThreads.cpp */,
+				37285776136AB70000A944A2 /* FactoryParams.cpp */,
+				37285777136AB70000A944A2 /* FileAppender.cpp */,
+				37285778136AB70000A944A2 /* Filter.cpp */,
+				37285779136AB70000A944A2 /* FixedContextCategory.cpp */,
+				3728577A136AB70000A944A2 /* HierarchyMaintainer.cpp */,
+				3728577B136AB70000A944A2 /* IdsaAppender.cpp */,
+				3728577C136AB70000A944A2 /* LayoutAppender.cpp */,
+				3728577D136AB70000A944A2 /* LayoutsFactory.cpp */,
+				3728577E136AB70000A944A2 /* LevelEvaluator.cpp */,
+				3728577F136AB70000A944A2 /* Localtime.cpp */,
+				37285780136AB70000A944A2 /* LoggingEvent.cpp */,
+				37285781136AB70000A944A2 /* NDC.cpp */,
+				37285782136AB70000A944A2 /* NTEventLogAppender.cpp */,
+				37285783136AB70000A944A2 /* OmniThreads.cpp */,
+				37285784136AB70000A944A2 /* OstreamAppender.cpp */,
+				37285785136AB70000A944A2 /* PassThroughLayout.cpp */,
+				37285786136AB70000A944A2 /* PatternLayout.cpp */,
+				37285787136AB70000A944A2 /* PortabilityImpl.cpp */,
+				37285788136AB70000A944A2 /* Priority.cpp */,
+				37285789136AB70000A944A2 /* Properties.cpp */,
+				3728578A136AB70000A944A2 /* PropertyConfigurator.cpp */,
+				3728578B136AB70000A944A2 /* PropertyConfiguratorImpl.cpp */,
+				3728578C136AB70000A944A2 /* PThreads.cpp */,
+				3728578D136AB70000A944A2 /* RemoteSyslogAppender.cpp */,
+				3728578E136AB70000A944A2 /* RollingFileAppender.cpp */,
+				3728578F136AB70000A944A2 /* SimpleConfigurator.cpp */,
+				37285790136AB70000A944A2 /* SimpleLayout.cpp */,
+				37285791136AB70000A944A2 /* StringQueueAppender.cpp */,
+				37285792136AB70000A944A2 /* StringUtil.cpp */,
+				37285793136AB70000A944A2 /* SyslogAppender.cpp */,
+				37285794136AB70000A944A2 /* TimeStamp.cpp */,
+				37285795136AB70000A944A2 /* TriggeringEventEvaluatorFactory.cpp */,
+			);
+			name = log4cpp;
 			sourceTree = "<group>";
 		};
 		3759A0211330D12400D26FB8 /* Ogre Procedural */ = {
@@ -352,7 +542,6 @@
 				377CCA0A1347A11A00A7AE73 /* Geometry.h */,
 				377CCA131347A11A00A7AE73 /* Pixy.h */,
 				377CCA141347A11A00A7AE73 /* PixyLog.h */,
-				377CCA151347A11A00A7AE73 /* SdkCameraMan.h */,
 				37B5D78C13278B1700BFC358 /* Managers */,
 				37B5D78B13278B0D00BFC358 /* GameStates */,
 				37B5D78A13278B0100BFC358 /* Entities */,
@@ -365,6 +554,9 @@
 		37B282C8132519B200BACB27 /* External Modules */ = {
 			isa = PBXGroup;
 			children = (
+				37285769136AB6C400A944A2 /* log4cpp */,
+				3728573D136AB66F00A944A2 /* TinyXMLResource */,
+				3728573C136AB66A00A944A2 /* tinyxml */,
 				377CC9FE1347A0FB00A7AE73 /* BtOgre */,
 				377CC9881347A08700A7AE73 /* log4cpp */,
 				3759A0211330D12400D26FB8 /* Ogre Procedural */,
@@ -382,7 +574,7 @@
 		37B5D0D213277D9B00BFC358 /* Ogre */ = {
 			isa = PBXGroup;
 			children = (
-				379BCE3A1348A5B700A76237 /* Plugin_OgreOggSound.dylib */,
+				37285738136AB65500A944A2 /* libOgreOggSound.dylib */,
 				377C32FC1348815C0026E68E /* libOgreRTShaderSystem.dylib */,
 				377C32FE1348815C0026E68E /* Plugin_CgProgramManager.dylib */,
 				37C97A4913255ECE00F10762 /* Plugin_ParticleFX.dylib */,
@@ -396,7 +588,8 @@
 		37B5D78813278AF200BFC358 /* Engines */ = {
 			isa = PBXGroup;
 			children = (
-				377CCA011347A11A00A7AE73 /* AudioEngine.h */,
+				37285713136AAAAF00A944A2 /* SfxEngine.h */,
+				37285714136AAAAF00A944A2 /* UIEngine.h */,
 				377CCA021347A11A00A7AE73 /* Engine.h */,
 				377CCA0B1347A11A00A7AE73 /* GfxEngine.h */,
 				377CCA121347A11A00A7AE73 /* PhyxEngine.h */,
@@ -420,10 +613,11 @@
 		37B5D78A13278B0100BFC358 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				37285715136AAAAF00A944A2 /* Zone.h */,
+				3728570F136AAAAF00A944A2 /* Drone.h */,
+				37285712136AAAAF00A944A2 /* Probe.h */,
 				377CCA101347A11A00A7AE73 /* MotionState.h */,
 				377CCA031347A11A00A7AE73 /* Entity.h */,
-				377CCA111347A11A00A7AE73 /* Obstacle.h */,
-				377CCA161347A11A00A7AE73 /* Sphere.h */,
 				377CCA181347A11A00A7AE73 /* Tunnel.h */,
 			);
 			name = Entities;
@@ -432,9 +626,10 @@
 		37B5D78B13278B0D00BFC358 /* GameStates */ = {
 			isa = PBXGroup;
 			children = (
+				37285710136AAAAF00A944A2 /* Intro.h */,
+				37285711136AAAAF00A944A2 /* Pause.h */,
 				377CCA091347A11A00A7AE73 /* GameState.h */,
 				377CCA0E1347A11A00A7AE73 /* Level.h */,
-				377CCA171347A11A00A7AE73 /* StatePause.h */,
 			);
 			name = GameStates;
 			sourceTree = "<group>";
@@ -525,24 +720,77 @@
 			buildActionMask = 2147483647;
 			files = (
 				377CC98A1347A09300A7AE73 /* PixyLogLayout.cpp in Sources */,
-				377CC9EC1347A0E400A7AE73 /* AudioEngine.cpp in Sources */,
-				377CC9ED1347A0E400A7AE73 /* Entity.cpp in Sources */,
-				377CC9EE1347A0E400A7AE73 /* Event.cpp in Sources */,
-				377CC9EF1347A0E400A7AE73 /* EventListener.cpp in Sources */,
-				377CC9F01347A0E400A7AE73 /* EventManager.cpp in Sources */,
-				377CC9F11347A0E400A7AE73 /* GameManager.cpp in Sources */,
-				377CC9F21347A0E400A7AE73 /* GameState.cpp in Sources */,
-				377CC9F31347A0E400A7AE73 /* Geometry.cpp in Sources */,
-				377CC9F41347A0E400A7AE73 /* GfxEngine.cpp in Sources */,
-				377CC9F51347A0E400A7AE73 /* InputManager.cpp in Sources */,
-				377CC9F61347A0E400A7AE73 /* Level.cpp in Sources */,
-				377CC9F71347A0E400A7AE73 /* main.cpp in Sources */,
-				377CC9F81347A0E400A7AE73 /* Obstacle.cpp in Sources */,
-				377CC9F91347A0E400A7AE73 /* PhyxEngine.cpp in Sources */,
-				377CC9FA1347A0E400A7AE73 /* Sphere.cpp in Sources */,
-				377CC9FB1347A0E400A7AE73 /* StatePause.cpp in Sources */,
-				377CC9FC1347A0E400A7AE73 /* Tunnel.cpp in Sources */,
 				377CCA001347A10E00A7AE73 /* BtOgre.cpp in Sources */,
+				372856FB136AAA8F00A944A2 /* Drone.cpp in Sources */,
+				372856FC136AAA8F00A944A2 /* Entity.cpp in Sources */,
+				372856FD136AAA8F00A944A2 /* Event.cpp in Sources */,
+				372856FE136AAA8F00A944A2 /* EventListener.cpp in Sources */,
+				372856FF136AAA8F00A944A2 /* EventManager.cpp in Sources */,
+				37285700136AAA8F00A944A2 /* GameManager.cpp in Sources */,
+				37285701136AAA8F00A944A2 /* GameState.cpp in Sources */,
+				37285702136AAA8F00A944A2 /* Geometry.cpp in Sources */,
+				37285703136AAA8F00A944A2 /* GfxEngine.cpp in Sources */,
+				37285704136AAA8F00A944A2 /* InputManager.cpp in Sources */,
+				37285705136AAA8F00A944A2 /* Intro.cpp in Sources */,
+				37285706136AAA8F00A944A2 /* Level.cpp in Sources */,
+				37285707136AAA8F00A944A2 /* main.cpp in Sources */,
+				37285708136AAA8F00A944A2 /* Pause.cpp in Sources */,
+				37285709136AAA8F00A944A2 /* PhyxEngine.cpp in Sources */,
+				3728570A136AAA8F00A944A2 /* Probe.cpp in Sources */,
+				3728570B136AAA8F00A944A2 /* SfxEngine.cpp in Sources */,
+				3728570C136AAA8F00A944A2 /* Tunnel.cpp in Sources */,
+				3728570D136AAA8F00A944A2 /* UIEngine.cpp in Sources */,
+				3728570E136AAA8F00A944A2 /* Zone.cpp in Sources */,
+				37285740136AB67F00A944A2 /* TinyXMLResource.cpp in Sources */,
+				37285741136AB67F00A944A2 /* TinyXMLResourceManager.cpp in Sources */,
+				3728574A136AB6A100A944A2 /* tinystr.cpp in Sources */,
+				3728574B136AB6A100A944A2 /* tinyxml.cpp in Sources */,
+				3728574C136AB6A100A944A2 /* tinyxmlerror.cpp in Sources */,
+				3728574D136AB6A100A944A2 /* tinyxmlparser.cpp in Sources */,
+				37285796136AB70000A944A2 /* AbortAppender.cpp in Sources */,
+				37285797136AB70000A944A2 /* Appender.cpp in Sources */,
+				37285798136AB70000A944A2 /* AppendersFactory.cpp in Sources */,
+				37285799136AB70000A944A2 /* AppenderSkeleton.cpp in Sources */,
+				3728579A136AB70000A944A2 /* BasicConfigurator.cpp in Sources */,
+				3728579B136AB70000A944A2 /* BasicLayout.cpp in Sources */,
+				3728579C136AB70000A944A2 /* BufferingAppender.cpp in Sources */,
+				3728579D136AB70000A944A2 /* Category.cpp in Sources */,
+				3728579E136AB70000A944A2 /* CategoryStream.cpp in Sources */,
+				3728579F136AB70000A944A2 /* Configurator.cpp in Sources */,
+				372857A0136AB70000A944A2 /* DllMain.cpp in Sources */,
+				372857A1136AB70000A944A2 /* DummyThreads.cpp in Sources */,
+				372857A2136AB70000A944A2 /* FactoryParams.cpp in Sources */,
+				372857A3136AB70000A944A2 /* FileAppender.cpp in Sources */,
+				372857A4136AB70000A944A2 /* Filter.cpp in Sources */,
+				372857A5136AB70000A944A2 /* FixedContextCategory.cpp in Sources */,
+				372857A6136AB70000A944A2 /* HierarchyMaintainer.cpp in Sources */,
+				372857A7136AB70000A944A2 /* IdsaAppender.cpp in Sources */,
+				372857A8136AB70000A944A2 /* LayoutAppender.cpp in Sources */,
+				372857A9136AB70000A944A2 /* LayoutsFactory.cpp in Sources */,
+				372857AA136AB70000A944A2 /* LevelEvaluator.cpp in Sources */,
+				372857AB136AB70000A944A2 /* Localtime.cpp in Sources */,
+				372857AC136AB70000A944A2 /* LoggingEvent.cpp in Sources */,
+				372857AD136AB70000A944A2 /* NDC.cpp in Sources */,
+				372857AE136AB70000A944A2 /* NTEventLogAppender.cpp in Sources */,
+				372857AF136AB70000A944A2 /* OmniThreads.cpp in Sources */,
+				372857B0136AB70000A944A2 /* OstreamAppender.cpp in Sources */,
+				372857B1136AB70000A944A2 /* PassThroughLayout.cpp in Sources */,
+				372857B2136AB70000A944A2 /* PatternLayout.cpp in Sources */,
+				372857B3136AB70000A944A2 /* PortabilityImpl.cpp in Sources */,
+				372857B4136AB70000A944A2 /* Priority.cpp in Sources */,
+				372857B5136AB70000A944A2 /* Properties.cpp in Sources */,
+				372857B6136AB70000A944A2 /* PropertyConfigurator.cpp in Sources */,
+				372857B7136AB70000A944A2 /* PropertyConfiguratorImpl.cpp in Sources */,
+				372857B8136AB70000A944A2 /* PThreads.cpp in Sources */,
+				372857B9136AB70000A944A2 /* RemoteSyslogAppender.cpp in Sources */,
+				372857BA136AB70000A944A2 /* RollingFileAppender.cpp in Sources */,
+				372857BB136AB70000A944A2 /* SimpleConfigurator.cpp in Sources */,
+				372857BC136AB70000A944A2 /* SimpleLayout.cpp in Sources */,
+				372857BD136AB70000A944A2 /* StringQueueAppender.cpp in Sources */,
+				372857BE136AB70000A944A2 /* StringUtil.cpp in Sources */,
+				372857BF136AB70000A944A2 /* SyslogAppender.cpp in Sources */,
+				372857C0136AB70000A944A2 /* TimeStamp.cpp in Sources */,
+				372857C1136AB70000A944A2 /* TriggeringEventEvaluatorFactory.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
