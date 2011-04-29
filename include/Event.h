@@ -112,17 +112,7 @@ namespace Pixy
 		virtual ~Event();
 		
 		//virtual /**/int getId() const;
-		
-		/*! \brief
-		 *  Sets the unique identifier of this Event, see enum Pixy::EVENTS
-		 */
-		virtual void setUID(const EVENT_UID inUID);
-		
-		/*! \brief
-		 *  Retrieves the global identifier of this Event
-		 */
-		virtual EVENT_UID getUID() const;
-		
+
 		
 		/*! \brief
 		 *  Sets the name of this Event, used as a convenience for debugging
@@ -187,7 +177,6 @@ namespace Pixy
 		typedef	map< std::string, std::string > property_t;
 		
 		int				mId;
-		EVENT_UID		mUID;
 		EVENT_WEIGHT	mWeight;
 		EVENT_TYPE		mType;
 		EVENT_FEEDBACK	mFeedback;

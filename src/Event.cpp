@@ -49,7 +49,6 @@ namespace Pixy
   }
 	
 	void Event::reset() {
-		mUID = EVT_DEFAULT;
 		mName.clear();
 		mCategory.clear();
 		mWeight = MINOR_EVT;
@@ -167,15 +166,6 @@ namespace Pixy
 		
 		//_type.clear();
 		return outStream;
-	}
-	
-	
-	void Event::setUID(const EVENT_UID inUID) {
-		mUID = inUID;
-	}
-	
-	EVENT_UID Event::getUID() const {
-		return mUID;
 	}
 	
 	
