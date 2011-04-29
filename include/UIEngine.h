@@ -237,8 +237,8 @@ namespace Pixy {
     
     // menu event handlers
     virtual void itemSelected(SelectMenu* menu);
-    virtual void buttonHit(Button* b);
-    virtual void buttonOver(Button* b);
+	virtual void buttonHit(OgreBites::Button* b);
+    virtual void buttonOver(OgreBites::Button* b);
     virtual void okDialogClosed(const Ogre::DisplayString& message);
     
     OgreOggISound *mSfxButtonOver, *mSfxButtonHit;

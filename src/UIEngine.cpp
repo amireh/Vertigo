@@ -321,9 +321,9 @@ namespace Pixy {
         widgIdx = mTrayMgr->locateWidgetInTray(mCurrentButton);
         mCurrentButton->_stopFlashing();
         if (widgIdx == 0) {
-          mCurrentButton = static_cast<Button*>(mTrayMgr->getWidget(trayIdx, mTrayMgr->getNumWidgets(trayIdx)-1));
+          mCurrentButton = static_cast<OgreBites::Button*>(mTrayMgr->getWidget(trayIdx, mTrayMgr->getNumWidgets(trayIdx)-1));
         } else {
-          mCurrentButton = static_cast<Button*>(mTrayMgr->getWidget(trayIdx, widgIdx -1));
+          mCurrentButton = static_cast<OgreBites::Button*>(mTrayMgr->getWidget(trayIdx, widgIdx -1));
         }
         mCurrentButton->_doFlash();
         break;
@@ -333,9 +333,9 @@ namespace Pixy {
         widgIdx = mTrayMgr->locateWidgetInTray(mCurrentButton);
         mCurrentButton->_stopFlashing();
         if (widgIdx == mTrayMgr->getNumWidgets(trayIdx)-1) {
-          mCurrentButton = static_cast<Button*>(mTrayMgr->getWidget(trayIdx, 0));
+          mCurrentButton = static_cast<OgreBites::Button*>(mTrayMgr->getWidget(trayIdx, 0));
         } else {
-          mCurrentButton = static_cast<Button*>(mTrayMgr->getWidget(trayIdx, widgIdx+1));
+          mCurrentButton = static_cast<OgreBites::Button*>(mTrayMgr->getWidget(trayIdx, widgIdx+1));
         }
         mCurrentButton->_doFlash();
         break;
@@ -813,7 +813,7 @@ namespace Pixy {
   /* ----------------------- *
    * UI Event Handlers
    * ----------------------- */  
-  void UIEngine::buttonHit(Button* b) {
+  void UIEngine::buttonHit(OgreBites::Button* b) {
     if (GameManager::getSingleton().getSettings()["Sound Enabled"] == "Yes") {
       if (mSfxButtonHit->isPlaying())
         mSfxButtonHit->stop();
@@ -857,7 +857,7 @@ namespace Pixy {
 		  
   };
   
-  void UIEngine::buttonOver(Button* b) {
+  void UIEngine::buttonOver(OgreBites::Button* b) {
     if (GameManager::getSingleton().getSettings()["Sound Enabled"] != "Yes")
       return;
       
