@@ -132,7 +132,7 @@ namespace Pixy
     try {
       std::string lPluginsPath;
 #if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
-      lPluginsPath = macBundlePath() + "Contents/Plugins/";
+      lPluginsPath = macBundlePath() + "/Contents/Plugins/";
 #elif OGRE_PLATFORM == OGRE_PLATFORM_WIN32
       lPluginsPath = ".\\";
 #else
@@ -169,7 +169,7 @@ namespace Pixy
 #elif OGRE_PLATFORM == OGRE_PLATFORM_APPLE
 		lPathResources << macBundlePath() << "/Contents/Resources/config/resources_osx.cfg";
 		lPathPlugins << macBundlePath() << "/Contents/Resources/config/plugins.cfg";
-		lPathCfg << macBundlePath << "/Contents/Resources/config/";
+		lPathCfg << macBundlePath() << "/Contents/Resources/config/";
 		lPathOgreCfg << lPathCfg.str() << "ogre.cfg";	
 		lPathLog << macBundlePath() << "/Contents/Logs/Ogre.log";    
 #else
