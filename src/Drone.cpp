@@ -111,10 +111,8 @@ namespace Pixy
       mSfxExplosion = mSoundMgr->createSound(Ogre::String("Explosion" + stringify(idObject)), "explosion.wav", false, false, true) ;
       mSfxShatter = mSoundMgr->createSound(Ogre::String("Shatter" + stringify(idObject)), "shatter3.wav", false, false, true) ;
       
-      mSfxExplosion->setRolloffFactor(2.f);
-      mSfxExplosion->setReferenceDistance(1000.f);
-      mSfxShatter->setRolloffFactor(2.f);
-      mSfxShatter->setReferenceDistance(1000.f);
+      mSfxExplosion->disable3D(true);
+      mSfxShatter->disable3D(true);
       
       //mLog->debugStream() << "created sound effect";
 

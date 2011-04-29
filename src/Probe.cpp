@@ -91,7 +91,11 @@ namespace Pixy
     OgreOggSound::OgreOggSoundManager *mSoundMgr;
     mSoundMgr = SfxEngine::getSingletonPtr()->getSoundMgr();
     mSfxBeep = mSoundMgr->createSound("ProbeBeep" + stringify(idObject), "beep.wav", false, false, true);
+#if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
+    mSfxWarning = mSoundMgr->createSound("ProbeWarning" + stringify(idObject), "warning_siren.wav", false, false, true);
+#else
     mSfxWarning = mSoundMgr->createSound("ProbeWarning" + stringify(idObject), "warning_siren.ogg", false, false, true);
+#endif
     mSfxFlip = mSoundMgr->createSound("ProbeFlipShield" + stringify(idObject), "flip.wav", false, false, true);
     
     mSfxBeep->disable3D(true);

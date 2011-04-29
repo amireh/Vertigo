@@ -55,13 +55,9 @@ namespace Pixy {
 			mLog = 0;
 
 		  if (mGameTrack) {
-        mSoundMgr->destroySound(mGameTrack);
-        mGameTrack = NULL;
-      }
-      if (mIntroTrack) {
-        mSoundMgr->destroySound(mIntroTrack);
-        mIntroTrack = NULL;
-      }		
+			mSoundMgr->destroySound(mGameTrack);
+			mGameTrack = NULL;
+		  }
 			//delete mSoundMgr;
 			fSetup = false;
 		}
@@ -82,18 +78,18 @@ namespace Pixy {
         mSoundMgr->init();
         mSoundMgr->setSceneManager(GfxEngine::getSingletonPtr()->getSM());
       }
- 
+
    	  if (!mGameTrack) {
+        // OGG doesnt work on Mac, use .WAV instead
+#if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
+        mGameTrack = mSoundMgr->createSound("MusicTrack", "music.wav", true, false, true);
+#else
         mGameTrack = mSoundMgr->createSound("MusicTrack", "music.ogg", true, false, true);
+#endif
         mGameTrack->loop(true);
         mGameTrack->setVolume(0.5f);
       }
-      if (!mIntroTrack) {
-        mIntroTrack = mSoundMgr->createSound("IntroTrack", "intro.ogg", true, false, true);
-        mIntroTrack->loop(true);
-        mIntroTrack->setVolume(0.5f);
-      }
-      
+
       mVolume = 1.0f;
       mSoundMgr->setMasterVolume(mVolume);
       
@@ -204,22 +200,10 @@ namespace Pixy {
 	}
 	
 	bool SfxEngine::evtDroneCollided(Event* inEvt) {
-	  Drone* mObs = static_cast<Drone*>(inEvt->getAny());
-	  
-	  /*if (mObs->shield() == FIRE)
-	    mSoundMgr->getSound("Explosion")->play();
-	    //playEffect(SFX_EXPLOSION, mObs->getMasterNode());
-	  else
-	    mSoundMgr->getSound("Shatter")->play();
-	    //playEffect(SFX_SHATTER, mObs->getMasterNode());*/
-	  
 	  return true;
 	};
 	
 	bool SfxEngine::evtPortalEntered(Event* inEvt) {
-	
-	  //playEffect(SFX_SHATTER, Level::getSingletonPtr()->getTunnel()->getEntrancePortal());
-	  
 	  return true;
 	};
 	
@@ -247,31 +231,11 @@ namespace Pixy {
 	    return;
 	  
 	  mGameTrack->loop(true);
-    mGameTrack->play();
-	  /*if (GameManager::getSingleton().currentState()->getId() == STATE_INTRO) {
-	    if (mIntroTrack->isPlaying())
-	      return;
-	      
-	    if (mGameTrack->isPlaying())
-	      mGameTrack->stop();
-	    
-	    mIntroTrack->loop(true);
-	    mIntroTrack->play();
-	  } else {
-	    if (mGameTrack->isPlaying())
-	      return;
-	  
-	    if (mIntroTrack->isPlaying())
-	      mIntroTrack->startFade(false, 1.0f);
-	    
-	    mGameTrack->loop(true);
-	    mGameTrack->play();
-	  }*/
+      mGameTrack->play();
+
 	};
 	
 	void SfxEngine::stopMusic() {
-	  if (mIntroTrack->isPlaying())
-	    mIntroTrack->stop(true);
 	  if (mGameTrack->isPlaying())
 	    mGameTrack->stop(true);
 	};
